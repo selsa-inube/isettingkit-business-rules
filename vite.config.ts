@@ -1,7 +1,7 @@
 import { resolve } from "path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import dts from "vite-plugin-dts";
+import dst from "vite-plugin-dts";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,6 +11,36 @@ export default defineConfig({
       formats: ["es"],
       fileName: (format) => `index.${format}.js`,
     },
+    rollupOptions: {
+      external: [
+        "react",
+        "react-dom",
+        "react/jsx-runtime",
+        "styled-components",
+        "react-icons/md",
+        "formik",
+        "yup",
+        "@inubekit/button",
+        "@inubekit/checkbox",
+        "@inubekit/divider",
+        "@inubekit/date",
+        "@inubekit/foundations",
+        "@inubekit/grid",
+        "@inubekit/icon",
+        "@inubekit/input",
+        "@inubekit/stack",
+        "@inubekit/text",
+        "@inubekit/textarea",
+        "@inubekit/toggle",
+        "@isettingkit/input",
+        "@isettingkit/view",
+      ],
+      output: {
+        globals: {
+          react: "React",
+        },
+      },
+    },
   },
-  plugins: [react(), dts({ rollupTypes: true })],
+  plugins: [react(), dst({ rollupTypes: true })],
 });

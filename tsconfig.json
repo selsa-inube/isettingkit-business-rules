@@ -15,6 +15,7 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "declaration": true,
+    "allowJs": true,
 
     /* Linting */
     "strict": true,
@@ -22,6 +23,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "../isettingkit-view/src/View"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

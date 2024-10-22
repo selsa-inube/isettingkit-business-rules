@@ -1,4 +1,3 @@
-
 name: Auto Release
 
 on:
@@ -24,7 +23,7 @@ jobs:
         with:
           node-version: "20"
           registry-url: "https://registry.npmjs.org/"
-          scope: "@inubekit"
+          scope: "@isettingkit"
           always-auth: true
 
       - name: Install Dependencies
@@ -49,17 +48,17 @@ jobs:
         with:
           node-version: "20"
           registry-url: "https://registry.npmjs.org/"
-          scope: "@inubekit"
+          scope: "@isettingkit"
           always-auth: true
 
       - name: Configure Git
         run: |
-          git config --global user.email YOUR_EMAIL
-          git config --global user.name YOUR_NAME
+          git config --global user.email cmarin6051@gmail.com
+          git config --global user.name cmarin001
 
       - name: Configure npm
         run: |
-          echo "@inubekit:registry=https://registry.npmjs.org/" >> .npmrc
+          echo "@isettingkit:registry=https://registry.npmjs.org/" >> .npmrc
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
 
       - name: Install Dependencies
@@ -70,4 +69,3 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
