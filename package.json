@@ -1,11 +1,11 @@
 {
-  "name": "@inubekit/business-rules",
+  "name": "@isetting/business-rules",
   "homepage": "https://inubeds.vercel.app/",
   "author": "inube",
   "main": "dist/index.es.js",
   "keywords": [
     "inube",
-    "design-system",
+    "isetting",
     "react"
   ],
   "description": "",
