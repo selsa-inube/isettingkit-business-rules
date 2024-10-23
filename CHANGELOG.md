@@ -1,3 +1,15 @@
+# v0.1.2 (Wed Oct 23 2024)
+
+#### ⚠️ Pushed to `main`
+
+- Update package.json ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.1.1 (Tue Oct 22 2024)
 
 #### ⚠️ Pushed to `main`
