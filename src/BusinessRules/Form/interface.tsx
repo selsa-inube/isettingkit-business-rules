@@ -11,6 +11,7 @@ import { ToggleOption } from "./ToggleOption";
 
 import { Term } from "./Term";
 import { DecisionConditionRenderer } from "@isettingkit/input";
+import { Button } from "@inubekit/button";
 
 interface IRulesFormUI {
   formik: FormikValues;
@@ -48,9 +49,11 @@ const RulesFormUI = (props: IRulesFormUI) => {
     onStartChange,
     onEndChange,
     textValues,
+    onCancel,
+    onSubmit,
   } = props;
   const [checkNone, setCheckNone] = useState(false);
-  const [, setCheckDisabledConfirm] = useState(true);
+  const [checkDisabledConfirm, setCheckDisabledConfirm] = useState(true);
 
   const handleToggleNone = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCheckNone(e.target.checked);
@@ -174,6 +177,19 @@ const RulesFormUI = (props: IRulesFormUI) => {
             }
           />
         )}
+      </Stack>
+      <Divider dashed />
+      <Stack direction="row" justifyContent="end" gap="16px">
+        <Button appearance="gray" onClick={onCancel}>
+          {textValues.cancel}
+        </Button>
+        <Button
+          onClick={onSubmit}
+          disabled={checkDisabledConfirm || !formik.isValid}
+          type="submit"
+        >
+          {textValues.confirm}
+        </Button>
       </Stack>
     </Stack>
   );

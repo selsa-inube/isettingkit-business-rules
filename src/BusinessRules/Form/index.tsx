@@ -78,7 +78,9 @@ const RulesForm = (prop: IRulesForm) => {
     initialValues,
     validationSchema,
     validateOnChange: false,
-    onSubmit: async () => true,
+    onSubmit: () => {
+      onSubmitEvent(DataDecision);
+    },
   });
 
   return (
