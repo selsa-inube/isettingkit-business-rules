@@ -1,3 +1,15 @@
+# v0.1.4 (Wed Oct 23 2024)
+
+#### ⚠️ Pushed to `main`
+
+- fix: added buttons for the rules-form ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.1.3 (Wed Oct 23 2024)
 
 #### ⚠️ Pushed to `main`
