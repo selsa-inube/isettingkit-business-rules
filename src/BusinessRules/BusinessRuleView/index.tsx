@@ -1,9 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 
 import {
-  ICondition,
-  IDecision,
   IRuleDecision,
   ValueDataType,
   ValueHowToSetUp,
@@ -42,11 +41,11 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
         </Text>
         <Stack justifyContent="space-between">
           {decision.decisions &&
-            decision.decisions.map((item: IDecision) => (
+            decision.decisions.map((item: any) => (
               <DecisionViewConditionRenderer
                 key={item.name}
                 element={item}
-                valueData={String(item.value)}
+                valueData={item.value}
               />
             ))}
         </Stack>
@@ -57,11 +56,11 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
             {textValues.FactsThatConditionIt}
           </Text>
           {decision.conditions &&
-            decision.conditions.map((condition: IDecision | ICondition) => (
+            decision.conditions.map((condition: any) => (
               <Stack key={condition.name} direction="column">
                 <DecisionViewConditionRenderer
                   element={condition}
-                  valueData={String(condition.value)}
+                  valueData={condition.value}
                 />
               </Stack>
             ))}

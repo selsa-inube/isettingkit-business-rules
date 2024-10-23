@@ -82,7 +82,7 @@ const getData = () => {
         name: "ReciprocidadAhorro",
         label: "Reciprocidad de ahorro",
         description: "Reciprocidad de ahorro",
-        typeData: ValueDataType.CURRENCY,
+        typeData: ValueDataType.PERCENTAGE,
         value: 19,
         howToSetUp: ValueHowToSetUp.EQUAL,
       },
