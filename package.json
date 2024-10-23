@@ -1,5 +1,5 @@
 {
-  "name": "@isetting/business-rules",
+  "name": "@isettingkit/business-rules",
   "homepage": "https://inubeds.vercel.app/",
   "author": "inube",
   "main": "dist/index.es.js",
