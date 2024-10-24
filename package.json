@@ -48,8 +48,8 @@
     "@inubekit/text": "^2.17.0",
     "@inubekit/textarea": "^2.45.0",
     "@inubekit/toggle": "^3.8.1",
-    "@isettingkit/input": "^0.1.16",
-    "@isettingkit/view": "^0.1.7"
+    "@isettingkit/input": "^0.1.17",
+    "@isettingkit/view": "^0.1.9"
   },
   "peerDependencies": {
     "react": "^18.2.0",
