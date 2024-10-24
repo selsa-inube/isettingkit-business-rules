@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { useFormik } from "formik";
-import { RulesFormUI } from "./interface";
+import { useState } from "react";
 import { IRuleDecision, IValue } from "@isettingkit/input";
 import { ValueValidationSchema } from "@isettingkit/input";
+import { RulesFormUI } from "./interface";
 
 interface IRulesForm {
   id: string;
@@ -11,37 +11,28 @@ interface IRulesForm {
   onCancel: () => void;
   onSubmitEvent: (dataDecision: IRuleDecision) => void;
   textValues: {
-    selectOptions: string;
-    selectOption: string;
-    rangeMin: (label: string) => string;
-    rangeMax: (label: string) => string;
-    reasonForChange: string;
+    cancel: string;
     change: string;
     changePlaceholder: string;
-    termStart: string;
-    termEnd: string;
-    cancel: string;
     confirm: string;
-    none: string;
-    FactsThatConditionIt: string;
     criteria: string;
+    factsThatConditionIt: string;
+    none: string;
+    rangeMax: (label: string) => string;
+    rangeMin: (label: string) => string;
+    reasonForChange: string;
+    selectOption: string;
+    selectOptions: string;
+    termEnd: string;
+    terms: string;
+    termStart: string;
   };
 }
-
-const updateDataDecision = (
-  prevDataDecision: IRuleDecision,
-  field: string,
-  value: IValue | Date,
-) => {
-  return {
-    ...prevDataDecision,
-    decision: { ...prevDataDecision.decision!, [field]: value },
-  };
-};
 
 const RulesForm = (prop: IRulesForm) => {
   const { id, decision, onCancel, onSubmitEvent, textValues } = prop;
   const [DataDecision, setDataDecision] = useState(decision);
+
   const onCondition = (value: IValue, nameCondition: string) => {
     setDataDecision((DataDecisionRule) => {
       const conditions = DataDecisionRule?.conditions?.map((condition) => {
@@ -53,21 +44,22 @@ const RulesForm = (prop: IRulesForm) => {
       return { ...DataDecisionRule, conditions };
     });
   };
+
   const onDecision = (value: IValue) => {
     setDataDecision((prevDataDecision) =>
       updateDataDecision(prevDataDecision, "value", value),
     );
   };
 
-  const onStartChange = (value: string) => {
-    setDataDecision((prevDataDecision) =>
-      updateDataDecision(prevDataDecision, "startDate", new Date(value)),
-    );
-  };
-
   const onEndChange = (value: string) => {
     setDataDecision((prevDataDecision) =>
       updateDataDecision(prevDataDecision, "endDate", new Date(value)),
+    );
+  };
+
+  const onStartChange = (value: string) => {
+    setDataDecision((prevDataDecision) =>
+      updateDataDecision(prevDataDecision, "startDate", new Date(value)),
     );
   };
 
@@ -82,6 +74,17 @@ const RulesForm = (prop: IRulesForm) => {
       onSubmitEvent(DataDecision);
     },
   });
+
+  const updateDataDecision = (
+    prevDataDecision: IRuleDecision,
+    field: string,
+    value: IValue | Date,
+  ) => {
+    return {
+      ...prevDataDecision,
+      decision: { ...prevDataDecision.decision!, [field]: value },
+    };
+  };
 
   return (
     <RulesFormUI

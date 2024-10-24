@@ -158,8 +158,9 @@ Default.args = {
     cancel: "Cancelar",
     confirm: "Confirmar",
     none: "Ninguno",
-    FactsThatConditionIt: "Hechos que condicionan",
+    factsThatConditionIt: "Hechos que condicionan",
     criteria: "Criterios",
+    terms: "Vigencia",
   },
 };
 
@@ -182,8 +183,9 @@ NotConditions.args = {
     cancel: "Cancelar",
     confirm: "Confirmar",
     none: "Ninguno",
-    FactsThatConditionIt: "Hechos que condicionan",
+    factsThatConditionIt: "Hechos que condicionan",
     criteria: "Criterios",
+    terms: "Vigencia",
   },
 };
 
@@ -245,8 +247,9 @@ ListMutiple.args = {
     cancel: "Cancelar",
     confirm: "Confirmar",
     none: "Ninguno",
-    FactsThatConditionIt: "Hechos que condicionan",
+    factsThatConditionIt: "Hechos que condicionan",
     criteria: "Criterios",
+    terms: "Vigencia",
   },
 };
 
@@ -309,8 +312,9 @@ Range.args = {
     cancel: "Cancelar",
     confirm: "Confirmar",
     none: "Ninguno",
-    FactsThatConditionIt: "Hechos que condicionan",
+    factsThatConditionIt: "Hechos que condicionan",
     criteria: "Criterios",
+    terms: "Vigencia",
   },
 };
 

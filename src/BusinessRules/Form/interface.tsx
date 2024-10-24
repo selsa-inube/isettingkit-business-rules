@@ -24,20 +24,21 @@ interface IRulesFormUI {
   onStartChange: (value: string) => void;
   onSubmit: () => void;
   textValues: {
-    selectOptions: string;
-    selectOption: string;
-    rangeMin: (label: string) => string;
-    rangeMax: (label: string) => string;
-    reasonForChange: string;
+    cancel: string;
     change: string;
     changePlaceholder: string;
-    termStart: string;
-    termEnd: string;
-    cancel: string;
     confirm: string;
-    none: string;
-    FactsThatConditionIt: string;
     criteria: string;
+    factsThatConditionIt: string;
+    none: string;
+    rangeMax: (label: string) => string;
+    rangeMin: (label: string) => string;
+    reasonForChange: string;
+    selectOption: string;
+    selectOptions: string;
+    termEnd: string;
+    terms: string;
+    termStart: string;
   };
 }
 
@@ -98,7 +99,7 @@ const RulesFormUI = (props: IRulesFormUI) => {
       <Divider dashed />
       <Stack direction="column">
         <Stack direction="row" gap="16px" justifyContent="space-between">
-          <Text>{textValues.FactsThatConditionIt}</Text>
+          <Text>{textValues.factsThatConditionIt}</Text>
           <Toggle
             id="toogleNone"
             onChange={handleToggleNone}
