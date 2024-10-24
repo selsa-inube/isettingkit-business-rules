@@ -3,6 +3,7 @@ import { useState } from "react";
 import { IRuleDecision, IValue } from "@isettingkit/input";
 import { ValueValidationSchema } from "@isettingkit/input";
 import { RulesFormUI } from "./interface";
+import { IRulesFormTextValues } from "./types";
 
 interface IRulesForm {
   id: string;
@@ -10,23 +11,7 @@ interface IRulesForm {
   onCloseModal: () => void;
   onCancel: () => void;
   onSubmitEvent: (dataDecision: IRuleDecision) => void;
-  textValues: {
-    cancel: string;
-    change: string;
-    changePlaceholder: string;
-    confirm: string;
-    criteria: string;
-    factsThatConditionIt: string;
-    none: string;
-    rangeMax: (label: string) => string;
-    rangeMin: (label: string) => string;
-    reasonForChange: string;
-    selectOption: string;
-    selectOptions: string;
-    termEnd: string;
-    terms: string;
-    termStart: string;
-  };
+  textValues: IRulesFormTextValues;
 }
 
 const RulesForm = (prop: IRulesForm) => {

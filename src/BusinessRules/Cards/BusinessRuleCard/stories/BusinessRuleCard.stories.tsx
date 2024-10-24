@@ -143,9 +143,9 @@ Container.args = {
         cancel: "Cancelar",
         confirm: "Confirmar",
         none: "Ninguno",
-        FactsThatConditionIt: "Hechos que condicionan",
+        factsThatConditionIt: "Hechos que condicionan",
         criteria: "Criterios",
-        Terms: "Vigencia",
+        terms: "Vigencia",
       }}
     />
   ),

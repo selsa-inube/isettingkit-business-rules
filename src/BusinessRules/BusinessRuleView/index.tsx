@@ -7,26 +7,11 @@ import {
 } from "@isettingkit/input";
 import { DecisionViewConditionRenderer } from "@isettingkit/view";
 import { getValueData } from "./helper";
+import { IRulesFormTextValues } from "../Form/types";
 
 interface IBusinessRuleView {
   decision: IRuleDecision;
-  textValues: {
-    selectOptions: string;
-    selectOption: string;
-    rangeMin: (label: string) => string;
-    rangeMax: (label: string) => string;
-    reasonForChange: string;
-    change: string;
-    changePlaceholder: string;
-    termStart: string;
-    termEnd: string;
-    cancel: string;
-    confirm: string;
-    none: string;
-    FactsThatConditionIt: string;
-    criteria: string;
-    Terms: string;
-  };
+  textValues: IRulesFormTextValues;
 }
 const BusinessRuleView = (props: IBusinessRuleView) => {
   const { decision, textValues } = props;
@@ -50,7 +35,7 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
       </Stack>
       <Stack direction="column" gap="16px" justifyContent="space-between">
         <Text type="title" size="medium" appearance="gray" weight="bold">
-          {textValues.FactsThatConditionIt}
+          {textValues.factsThatConditionIt}
         </Text>
         {decision.conditions &&
           decision.conditions.map((condition) => (
@@ -65,7 +50,7 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
 
       <Stack direction="column" gap="12px">
         <Text type="title" size="medium" appearance="gray" weight="bold">
-          {textValues.Terms}
+          {textValues.terms}
         </Text>
         <Stack justifyContent="space-between">
           {decision?.decision?.startDate && (
