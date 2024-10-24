@@ -1,3 +1,16 @@
+# v0.1.6 (Thu Oct 24 2024)
+
+#### ⚠️ Pushed to `main`
+
+- Merge branch 'main' of https://github.com/selsa-inube/isettingkit-business-rules ([@cmarin001](https://github.com/cmarin001))
+- fix: adjust helper in order to handle values ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.1.5 (Thu Oct 24 2024)
 
 #### ⚠️ Pushed to `main`
