@@ -1,38 +1,173 @@
-# IDS - Starter
+# 📦 isettingkit-business-rules: Business Rule Components Library
 
-This project is a starter repository that can be used to develop and publish new Inube Design System components. With this repository the intention is that any design-system team member can start to develop a new component without starting from scratch.
+## Overview
 
-## Readme
+The **`isettingkit-business-rules`** library is designed to handle business rules and decision-making in frontend applications. It includes a variety of components to display, modify, and manage business rules, decisions, and conditions. This documentation covers the core components, their functionality, and how to integrate them.
 
-This readme contains the details of usage of the starter. Once you create a new repo based in this template in github, please change the content of the README and make it relatable to the component you are creating.
+---
 
-## Instructions of usage
+## 📚 Components
 
-### Package.json
+### 1. `getValueData`
 
-1. **name**: As you can see in the package.json file, the name of this package is "ids-starter". Please rename the name when you start your new project. Remember that all components are publish by the @inubekit organization in npm, so rename the package as @inubekit/{new-component-name}
-2. **description**: Complete the description about the component you are creating.
+#### Description
+The `getValueData` function extracts and formats the value data from a decision or condition element.
 
-### Environment variables
+#### Props
+- **element** (`IRuleDecision["decision"] | ICondition | undefined`): The decision or condition element to extract the value from.
 
-1. In order to control releases and package publishing, you will need to have a .env file with some environment variables.
-2. `GH_TOKEN`: Create this token in github.com, using your profile settings. This token requires the **repo** scope.
-3. `NPM_TOKEN`: Create this token in npmjs.com. You must ask the admin to add you as a organization admin prior to publish the package in npm.
+#### Usage Example
+```tsx
+const value = getValueData(decision.decision);
+```
 
-### Pull Requests
+### 2. BusinessRuleView
+#### Description
+BusinessRuleView renders a detailed view of a business rule, displaying decisions and conditions, along with their corresponding values.
 
-1. All PRs must have a semver label attached to it. This is the way the publishing and versioning process will use to know if a PR demands a major, minor or patch version to be created.
-2. To have these labels available, please run `npm run auto create-labels` to create them (you need to have already your `GH_TOKEN` in .env in order to make this command work).
+#### Props
+- **decision** (IRuleDecision): The business rule decision data.
+- **textValues** (IRulesFormTextValues): Text values for displaying labels and descriptions.
+#### Usage Example
+```tsx
+<BusinessRuleView
+  decision={ruleDecision}
+  textValues={textValues}
+/>
+```
 
-### Publishing
+### 3. BusinessRuleCard
+#### Description
+BusinessRuleCard is a card component used to display a business rule with options to view or delete the rule.
 
-Follow these steps to publish and release a new version of your package.
+#### Props
+- **children** (React.ReactNode): The content of the card.
+- **handleDelete** ((id: string) => void): Function to handle the deletion of a rule.
+- **handleView** ((id: string) => void): Function to handle viewing a rule.
+- **id (string)** : The ID of the business rule.
+#### Usage Example
+```tsx
+<BusinessRuleCard
+  id="rule1"
+  handleDelete={deleteRule}
+  handleView={viewRule}
+/>
+```
+### 4. RulesForm
+#### Description
+RulesForm is a form component for handling and submitting business rule decisions. It integrates with Formik for form validation and submission.
 
-Check that you're an admin in the repository (validate with your team leader) and **execute these scripts in a release branch**.
+#### Props
+- **id** (string): The unique ID for the form.
+- **decision** (IRuleDecision): The decision data for the form.
+- **onCloseModal** (() => void): Function to handle closing the modal.
+- **onCancel** (() => void): Function to handle cancelling the form.
+- **onSubmitEvent** ((dataDecision: IRuleDecision) => void): Function to handle submitting the form data.
+- **textValues** (IRulesFormTextValues): Text values for the form labels and descriptions.
+#### Usage Example
+```tsx
+<RulesForm
+  id="ruleForm1"
+  decision={ruleDecision}
+  onCloseModal={closeModal}
+  onCancel={cancelForm}
+  onSubmitEvent={submitDecision}
+/>
+```
 
-1. `npm run changelog`: this command will create a changelog for you, including in the document the changes that the current release will publish in the new version of the package and what should be the version number of the release. The number is calculated using the labels of all the PRs that are included in this new version (see the Pull Requests details above).
-2. `npm version <new-version>`: this command creates the new version (tag), deletes the /dist folder in your project and executes the build of the project and its files are stored in a new /dist folder.
-3. `git push -u origin <branch>`: this command pushes the commits of changelog and package.json with the new version to github.
-4. `npm run release`: this command executes a git push with the new version tag included and creates a new release in Github. **This step requires that you have your `GH_TOKEN` working**.
-5. `npm login`: you must be logged in with npm to continue the process.
-6. `npm publish`: with the new build already in /dist, you can now execute this command and the new package version will be published in npm. **This command requires tat you have you `NPM_TOKEN` working.** _Note_: if this first time you are publishing you should add `--access=public` flag to the command
+### 5. ReasonForChange
+#### Description
+ReasonForChange is a component that renders a textarea input to capture the reason for a change in a business rule.
+
+#### Props
+- **label** (string): The label for the textarea.
+- **labelText** (string): The label text to display.
+- **onHandleChange** ((event: React.ChangeEvent<HTMLInputElement>) => void): Callback to handle textarea changes.
+- **placeholder** (string): The placeholder text for the textarea.
+- **required** (boolean): Indicates if the field is required.
+- **value** (string?): The value of the textarea (optional).
+#### Usage Example
+```tsx
+<ReasonForChange
+  label="Change Reason"
+  labelText="Reason for Change"
+  onHandleChange={handleChange}
+  placeholder="Enter reason for change"
+  required={true}
+/>
+```
+
+### 6. Term
+#### Description
+Term is a component used to handle the start and end dates of a business rule term. It allows for toggling between an open and closed term, and managing start and end dates.
+
+#### Props
+- **onHandleStartChange** ((event: React.ChangeEvent<HTMLInputElement>) => void): Callback to handle the change in start date.
+- **onHandleEndChange** ((event: React.ChangeEvent<HTMLInputElement>) => void): Callback to handle the change in end date.
+- **labelStart** (string): The label for the start date input.
+- **labelEnd** (string): The label for the end date input.
+- **checkedClosed** (boolean?): Whether the term is closed (optional).
+- **required** (boolean?): Whether the fields are required (optional).
+- **valueStart** (string?): The value for the start date (optional).
+- **valueEnd** (string?): The value for the end date (optional).
+#### Usage Example
+```tsx
+<Term
+  labelStart="Start Date"
+  labelEnd="End Date"
+  onHandleStartChange={handleStartChange}
+  onHandleEndChange={handleEndChange}
+/>
+```
+
+### 7. ToggleOption
+#### Description
+ToggleOption is a component that renders a toggle switch and displays additional content when the toggle is checked.
+
+#### Props
+- **checked** (boolean): The current checked state of the toggle.
+- **children** (React.ReactNode): The content to display when the toggle is checked.
+- **handleToggleChange** ((e: React.ChangeEvent<HTMLInputElement>) => void): Callback to handle the toggle change event.
+- **id** (string): The unique ID for the toggle.
+- **labelToggle** (string): The label for the toggle.
+- **name** (string): The name of the toggle input.
+- **valueToggle** (string?): The value of the toggle input (optional).
+#### Usage Example
+```tsx
+<ToggleOption
+  checked={isChecked}
+  handleToggleChange={handleToggleChange}
+  id="toggleOption1"
+  labelToggle="Enable Option"
+  name="optionToggle"
+/>
+```
+
+#### 🚀 How to Use
+#### 1. Installation
+Install the library using npm:
+
+```bash
+npm install isettingkit-business-rules
+```
+#### 2. Import Components
+Once installed, you can import and use the components like this:
+
+```tsx
+import { BusinessRuleView, BusinessRuleCard, RulesForm, ReasonForChange, Term, ToggleOption } from 'isettingkit-business-rules';
+```
+#### 3. Storybook Integration
+To visualize the components in action, we use Storybook. Storybook allows developers to interact with the components in isolation, view different states, and confirm that they behave as expected.
+
+You can run Storybook for this library by navigating to the project folder and using the following command:
+
+```bash
+npm run storybook
+```
+#### 📦 Available Components
+- **BusinessRuleView**: Displays a business rule's decision and conditions.
+- **BusinessRuleCard**: Displays a business rule in a card format with options to view or delete.
+- **RulesForm**: A form component for handling and submitting business rule decisions.
+- **ReasonForChange**: A textarea input for capturing the reason for a change.
+- **Term**: Manages the start and end dates for a business rule term.
+- **ToggleOption**: A toggle switch component with additional content.
