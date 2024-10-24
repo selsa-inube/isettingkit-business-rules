@@ -5,11 +5,11 @@ import { IRuleDecision, IValue } from "@isettingkit/input";
 import { ValueValidationSchema } from "@isettingkit/input";
 
 interface IRulesForm {
+  id: string;
   decision: IRuleDecision;
   onCloseModal: () => void;
   onCancel: () => void;
   onSubmitEvent: (dataDecision: IRuleDecision) => void;
-  portalId: string;
   textValues: {
     selectOptions: string;
     selectOption: string;
@@ -40,7 +40,7 @@ const updateDataDecision = (
 };
 
 const RulesForm = (prop: IRulesForm) => {
-  const { decision, onCancel, onSubmitEvent, textValues } = prop;
+  const { id, decision, onCancel, onSubmitEvent, textValues } = prop;
   const [DataDecision, setDataDecision] = useState(decision);
   const onCondition = (value: IValue, nameCondition: string) => {
     setDataDecision((DataDecisionRule) => {
@@ -85,6 +85,7 @@ const RulesForm = (prop: IRulesForm) => {
 
   return (
     <RulesFormUI
+      id={id}
       formik={formik}
       decision={DataDecision}
       onCancel={onCancel}

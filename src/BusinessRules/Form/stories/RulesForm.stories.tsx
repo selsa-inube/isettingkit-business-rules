@@ -24,7 +24,6 @@ const getData = (): IRuleDecision => {
   const decision: IRuleDecision = {
     decision: {
       name: "TasaEfectivaAnual",
-      label: "Tasa de interés efectiva anual",
       description: "Tasa de interés efectiva anual",
       typeData: ValueDataType.ALPHABETICAL,
       possibleValue: {
@@ -38,7 +37,6 @@ const getData = (): IRuleDecision => {
     conditions: [
       {
         name: "PlazoMeses",
-        label: "Plazo en meses",
         description: "Plazo en meses",
         typeData: ValueDataType.NUMBER,
         possibleValue: {
@@ -49,7 +47,6 @@ const getData = (): IRuleDecision => {
       },
       {
         name: "ScoringRiesgo",
-        label: "Scoring de riesgo",
         description: "Scoring de riesgo",
         typeData: ValueDataType.NUMBER,
         possibleValue: {
@@ -60,7 +57,6 @@ const getData = (): IRuleDecision => {
       },
       {
         name: "CategoriaCliente",
-        label: "Categoria del cliente",
         description: "Categoria del cliente",
         typeData: ValueDataType.ALPHABETICAL,
         possibleValue: {
@@ -71,7 +67,6 @@ const getData = (): IRuleDecision => {
       },
       {
         name: "Riesgo",
-        label: "Riesgo",
         description: "Riesgo",
         typeData: ValueDataType.ALPHABETICAL,
         possibleValue: {
@@ -82,7 +77,6 @@ const getData = (): IRuleDecision => {
       },
       {
         name: "CarteraDescubierto",
-        label: "Cartera de descubierto",
         description: "Cartera de descubierto",
         typeData: ValueDataType.CURRENCY,
         possibleValue: {
@@ -93,7 +87,6 @@ const getData = (): IRuleDecision => {
       },
       {
         name: "FechaTasa",
-        label: "Fecha Tasa",
         description: "Fecha Tasa",
         typeData: ValueDataType.DATE,
         possibleValue: {
@@ -103,7 +96,6 @@ const getData = (): IRuleDecision => {
       },
       {
         name: "Porcentaje",
-        label: "Porcentaje",
         description: "Porcentaje",
         typeData: ValueDataType.PERCENTAGE,
         possibleValue: {
@@ -113,7 +105,6 @@ const getData = (): IRuleDecision => {
       },
       {
         name: "Monto",
-        label: "Monto",
         description: "Monto",
         typeData: ValueDataType.CURRENCY,
         possibleValue: {
@@ -130,7 +121,6 @@ const getNotCondition = (): IRuleDecision => {
   const decision: IRuleDecision = {
     decision: {
       name: "TasaEfectivaAnual",
-      label: "Tasa de interés efectiva anual",
       description: "Tasa de interés efectiva anual",
       typeData: ValueDataType.NUMBER,
       howToSetUp: ValueHowToSetUp.LIST_OF_VALUES,
@@ -152,7 +142,7 @@ const Template: StoryFn<IRulesForm> = (args) => {
 export const Default = Template.bind({});
 Default.args = {
   decision: getData(),
-  portalId: "portal",
+  id: "formRule",
   onCancel: () => console.log("Cancel"),
   onSubmitEvent: (data: IRuleDecision) => console.log("Submit", data),
   textValues: {
@@ -176,7 +166,7 @@ Default.args = {
 export const NotConditions = Template.bind({});
 NotConditions.args = {
   decision: getNotCondition(),
-  portalId: "portal",
+  id: "NotConditions",
   onCancel: () => console.log("Cancel"),
   onSubmitEvent: (data: IRuleDecision) => console.log("Submit", data),
   textValues: {
@@ -201,7 +191,6 @@ const getListMulti = (): IRuleDecision => {
   const decision: IRuleDecision = {
     decision: {
       name: "TasaEfectivaAnual",
-      label: "Tasa de interés efectiva anual",
       description: "Tasa de interés efectiva anual",
       typeData: ValueDataType.ALPHABETICAL,
       howToSetUp: ValueHowToSetUp.LIST_OF_VALUES_MULTI,
@@ -214,7 +203,6 @@ const getListMulti = (): IRuleDecision => {
     conditions: [
       {
         name: "ScoringRiesgo",
-        label: "Scoring de riesgo",
         description: "Scoring de riesgo",
         typeData: ValueDataType.NUMBER,
         possibleValue: {
@@ -225,7 +213,6 @@ const getListMulti = (): IRuleDecision => {
       },
       {
         name: "CategoriaCliente",
-        label: "Categoria del cliente",
         description: "Categoria del cliente",
         typeData: ValueDataType.ALPHABETICAL,
         possibleValue: {
@@ -242,7 +229,7 @@ const getListMulti = (): IRuleDecision => {
 export const ListMutiple = Template.bind({});
 ListMutiple.args = {
   decision: getListMulti(),
-  portalId: "portal",
+  id: "ListMutiple",
   onCancel: () => console.log("Cancel"),
   onSubmitEvent: (data: IRuleDecision) => console.log("Submit", data),
   textValues: {
@@ -267,7 +254,6 @@ const getRange = (): IRuleDecision => {
   const decision: IRuleDecision = {
     decision: {
       name: "TasaEfectivaAnual",
-      label: "Tasa de interés efectiva anual",
       description: "Tasa de interés efectiva anual",
       typeData: ValueDataType.NUMBER,
       howToSetUp: ValueHowToSetUp.RANGE,
@@ -281,7 +267,6 @@ const getRange = (): IRuleDecision => {
     conditions: [
       {
         name: "Riesgo",
-        label: "Riesgo",
         description: "Riesgo",
         typeData: ValueDataType.ALPHABETICAL,
         possibleValue: {
@@ -292,7 +277,6 @@ const getRange = (): IRuleDecision => {
       },
       {
         name: "CarteraDescubierto",
-        label: "Cartera de descubierto",
         description: "Cartera de descubierto",
         typeData: ValueDataType.CURRENCY,
         possibleValue: {
@@ -309,7 +293,7 @@ const getRange = (): IRuleDecision => {
 export const Range = Template.bind({});
 Range.args = {
   decision: getRange(),
-  portalId: "portal",
+  id: "portal",
   onCancel: () => console.log("Cancel"),
   onSubmitEvent: (data: IRuleDecision) => console.log("Submit", data),
   textValues: {

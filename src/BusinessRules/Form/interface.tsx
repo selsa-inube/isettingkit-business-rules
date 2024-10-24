@@ -14,6 +14,7 @@ import { DecisionConditionRenderer } from "@isettingkit/input";
 import { Button } from "@inubekit/button";
 
 interface IRulesFormUI {
+  id: string;
   formik: FormikValues;
   decision: IRuleDecision;
   onCancel: () => void;

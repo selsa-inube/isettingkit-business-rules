@@ -1,13 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
-
 import {
   IRuleDecision,
   ValueDataType,
   ValueHowToSetUp,
 } from "@isettingkit/input";
 import { DecisionViewConditionRenderer } from "@isettingkit/view";
+import { getValueData } from "./helper";
 
 interface IBusinessRuleView {
   decision: IRuleDecision;
@@ -29,7 +28,6 @@ interface IBusinessRuleView {
     Terms: string;
   };
 }
-
 const BusinessRuleView = (props: IBusinessRuleView) => {
   const { decision, textValues } = props;
 
@@ -40,65 +38,64 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
           {textValues.criteria}
         </Text>
         <Stack justifyContent="space-between">
-          {decision.decisions &&
-            decision.decisions.map((item: any) => (
+          {decision.decision && (
+            <Stack key={decision.decision.name} direction="column">
               <DecisionViewConditionRenderer
-                key={item.name}
-                element={item}
-                valueData={item.value}
+                element={decision.decision}
+                valueData={getValueData(decision.decision)!}
               />
-            ))}
+            </Stack>
+          )}
         </Stack>
       </Stack>
-      <Stack direction="column">
-        <Stack direction="column" gap="16px" justifyContent="space-between">
-          <Text type="title" size="medium" appearance="gray" weight="bold">
-            {textValues.FactsThatConditionIt}
-          </Text>
-          {decision.conditions &&
-            decision.conditions.map((condition: any) => (
-              <Stack key={condition.name} direction="column">
-                <DecisionViewConditionRenderer
-                  element={condition}
-                  valueData={condition.value}
-                />
-              </Stack>
-            ))}
-        </Stack>
+      <Stack direction="column" gap="16px" justifyContent="space-between">
+        <Text type="title" size="medium" appearance="gray" weight="bold">
+          {textValues.FactsThatConditionIt}
+        </Text>
+        {decision.conditions &&
+          decision.conditions.map((condition) => (
+            <Stack key={condition.name} direction="column">
+              <DecisionViewConditionRenderer
+                element={condition}
+                valueData={getValueData(condition)}
+              />
+            </Stack>
+          ))}
       </Stack>
+
       <Stack direction="column" gap="12px">
         <Text type="title" size="medium" appearance="gray" weight="bold">
           {textValues.Terms}
         </Text>
         <Stack justifyContent="space-between">
-          {decision.startDate && (
+          {decision?.decision?.startDate && (
             <DecisionViewConditionRenderer
               key="startDate"
               element={{
                 name: "startDate",
-                label: textValues.termStart,
                 description: textValues.termStart,
                 value: String(decision.startDate),
                 howToSetUp: ValueHowToSetUp.EQUAL,
                 typeData: ValueDataType.DATE,
               }}
-              valueData={new Date(decision.startDate).toLocaleDateString(
-                "en-CA",
-              )}
+              valueData={new Date(
+                decision.decision.startDate,
+              ).toLocaleDateString("en-CA")}
             />
           )}
-          {decision.endDate && (
+          {decision?.decision?.endDate && (
             <DecisionViewConditionRenderer
               key="endDate"
               element={{
                 name: "endDate",
-                label: textValues.termEnd,
                 description: textValues.termEnd,
                 value: String(decision.endDate),
                 howToSetUp: ValueHowToSetUp.EQUAL,
                 typeData: ValueDataType.DATE,
               }}
-              valueData={new Date(decision.endDate).toLocaleDateString("en-CA")}
+              valueData={new Date(decision.decision.endDate).toLocaleDateString(
+                "en-CA",
+              )}
             />
           )}
         </Stack>
