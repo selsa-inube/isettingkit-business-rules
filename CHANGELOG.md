@@ -1,3 +1,15 @@
+# v0.1.5 (Thu Oct 24 2024)
+
+#### ⚠️ Pushed to `main`
+
+- fix: adjus types in order to use the same from view and form ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.1.4 (Wed Oct 23 2024)
 
 #### ⚠️ Pushed to `main`
