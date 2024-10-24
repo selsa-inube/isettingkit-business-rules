@@ -21,6 +21,10 @@ const getData = (): IRuleDecision => {
         list: ["10%", "15%", "20%", "25%"],
         listSelected: ["20%"],
       },
+      value: {
+        list: ["10%", "15%", "20%", "25%"],
+        listSelected: ["25%"],
+      },
       howToSetUp: ValueHowToSetUp.LIST_OF_VALUES,
       startDate: new Date("2024-08-15"),
       endDate: new Date("2024-09-15"),

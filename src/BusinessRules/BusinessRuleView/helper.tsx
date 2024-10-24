@@ -1,28 +1,46 @@
-import { ICondition, IRuleDecision, ValueHowToSetUp } from "@isettingkit/input";
+import {
+  ICondition,
+  IRuleDecision,
+  IValue,
+  ValueHowToSetUp,
+} from "@isettingkit/input";
 
 const getValueData = (
   element: IRuleDecision["decision"] | ICondition | undefined,
 ) => {
-  if (!element || !element.possibleValue) {
+  if (!element) {
     return undefined;
   }
 
-  switch (element.howToSetUp) {
-    case ValueHowToSetUp.LIST_OF_VALUES_MULTI:
-      return element.possibleValue.listSelected;
+  const valueData = element.value || element.possibleValue;
 
-    case ValueHowToSetUp.LIST_OF_VALUES:
-      return element.possibleValue.listSelected ?? element.possibleValue.list;
-
-    case ValueHowToSetUp.RANGE:
-      return {
-        rangeFrom: element.possibleValue.rangeFrom,
-        rangeTo: element.possibleValue.rangeTo,
-      };
-
-    default:
-      return element.possibleValue.value || element.value;
+  if (!valueData) {
+    return undefined;
   }
+
+  const isValueObject = (
+    data: string | number | string[] | IValue,
+  ): data is IValue => typeof data === "object" && data !== null;
+
+  if (isValueObject(valueData)) {
+    switch (element.howToSetUp) {
+      case ValueHowToSetUp.LIST_OF_VALUES_MULTI:
+        return valueData.listSelected;
+
+      case ValueHowToSetUp.LIST_OF_VALUES:
+        return valueData.listSelected ?? valueData.list;
+
+      case ValueHowToSetUp.RANGE:
+        return {
+          rangeFrom: valueData.rangeFrom,
+          rangeTo: valueData.rangeTo,
+        };
+
+      default:
+        return valueData.value;
+    }
+  }
+  return valueData;
 };
 
 export { getValueData };
