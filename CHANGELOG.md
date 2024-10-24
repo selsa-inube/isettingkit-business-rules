@@ -1,3 +1,15 @@
+# v0.1.7 (Thu Oct 24 2024)
+
+#### ⚠️ Pushed to `main`
+
+- fix: adjusment in order to include 'terms' on the interface ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.1.6 (Thu Oct 24 2024)
 
 #### ⚠️ Pushed to `main`
