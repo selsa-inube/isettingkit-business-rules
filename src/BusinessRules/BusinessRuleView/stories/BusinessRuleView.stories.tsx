@@ -1,10 +1,7 @@
 import { Meta, StoryFn } from "@storybook/react";
-import {
-  IRuleDecision,
-  ValueDataType,
-  ValueHowToSetUp,
-} from "@isettingkit/input";
+import { ValueDataType, ValueHowToSetUp } from "@isettingkit/input";
 import { BusinessRuleView } from "..";
+import { IRuleDecision } from "../types";
 
 const meta: Meta<typeof BusinessRuleView> = {
   title: "components/view/BusinessRuleView",
@@ -16,16 +13,9 @@ const getData = (): IRuleDecision => {
     decision: {
       name: "TasaEfectivaAnual",
       description: "Tasa de interés efectiva anual",
-      typeData: ValueDataType.ALPHABETICAL,
-      possibleValue: {
-        list: ["10%", "15%", "20%", "25%"],
-        listSelected: ["20%"],
-      },
-      value: {
-        list: ["10%", "15%", "20%", "25%"],
-        listSelected: ["25%"],
-      },
-      howToSetUp: ValueHowToSetUp.LIST_OF_VALUES,
+      dataType: ValueDataType.PERCENTAGE,
+      value: 18,
+      valueUse: ValueHowToSetUp.EQUAL,
       startDate: new Date("2024-08-15"),
       endDate: new Date("2024-09-15"),
     },
@@ -33,79 +23,67 @@ const getData = (): IRuleDecision => {
       {
         name: "PlazoMeses",
         description: "Plazo en meses",
-        typeData: ValueDataType.NUMBER,
-        possibleValue: {
-          rangeFrom: 1,
-          rangeTo: 12,
+        dataType: ValueDataType.NUMBER,
+        value: {
+          from: 1,
+          to: 12,
         },
-        howToSetUp: ValueHowToSetUp.RANGE,
+        valueUse: ValueHowToSetUp.RANGE,
       },
       {
         name: "ScoringRiesgo",
         description: "Scoring de riesgo",
-        typeData: ValueDataType.NUMBER,
-        possibleValue: {
-          rangeFrom: 100,
-          rangeTo: 700,
+        dataType: ValueDataType.NUMBER,
+        value: {
+          from: 100,
+          to: 700,
         },
-        howToSetUp: ValueHowToSetUp.RANGE,
+        valueUse: ValueHowToSetUp.RANGE,
       },
       {
         name: "CategoriaCliente",
         description: "Categoria del cliente",
-        typeData: ValueDataType.ALPHABETICAL,
-        possibleValue: {
-          list: ["Funcionario", "Independiente", "Pensionado", "Empleado"],
-          listSelected: ["Independiente", "Pensionado"],
-        },
-        howToSetUp: ValueHowToSetUp.LIST_OF_VALUES_MULTI,
+        dataType: ValueDataType.ALPHABETICAL,
+        value: ["Independiente", "Pensionado"],
+        valueUse: ValueHowToSetUp.LIST_OF_VALUES_MULTI,
       },
       {
         name: "Riesgo",
         description: "Riesgo",
-        typeData: ValueDataType.ALPHABETICAL,
-        possibleValue: {
-          list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
-          listSelected: ["Medio"],
-        },
-        howToSetUp: ValueHowToSetUp.LIST_OF_VALUES,
+        dataType: ValueDataType.ALPHABETICAL,
+        value: ["Medio"],
+        valueUse: ValueHowToSetUp.LIST_OF_VALUES,
       },
       {
         name: "CarteraDescubierto",
         description: "Cartera de descubierto",
-        typeData: ValueDataType.CURRENCY,
-        possibleValue: {
-          rangeFrom: 1000000,
-          rangeTo: 15000000,
+        dataType: ValueDataType.CURRENCY,
+        value: {
+          from: 1000000,
+          to: 15000000,
         },
-        howToSetUp: ValueHowToSetUp.RANGE,
+        valueUse: ValueHowToSetUp.RANGE,
       },
       {
         name: "FechaTasa",
         description: "Fecha Tasa",
-        typeData: ValueDataType.DATE,
-        possibleValue: {
-          value: "2024-08-15",
-        },
-        howToSetUp: ValueHowToSetUp.EQUAL,
+        dataType: ValueDataType.DATE,
+        value: "2024-08-15",
+        valueUse: ValueHowToSetUp.EQUAL,
       },
       {
         name: "Porcentaje",
         description: "Porcentaje",
-        typeData: ValueDataType.PERCENTAGE,
-        possibleValue: {
-          value: 10,
-        },
-        howToSetUp: ValueHowToSetUp.EQUAL,
+        dataType: ValueDataType.PERCENTAGE,
+        value: 10,
+        valueUse: ValueHowToSetUp.EQUAL,
       },
       {
         name: "Monto",
         description: "Monto",
-        typeData: ValueDataType.CURRENCY,
-        possibleValue: {
-          value: 1000000,
-        },
-        howToSetUp: ValueHowToSetUp.EQUAL,
+        dataType: ValueDataType.CURRENCY,
+        value: 1000000,
+        valueUse: ValueHowToSetUp.EQUAL,
       },
     ],
   };
@@ -116,66 +94,66 @@ const Template: StoryFn<typeof BusinessRuleView> = (args) => (
   <BusinessRuleView {...args} />
 );
 
-const getListMulti = (): IRuleDecision => {
-  const decision: IRuleDecision = {
-    decision: {
-      name: "TasaEfectivaAnual",
-      description: "Tasa de interés efectiva anual",
-      typeData: ValueDataType.ALPHABETICAL,
-      howToSetUp: ValueHowToSetUp.LIST_OF_VALUES_MULTI,
-      possibleValue: {
-        list: ["10%", "15%", "20%", "25%"],
-        listSelected: ["20%", "25%"],
-      },
-      startDate: new Date("2024-08-15"),
-    },
-    conditions: [
-      {
-        name: "ScoringRiesgo",
-        description: "Scoring de riesgo",
-        typeData: ValueDataType.NUMBER,
-        possibleValue: {
-          rangeFrom: 100,
-          rangeTo: 700,
-        },
-        howToSetUp: ValueHowToSetUp.RANGE,
-      },
-      {
-        name: "CategoriaCliente",
-        description: "Categoria del cliente",
-        typeData: ValueDataType.ALPHABETICAL,
-        possibleValue: {
-          list: ["Funcionario", "Independiente", "Pensionado", "Empleado"],
-          listSelected: ["Independiente", "Pensionado"],
-        },
-        howToSetUp: ValueHowToSetUp.LIST_OF_VALUES_MULTI,
-      },
-    ],
-  };
-  return decision;
-};
+// const getListMulti = (): IRuleDecision => {
+//   const decision: IRuleDecision = {
+//     decision: {
+//       name: "TasaEfectivaAnual",
+//       description: "Tasa de interés efectiva anual",
+//       dataType: ValueDataType.ALPHABETICAL,
+//       howToSetTheDecision: ValuehowToSetTheDecision.LIST_OF_VALUES_MULTI,
+//       value: {
+//         list: ["10%", "15%", "20%", "25%"],
+//         listSelected: ["20%", "25%"],
+//       },
+//       startDate: new Date("2024-08-15"),
+//     },
+//     conditions: [
+//       {
+//         name: "ScoringRiesgo",
+//         description: "Scoring de riesgo",
+//         dataType: ValueDataType.NUMBER,
+//         value: {
+//           from: 100,
+//           to: 700,
+//         },
+//         howToSetTheDecision: ValuehowToSetTheDecision.RANGE,
+//       },
+//       {
+//         name: "CategoriaCliente",
+//         description: "Categoria del cliente",
+//         dataType: ValueDataType.ALPHABETICAL,
+//         value: {
+//           list: ["Funcionario", "Independiente", "Pensionado", "Empleado"],
+//           listSelected: ["Independiente", "Pensionado"],
+//         },
+//         howToSetTheDecision: ValuehowToSetTheDecision.LIST_OF_VALUES_MULTI,
+//       },
+//     ],
+//   };
+//   return decision;
+// };
 
-export const ListMutiple = Template.bind({});
-ListMutiple.args = {
-  decision: getListMulti(),
-  textValues: {
-    selectOptions: "Seleccione las opciónes",
-    selectOption: "Seleccione una opción",
-    rangeMin: (label: string) => `${label} Minima`,
-    rangeMax: (label: string) => `${label} Maxima`,
-    reasonForChange: "Motivo del cambio",
-    change: "Cambio",
-    changePlaceholder: "Describa brevemente el motivo del cambio",
-    termStart: "Fecha de inicio",
-    termEnd: "Fecha de fin",
-    cancel: "Cancelar",
-    confirm: "Confirmar",
-    none: "Ninguno",
-    factsThatConditionIt: "Hechos que condicionan",
-    criteria: "Criterios",
-    terms: "Términos",
-  },
-};
+// export const ListMutiple = Template.bind({});
+// ListMutiple.args = {
+//   decision: getListMulti(),
+//   textValues: {
+//     selectOptions: "Seleccione las opciónes",
+//     selectOption: "Seleccione una opción",
+//     rangeMin: (label: string) => `${label} Minima`,
+//     rangeMax: (label: string) => `${label} Maxima`,
+//     reasonForChange: "Motivo del cambio",
+//     change: "Cambio",
+//     changePlaceholder: "Describa brevemente el motivo del cambio",
+//     termStart: "Fecha de inicio",
+//     termEnd: "Fecha de fin",
+//     cancel: "Cancelar",
+//     confirm: "Confirmar",
+//     none: "Ninguno",
+//     factsThatConditionIt: "Hechos que condicionan",
+//     criteria: "Criterios",
+//     terms: "Términos",
+//   },
+// };
 
 export const Default = Template.bind({});
 Default.args = {

@@ -1,13 +1,10 @@
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
-import {
-  IRuleDecision,
-  ValueDataType,
-  ValueHowToSetUp,
-} from "@isettingkit/input";
+import { ValueDataType, ValueHowToSetUp } from "@isettingkit/input";
 import { DecisionViewConditionRenderer } from "@isettingkit/view";
 import { getValueData } from "./helper";
 import { IRulesFormTextValues } from "../Form/types";
+import { IRuleDecision, IValue } from "./types";
 
 interface IBusinessRuleView {
   decision: IRuleDecision;
@@ -15,6 +12,9 @@ interface IBusinessRuleView {
 }
 const BusinessRuleView = (props: IBusinessRuleView) => {
   const { decision, textValues } = props;
+
+  const isNonEmptyObject = (obj: string[] | IValue) =>
+    obj && Object.keys(obj).length > 0;
 
   return (
     <Stack direction="column" gap="24px">
@@ -38,14 +38,21 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
           {textValues.factsThatConditionIt}
         </Text>
         {decision.conditions &&
-          decision.conditions.map((condition) => (
-            <Stack key={condition.name} direction="column">
-              <DecisionViewConditionRenderer
-                element={condition}
-                valueData={getValueData(condition)}
-              />
-            </Stack>
-          ))}
+          decision.conditions.map(
+            (condition) => (
+              console.log("condition: ", condition),
+              ((typeof condition.value === "object" &&
+                isNonEmptyObject(condition.value)) ||
+                condition.value) && (
+                <Stack key={condition.name} direction="column">
+                  <DecisionViewConditionRenderer
+                    element={condition}
+                    valueData={getValueData(condition)}
+                  />
+                </Stack>
+              )
+            ),
+          )}
       </Stack>
 
       <Stack direction="column" gap="12px">
@@ -57,11 +64,11 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
             <DecisionViewConditionRenderer
               key="startDate"
               element={{
-                name: "startDate",
+                name: "Fecha de inicio",
                 description: textValues.termStart,
                 value: String(decision.startDate),
-                howToSetUp: ValueHowToSetUp.EQUAL,
-                typeData: ValueDataType.DATE,
+                valueUse: ValueHowToSetUp.EQUAL,
+                dataType: ValueDataType.DATE,
               }}
               valueData={new Date(
                 decision.decision.startDate,
@@ -72,11 +79,11 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
             <DecisionViewConditionRenderer
               key="endDate"
               element={{
-                name: "endDate",
+                name: "Fecha de final",
                 description: textValues.termEnd,
                 value: String(decision.endDate),
-                howToSetUp: ValueHowToSetUp.EQUAL,
-                typeData: ValueDataType.DATE,
+                valueUse: ValueHowToSetUp.EQUAL,
+                dataType: ValueDataType.DATE,
               }}
               valueData={new Date(decision.decision.endDate).toLocaleDateString(
                 "en-CA",

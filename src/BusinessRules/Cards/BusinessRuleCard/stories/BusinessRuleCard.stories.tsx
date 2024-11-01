@@ -3,6 +3,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { parameters, props } from "./props";
 import { BusinessRuleCard, IBusinessRuleCard } from "..";
 import { BusinessRuleView } from "../../../BusinessRuleView";
+import { IRuleDecision } from "src/BusinessRules/BusinessRuleView/types";
 import { ValueDataType, ValueHowToSetUp } from "@isettingkit/input";
 
 const meta: Meta<typeof BusinessRuleCard> = {
@@ -28,95 +29,82 @@ Default.args = {
   id: "1",
 };
 
-const getData = () => {
-  const decision = {
-    decisions: [
-      {
-        name: "TasaEfectivaMinima",
-        label: "Tasa efectiva minima",
-        description: "Tasa efectiva minima",
-        typeData: ValueDataType.PERCENTAGE,
-        value: 4,
-        howToSetUp: ValueHowToSetUp.LIST_OF_VALUES,
-      },
-      {
-        name: "TasaEfectivaMaxima",
-        label: "Tasa efectiva maxima",
-        description: "Tasa efectiva maxima",
-        typeData: ValueDataType.PERCENTAGE,
-        value: 8,
-        howToSetUp: ValueHowToSetUp.LIST_OF_VALUES,
-      },
-    ],
-    startDate: new Date("2024-08-15"),
-    endDate: new Date("2024-09-15"),
+const getData = (): IRuleDecision => {
+  const decision: IRuleDecision = {
+    decision: {
+      name: "TasaEfectivaAnual",
+      description: "Tasa de interés efectiva anual",
+      dataType: ValueDataType.PERCENTAGE,
+      value: 18,
+      valueUse: ValueHowToSetUp.EQUAL,
+      startDate: new Date("2024-08-15"),
+      endDate: new Date("2024-09-15"),
+    },
     conditions: [
       {
-        name: "AntiguedadCliente",
-        label: "Antigüedad del cliente (Días)",
-        description: "Antigüedad del cliente (Días)",
-        typeData: ValueDataType.NUMBER,
-        value: 720,
-        howToSetUp: ValueHowToSetUp.EQUAL,
+        name: "PlazoMeses",
+        description: "Plazo en meses",
+        dataType: ValueDataType.NUMBER,
+        value: {
+          from: 1,
+          to: 12,
+        },
+        valueUse: ValueHowToSetUp.RANGE,
+      },
+      {
+        name: "ScoringRiesgo",
+        description: "Scoring de riesgo",
+        dataType: ValueDataType.NUMBER,
+        value: {
+          from: 100,
+          to: 700,
+        },
+        valueUse: ValueHowToSetUp.RANGE,
       },
       {
         name: "CategoriaCliente",
-        description: "Categoría del cliente",
-        label: "Categoría del cliente",
-        typeData: ValueDataType.ALPHABETICAL,
+        description: "Categoria del cliente",
+        dataType: ValueDataType.ALPHABETICAL,
+        value: ["Independiente", "Pensionado"],
+        valueUse: ValueHowToSetUp.LIST_OF_VALUES_MULTI,
+      },
+      {
+        name: "Riesgo",
+        description: "Riesgo",
+        dataType: ValueDataType.ALPHABETICAL,
+        value: ["Medio"],
+        valueUse: ValueHowToSetUp.LIST_OF_VALUES,
+      },
+      {
+        name: "CarteraDescubierto",
+        description: "Cartera de descubierto",
+        dataType: ValueDataType.CURRENCY,
         value: {
-          list: [
-            "Ocasionales",
-            "Frecuentes",
-            "Leales",
-            "Premium",
-            "Platinum",
-            "Plata",
-            "Potenciales",
-            "Inactivos",
-          ],
+          from: 1000000,
+          to: 15000000,
         },
-        howToSetUp: ValueHowToSetUp.LIST_OF_VALUES_MULTI,
+        valueUse: ValueHowToSetUp.RANGE,
       },
       {
-        name: "NivelMembresia",
-        label: "Nivel de membresía",
-        description: "Nivel de membresía",
-        typeData: ValueDataType.ALPHABETICAL,
-        value: "Alto",
-        howToSetUp: ValueHowToSetUp.EQUAL,
+        name: "FechaTasa",
+        description: "Fecha Tasa",
+        dataType: ValueDataType.DATE,
+        value: "2024-08-15",
+        valueUse: ValueHowToSetUp.EQUAL,
       },
       {
-        name: "ReciprocidadAhorro",
-        label: "Reciprocidad de ahorro",
-        description: "Reciprocidad de ahorro",
-        typeData: ValueDataType.CURRENCY,
-        value: 19,
-        howToSetUp: ValueHowToSetUp.EQUAL,
+        name: "Porcentaje",
+        description: "Porcentaje",
+        dataType: ValueDataType.PERCENTAGE,
+        value: 10,
+        valueUse: ValueHowToSetUp.EQUAL,
       },
       {
-        name: "DestinoDinero",
-        label: "Destino del dinero",
-        description: "Destino del dinero",
-        typeData: ValueDataType.ALPHABETICAL,
-        value: "Crédito Vehículo",
-        howToSetUp: ValueHowToSetUp.EQUAL,
-      },
-      {
-        name: "Temporada",
-        label: "Temporada",
-        description: "Temporada",
-        typeData: ValueDataType.ALPHABETICAL,
-        value: "Normal",
-        howToSetUp: ValueHowToSetUp.EQUAL,
-      },
-      {
-        name: "ScoreRiesgo",
-        label: "Score de riesgo",
-        description: "Score de riesgo",
-        typeData: ValueDataType.NUMBER,
-        value: 0.2,
-        howToSetUp: ValueHowToSetUp.EQUAL,
+        name: "Monto",
+        description: "Monto",
+        dataType: ValueDataType.CURRENCY,
+        value: 1000000,
+        valueUse: ValueHowToSetUp.EQUAL,
       },
     ],
   };

@@ -1,9 +1,5 @@
-import {
-  ICondition,
-  IRuleDecision,
-  IValue,
-  ValueHowToSetUp,
-} from "@isettingkit/input";
+import { ValueHowToSetUp } from "@isettingkit/input";
+import { ICondition, IRuleDecision, IValue } from "./types";
 
 const getValueData = (
   element: IRuleDecision["decision"] | ICondition | undefined,
@@ -12,7 +8,7 @@ const getValueData = (
     return undefined;
   }
 
-  const valueData = element.value || element.possibleValue;
+  const valueData = element.value;
 
   if (!valueData) {
     return undefined;
@@ -23,17 +19,17 @@ const getValueData = (
   ): data is IValue => typeof data === "object" && data !== null;
 
   if (isValueObject(valueData)) {
-    switch (element.howToSetUp) {
+    switch (element.valueUse) {
       case ValueHowToSetUp.LIST_OF_VALUES_MULTI:
-        return valueData.listSelected;
+        return valueData;
 
       case ValueHowToSetUp.LIST_OF_VALUES:
-        return valueData.listSelected ?? valueData.list;
+        return valueData;
 
       case ValueHowToSetUp.RANGE:
         return {
-          rangeFrom: valueData.rangeFrom,
-          rangeTo: valueData.rangeTo,
+          from: valueData.from,
+          to: valueData.to,
         };
 
       default:
