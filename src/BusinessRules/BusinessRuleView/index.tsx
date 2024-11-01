@@ -10,11 +10,19 @@ interface IBusinessRuleView {
   decision: IRuleDecision;
   textValues: IRulesFormTextValues;
 }
+
 const BusinessRuleView = (props: IBusinessRuleView) => {
   const { decision, textValues } = props;
 
   const isNonEmptyObject = (obj: string[] | IValue) =>
     obj && Object.keys(obj).length > 0;
+
+  const mapper = {
+    name: decision.name,
+    dataType: decision.dataType,
+    value: decision.value,
+    valueUse: decision.valueUse,
+  };
 
   return (
     <Stack direction="column" gap="24px">
@@ -23,11 +31,11 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
           {textValues.criteria}
         </Text>
         <Stack justifyContent="space-between">
-          {decision.decision && (
-            <Stack key={decision.decision.name} direction="column">
+          {decision && (
+            <Stack key={decision.name} direction="column">
               <DecisionViewConditionRenderer
-                element={decision.decision}
-                valueData={getValueData(decision.decision)!}
+                element={mapper}
+                valueData={getValueData(mapper)!}
               />
             </Stack>
           )}
@@ -39,8 +47,7 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
         </Text>
         {decision.conditions &&
           decision.conditions.map(
-            (condition) => (
-              console.log("condition: ", condition),
+            (condition) =>
               ((typeof condition.value === "object" &&
                 isNonEmptyObject(condition.value)) ||
                 condition.value) && (
@@ -50,8 +57,7 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
                     valueData={getValueData(condition)}
                   />
                 </Stack>
-              )
-            ),
+              ),
           )}
       </Stack>
 
@@ -60,34 +66,30 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
           {textValues.terms}
         </Text>
         <Stack justifyContent="space-between">
-          {decision?.decision?.startDate && (
+          {decision?.startDate && (
             <DecisionViewConditionRenderer
               key="startDate"
               element={{
                 name: "Fecha de inicio",
-                description: textValues.termStart,
                 value: String(decision.startDate),
                 valueUse: ValueHowToSetUp.EQUAL,
                 dataType: ValueDataType.DATE,
               }}
-              valueData={new Date(
-                decision.decision.startDate,
-              ).toLocaleDateString("en-CA")}
+              valueData={new Date(decision.startDate).toLocaleDateString(
+                "en-CA",
+              )}
             />
           )}
-          {decision?.decision?.endDate && (
+          {decision?.endDate && (
             <DecisionViewConditionRenderer
               key="endDate"
               element={{
                 name: "Fecha de final",
-                description: textValues.termEnd,
                 value: String(decision.endDate),
                 valueUse: ValueHowToSetUp.EQUAL,
                 dataType: ValueDataType.DATE,
               }}
-              valueData={new Date(decision.decision.endDate).toLocaleDateString(
-                "en-CA",
-              )}
+              valueData={new Date(decision.endDate).toLocaleDateString("en-CA")}
             />
           )}
         </Stack>

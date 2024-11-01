@@ -5,7 +5,6 @@ import {
 } from "@isettingkit/input";
 
 interface ICondition {
-  description: string;
   valueUse: (typeof ValueHowToSetUp)[keyof typeof ValueHowToSetUp];
   name: string;
   value?: string | string[] | number | IValue | undefined;
@@ -13,7 +12,6 @@ interface ICondition {
 }
 
 interface IDecision {
-  description: string;
   endDate?: Date;
   valueUse: (typeof ValueHowToSetUp)[keyof typeof ValueHowToSetUp];
   name: string;
@@ -24,12 +22,17 @@ interface IDecision {
 
 interface IRuleDecision {
   id?: string;
+  endDate?: Date;
+  valueUse: (typeof ValueHowToSetUp)[keyof typeof ValueHowToSetUp];
+  name: string;
+  value?: string | string[] | number | IValue | undefined;
+  startDate?: Date;
+  dataType: (typeof ValueDataType)[keyof typeof ValueDataType];
   conditions?: ICondition[];
   decision?: IDecision;
   decisions?: IDecision[];
-  startDate?: Date;
-  endDate?: Date;
 }
+
 interface IValue {
   list?: string[];
   listSelected?: string[];

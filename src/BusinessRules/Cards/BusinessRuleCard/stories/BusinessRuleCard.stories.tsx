@@ -31,19 +31,15 @@ Default.args = {
 
 const getData = (): IRuleDecision => {
   const decision: IRuleDecision = {
-    decision: {
-      name: "TasaEfectivaAnual",
-      description: "Tasa de interés efectiva anual",
-      dataType: ValueDataType.PERCENTAGE,
-      value: 18,
-      valueUse: ValueHowToSetUp.EQUAL,
-      startDate: new Date("2024-08-15"),
-      endDate: new Date("2024-09-15"),
-    },
+    name: "TasaEfectivaAnual",
+    dataType: ValueDataType.PERCENTAGE,
+    value: 18,
+    valueUse: ValueHowToSetUp.EQUAL,
+    startDate: new Date("2024-08-15"),
+    endDate: new Date("2024-09-15"),
     conditions: [
       {
         name: "PlazoMeses",
-        description: "Plazo en meses",
         dataType: ValueDataType.NUMBER,
         value: {
           from: 1,
@@ -53,7 +49,6 @@ const getData = (): IRuleDecision => {
       },
       {
         name: "ScoringRiesgo",
-        description: "Scoring de riesgo",
         dataType: ValueDataType.NUMBER,
         value: {
           from: 100,
@@ -63,21 +58,18 @@ const getData = (): IRuleDecision => {
       },
       {
         name: "CategoriaCliente",
-        description: "Categoria del cliente",
         dataType: ValueDataType.ALPHABETICAL,
         value: ["Independiente", "Pensionado"],
         valueUse: ValueHowToSetUp.LIST_OF_VALUES_MULTI,
       },
       {
         name: "Riesgo",
-        description: "Riesgo",
         dataType: ValueDataType.ALPHABETICAL,
         value: ["Medio"],
         valueUse: ValueHowToSetUp.LIST_OF_VALUES,
       },
       {
         name: "CarteraDescubierto",
-        description: "Cartera de descubierto",
         dataType: ValueDataType.CURRENCY,
         value: {
           from: 1000000,
@@ -87,21 +79,18 @@ const getData = (): IRuleDecision => {
       },
       {
         name: "FechaTasa",
-        description: "Fecha Tasa",
         dataType: ValueDataType.DATE,
         value: "2024-08-15",
         valueUse: ValueHowToSetUp.EQUAL,
       },
       {
         name: "Porcentaje",
-        description: "Porcentaje",
         dataType: ValueDataType.PERCENTAGE,
         value: 10,
         valueUse: ValueHowToSetUp.EQUAL,
       },
       {
         name: "Monto",
-        description: "Monto",
         dataType: ValueDataType.CURRENCY,
         value: 1000000,
         valueUse: ValueHowToSetUp.EQUAL,
