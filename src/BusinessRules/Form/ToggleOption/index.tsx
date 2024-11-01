@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Toggle } from "@inubekit/toggle";
 import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/stack";
 
 interface IToggleOption {
   checked: boolean;
@@ -34,19 +35,22 @@ const ToggleOption = (props: IToggleOption) => {
 
   return (
     <>
-      <Toggle
-        checked={toogleCheck}
-        id={id}
-        margin="10px"
-        name={name}
-        onChange={handleToggle}
-        size="small"
-        value={valueToggle}
-      >
-        <Text size="medium" type="label" weight="bold">
-          {labelToggle}
-        </Text>
-      </Toggle>
+      <Stack>
+        <Toggle
+          checked={toogleCheck}
+          id={id}
+          margin="10px"
+          name={name}
+          onChange={handleToggle}
+          size="small"
+          value={valueToggle}
+        >
+          <Text size="medium" type="label" weight="bold">
+            {labelToggle}
+          </Text>
+        </Toggle>
+      </Stack>
+
       {toogleCheck && <>{children}</>}
     </>
   );

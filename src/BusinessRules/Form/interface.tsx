@@ -1,17 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormikValues } from "formik";
 import { Divider } from "@inubekit/divider";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Toggle } from "@inubekit/toggle";
 
-import { IRuleDecision, IValue } from "@isettingkit/input";
+import {
+  DecisionConditionRenderer,
+  IInputStatus,
+  IRuleDecision,
+  IValue,
+} from "@isettingkit/input";
 import { ReasonForChange } from "./ReasonForChange";
 import { ToggleOption } from "./ToggleOption";
 
 import { Term } from "./Term";
-import { DecisionConditionRenderer } from "@isettingkit/input";
+
 import { Button } from "@inubekit/button";
+import { findNestedError, IRangeMessages } from "./utils";
 
 interface IRulesFormUI {
   id: string;
@@ -56,7 +62,9 @@ const RulesFormUI = (props: IRulesFormUI) => {
   } = props;
   const [checkNone, setCheckNone] = useState(false);
   const [checkDisabledConfirm, setCheckDisabledConfirm] = useState(true);
-
+  useEffect(() => {
+    console.log("Updated formik.errors in RulesFormUI:", formik.errors);
+  }, [formik.errors]);
   const handleToggleNone = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCheckNone(e.target.checked);
   };
@@ -69,9 +77,28 @@ const RulesFormUI = (props: IRulesFormUI) => {
     }
   };
 
-  const getFieldState = (formik: FormikValues, fieldName: string) => {
-    if (formik.errors[fieldName]) return "invalid";
-    return "pending";
+  // const getFieldState = (fieldName: string) => {
+  //   const error = formik.errors[fieldName] ? findNestedError(formik.errors[fieldName]) : null;
+  //   return error ? "invalid" : "pending";
+  // };
+
+  // const getErrorMessage = (fieldName: string | number) => {
+  //   return findNestedError(formik.errors[fieldName] || {});
+  // };
+  const getFieldStatus = (fieldName: string) => {
+    const error = findNestedError(formik.errors[fieldName] || {});
+    if (typeof error === "string") {
+      return error ? "invalid" : "pending";
+    }
+    return error as IRangeMessages;
+  };
+
+  const getFieldMessage = (fieldName: string) => {
+    const error = findNestedError(formik.errors[fieldName] || {});
+    if (typeof error === "string") {
+      return error;
+    }
+    return error as IRangeMessages;
   };
 
   return (
@@ -86,7 +113,7 @@ const RulesFormUI = (props: IRulesFormUI) => {
             onDecision={onChangeDecision}
             valueData={formik.values[decision.decision.name]}
             message={formik.errors[decision.decision.name]}
-            status={getFieldState(formik, decision.decision.name)}
+            status={getFieldStatus(decision.decision.name) as IInputStatus}
             textValues={{
               selectOptions: "Select an option",
               selectOption: "Option selected",
@@ -138,8 +165,8 @@ const RulesFormUI = (props: IRulesFormUI) => {
                     element={condition}
                     onDecision={onChangeCondition}
                     valueData={formik.values[condition.name]}
-                    message={formik.errors[condition.name]}
-                    status={getFieldState(formik, condition.name)}
+                    message={getFieldMessage(condition.name) as string | object}
+                    status={getFieldStatus(condition.name) as IInputStatus}
                     textValues={{
                       selectOptions: "Select an option",
                       selectOption: "Option selected",

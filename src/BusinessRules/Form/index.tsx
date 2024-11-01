@@ -1,9 +1,10 @@
 import { useFormik } from "formik";
 import { useState } from "react";
 import { IRuleDecision, IValue } from "@isettingkit/input";
-import { ValueValidationSchema } from "@isettingkit/input";
+
 import { RulesFormUI } from "./interface";
 import { IRulesFormTextValues } from "./types";
+import { ValueValidationSchema } from "./utils";
 
 interface IRulesForm {
   id: string;
@@ -17,7 +18,10 @@ interface IRulesForm {
 const RulesForm = (prop: IRulesForm) => {
   const { id, decision, onCancel, onSubmitEvent, textValues } = prop;
   const [DataDecision, setDataDecision] = useState(decision);
-
+  const handleFieldChange = (fieldName: string, value: IValue) => {
+    formik.setFieldValue(fieldName, value);
+    formik.validateField(fieldName);
+  };
   const onCondition = (value: IValue, nameCondition: string) => {
     setDataDecision((DataDecisionRule) => {
       const conditions = DataDecisionRule?.conditions?.map((condition) => {
@@ -26,6 +30,7 @@ const RulesForm = (prop: IRulesForm) => {
         }
         return condition;
       });
+      handleFieldChange(nameCondition, value);
       return { ...DataDecisionRule, conditions };
     });
   };
@@ -51,10 +56,16 @@ const RulesForm = (prop: IRulesForm) => {
   const { validationSchema, initialValues } =
     ValueValidationSchema(DataDecision);
 
+  validationSchema
+    .validate(initialValues, { abortEarly: false })
+    .then(() => console.log("Validation passed"))
+    .catch((err) => console.log("Validation failed:", err.errors));
+
   const formik = useFormik({
     initialValues,
     validationSchema,
-    validateOnChange: false,
+    validateOnChange: true,
+    validateOnBlur: true,
     onSubmit: () => {
       onSubmitEvent(DataDecision);
     },
