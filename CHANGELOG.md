@@ -1,3 +1,16 @@
+# v0.1.13 (Fri Nov 01 2024)
+
+#### ⚠️ Pushed to `main`
+
+- Merge branch 'main' of https://github.com/selsa-inube/isettingkit-business-rules ([@cmarin001](https://github.com/cmarin001))
+- fix: adjustment view's mapper and its use on card ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.1.12 (Fri Nov 01 2024)
 
 #### ⚠️ Pushed to `main`
