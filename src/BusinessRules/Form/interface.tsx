@@ -24,8 +24,14 @@ interface IRulesFormUI {
   formik: FormikValues;
   decision: IRuleDecision;
   onCancel: () => void;
-  onChangeCondition: (value: IValue, nameCondition: string) => void;
-  onChangeDecision: (value: IValue, nameDecision: string) => void;
+  onChangeCondition: (
+    value: string | number | string[] | IValue | Date,
+    nameCondition: string,
+  ) => void;
+  onChangeDecision: (
+    value: string | number | string[] | IValue | Date,
+    nameDecision: string,
+  ) => void;
   onEndChange: (value: string) => void;
   onStartChange: (value: string) => void;
   onSubmit: () => void;
@@ -62,6 +68,14 @@ const RulesFormUI = (props: IRulesFormUI) => {
   } = props;
   const [checkNone, setCheckNone] = useState(false);
   const [checkDisabledConfirm, setCheckDisabledConfirm] = useState(true);
+  const mapper = {
+    name: decision.name,
+    dataType: decision.dataType,
+    value: decision.value,
+    valueUse: decision.valueUse,
+    possibleValue: decision.possibleValue,
+  };
+
   useEffect(() => {
     console.log("Updated formik.errors in RulesFormUI:", formik.errors);
   }, [formik.errors]);
@@ -77,14 +91,6 @@ const RulesFormUI = (props: IRulesFormUI) => {
     }
   };
 
-  // const getFieldState = (fieldName: string) => {
-  //   const error = formik.errors[fieldName] ? findNestedError(formik.errors[fieldName]) : null;
-  //   return error ? "invalid" : "pending";
-  // };
-
-  // const getErrorMessage = (fieldName: string | number) => {
-  //   return findNestedError(formik.errors[fieldName] || {});
-  // };
   const getFieldStatus = (fieldName: string) => {
     const error = findNestedError(formik.errors[fieldName] || {});
     if (typeof error === "string") {
@@ -98,7 +104,7 @@ const RulesFormUI = (props: IRulesFormUI) => {
     if (typeof error === "string") {
       return error;
     }
-    return error as IRangeMessages;
+    return error;
   };
 
   return (
@@ -107,13 +113,13 @@ const RulesFormUI = (props: IRulesFormUI) => {
         <Text weight="bold" size="medium">
           {textValues.criteria}
         </Text>
-        {decision.decision && (
+        {decision && (
           <DecisionConditionRenderer
-            element={decision.decision}
+            element={mapper}
             onDecision={onChangeDecision}
-            valueData={formik.values[decision.decision.name]}
-            message={formik.errors[decision.decision.name]}
-            status={getFieldStatus(decision.decision.name) as IInputStatus}
+            valueData={formik.values[decision.name]}
+            message={formik.errors[decision.name]}
+            status={getFieldStatus(decision.name) as IInputStatus}
             textValues={{
               selectOptions: "Select an option",
               selectOption: "Option selected",
@@ -148,8 +154,8 @@ const RulesFormUI = (props: IRulesFormUI) => {
                     onChangeCondition(
                       {
                         value: "",
-                        rangeTo: 0,
-                        rangeFrom: 0,
+                        to: 0,
+                        from: 0,
                         list: condition.possibleValue!.list,
                       },
                       condition.name,
@@ -191,19 +197,15 @@ const RulesFormUI = (props: IRulesFormUI) => {
       </Stack>
       <Divider dashed />
       <Stack direction="column">
-        {decision.decision && (
+        {decision && (
           <Term
             onHandleStartChange={(e) => onStartChange(e.target.value)}
             onHandleEndChange={(e) => onEndChange(e.target.value)}
             labelStart={textValues.termStart}
             labelEnd={textValues.termEnd}
-            checkedClosed={decision.decision.endDate ? true : false}
-            valueStart={decision.decision.startDate!.toLocaleDateString(
-              "en-CA",
-            )}
-            valueEnd={
-              decision.decision.endDate?.toLocaleDateString("en-CA") || ""
-            }
+            checkedClosed={decision.endDate ? true : false}
+            valueStart={decision.startDate!.toLocaleDateString("en-CA")}
+            valueEnd={decision.endDate?.toLocaleDateString("en-CA") || ""}
           />
         )}
       </Stack>

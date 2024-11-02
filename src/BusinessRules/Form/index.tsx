@@ -1,10 +1,10 @@
 import { useFormik } from "formik";
 import { useState } from "react";
-import { IRuleDecision, IValue } from "@isettingkit/input";
 
 import { RulesFormUI } from "./interface";
 import { IRulesFormTextValues } from "./types";
 import { ValueValidationSchema } from "./utils";
+import { IRuleDecision, IValue } from "@isettingkit/input";
 
 interface IRulesForm {
   id: string;
@@ -18,27 +18,52 @@ interface IRulesForm {
 const RulesForm = (prop: IRulesForm) => {
   const { id, decision, onCancel, onSubmitEvent, textValues } = prop;
   const [DataDecision, setDataDecision] = useState(decision);
-  const handleFieldChange = (fieldName: string, value: IValue) => {
+  const handleFieldChange = (
+    fieldName: string,
+    value: string | number | IValue | string[],
+  ) => {
     formik.setFieldValue(fieldName, value);
     formik.validateField(fieldName);
   };
-  const onCondition = (value: IValue, nameCondition: string) => {
+
+  const onCondition = (
+    value: string | number | string[] | IValue | Date,
+    nameCondition: string,
+  ) => {
+    const processedValue = value instanceof Date ? value.toISOString() : value;
+
     setDataDecision((DataDecisionRule) => {
-      const conditions = DataDecisionRule?.conditions?.map((condition) => {
+      if (!DataDecisionRule.conditions) {
+        return DataDecisionRule;
+      }
+
+      const updatedConditions = DataDecisionRule.conditions.map((condition) => {
         if (condition.name === nameCondition) {
-          return { ...condition, value };
+          return { ...condition, value: processedValue };
         }
         return condition;
       });
-      handleFieldChange(nameCondition, value);
-      return { ...DataDecisionRule, conditions };
+
+      return {
+        ...DataDecisionRule,
+        conditions: updatedConditions,
+      };
     });
+
+    handleFieldChange(nameCondition, processedValue);
   };
 
-  const onDecision = (value: IValue) => {
-    setDataDecision((prevDataDecision) =>
-      updateDataDecision(prevDataDecision, "value", value),
-    );
+  const onDecision = (value: string | number | string[] | IValue | Date) => {
+    if (
+      typeof value === "object" &&
+      (value instanceof Date || "someProperty" in value)
+    ) {
+      setDataDecision((prevDataDecision) =>
+        updateDataDecision(prevDataDecision, "value", value),
+      );
+    } else {
+      console.warn("Invalid type for value:", value);
+    }
   };
 
   const onEndChange = (value: string) => {
@@ -74,11 +99,12 @@ const RulesForm = (prop: IRulesForm) => {
   const updateDataDecision = (
     prevDataDecision: IRuleDecision,
     field: string,
-    value: IValue | Date,
+    value: string | number | string[] | IValue | Date,
   ) => {
     return {
       ...prevDataDecision,
-      decision: { ...prevDataDecision.decision!, [field]: value },
+      ...prevDataDecision.decision!,
+      [field]: value,
     };
   };
 

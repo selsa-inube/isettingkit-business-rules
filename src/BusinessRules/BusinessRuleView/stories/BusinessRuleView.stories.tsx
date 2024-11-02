@@ -1,7 +1,10 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { ValueDataType, ValueHowToSetUp } from "@isettingkit/input";
+import {
+  IRuleDecision,
+  ValueDataType,
+  ValueHowToSetUp,
+} from "@isettingkit/input";
 import { BusinessRuleView } from "..";
-import { IRuleDecision } from "../types";
 
 const meta: Meta<typeof BusinessRuleView> = {
   title: "components/view/BusinessRuleView",

@@ -1,5 +1,9 @@
-import { ValueHowToSetUp } from "@isettingkit/input";
-import { ICondition, IRuleDecision, IValue } from "./types";
+import {
+  ICondition,
+  IRuleDecision,
+  IValue,
+  ValueHowToSetUp,
+} from "@isettingkit/input";
 
 const getValueData = (
   element: IRuleDecision["decision"] | ICondition | undefined,

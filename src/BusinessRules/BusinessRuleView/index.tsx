@@ -1,10 +1,15 @@
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
-import { ValueDataType, ValueHowToSetUp } from "@isettingkit/input";
+
 import { DecisionViewConditionRenderer } from "@isettingkit/view";
 import { getValueData } from "./helper";
 import { IRulesFormTextValues } from "../Form/types";
-import { IRuleDecision, IValue } from "./types";
+import {
+  IRuleDecision,
+  IValue,
+  ValueDataType,
+  ValueHowToSetUp,
+} from "@isettingkit/input";
 
 interface IBusinessRuleView {
   decision: IRuleDecision;
@@ -20,7 +25,7 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
   const mapper = {
     name: decision.name,
     dataType: decision.dataType,
-    value: decision.value,
+    value: decision.value as string | number | string[] | undefined,
     valueUse: decision.valueUse,
   };
 
@@ -35,7 +40,7 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
             <Stack key={decision.name} direction="column">
               <DecisionViewConditionRenderer
                 element={mapper}
-                valueData={getValueData(mapper)!}
+                valueData={getValueData(mapper)}
               />
             </Stack>
           )}
@@ -46,19 +51,29 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
           {textValues.factsThatConditionIt}
         </Text>
         {decision.conditions &&
-          decision.conditions.map(
-            (condition) =>
-              ((typeof condition.value === "object" &&
-                isNonEmptyObject(condition.value)) ||
-                condition.value) && (
+          decision.conditions.map((condition) => {
+            const conditionValue = condition.value as
+              | string
+              | number
+              | string[]
+              | undefined;
+
+            return (
+              ((typeof conditionValue === "object" &&
+                isNonEmptyObject(conditionValue)) ||
+                conditionValue) && (
                 <Stack key={condition.name} direction="column">
                   <DecisionViewConditionRenderer
-                    element={condition}
+                    element={{
+                      ...condition,
+                      value: conditionValue,
+                    }}
                     valueData={getValueData(condition)}
                   />
                 </Stack>
-              ),
-          )}
+              )
+            );
+          })}
       </Stack>
 
       <Stack direction="column" gap="12px">

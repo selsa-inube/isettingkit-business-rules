@@ -3,8 +3,12 @@ import { Meta, StoryObj } from "@storybook/react";
 import { parameters, props } from "./props";
 import { BusinessRuleCard, IBusinessRuleCard } from "..";
 import { BusinessRuleView } from "../../../BusinessRuleView";
-import { IRuleDecision } from "src/BusinessRules/BusinessRuleView/types";
-import { ValueDataType, ValueHowToSetUp } from "@isettingkit/input";
+
+import {
+  IRuleDecision,
+  ValueDataType,
+  ValueHowToSetUp,
+} from "@isettingkit/input";
 
 const meta: Meta<typeof BusinessRuleCard> = {
   title: "components/cards/BusinessRuleCard",

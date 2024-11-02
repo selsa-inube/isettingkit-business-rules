@@ -1,10 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  ICondition,
-  IDecision,
-  IRuleDecision,
-  ValueHowToSetUp,
-} from "@isettingkit/input";
+import { ValueDataType, ValueHowToSetUp } from "@isettingkit/input";
 import {
   string,
   number,
@@ -13,7 +8,14 @@ import {
   object,
   ObjectSchema,
   AnyObject,
+  mixed,
 } from "yup";
+import {
+  ICondition,
+  IDecision,
+  IRuleDecision,
+  IValue,
+} from "../BusinessRuleView/types";
 
 declare const inputTypes: readonly [
   "alphabetical",
@@ -26,8 +28,8 @@ declare const inputTypes: readonly [
 declare type ITextfieldInputType = (typeof inputTypes)[number];
 
 interface TypeDataOutput {
-  schema: StringSchema | NumberSchema | ObjectSchema<any, AnyObject, any>;
-  value: string | number | { rangeFrom: number; rangeTo: number } | undefined;
+  schema: StringSchema | NumberSchema | ObjectSchema<any, AnyObject, any> | any;
+  value: IValue | undefined | string | number | string[];
 }
 const currencyFormat = (price: number): string => {
   if (price === 0 || !price) {
@@ -62,57 +64,101 @@ const percentageFormat = (percentage: number): string => {
 };
 
 const typeData = (
-  element: IDecision | ICondition,
+  element:
+    | IDecision
+    | ICondition
+    | IRuleDecision
+    | IValue
+    | undefined
+    | string[],
 ): TypeDataOutput | undefined => {
-  const value = element.possibleValue;
-  const rangeFromNumber =
-    typeof value?.rangeFrom === "number" ? value.rangeFrom : 0;
-  const rangeToNumber =
-    typeof value?.rangeTo === "number" ? value.rangeTo : Infinity;
+  if (
+    "value" in element! &&
+    "valueUse" in element! &&
+    element.value !== undefined
+  ) {
+    const value = element.value;
+    const fromNumber =
+      typeof value === "object" &&
+      "from" in value &&
+      typeof value.from === "number"
+        ? value.from
+        : 0;
+    const toNumber =
+      typeof value === "object" && "to" in value && typeof value.to === "number"
+        ? value.to
+        : Infinity;
 
-  switch (element.howToSetUp) {
-    case ValueHowToSetUp.LIST_OF_VALUES:
-      return {
-        schema: string(),
-        value: value!.listSelected?.[0],
-      };
-    case ValueHowToSetUp.LIST_OF_VALUES_MULTI:
-      return {
-        schema: string(),
-        value: "",
-      };
-    case ValueHowToSetUp.RANGE:
-      return {
-        schema: object({
-          rangeFrom: number()
-            .required("Range From is required")
-            .max(
-              rangeToNumber,
-              "'Range From' cannot be greater than 'Range To'",
-            )
-            .min(0, "'Range From' cannot be less than 0"),
-          rangeTo: number()
-            .required("Range To is required")
-            .min(rangeFromNumber, "'Range To' cannot be less than 'Range From'")
-            .min(0, "'Range To' cannot be less than 0"),
-        }),
-        value: {
-          rangeFrom: rangeFromNumber,
-          rangeTo: rangeToNumber,
-        },
-      };
-    case ValueHowToSetUp.GREATER_THAN:
-    case ValueHowToSetUp.LESS_THAN:
-    case ValueHowToSetUp.EQUAL:
-      return {
-        schema: string().required("Required"),
-        value: value!.value,
-      };
-    default:
-      return {
-        schema: string(),
-        value: undefined,
-      };
+    switch (element!.valueUse) {
+      case ValueHowToSetUp.LIST_OF_VALUES:
+        return {
+          schema: mixed().test(
+            "isArrayOrString",
+            "Must be an array of strings/numbers or a single string",
+            (val) =>
+              Array.isArray(val)
+                ? val.every(
+                    (item) =>
+                      typeof item === "string" || typeof item === "number",
+                  )
+                : typeof val === "string",
+          ),
+          value: value,
+        };
+      case ValueHowToSetUp.LIST_OF_VALUES_MULTI:
+        return {
+          schema: mixed().test(
+            "isArrayOrString",
+            "Must be an array of strings/numbers or a single string",
+            (val) =>
+              Array.isArray(val)
+                ? val.every(
+                    (item) =>
+                      typeof item === "string" || typeof item === "number",
+                  )
+                : typeof val === "string",
+          ),
+          value: value,
+        };
+      case ValueHowToSetUp.RANGE:
+        return {
+          schema: object({
+            from: number()
+              .required("Range From is required")
+              .max(toNumber, `'Range From' cannot be greater than 'Range To'`)
+              .min(0, `'Range From' cannot be less than 0`),
+            to: number()
+              .required("Range To is required")
+              .min(fromNumber, `'Range To' cannot be less than 'Range From'`)
+              .min(0, "'Range To' cannot be less than 0"),
+          }),
+          value: {
+            from: fromNumber,
+            to: toNumber,
+          },
+        };
+      case ValueHowToSetUp.GREATER_THAN:
+      case ValueHowToSetUp.LESS_THAN:
+      case ValueHowToSetUp.EQUAL:
+        if (element.dataType === ValueDataType.PERCENTAGE) {
+          return {
+            schema: number()
+              .required("Percentage is required")
+              .min(0, "Percentage cannot be less than 0")
+              .max(100, "Percentage cannot be greater than 100"),
+            value: value,
+          };
+        }
+        return {
+          schema: string().required("Required"),
+          value: value,
+        };
+      default:
+        return {
+          schema: string(),
+          value: undefined,
+        };
+    }
   }
 };
 
@@ -124,18 +170,14 @@ const ValueValidationSchema = (decision: IRuleDecision) => {
         | ObjectSchema<any, AnyObject, any>;
     } = {},
     initialValues: {
-      [key: string]:
-        | string
-        | number
-        | { rangeFrom: number; rangeTo: number }
-        | undefined;
+      [key: string]: IValue | undefined | string | number | string[];
     } = {};
 
-  if (decision.decision) {
-    const decisionData = typeData(decision.decision);
+  if (decision) {
+    const decisionData = typeData(decision);
     if (decisionData) {
-      respValue[decision.decision.name] = decisionData.schema;
-      initialValues[decision.decision.name] = decisionData.value;
+      respValue[decision.name] = decisionData.schema;
+      initialValues[decision.name] = decisionData.value;
     }
   }
 
@@ -170,8 +212,8 @@ const formatValue = (value: number | string, type: ITextfieldInputType) => {
 };
 
 interface IRangeMessages {
-  rangeFrom?: string | NestedErrors | IRangeMessages;
-  rangeTo?: string | NestedErrors | IRangeMessages;
+  from?: string | NestedErrors | IRangeMessages;
+  to?: string | NestedErrors | IRangeMessages;
 }
 
 interface NestedErrors {
@@ -185,13 +227,10 @@ const findNestedError = (
     return errors;
   }
 
-  if (
-    typeof errors === "object" &&
-    ("rangeFrom" in errors || "rangeTo" in errors)
-  ) {
+  if (typeof errors === "object" && ("from" in errors || "to" in errors)) {
     const rangeMessages: IRangeMessages = {
-      rangeFrom: errors.rangeFrom || "",
-      rangeTo: errors.rangeTo || "",
+      from: errors.from || "",
+      to: errors.to || "",
     };
     return rangeMessages;
   }

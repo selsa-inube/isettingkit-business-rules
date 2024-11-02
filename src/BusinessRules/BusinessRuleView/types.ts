@@ -9,6 +9,7 @@ interface ICondition {
   name: string;
   value?: string | string[] | number | IValue | undefined;
   dataType: (typeof ValueDataType)[keyof typeof ValueDataType];
+  possibleValue?: IValue;
 }
 
 interface IDecision {
@@ -16,6 +17,7 @@ interface IDecision {
   valueUse: (typeof ValueHowToSetUp)[keyof typeof ValueHowToSetUp];
   name: string;
   value?: string | string[] | number | IValue | undefined;
+  possibleValue?: IValue;
   startDate?: Date;
   dataType: (typeof ValueDataType)[keyof typeof ValueDataType];
 }
@@ -26,6 +28,7 @@ interface IRuleDecision {
   valueUse: (typeof ValueHowToSetUp)[keyof typeof ValueHowToSetUp];
   name: string;
   value?: string | string[] | number | IValue | undefined;
+  possibleValue?: IValue;
   startDate?: Date;
   dataType: (typeof ValueDataType)[keyof typeof ValueDataType];
   conditions?: ICondition[];
@@ -40,7 +43,7 @@ interface IValue {
   labelTo?: string;
   from?: number | string | Date;
   to?: number | string | Date;
-  value?: string | number;
+  value?: string | number | string[];
   messageFrom?: string;
   messageTo?: string;
   statusFrom?: IInputStatus;

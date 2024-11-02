@@ -38,8 +38,8 @@
   "dependencies": {
     "@inubekit/button": "^4.44.1",
     "@inubekit/checkbox": "^0.2.2",
-    "@inubekit/divider": "^0.16.1",
     "@inubekit/date": "^2.39.1",
+    "@inubekit/divider": "^0.16.1",
     "@inubekit/foundations": "^5.11.3",
     "@inubekit/grid": "^2.14.1",
     "@inubekit/icon": "^2.18.1",
@@ -48,15 +48,15 @@
     "@inubekit/text": "^2.17.0",
     "@inubekit/textarea": "^2.45.0",
     "@inubekit/toggle": "^3.8.2",
-    "@isettingkit/input": "^0.1.21",
+    "@isettingkit/input": "^0.1.23",
     "@isettingkit/view": "^0.1.13"
   },
   "peerDependencies": {
+    "formik": "^2.4.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
     "styled-components": "^6.1.8",
-    "formik": "^2.4.6",
     "yup": "^1.4.0"
   },
   "publishConfig": {
@@ -87,7 +87,6 @@
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
     "prettier": "^3.1.1",
-    "storybook": "^8.0.2",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
     "vite-plugin-dts": "^3.7.2"
