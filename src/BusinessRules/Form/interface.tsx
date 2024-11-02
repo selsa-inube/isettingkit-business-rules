@@ -10,6 +10,7 @@ import {
   IInputStatus,
   IRuleDecision,
   IValue,
+  parsePercentageString,
 } from "@isettingkit/input";
 import { ReasonForChange } from "./ReasonForChange";
 import { ToggleOption } from "./ToggleOption";
@@ -71,7 +72,10 @@ const RulesFormUI = (props: IRulesFormUI) => {
   const mapper = {
     name: decision.name,
     dataType: decision.dataType,
-    value: decision.value,
+    value:
+      decision.dataType === "percentage"
+        ? parsePercentageString(decision.value as string)
+        : decision.value,
     valueUse: decision.valueUse,
     possibleValue: decision.possibleValue,
   };

@@ -54,16 +54,16 @@ const RulesForm = (prop: IRulesForm) => {
   };
 
   const onDecision = (value: string | number | string[] | IValue | Date) => {
-    if (
-      typeof value === "object" &&
-      (value instanceof Date || "someProperty" in value)
-    ) {
-      setDataDecision((prevDataDecision) =>
-        updateDataDecision(prevDataDecision, "value", value),
-      );
-    } else {
-      console.warn("Invalid type for value:", value);
-    }
+    // if (
+    //   typeof value === "object" &&
+    //   (value instanceof Date || "someProperty" in value)
+    // ) {
+    setDataDecision((prevDataDecision) =>
+      updateDataDecision(prevDataDecision, "value", value),
+    );
+    // } else {
+    //   console.warn("Invalid type for value:", value);
+    // }
   };
 
   const onEndChange = (value: string) => {
