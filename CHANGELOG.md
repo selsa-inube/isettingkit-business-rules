@@ -1,3 +1,15 @@
+# v0.1.17 (Tue Nov 05 2024)
+
+#### ⚠️ Pushed to `main`
+
+- fix: adjustments in order to handle types in views ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.1.16 (Tue Nov 05 2024)
 
 #### ⚠️ Pushed to `main`
