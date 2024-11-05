@@ -21,7 +21,7 @@ const meta: Meta<typeof RulesForm> = {
 };
 
 const getData = (): IRuleDecision => {
-  const decision: IRuleDecision = {
+  return {
     name: "TasaEfectivaAnual",
     dataType: ValueDataType.ALPHABETICAL,
     possibleValue: {
@@ -97,7 +97,6 @@ const getData = (): IRuleDecision => {
       },
     ],
   };
-  return decision;
 };
 
 // const getNotCondition = (): IRuleDecision => {

@@ -10,7 +10,6 @@ import {
   IInputStatus,
   IRuleDecision,
   IValue,
-  parsePercentageString,
 } from "@isettingkit/input";
 import { ReasonForChange } from "./ReasonForChange";
 import { ToggleOption } from "./ToggleOption";
@@ -69,13 +68,11 @@ const RulesFormUI = (props: IRulesFormUI) => {
   } = props;
   const [checkNone, setCheckNone] = useState(false);
   const [checkDisabledConfirm, setCheckDisabledConfirm] = useState(true);
+
   const mapper = {
     name: decision.name,
     dataType: decision.dataType,
-    value:
-      decision.dataType === "percentage"
-        ? parsePercentageString(decision.value as string)
-        : decision.value,
+    value: decision.value,
     valueUse: decision.valueUse,
     possibleValue: decision.possibleValue,
   };
@@ -113,7 +110,7 @@ const RulesFormUI = (props: IRulesFormUI) => {
 
   return (
     <Stack direction="column" gap="24px">
-      <Stack direction="column" gap="16">
+      <Stack direction="column" gap="16px">
         <Text weight="bold" size="medium">
           {textValues.criteria}
         </Text>

@@ -17,8 +17,8 @@ const getData = (): IRuleDecision => {
     dataType: ValueDataType.PERCENTAGE,
     value: 18,
     valueUse: ValueHowToSetUp.EQUAL,
-    startDate: new Date("2024-08-15"),
-    endDate: new Date("2024-09-15"),
+    startDate: "2024-08-15",
+    endDate: "2024-09-15",
     conditions: [
       {
         name: "PlazoMeses",

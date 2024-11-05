@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 
@@ -5,6 +6,8 @@ import { DecisionViewConditionRenderer } from "@isettingkit/view";
 import { getValueData } from "./helper";
 import { IRulesFormTextValues } from "../Form/types";
 import {
+  ICondition,
+  IDecision,
   IRuleDecision,
   IValue,
   ValueDataType,
@@ -22,10 +25,10 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
   const isNonEmptyObject = (obj: string[] | IValue) =>
     obj && Object.keys(obj).length > 0;
 
-  const mapper = {
+  const mapper: IDecision | ICondition = {
     name: decision.name,
     dataType: decision.dataType,
-    value: decision.value as string | number | string[] | undefined,
+    value: getValueData(decision),
     valueUse: decision.valueUse,
   };
 
@@ -39,7 +42,7 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
           {decision && (
             <Stack key={decision.name} direction="column">
               <DecisionViewConditionRenderer
-                element={mapper}
+                element={mapper as any}
                 valueData={getValueData(mapper)}
               />
             </Stack>
@@ -90,9 +93,7 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
                 valueUse: ValueHowToSetUp.EQUAL,
                 dataType: ValueDataType.DATE,
               }}
-              valueData={new Date(decision.startDate).toLocaleDateString(
-                "en-CA",
-              )}
+              valueData={String(decision.startDate)}
             />
           )}
           {decision?.endDate && (
@@ -104,7 +105,7 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
                 valueUse: ValueHowToSetUp.EQUAL,
                 dataType: ValueDataType.DATE,
               }}
-              valueData={new Date(decision.endDate).toLocaleDateString("en-CA")}
+              valueData={String(decision.endDate)}
             />
           )}
         </Stack>
