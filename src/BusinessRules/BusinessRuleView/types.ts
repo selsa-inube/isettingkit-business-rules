@@ -24,12 +24,12 @@ interface IDecision {
 
 interface IRuleDecision {
   id?: string;
-  endDate?: Date;
+  endDate?: Date | string;
   valueUse: (typeof ValueHowToSetUp)[keyof typeof ValueHowToSetUp];
   name: string;
   value?: string | string[] | number | IValue | undefined;
   possibleValue?: IValue;
-  startDate?: Date;
+  startDate?: Date | string;
   dataType: (typeof ValueDataType)[keyof typeof ValueDataType];
   conditions?: ICondition[];
   decision?: IDecision;

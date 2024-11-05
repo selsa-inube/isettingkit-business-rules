@@ -68,13 +68,13 @@ const RulesForm = (prop: IRulesForm) => {
 
   const onEndChange = (value: string) => {
     setDataDecision((prevDataDecision) =>
-      updateDataDecision(prevDataDecision, "endDate", new Date(value)),
+      updateDataDecision(prevDataDecision, "endDate", value),
     );
   };
 
   const onStartChange = (value: string) => {
     setDataDecision((prevDataDecision) =>
-      updateDataDecision(prevDataDecision, "startDate", new Date(value)),
+      updateDataDecision(prevDataDecision, "startDate", value),
     );
   };
 

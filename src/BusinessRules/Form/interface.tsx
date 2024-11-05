@@ -208,8 +208,8 @@ const RulesFormUI = (props: IRulesFormUI) => {
             labelStart={textValues.termStart}
             labelEnd={textValues.termEnd}
             checkedClosed={decision.endDate ? true : false}
-            valueStart={decision.startDate!.toLocaleDateString("en-CA")}
-            valueEnd={decision.endDate?.toLocaleDateString("en-CA") || ""}
+            valueStart={String(decision.startDate)}
+            valueEnd={String(decision.endDate) || ""}
           />
         )}
       </Stack>

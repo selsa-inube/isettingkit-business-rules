@@ -29,8 +29,8 @@ const getData = (): IRuleDecision => {
     },
     value: ["20%"],
     valueUse: ValueHowToSetUp.LIST_OF_VALUES,
-    startDate: new Date("2024-08-15"),
-    endDate: new Date("2024-09-15"),
+    startDate: "2024-08-15",
+    endDate: "2024-09-15",
     conditions: [
       {
         name: "PlazoMeses",
