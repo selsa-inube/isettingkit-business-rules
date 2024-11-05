@@ -1,3 +1,15 @@
+# v0.1.16 (Tue Nov 05 2024)
+
+#### ⚠️ Pushed to `main`
+
+- fix: adjustment for types in order to remove complex handler for dates ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.1.15 (Sat Nov 02 2024)
 
 #### ⚠️ Pushed to `main`
