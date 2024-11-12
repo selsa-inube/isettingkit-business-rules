@@ -9,6 +9,7 @@ import {
   ValueDataType,
   ValueHowToSetUp,
 } from "@isettingkit/input";
+import { StyledCardContainer } from "./styles";
 
 const meta: Meta<typeof BusinessRuleCard> = {
   title: "components/cards/BusinessRuleCard",
@@ -105,7 +106,9 @@ const getData = (): IRuleDecision => {
 };
 
 export const Container: Story = (args: IBusinessRuleCard) => (
-  <BusinessRuleCard {...args} />
+  <StyledCardContainer>
+    <BusinessRuleCard {...args} />
+  </StyledCardContainer>
 );
 Container.args = {
   children: (

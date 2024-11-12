@@ -15,7 +15,7 @@ const BusinessRuleCard = (props: IBusinessRuleCard) => {
   const { children, handleDelete, handleView, id } = props;
   return (
     <StyledCard>
-      <Stack direction="column">
+      <Stack direction="column" width="100%" height="100%">
         <Stack height="282px" gap="24px" direction="column">
           <StyledContainer>
             <Stack direction="column" margin="10px">

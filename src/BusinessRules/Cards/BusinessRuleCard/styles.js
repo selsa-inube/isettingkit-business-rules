@@ -6,6 +6,8 @@ const StyledCard = styled.div`
     border-radius: 8px;
     border: 1px solid ${inube.palette.neutral.N30};
     box-sizing: border-box;
+    // height: 340px;
+    // width: 332px;
     box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.1);
   }
 `;
