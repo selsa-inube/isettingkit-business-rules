@@ -9,7 +9,6 @@ import {
   ValueDataType,
   ValueHowToSetUp,
 } from "@isettingkit/input";
-import { StyledCardContainer } from "./styles";
 
 const meta: Meta<typeof BusinessRuleCard> = {
   title: "components/cards/BusinessRuleCard",
@@ -40,8 +39,8 @@ const getData = (): IRuleDecision => {
     dataType: ValueDataType.PERCENTAGE,
     value: 18,
     valueUse: ValueHowToSetUp.EQUAL,
-    startDate: new Date("2024-08-15"),
-    endDate: new Date("2024-09-15"),
+    startDate: "2024-08-15",
+    endDate: "2024-09-15",
     conditions: [
       {
         name: "PlazoMeses",
@@ -106,9 +105,7 @@ const getData = (): IRuleDecision => {
 };
 
 export const Container: Story = (args: IBusinessRuleCard) => (
-  <StyledCardContainer>
-    <BusinessRuleCard {...args} />
-  </StyledCardContainer>
+  <BusinessRuleCard {...args} />
 );
 Container.args = {
   children: (

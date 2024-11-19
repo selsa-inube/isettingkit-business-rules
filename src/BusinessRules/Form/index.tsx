@@ -1,10 +1,9 @@
 import { useFormik } from "formik";
 import { useState } from "react";
-
 import { RulesFormUI } from "./interface";
-import { IRulesFormTextValues } from "./types";
-import { ValueValidationSchema } from "./utils";
 import { IRuleDecision, IValue } from "@isettingkit/input";
+import { ValueValidationSchema } from "./utils";
+import { IRulesFormTextValues } from "./types";
 
 interface IRulesForm {
   id: string;

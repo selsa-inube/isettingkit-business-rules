@@ -11,13 +11,13 @@ import {
   IRuleDecision,
   IValue,
 } from "@isettingkit/input";
-import { ReasonForChange } from "./ReasonForChange";
-import { ToggleOption } from "./ToggleOption";
-
-import { Term } from "./Term";
 
 import { Button } from "@inubekit/button";
 import { findNestedError, IRangeMessages } from "./utils";
+import { ToggleOption } from "./ToggleOption";
+
+import { Term } from "./Term";
+import { StyledConditionContainer, StyledScrollContainer } from "./styles";
 
 interface IRulesFormUI {
   id: string;
@@ -66,8 +66,8 @@ const RulesFormUI = (props: IRulesFormUI) => {
     onCancel,
     onSubmit,
   } = props;
-  const [checkNone, setCheckNone] = useState(false);
-  const [checkDisabledConfirm, setCheckDisabledConfirm] = useState(true);
+  const [checkNone, setCheckNone] = useState(true);
+  const [checkDisabledConfirm] = useState(true);
 
   const mapper = {
     name: decision.name,
@@ -82,14 +82,6 @@ const RulesFormUI = (props: IRulesFormUI) => {
   }, [formik.errors]);
   const handleToggleNone = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCheckNone(e.target.checked);
-  };
-
-  const handleReasonForChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value) {
-      setCheckDisabledConfirm(false);
-    } else {
-      setCheckDisabledConfirm(true);
-    }
   };
 
   const getFieldStatus = (fieldName: string) => {
@@ -110,98 +102,103 @@ const RulesFormUI = (props: IRulesFormUI) => {
 
   return (
     <Stack direction="column" gap="24px">
-      <Stack direction="column" gap="16px">
-        <Text weight="bold" size="medium">
-          {textValues.criteria}
-        </Text>
-        {decision && (
-          <DecisionConditionRenderer
-            element={mapper}
-            onDecision={onChangeDecision}
-            valueData={formik.values[decision.name]}
-            message={formik.errors[decision.name]}
-            status={getFieldStatus(decision.name) as IInputStatus}
-            textValues={{
-              selectOptions: "Select an option",
-              selectOption: "Option selected",
-              rangeMin: (label: string) => `Minimum ${label}`,
-              rangeMax: (label: string) => `Maximum ${label}`,
-            }}
-          />
-        )}
-      </Stack>
-      <Divider dashed />
-      <Stack direction="column">
-        <Stack direction="row" gap="16px" justifyContent="space-between">
-          <Text>{textValues.factsThatConditionIt}</Text>
-          <Toggle
-            id="toogleNone"
-            onChange={handleToggleNone}
-            checked={checkNone}
-            size="small"
-          >
-            <Text size="medium" type="label" weight="bold">
-              {textValues.none}
-            </Text>
-          </Toggle>
-        </Stack>
-        {decision.conditions &&
-          decision.conditions.map((condition) => (
-            <Stack key={condition.name} direction="column">
-              <ToggleOption
-                checked={!checkNone}
-                handleToggleChange={(e) => {
-                  if (!e.target.checked) {
-                    onChangeCondition(
-                      {
-                        value: "",
-                        to: 0,
-                        from: 0,
-                        list: condition.possibleValue!.list,
-                      },
-                      condition.name,
-                    );
-                  }
-                }}
-                id={condition.name.replace(" ", "")}
-                labelToggle={condition.name.split(/(?=[A-Z])/).join(" ")}
-                name={condition.name.replace(" ", "")}
-              >
-                {
-                  <DecisionConditionRenderer
-                    element={condition}
-                    onDecision={onChangeCondition}
-                    valueData={formik.values[condition.name]}
-                    message={getFieldMessage(condition.name) as string | object}
-                    status={getFieldStatus(condition.name) as IInputStatus}
-                    textValues={{
-                      selectOptions: "Select an option",
-                      selectOption: "Option selected",
-                      rangeMin: (label: string) => `Minimum ${label}`,
-                      rangeMax: (label: string) => `Maximum ${label}`,
-                    }}
-                  />
-                }
-              </ToggleOption>
-            </Stack>
-          ))}
-      </Stack>
-      <Divider dashed />
-      <Stack direction="column">
-        <ReasonForChange
-          label={textValues.reasonForChange}
-          labelText={textValues.change}
-          onHandleChange={handleReasonForChange}
-          placeholder={textValues.changePlaceholder}
-          required={true}
+      {decision && (
+        <DecisionConditionRenderer
+          element={mapper}
+          onDecision={onChangeDecision}
+          valueData={formik.values[decision.name]}
+          message={formik.errors[decision.name]}
+          status={getFieldStatus(decision.name) as IInputStatus}
+          textValues={{
+            selectOptions: "Select an option",
+            selectOption: "Option selected",
+            rangeMin: (label: string) => `Minimum ${label}`,
+            rangeMax: (label: string) => `Maximum ${label}`,
+          }}
         />
-      </Stack>
+      )}
+      <Divider dashed />
+      <StyledConditionContainer>
+        <StyledScrollContainer>
+          <Stack
+            direction="column"
+            padding="6px 12px"
+            gap="16px"
+            height="272px"
+          >
+            <Stack direction="row" justifyContent="space-between">
+              <Text>{textValues.factsThatConditionIt}</Text>
+              <Toggle
+                id="toogleNone"
+                onChange={handleToggleNone}
+                checked={checkNone}
+                size="small"
+              >
+                <Text size="medium" type="label" weight="bold">
+                  {textValues.none}
+                </Text>
+              </Toggle>
+            </Stack>
+            <Stack direction="column" gap="20px">
+              {decision.conditions &&
+                decision.conditions
+                  .filter((condition) => !condition.hidden)
+                  .map((condition) => (
+                    <ToggleOption
+                      key={condition.name}
+                      checked={!checkNone}
+                      handleToggleChange={(e) => {
+                        if (!e.target.checked) {
+                          onChangeCondition(
+                            {
+                              value: "",
+                              to: 0,
+                              from: 0,
+                              list: condition.possibleValue!.list,
+                            },
+                            condition.name,
+                          );
+                        }
+                      }}
+                      id={condition.name.replace(" ", "")}
+                      labelToggle={condition.name.split(/(?=[A-Z])/).join(" ")}
+                      name={condition.name.replace(" ", "")}
+                    >
+                      {
+                        <DecisionConditionRenderer
+                          element={condition}
+                          onDecision={onChangeCondition}
+                          valueData={formik.values[condition.name]}
+                          message={
+                            getFieldMessage(condition.name) as string | object
+                          }
+                          status={
+                            getFieldStatus(condition.name) as IInputStatus
+                          }
+                          textValues={{
+                            selectOptions: "Select an option",
+                            selectOption: "Option selected",
+                            rangeMin: (label: string) => `Minimum ${label}`,
+                            rangeMax: (label: string) => `Maximum ${label}`,
+                          }}
+                        />
+                      }
+                    </ToggleOption>
+                  ))}
+            </Stack>
+          </Stack>
+        </StyledScrollContainer>
+      </StyledConditionContainer>
       <Divider dashed />
       <Stack direction="column">
         {decision && (
           <Term
-            onHandleStartChange={(e) => onStartChange(e.target.value)}
-            onHandleEndChange={(e) => onEndChange(e.target.value)}
+            onHandleStartChange={(e: { target: { value: string } }) =>
+              onStartChange(e.target.value)
+            }
+            onHandleEndChange={(e: { target: { value: string } }) =>
+              onEndChange(e.target.value)
+            }
             labelStart={textValues.termStart}
             labelEnd={textValues.termEnd}
             checkedClosed={decision.endDate ? true : false}
@@ -210,7 +207,7 @@ const RulesFormUI = (props: IRulesFormUI) => {
           />
         )}
       </Stack>
-      <Divider dashed />
+      <Divider />
       <Stack direction="row" justifyContent="end" gap="16px">
         <Button appearance="gray" onClick={onCancel}>
           {textValues.cancel}

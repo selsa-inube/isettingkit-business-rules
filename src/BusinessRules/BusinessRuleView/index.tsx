@@ -4,7 +4,7 @@ import { Text } from "@inubekit/text";
 
 import { DecisionViewConditionRenderer } from "@isettingkit/view";
 import { getValueData } from "./helper";
-import { IRulesFormTextValues } from "../Form/types";
+
 import {
   ICondition,
   IDecision,
@@ -13,103 +13,145 @@ import {
   ValueDataType,
   ValueHowToSetUp,
 } from "@isettingkit/input";
+import { IRulesFormTextValues } from "../Form/types";
+import { StyledConditionContainer, StyledScrollContainer } from "./styles";
+import { Divider } from "@inubekit/divider";
+import { SkeletonLine } from "@inubekit/skeleton";
 
 interface IBusinessRuleView {
-  decision: IRuleDecision;
-  textValues: IRulesFormTextValues;
+  decision?: IRuleDecision;
+  loading?: boolean;
+  textValues?: IRulesFormTextValues;
 }
 
 const BusinessRuleView = (props: IBusinessRuleView) => {
-  const { decision, textValues } = props;
+  const { decision, loading = false, textValues } = props;
 
   const isNonEmptyObject = (obj: string[] | IValue) =>
     obj && Object.keys(obj).length > 0;
 
   const mapper: IDecision | ICondition = {
-    name: decision.name,
-    dataType: decision.dataType,
+    name: decision?.name || "",
+    dataType: decision?.dataType || "alphabetical",
     value: getValueData(decision),
-    valueUse: decision.valueUse,
+    valueUse: decision?.valueUse || "equal",
   };
 
-  return (
-    <Stack direction="column" gap="24px">
-      <Stack direction="column" gap="16px">
-        <Text type="title" size="medium" appearance="gray" weight="bold">
-          {textValues.criteria}
-        </Text>
-        <Stack justifyContent="space-between">
-          {decision && (
-            <Stack key={decision.name} direction="column">
+  return !loading && decision && textValues ? (
+    <Stack direction="column" gap="12px">
+      {decision && (
+        <Stack key={decision.name} direction="column" alignItems="center">
+          <DecisionViewConditionRenderer
+            element={mapper as any}
+            valueData={getValueData(mapper)}
+            type="decision"
+          />
+        </Stack>
+      )}
+      <Divider dashed />
+      <StyledScrollContainer>
+        <Stack
+          direction="column"
+          gap="12px"
+          justifyContent="space-between"
+          height="203px"
+        >
+          <Text
+            type="label"
+            size="large"
+            appearance="dark"
+            weight="bold"
+            textAlign="center"
+          >
+            {textValues.factsThatConditionIt}
+          </Text>
+          {decision.conditions &&
+            decision.conditions.map((condition) => {
+              if (condition.hidden) return null;
+              const conditionValue = condition.value as
+                | string
+                | number
+                | string[]
+                | undefined;
+
+              return (
+                ((typeof conditionValue === "object" &&
+                  isNonEmptyObject(conditionValue)) ||
+                  conditionValue) && (
+                  <StyledConditionContainer key={condition.name}>
+                    <Stack direction="column" padding="8px">
+                      <DecisionViewConditionRenderer
+                        element={{
+                          ...condition,
+                          value: conditionValue,
+                        }}
+                        valueData={getValueData(condition)}
+                      />
+                    </Stack>
+                  </StyledConditionContainer>
+                )
+              );
+            })}
+          <Divider dashed />
+          <Stack direction="column" gap="12px">
+            {decision?.startDate && decision?.endDate && (
               <DecisionViewConditionRenderer
-                element={mapper as any}
-                valueData={getValueData(mapper)}
+                key={textValues.terms}
+                element={{
+                  name: textValues.terms,
+                  value: String(decision.startDate),
+                  valueUse: ValueHowToSetUp.RANGE,
+                  dataType: ValueDataType.DATE,
+                }}
+                valueData={getValueData({
+                  name: textValues.terms,
+                  value: {
+                    from: String(decision.startDate),
+                    to: String(decision.endDate),
+                  },
+                  valueUse: ValueHowToSetUp.RANGE,
+                  dataType: ValueDataType.DATE,
+                })}
+                type="decision"
               />
-            </Stack>
-          )}
+            )}
+          </Stack>
         </Stack>
+      </StyledScrollContainer>
+    </Stack>
+  ) : (
+    <Stack direction="column" gap="12px">
+      <Stack key="loading" direction="column" alignItems="center" gap="4px">
+        <SkeletonLine animated width="180px" />
+        <SkeletonLine animated width="85px" />
       </Stack>
-      <Stack direction="column" gap="16px" justifyContent="space-between">
-        <Text type="title" size="medium" appearance="gray" weight="bold">
-          {textValues.factsThatConditionIt}
-        </Text>
-        {decision.conditions &&
-          decision.conditions.map((condition) => {
-            const conditionValue = condition.value as
-              | string
-              | number
-              | string[]
-              | undefined;
-
-            return (
-              ((typeof conditionValue === "object" &&
-                isNonEmptyObject(conditionValue)) ||
-                conditionValue) && (
-                <Stack key={condition.name} direction="column">
-                  <DecisionViewConditionRenderer
-                    element={{
-                      ...condition,
-                      value: conditionValue,
-                    }}
-                    valueData={getValueData(condition)}
-                  />
-                </Stack>
-              )
-            );
-          })}
+      <Stack direction="column" gap="12px" alignItems="center">
+        <Divider dashed />
+        <SkeletonLine animated width="150px" />
       </Stack>
 
-      <Stack direction="column" gap="12px">
-        <Text type="title" size="medium" appearance="gray" weight="bold">
-          {textValues.terms}
-        </Text>
-        <Stack justifyContent="space-between">
-          {decision?.startDate && (
-            <DecisionViewConditionRenderer
-              key="startDate"
-              element={{
-                name: "Fecha de inicio",
-                value: String(decision.startDate),
-                valueUse: ValueHowToSetUp.EQUAL,
-                dataType: ValueDataType.DATE,
-              }}
-              valueData={String(decision.startDate)}
-            />
-          )}
-          {decision?.endDate && (
-            <DecisionViewConditionRenderer
-              key="endDate"
-              element={{
-                name: "Fecha de final",
-                value: String(decision.endDate),
-                valueUse: ValueHowToSetUp.EQUAL,
-                dataType: ValueDataType.DATE,
-              }}
-              valueData={String(decision.endDate)}
-            />
-          )}
+      <StyledScrollContainer>
+        <Stack
+          direction="column"
+          gap="12px"
+          justifyContent="space-between"
+          height="203px"
+        >
+          {Array.from({ length: 5 }).map((_, index) => (
+            <StyledConditionContainer key={`condition-${index}`}>
+              <Stack
+                direction="column"
+                gap="12px"
+                alignItems="start"
+                padding="8px"
+              >
+                <SkeletonLine animated width="180px" />
+                <SkeletonLine animated width="85px" />
+              </Stack>
+            </StyledConditionContainer>
+          ))}
         </Stack>
-      </Stack>
+      </StyledScrollContainer>
     </Stack>
   );
 };

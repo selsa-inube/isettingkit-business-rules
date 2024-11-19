@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ValueDataType, ValueHowToSetUp } from "@isettingkit/input";
+import {
+  ICondition,
+  IDecision,
+  IRuleDecision,
+  IValue,
+  ValueDataType,
+  ValueHowToSetUp,
+} from "@isettingkit/input";
 import {
   string,
   number,
@@ -10,12 +17,6 @@ import {
   AnyObject,
   mixed,
 } from "yup";
-import {
-  ICondition,
-  IDecision,
-  IRuleDecision,
-  IValue,
-} from "../BusinessRuleView/types";
 
 declare const inputTypes: readonly [
   "alphabetical",
