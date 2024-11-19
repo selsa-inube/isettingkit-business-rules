@@ -1,3 +1,15 @@
+# v0.1.20 (Tue Nov 19 2024)
+
+#### ⚠️ Pushed to `main`
+
+- feat: added grid-component in order to provide a plug and use component easy to handle ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.1.19 (Tue Nov 12 2024)
 
 #### ⚠️ Pushed to `main`
