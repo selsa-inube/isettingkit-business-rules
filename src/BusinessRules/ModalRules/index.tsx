@@ -5,14 +5,14 @@ import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { StyledContainer, StyledModal } from "./styles";
 
-interface IRulesConfiguration {
+interface IModalRules {
   children: React.ReactNode;
   onCloseModal: () => void;
   portalId: string;
   title: string;
 }
 
-const RulesConfiguration = (props: IRulesConfiguration) => {
+const ModalRules = (props: IModalRules) => {
   const { children, portalId, onCloseModal, title } = props;
   const node = document.getElementById(portalId);
   if (!node) {
@@ -43,5 +43,5 @@ const RulesConfiguration = (props: IRulesConfiguration) => {
   );
 };
 
-export { RulesConfiguration };
-export type { IRulesConfiguration };
+export { ModalRules };
+export type { IModalRules };

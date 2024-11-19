@@ -6,7 +6,7 @@ import { BusinessRuleView } from "./BusinessRuleView";
 import { Text } from "@inubekit/text";
 import { IRulesFormTextValues } from "./Form/types";
 import { RulesForm } from "./Form";
-import { RulesConfiguration } from "./RulesConfiguration";
+import { ModalRules } from "./ModalRules";
 import { IRuleDecision } from "@isettingkit/input";
 import {
   StyledEmptyCardContainer,
@@ -170,7 +170,7 @@ const BusinessRules = ({
       </StyledGridContainer>
 
       {isModalOpen && (
-        <RulesConfiguration
+        <ModalRules
           portalId="modal-portal"
           onCloseModal={handleCloseModal}
           title={selectedDecision ? "Editar Decisión" : "Nueva decisión"}
@@ -187,7 +187,7 @@ const BusinessRules = ({
             textValues={textValues}
             onCancel={() => handleCloseModal()}
           />
-        </RulesConfiguration>
+        </ModalRules>
       )}
     </>
   );

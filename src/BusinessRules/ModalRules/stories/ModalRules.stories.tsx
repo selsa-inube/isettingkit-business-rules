@@ -3,13 +3,13 @@ import { BrowserRouter } from "react-router-dom";
 import { Meta, StoryFn } from "@storybook/react";
 import { Button } from "@inubekit/button";
 
-import { IRulesConfiguration, RulesConfiguration } from "..";
 import { MultipleChoices } from "@isettingkit/input";
 import { JSX } from "react/jsx-runtime";
+import { IModalRules, ModalRules } from "..";
 
-const meta: Meta<typeof RulesConfiguration> = {
-  title: "components/modals/RulesConfiguration",
-  component: RulesConfiguration,
+const meta: Meta<typeof ModalRules> = {
+  title: "components/modals/ModalRules",
+  component: ModalRules,
   decorators: [
     (Story: StoryFn) => (
       <BrowserRouter>
@@ -19,8 +19,8 @@ const meta: Meta<typeof RulesConfiguration> = {
   ],
 };
 
-const Template: StoryFn<IRulesConfiguration> = (
-  args: JSX.IntrinsicAttributes & IRulesConfiguration,
+const Template: StoryFn<IModalRules> = (
+  args: JSX.IntrinsicAttributes & IModalRules,
 ) => {
   const [showModal, setShowModal] = useState(false);
 
@@ -28,10 +28,7 @@ const Template: StoryFn<IRulesConfiguration> = (
     <>
       <Button onClick={() => setShowModal(true)}>Show Modal</Button>
       {showModal && (
-        <RulesConfiguration
-          {...args}
-          onCloseModal={() => setShowModal(false)}
-        />
+        <ModalRules {...args} onCloseModal={() => setShowModal(false)} />
       )}
     </>
   );
@@ -57,8 +54,8 @@ Default.args = {
   ),
 };
 
-const TemplateWithPlannedAutomatic: StoryFn<IRulesConfiguration> = (
-  args: JSX.IntrinsicAttributes & IRulesConfiguration,
+const TemplateWithPlannedAutomatic: StoryFn<IModalRules> = (
+  args: JSX.IntrinsicAttributes & IModalRules,
 ) => {
   const [showModal, setShowModal] = useState(false);
 
@@ -66,16 +63,13 @@ const TemplateWithPlannedAutomatic: StoryFn<IRulesConfiguration> = (
     <>
       <Button onClick={() => setShowModal(true)}>Show Modal</Button>
       {showModal && (
-        <RulesConfiguration
-          {...args}
-          onCloseModal={() => setShowModal(false)}
-        />
+        <ModalRules {...args} onCloseModal={() => setShowModal(false)} />
       )}
     </>
   );
 };
 
-export const WithPlannedAutomaticExecution: StoryFn<IRulesConfiguration> =
+export const WithPlannedAutomaticExecution: StoryFn<IModalRules> =
   TemplateWithPlannedAutomatic.bind({});
 WithPlannedAutomaticExecution.args = {
   portalId: "portal",
