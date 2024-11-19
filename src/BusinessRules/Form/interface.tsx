@@ -181,6 +181,7 @@ const RulesFormUI = (props: IRulesFormUI) => {
                             rangeMin: (label: string) => `Minimum ${label}`,
                             rangeMax: (label: string) => `Maximum ${label}`,
                           }}
+                          type="condition"
                         />
                       }
                     </ToggleOption>

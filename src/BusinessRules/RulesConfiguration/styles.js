@@ -3,12 +3,15 @@ import { inube } from "@inubekit/foundations";
 
 const StyledContainer = styled.div`
   position: relative;
+  & > div {
+    padding: 24px 16px;
+  }
 `;
 
 const StyledModal = styled.div`
   background-color: ${({ theme }) =>
-    theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};
-  width: 450px;
+    theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
+  max-width: 450px;
   max-height: 90vh;
   overflow-y: hidden;
   border-radius: 8px;
