@@ -48,7 +48,7 @@ const BusinessRules = ({
       <StyledGridContainer>
         <StyledScrollContainer>
           <Stack direction="column" gap="16px" padding="6px">
-            {decisions.length === 0 && (
+            {decisions.length === 0 && !loading && (
               <Text as="span" type="label" size="large" appearance="gray">
                 Aún no tienes definidas tasas de interés efectivas. Presiona{" "}
                 <Text
@@ -179,7 +179,7 @@ const BusinessRules = ({
             id={
               selectedDecision
                 ? selectedDecision.id!
-                : `decision-${decisions.length + 1}`
+                : `Decisión ${decisions.length + 1}`
             }
             decision={selectedDecision || decisionTemplate}
             onCloseModal={handleCloseModal}

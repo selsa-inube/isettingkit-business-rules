@@ -20,7 +20,6 @@ const BusinessRulesController = ({
   const [selectedDecision, setSelectedDecision] =
     useState<IRuleDecision | null>(null);
   const [decisions, setDecisions] = useState<IRuleDecision[]>(initialDecisions);
-  // const [loading] = useState<boolean>(false);
 
   const handleOpenModal = (decision: IRuleDecision | null = null) => {
     setSelectedDecision(decision);

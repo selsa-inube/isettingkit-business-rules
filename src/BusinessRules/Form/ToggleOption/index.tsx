@@ -39,7 +39,6 @@ const ToggleOption = (props: IToggleOption) => {
         <Toggle
           checked={toogleCheck}
           id={id}
-          margin="10px"
           name={name}
           onChange={handleToggle}
           size="small"

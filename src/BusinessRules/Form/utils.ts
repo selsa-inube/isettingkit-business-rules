@@ -88,7 +88,7 @@ const typeData = (
     const toNumber =
       typeof value === "object" && "to" in value && typeof value.to === "number"
         ? value.to
-        : Infinity;
+        : 0;
 
     switch (element!.valueUse) {
       case ValueHowToSetUp.LIST_OF_VALUES:
@@ -163,7 +163,11 @@ const typeData = (
   }
 };
 
-const ValueValidationSchema = (decision: IRuleDecision) => {
+const ValueValidationSchema = (
+  decision: IRuleDecision,
+  activeConditions: ICondition[] = [],
+  checkClosed: boolean = false,
+) => {
   const respValue: {
       [key: string]:
         | StringSchema
@@ -180,17 +184,57 @@ const ValueValidationSchema = (decision: IRuleDecision) => {
       respValue[decision.name] = decisionData.schema;
       initialValues[decision.name] = decisionData.value;
     }
+    respValue.startDate = string()
+      .required("Start date is required.")
+      .test(
+        "not-placeholder",
+        "Start date cannot be 'dd/mm/yyyy'.",
+        (value) => value !== "dd/mm/yyyy",
+      )
+      .test(
+        "valid-date-format",
+        "Start date must be a valid date.",
+        (value) => {
+          if (!value) return false;
+          const parsedDate = Date.parse(value);
+          return !isNaN(parsedDate);
+        },
+      );
+
+    initialValues.startDate = (decision.startDate as any) || "";
+
+    respValue.endDate = string()
+      .test(
+        "valid-date-format",
+        "End date must be a valid date or null.",
+        (value) => {
+          if (!value) return true;
+          const parsedDate = Date.parse(value);
+          return !isNaN(parsedDate);
+        },
+      )
+      .test(
+        "start-before-end",
+        "Start date must not be greater than end date.",
+        (value, context) => {
+          if (!checkClosed) return true;
+          if (!value) return true;
+          const startDate = Date.parse(context.parent.startDate);
+          const endDate = Date.parse(value);
+          return startDate <= endDate;
+        },
+      );
+
+    initialValues.endDate = (decision.endDate as any) || "";
   }
 
-  if (decision.conditions) {
-    decision.conditions.forEach((condition) => {
-      const typeDataResult = typeData(condition);
-      if (typeDataResult) {
-        respValue[condition.name] = typeDataResult.schema;
-        initialValues[condition.name] = typeDataResult.value;
-      }
-    });
-  }
+  activeConditions.forEach((condition) => {
+    const typeDataResult = typeData(condition);
+    if (typeDataResult) {
+      respValue[condition.name] = typeDataResult.schema;
+      initialValues[condition.name] = typeDataResult.value;
+    }
+  });
   return { validationSchema: object().shape(respValue), initialValues };
 };
 

@@ -99,7 +99,7 @@ Empty.args = {
     cancel: "Cancelar",
     confirm: "Confirmar",
     none: "Ninguno",
-    factsThatConditionIt: "Hechos que condicionan",
+    factsThatConditionIt: "Condiciones que lo determinan",
     criteria: "Criterios",
     terms: "Vigencia",
   },

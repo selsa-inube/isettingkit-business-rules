@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FormikValues } from "formik";
 import { Divider } from "@inubekit/divider";
 import { Stack } from "@inubekit/stack";
@@ -20,9 +20,12 @@ import { Term } from "./Term";
 import { StyledConditionContainer, StyledScrollContainer } from "./styles";
 
 interface IRulesFormUI {
+  checkNone?: boolean;
+  decision: IRuleDecision;
   id: string;
   formik: FormikValues;
-  decision: IRuleDecision;
+  handleToggleChange: (conditionName: string, isChecked: boolean) => void;
+  hasErrors: boolean;
   onCancel: () => void;
   onChangeCondition: (
     value: string | number | string[] | IValue | Date,
@@ -52,6 +55,7 @@ interface IRulesFormUI {
     terms: string;
     termStart: string;
   };
+  setCheckNone: (value: boolean) => void;
 }
 
 const RulesFormUI = (props: IRulesFormUI) => {
@@ -65,9 +69,11 @@ const RulesFormUI = (props: IRulesFormUI) => {
     textValues,
     onCancel,
     onSubmit,
+    checkNone,
+    setCheckNone,
+    handleToggleChange,
+    hasErrors,
   } = props;
-  const [checkNone, setCheckNone] = useState(true);
-  const [checkDisabledConfirm] = useState(true);
 
   const mapper = {
     name: decision.name,
@@ -80,12 +86,17 @@ const RulesFormUI = (props: IRulesFormUI) => {
   useEffect(() => {
     console.log("Updated formik.errors in RulesFormUI:", formik.errors);
   }, [formik.errors]);
+
   const handleToggleNone = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCheckNone(e.target.checked);
   };
 
   const getFieldStatus = (fieldName: string) => {
     const error = findNestedError(formik.errors[fieldName] || {});
+    console.log(
+      "getFieldStatus(error): ",
+      findNestedError(formik.errors[fieldName]),
+    );
     if (typeof error === "string") {
       return error ? "invalid" : "pending";
     }
@@ -99,7 +110,12 @@ const RulesFormUI = (props: IRulesFormUI) => {
     }
     return error;
   };
-
+  console.log(
+    "getFieldMessage: ",
+    getFieldStatus(decision.name),
+    " - getFieldMessage: ",
+    getFieldMessage(formik.errors[decision.name]),
+  );
   return (
     <Stack direction="column" gap="24px">
       {decision && (
@@ -148,7 +164,9 @@ const RulesFormUI = (props: IRulesFormUI) => {
                       key={condition.name}
                       checked={!checkNone}
                       handleToggleChange={(e) => {
-                        if (!e.target.checked) {
+                        const isChecked = e.target.checked;
+                        handleToggleChange(condition.name, isChecked);
+                        if (!isChecked) {
                           onChangeCondition(
                             {
                               value: "",
@@ -164,26 +182,22 @@ const RulesFormUI = (props: IRulesFormUI) => {
                       labelToggle={condition.name.split(/(?=[A-Z])/).join(" ")}
                       name={condition.name.replace(" ", "")}
                     >
-                      {
-                        <DecisionConditionRenderer
-                          element={condition}
-                          onDecision={onChangeCondition}
-                          valueData={formik.values[condition.name]}
-                          message={
-                            getFieldMessage(condition.name) as string | object
-                          }
-                          status={
-                            getFieldStatus(condition.name) as IInputStatus
-                          }
-                          textValues={{
-                            selectOptions: "Select an option",
-                            selectOption: "Option selected",
-                            rangeMin: (label: string) => `Minimum ${label}`,
-                            rangeMax: (label: string) => `Maximum ${label}`,
-                          }}
-                          type="condition"
-                        />
-                      }
+                      <DecisionConditionRenderer
+                        element={condition}
+                        onDecision={onChangeCondition}
+                        valueData={formik.values[condition.name]}
+                        message={
+                          getFieldMessage(condition.name) as string | object
+                        }
+                        status={getFieldStatus(condition.name) as IInputStatus}
+                        textValues={{
+                          selectOptions: "Select an option",
+                          selectOption: "Option selected",
+                          rangeMin: (label: string) => `Minimum ${label}`,
+                          rangeMax: (label: string) => `Maximum ${label}`,
+                        }}
+                        type="condition"
+                      />
                     </ToggleOption>
                   ))}
             </Stack>
@@ -205,6 +219,7 @@ const RulesFormUI = (props: IRulesFormUI) => {
             checkedClosed={decision.endDate ? true : false}
             valueStart={String(decision.startDate)}
             valueEnd={String(decision.endDate) || ""}
+            required
           />
         )}
       </Stack>
@@ -215,7 +230,8 @@ const RulesFormUI = (props: IRulesFormUI) => {
         </Button>
         <Button
           onClick={onSubmit}
-          disabled={checkDisabledConfirm || !formik.isValid}
+          // disabled={!formik.isValid}
+          disabled={hasErrors}
           type="submit"
         >
           {textValues.confirm}

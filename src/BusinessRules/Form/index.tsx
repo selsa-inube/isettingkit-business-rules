@@ -16,7 +16,11 @@ interface IRulesForm {
 
 const RulesForm = (prop: IRulesForm) => {
   const { id, decision, onCancel, onSubmitEvent, textValues } = prop;
-  const [DataDecision, setDataDecision] = useState(decision);
+  const [dataDecision, setDataDecision] = useState(decision);
+  const [checkNone, setCheckNone] = useState(true);
+  const [activeConditions, setActiveConditions] = useState<string[]>([]);
+  const [hasErrors, setHasErrors] = useState(false);
+
   const handleFieldChange = (
     fieldName: string,
     value: string | number | IValue | string[],
@@ -31,12 +35,12 @@ const RulesForm = (prop: IRulesForm) => {
   ) => {
     const processedValue = value instanceof Date ? value.toISOString() : value;
 
-    setDataDecision((DataDecisionRule) => {
-      if (!DataDecisionRule.conditions) {
-        return DataDecisionRule;
+    setDataDecision((dataDecisionRule) => {
+      if (!dataDecisionRule.conditions) {
+        return dataDecisionRule;
       }
 
-      const updatedConditions = DataDecisionRule.conditions.map((condition) => {
+      const updatedConditions = dataDecisionRule.conditions.map((condition) => {
         if (condition.name === nameCondition) {
           return { ...condition, value: processedValue };
         }
@@ -44,7 +48,7 @@ const RulesForm = (prop: IRulesForm) => {
       });
 
       return {
-        ...DataDecisionRule,
+        ...dataDecisionRule,
         conditions: updatedConditions,
       };
     });
@@ -52,13 +56,22 @@ const RulesForm = (prop: IRulesForm) => {
     handleFieldChange(nameCondition, processedValue);
   };
 
+  const handleToggleChange = (conditionName: string, isChecked: boolean) => {
+    setActiveConditions((prev) => {
+      if (isChecked) {
+        return [...prev, conditionName];
+      }
+      return prev.filter((name) => name !== conditionName);
+    });
+  };
+
   const onDecision = (value: string | number | string[] | IValue | Date) => {
     // if (
     //   typeof value === "object" &&
     //   (value instanceof Date || "someProperty" in value)
     // ) {
-    setDataDecision((prevDataDecision) =>
-      updateDataDecision(prevDataDecision, "value", value),
+    setDataDecision((prevdataDecision) =>
+      updatedataDecision(prevdataDecision, "value", value),
     );
     // } else {
     //   console.warn("Invalid type for value:", value);
@@ -66,24 +79,37 @@ const RulesForm = (prop: IRulesForm) => {
   };
 
   const onEndChange = (value: string) => {
-    setDataDecision((prevDataDecision) =>
-      updateDataDecision(prevDataDecision, "endDate", value),
+    setDataDecision((prevdataDecision) =>
+      updatedataDecision(prevdataDecision, "endDate", value),
     );
   };
 
   const onStartChange = (value: string) => {
-    setDataDecision((prevDataDecision) =>
-      updateDataDecision(prevDataDecision, "startDate", value),
+    setDataDecision((prevdataDecision) =>
+      updatedataDecision(prevdataDecision, "startDate", value),
     );
   };
 
-  const { validationSchema, initialValues } =
-    ValueValidationSchema(DataDecision);
+  const { validationSchema, initialValues } = ValueValidationSchema(
+    dataDecision,
+    checkNone
+      ? decision.conditions?.filter((condition) =>
+          activeConditions.includes(condition.name),
+        )
+      : decision.conditions,
+    checkNone,
+  );
 
   validationSchema
     .validate(initialValues, { abortEarly: false })
-    .then(() => console.log("Validation passed"))
-    .catch((err) => console.log("Validation failed:", err.errors));
+    .then(() => {
+      setHasErrors(false);
+      console.log("Validation passed");
+    })
+    .catch((err) => {
+      console.log("Validation failed:", err.errors);
+      setHasErrors(true);
+    });
 
   const formik = useFormik({
     initialValues,
@@ -91,18 +117,18 @@ const RulesForm = (prop: IRulesForm) => {
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: () => {
-      onSubmitEvent(DataDecision);
+      onSubmitEvent(dataDecision);
     },
   });
 
-  const updateDataDecision = (
-    prevDataDecision: IRuleDecision,
+  const updatedataDecision = (
+    prevdataDecision: IRuleDecision,
     field: string,
     value: string | number | string[] | IValue | Date,
   ) => {
     return {
-      ...prevDataDecision,
-      ...prevDataDecision.decision!,
+      ...prevdataDecision,
+      ...prevdataDecision.decision!,
       [field]: value,
     };
   };
@@ -111,14 +137,18 @@ const RulesForm = (prop: IRulesForm) => {
     <RulesFormUI
       id={id}
       formik={formik}
-      decision={DataDecision}
+      decision={dataDecision}
       onCancel={onCancel}
-      onSubmit={() => onSubmitEvent(DataDecision)}
+      onSubmit={() => onSubmitEvent(dataDecision)}
       onChangeCondition={onCondition}
       onChangeDecision={onDecision}
       onStartChange={onStartChange}
       onEndChange={onEndChange}
       textValues={textValues}
+      checkNone={checkNone}
+      setCheckNone={setCheckNone}
+      handleToggleChange={handleToggleChange}
+      hasErrors={hasErrors}
     />
   );
 };

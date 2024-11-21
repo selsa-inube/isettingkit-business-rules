@@ -30,7 +30,7 @@ const sampleDecisions: IRuleDecision[] = [
     endDate: "2024-12-31",
     conditions: [
       {
-        name: "Antigüedad del cliente (Días)",
+        name: "AntigüedadDelCliente(Días)",
         dataType: ValueDataType.ALPHABETICAL,
         value: "Mayor a: 720",
         valueUse: ValueHowToSetUp.EQUAL,
@@ -131,28 +131,31 @@ const sampleDecisions: IRuleDecision[] = [
 const decisionTemplate: IRuleDecision = {
   name: "TasaEfectivaAnual",
   dataType: ValueDataType.PERCENTAGE,
-  value: { from: 0, to: 0 },
+  value: {
+    from: -0,
+    to: -0,
+  },
   valueUse: ValueHowToSetUp.RANGE,
   startDate: "",
   endDate: "",
   conditions: [
     {
-      name: "Antigüedad del cliente (Días)",
+      name: "AntigüedadDelCliente(Días)",
       dataType: ValueDataType.ALPHABETICAL,
       value: "",
       valueUse: ValueHowToSetUp.EQUAL,
     },
     {
-      name: "Categoría del cliente ",
+      name: "CategoríaDelCliente",
       dataType: ValueDataType.ALPHABETICAL,
       possibleValue: {
         list: ["Funcionario", "Independiente", "Pensionado", "Empleado"],
       },
-      value: [],
+      value: "",
       valueUse: ValueHowToSetUp.LIST_OF_VALUES_MULTI,
     },
     {
-      name: "Nivel de membresía",
+      name: "NivelDeMembresía",
       dataType: ValueDataType.ALPHABETICAL,
       possibleValue: {
         list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
@@ -161,13 +164,13 @@ const decisionTemplate: IRuleDecision = {
       valueUse: ValueHowToSetUp.LIST_OF_VALUES,
     },
     {
-      name: "Reciprocidad de ahorro",
+      name: "ReciprocidadDeAhorro",
       dataType: ValueDataType.PERCENTAGE,
       value: 0,
       valueUse: ValueHowToSetUp.EQUAL,
     },
     {
-      name: "Destino del dinero",
+      name: "DestinoDelDinero",
       dataType: ValueDataType.ALPHABETICAL,
       value: "",
       valueUse: ValueHowToSetUp.EQUAL,
@@ -179,7 +182,7 @@ const decisionTemplate: IRuleDecision = {
       valueUse: ValueHowToSetUp.EQUAL,
     },
     {
-      name: "Scoring de riesgo",
+      name: "ScoringDeRiesgo",
       dataType: ValueDataType.ALPHABETICAL,
       value: "",
       valueUse: ValueHowToSetUp.EQUAL,
@@ -206,7 +209,7 @@ addedCard.args = {
     cancel: "Cancelar",
     confirm: "Confirmar",
     none: "Ninguno",
-    factsThatConditionIt: "Hechos que condicionan",
+    factsThatConditionIt: "Condiciones que lo determinan",
     criteria: "Criterios",
     terms: "Vigencia",
   },

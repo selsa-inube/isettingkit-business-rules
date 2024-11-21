@@ -73,11 +73,12 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
                 | number
                 | string[]
                 | undefined;
-
               return (
                 ((typeof conditionValue === "object" &&
                   isNonEmptyObject(conditionValue)) ||
-                  conditionValue) && (
+                  (conditionValue !== undefined &&
+                    typeof conditionValue === "string" &&
+                    conditionValue.length > 0)) && (
                   <StyledConditionContainer key={condition.name}>
                     <Stack direction="column" padding="8px">
                       <DecisionViewConditionRenderer
@@ -110,6 +111,24 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
                     to: String(decision.endDate),
                   },
                   valueUse: ValueHowToSetUp.RANGE,
+                  dataType: ValueDataType.DATE,
+                })}
+                type="decision"
+              />
+            )}
+            {decision?.startDate && !decision?.endDate && (
+              <DecisionViewConditionRenderer
+                key={textValues.terms}
+                element={{
+                  name: textValues.terms,
+                  value: String(decision.startDate),
+                  valueUse: ValueHowToSetUp.EQUAL,
+                  dataType: ValueDataType.DATE,
+                }}
+                valueData={getValueData({
+                  name: textValues.terms,
+                  value: String(decision.startDate),
+                  valueUse: ValueHowToSetUp.EQUAL,
                   dataType: ValueDataType.DATE,
                 })}
                 type="decision"
