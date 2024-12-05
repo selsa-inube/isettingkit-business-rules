@@ -30,7 +30,7 @@ type FormikErrors = {
 type FormikTouched = {
   value?: any;
 };
-function RulesForm(props: IRulesForm) {
+const RulesForm = (props: IRulesForm) => {
   const { decision, onSubmitEvent, textValues, onCancel } = props;
   const { formik, handleToggleNoneChange } = useRulesFormUtils({
     decision,
@@ -250,7 +250,7 @@ function RulesForm(props: IRulesForm) {
       </Stack>
     </form>
   );
-}
+};
 
 export { RulesForm };
 export type { IRulesForm };
