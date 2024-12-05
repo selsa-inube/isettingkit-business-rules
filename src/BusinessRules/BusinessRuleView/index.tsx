@@ -13,10 +13,10 @@ import {
   ValueDataType,
   ValueHowToSetUp,
 } from "@isettingkit/input";
-import { IRulesFormTextValues } from "../Form/types";
 import { StyledConditionContainer, StyledScrollContainer } from "./styles";
 import { Divider } from "@inubekit/divider";
 import { SkeletonLine } from "@inubekit/skeleton";
+import { IRulesFormTextValues } from "../Form/types";
 
 interface IBusinessRuleView {
   decision?: IRuleDecision;

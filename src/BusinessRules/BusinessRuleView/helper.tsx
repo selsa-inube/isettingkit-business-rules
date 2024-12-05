@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ICondition,
   IRuleDecision,
@@ -12,7 +13,7 @@ const getValueData = (
     return undefined;
   }
 
-  const valueData = element.value;
+  const valueData: any = element.value;
 
   if (!valueData) {
     return undefined;
@@ -25,22 +26,27 @@ const getValueData = (
   if (isValueObject(valueData)) {
     switch (element.valueUse) {
       case ValueHowToSetUp.LIST_OF_VALUES_MULTI:
-        return valueData;
+        return valueData as any;
 
       case ValueHowToSetUp.LIST_OF_VALUES:
-        return valueData;
+        return valueData as any;
 
       case ValueHowToSetUp.RANGE:
         return {
           from: valueData.from,
           to: valueData.to,
-        };
+        } as any;
+
+      case ValueHowToSetUp.GREATER_THAN:
+      case ValueHowToSetUp.LESS_THAN:
+      case ValueHowToSetUp.EQUAL:
+        return valueData.value as any;
 
       default:
-        return valueData.value;
+        return valueData.value as any;
     }
   }
-  return valueData;
+  return valueData as any;
 };
 
 export { getValueData };

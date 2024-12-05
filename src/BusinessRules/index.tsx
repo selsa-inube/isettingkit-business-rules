@@ -4,8 +4,6 @@ import { Grid } from "@inubekit/grid";
 import { BusinessRuleCard } from "./Cards/BusinessRuleCard";
 import { BusinessRuleView } from "./BusinessRuleView";
 import { Text } from "@inubekit/text";
-import { IRulesFormTextValues } from "./Form/types";
-import { RulesForm } from "./Form";
 import { ModalRules } from "./ModalRules";
 import { IRuleDecision } from "@isettingkit/input";
 import {
@@ -16,8 +14,11 @@ import {
 } from "./styles";
 import { Icon } from "@inubekit/icon";
 import { useMediaQuery } from "@inubekit/hooks";
+import { IRulesFormTextValues } from "./Form/types";
+import { RulesForm } from "./Form";
 
 interface IBusinessRules {
+  controls?: boolean;
   decisions: IRuleDecision[];
   textValues: IRulesFormTextValues;
   decisionTemplate: IRuleDecision;
@@ -31,6 +32,7 @@ interface IBusinessRules {
 }
 
 const BusinessRules = ({
+  controls = true,
   decisions,
   textValues,
   decisionTemplate,
@@ -107,6 +109,7 @@ const BusinessRules = ({
                           id={decision.id!}
                           handleDelete={() => handleDelete(decision.id!)}
                           handleView={() => handleOpenModal(decision)}
+                          controls={controls}
                         >
                           <BusinessRuleView
                             decision={decision}
@@ -119,7 +122,8 @@ const BusinessRules = ({
 
               {(decisions.length === 0 ||
                 decisions.length < Math.floor(window.innerWidth / 300)) &&
-                !loading && (
+                !loading &&
+                controls && (
                   <StyledFadeInStack key={`add-decision-${decisions.length}`}>
                     <Stack
                       key={`add-decision-${decisions.length}`}
@@ -175,7 +179,7 @@ const BusinessRules = ({
           onCloseModal={handleCloseModal}
           title={selectedDecision ? "Editar Decisión" : "Nueva decisión"}
         >
-          <RulesForm
+          {/* <RulesForm
             id={
               selectedDecision
                 ? selectedDecision.id!
@@ -183,6 +187,12 @@ const BusinessRules = ({
             }
             decision={selectedDecision || decisionTemplate}
             onCloseModal={handleCloseModal}
+            onSubmitEvent={handleSubmitForm}
+            textValues={textValues}
+            onCancel={() => handleCloseModal()}
+          /> */}
+          <RulesForm
+            decision={selectedDecision || decisionTemplate}
             onSubmitEvent={handleSubmitForm}
             textValues={textValues}
             onCancel={() => handleCloseModal()}

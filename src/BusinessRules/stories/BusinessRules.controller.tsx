@@ -4,6 +4,7 @@ import { BusinessRules } from "..";
 import { IRulesFormTextValues } from "../Form/types";
 
 interface IBusinessRulesController {
+  controls?: boolean;
   initialDecisions: IRuleDecision[];
   textValues: IRulesFormTextValues;
   decisionTemplate: IRuleDecision;
@@ -11,6 +12,7 @@ interface IBusinessRulesController {
 }
 
 const BusinessRulesController = ({
+  controls,
   initialDecisions,
   textValues,
   decisionTemplate,
@@ -62,7 +64,7 @@ const BusinessRulesController = ({
   };
 
   useEffect(() => {
-    console.log("Updated decisions:", JSON.stringify(decisions, null, 2));
+    // console.log("Updated decisions:", JSON.stringify(decisions, null, 2));
   }, [decisions]);
 
   const handleDelete = (id: string) => {
@@ -73,6 +75,7 @@ const BusinessRulesController = ({
 
   return (
     <BusinessRules
+      controls={controls}
       decisions={decisions}
       textValues={textValues}
       decisionTemplate={decisionTemplate}

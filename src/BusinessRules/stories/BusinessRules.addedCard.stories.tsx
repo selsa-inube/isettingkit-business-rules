@@ -131,61 +131,58 @@ const sampleDecisions: IRuleDecision[] = [
 const decisionTemplate: IRuleDecision = {
   name: "TasaEfectivaAnual",
   dataType: ValueDataType.PERCENTAGE,
-  value: {
-    from: -0,
-    to: -0,
-  },
   valueUse: ValueHowToSetUp.RANGE,
+  value: { from: 0, to: 0 },
   startDate: "",
   endDate: "",
   conditions: [
     {
       name: "AntigüedadDelCliente(Días)",
       dataType: ValueDataType.ALPHABETICAL,
-      value: "",
       valueUse: ValueHowToSetUp.EQUAL,
+      value: "",
     },
     {
       name: "CategoríaDelCliente",
       dataType: ValueDataType.ALPHABETICAL,
+      valueUse: ValueHowToSetUp.LIST_OF_VALUES_MULTI,
       possibleValue: {
         list: ["Funcionario", "Independiente", "Pensionado", "Empleado"],
       },
-      value: "",
-      valueUse: ValueHowToSetUp.LIST_OF_VALUES_MULTI,
+      value: [],
     },
     {
       name: "NivelDeMembresía",
       dataType: ValueDataType.ALPHABETICAL,
+      valueUse: ValueHowToSetUp.LIST_OF_VALUES,
       possibleValue: {
         list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
       },
       value: "",
-      valueUse: ValueHowToSetUp.LIST_OF_VALUES,
     },
     {
       name: "ReciprocidadDeAhorro",
       dataType: ValueDataType.PERCENTAGE,
-      value: 0,
       valueUse: ValueHowToSetUp.EQUAL,
+      value: "",
     },
     {
       name: "DestinoDelDinero",
       dataType: ValueDataType.ALPHABETICAL,
-      value: "",
       valueUse: ValueHowToSetUp.EQUAL,
+      value: "",
     },
     {
       name: "Temporada",
       dataType: ValueDataType.ALPHABETICAL,
-      value: "",
       valueUse: ValueHowToSetUp.EQUAL,
+      value: "",
     },
     {
       name: "ScoringDeRiesgo",
       dataType: ValueDataType.ALPHABETICAL,
-      value: "",
       valueUse: ValueHowToSetUp.EQUAL,
+      value: "",
     },
   ],
 };
@@ -194,6 +191,7 @@ export const addedCard: Story = (args: IBusinessRulesController) => (
   <BusinessRulesController {...args} />
 );
 addedCard.args = {
+  controls: true,
   initialDecisions: sampleDecisions,
   decisionTemplate,
   textValues: {

@@ -1,30 +1,40 @@
 import { useState } from "react";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
-import { Date } from "@inubekit/date";
+import { Date, IDateStatus } from "@inubekit/date";
 import { Checkbox } from "@inubekit/checkbox";
 
 interface ITermProps {
   onHandleStartChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onHandleEndChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onCheckClosedChange?: (isClosed: boolean) => void;
   labelStart: string;
   labelEnd: string;
   checkedClosed?: boolean;
   required?: boolean;
-  valueStart?: string;
-  valueEnd?: string;
+  valueStart?: string | Date;
+  valueEnd?: string | Date;
+  messageStart?: string;
+  messageEnd?: string;
+  statusStart?: string;
+  statusEnd?: string;
 }
 
 const Term = (props: ITermProps) => {
   const {
     onHandleStartChange,
     onHandleEndChange,
+    onCheckClosedChange,
     labelStart,
     labelEnd,
     checkedClosed = false,
     required = false,
     valueStart = "",
     valueEnd = "",
+    messageStart = "",
+    messageEnd = "",
+    statusStart = "pending",
+    statusEnd = "pending",
   } = props;
 
   const [checkClosed, setCheckClosed] = useState(checkedClosed),
@@ -33,6 +43,9 @@ const Term = (props: ITermProps) => {
 
   const onHandleCheck = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     setCheckClosed(target.checked);
+    if (onCheckClosedChange) {
+      onCheckClosedChange(target.checked);
+    }
   };
 
   const onStartChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,9 +92,11 @@ const Term = (props: ITermProps) => {
             id="dateStart"
             label={labelStart}
             onChange={onStartChange}
-            value={start}
+            value={start as string}
             required={required}
             size="compact"
+            status={statusStart as IDateStatus}
+            message={messageStart}
           />
         </Stack>
         {checkClosed && (
@@ -90,9 +105,11 @@ const Term = (props: ITermProps) => {
               id="dateEnd"
               label={labelEnd}
               onChange={onEndChange}
-              value={end}
+              value={end as string}
               required={required}
               size="compact"
+              status={statusEnd as IDateStatus}
+              message={messageEnd}
             />
           </Stack>
         )}
