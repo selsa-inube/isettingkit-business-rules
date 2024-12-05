@@ -237,8 +237,12 @@ const RulesForm = (props: IRulesForm) => {
             formik.setFieldValue("endDate", e.target.value)
           }
           onCheckClosedChange={(isClosed) => {
-            if (!isClosed) formik.setFieldValue("endDate", "");
+            formik.setFieldValue("checkClosed", isClosed);
+            if (isClosed) {
+              formik.setFieldValue("endDate", "");
+            }
           }}
+          checkedClosed={formik.values.checkClosed}
         />
         <Divider />
         <Stack direction="row" justifyContent="end" gap="16px">

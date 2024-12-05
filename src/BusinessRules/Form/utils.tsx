@@ -19,12 +19,18 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
     endDate: decision.endDate || "",
     toggleNone: true,
     conditions: {} as Record<string, any>,
+    checkClosed: false,
   };
 
   const validationSchema = object({
     name: string().required("Name is required"),
     startDate: date().required("Start date is required"),
-    endDate: date().required("End date is required"),
+    endDate: date().when("checkClosed", (_checkClosed, schema, { parent }) => {
+      const checkClosed = parent?.checkClosed;
+      return checkClosed
+        ? schema.required("End date is required")
+        : schema.notRequired();
+    }),
     value: object({
       from: number()
         .min(0, "From value must be greater than or equal to 0")
