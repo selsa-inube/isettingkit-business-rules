@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
-
 import { DecisionViewConditionRenderer } from "@isettingkit/view";
-import { getValueData } from "./helper";
 
 import {
   ICondition,
@@ -17,6 +15,7 @@ import { StyledConditionContainer, StyledScrollContainer } from "./styles";
 import { Divider } from "@inubekit/divider";
 import { SkeletonLine } from "@inubekit/skeleton";
 import { IRulesFormTextValues } from "../Form/types";
+import { getValueData } from "./helper/getValueData";
 
 interface IBusinessRuleView {
   decision?: IRuleDecision;
