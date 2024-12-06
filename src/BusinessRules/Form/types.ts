@@ -1,5 +1,27 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormikValues } from "formik";
 import { IRuleDecision, IValue } from "@isettingkit/input";
+
+type FormikErrors = {
+  value?: any;
+};
+
+type FormikTouched = {
+  value?: any;
+};
+
+interface IOptionItemChecked {
+  id: string;
+  label: string;
+  checked?: boolean;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+interface IRulesForm {
+  decision: IRuleDecision;
+  onCancel: () => void;
+  onSubmitEvent: (dataDecision: IRuleDecision) => void;
+  textValues: IRulesFormTextValues;
+}
 
 interface IRulesFormTextValues {
   cancel: string;
@@ -21,13 +43,13 @@ interface IRulesFormTextValues {
 
 interface IRulesFormUI {
   activeConditions?: string[];
-  checkNone?: boolean;
   checkClosed?: boolean;
+  checkNone?: boolean;
   decision: IRuleDecision;
-  id: string;
   formik: FormikValues;
   handleToggleChange: (conditionName: string, isChecked: boolean) => void;
   hasErrors: boolean;
+  id: string;
   onCancel: () => void;
   onChangeCondition: (
     value: string | number | string[] | IValue | Date,
@@ -40,6 +62,8 @@ interface IRulesFormUI {
   onEndChange: (value: string) => void;
   onStartChange: (value: string) => void;
   onSubmit: () => void;
+  setCheckClosed: (value: boolean) => void;
+  setCheckNone: (value: boolean) => void;
   textValues: {
     cancel: string;
     change: string;
@@ -57,18 +81,24 @@ interface IRulesFormUI {
     terms: string;
     termStart: string;
   };
-  setCheckNone: (value: boolean) => void;
-  setCheckClosed: (value: boolean) => void;
 }
 
 declare const inputTypes: readonly [
   "alphabetical",
-  "date",
   "currency",
+  "date",
   "number",
   "percentage",
 ];
 
 declare type ITextfieldInputType = (typeof inputTypes)[number];
 
-export type { IRulesFormTextValues, IRulesFormUI, ITextfieldInputType };
+export type {
+  FormikErrors,
+  FormikTouched,
+  IRulesForm,
+  IRulesFormTextValues,
+  IRulesFormUI,
+  ITextfieldInputType,
+  IOptionItemChecked,
+};

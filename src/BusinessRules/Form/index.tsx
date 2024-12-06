@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  IRuleDecision,
   MultipleChoices,
   InputRange,
   DynamicField,
@@ -16,20 +14,14 @@ import { Text } from "@inubekit/text";
 import { StyledConditionContainer, StyledScrollContainer } from "./styles";
 import { ToggleOption } from "./ToggleOption";
 import { useRulesFormUtils } from "./utils";
-import { IRulesFormTextValues, ITextfieldInputType } from "./types";
+import {
+  FormikErrors,
+  FormikTouched,
+  IOptionItemChecked,
+  IRulesForm,
+  ITextfieldInputType,
+} from "./types";
 
-interface IRulesForm {
-  decision: IRuleDecision;
-  onSubmitEvent: (dataDecision: IRuleDecision) => void;
-  textValues: IRulesFormTextValues;
-  onCancel: () => void;
-}
-type FormikErrors = {
-  value?: any;
-};
-type FormikTouched = {
-  value?: any;
-};
 const RulesForm = (props: IRulesForm) => {
   const { decision, onSubmitEvent, textValues, onCancel } = props;
   const { formik, handleToggleNoneChange } = useRulesFormUtils({
@@ -68,7 +60,7 @@ const RulesForm = (props: IRulesForm) => {
                 : "valid"
               : "pending") as IInputStatus
           }
-          onBlur={formik.handleBlur as any}
+          onBlur={formik.handleBlur as () => void}
         />
         <Divider dashed />
         <StyledConditionContainer>
@@ -143,7 +135,7 @@ const RulesForm = (props: IRulesForm) => {
                             checked: (
                               formik.values.conditions[condition.name] || []
                             ).includes(item),
-                          })) as any
+                          })) as IOptionItemChecked[]
                         }
                         onHandleSelectCheckChange={(newOptions) => {
                           const selectedValues = newOptions
@@ -199,7 +191,7 @@ const RulesForm = (props: IRulesForm) => {
                               : "valid"
                             : undefined
                         }
-                        onBlur={formik.handleBlur as any}
+                        onBlur={formik.handleBlur as () => void}
                       />
                     )}
                   </ToggleOption>

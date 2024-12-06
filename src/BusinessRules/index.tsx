@@ -31,19 +31,20 @@ interface IBusinessRules {
   handleDelete: (id: string) => void;
 }
 
-const BusinessRules = ({
-  controls = true,
-  decisions,
-  textValues,
-  decisionTemplate,
-  isModalOpen,
-  selectedDecision,
-  loading,
-  handleOpenModal,
-  handleCloseModal,
-  handleSubmitForm,
-  handleDelete,
-}: IBusinessRules) => {
+const BusinessRules = (props: IBusinessRules) => {
+  const {
+    controls = true,
+    decisions,
+    textValues,
+    decisionTemplate,
+    isModalOpen,
+    selectedDecision,
+    loading,
+    handleOpenModal,
+    handleCloseModal,
+    handleSubmitForm,
+    handleDelete,
+  } = props;
   const smallScreen = useMediaQuery("(max-width: 681px)");
   return (
     <>
@@ -179,18 +180,6 @@ const BusinessRules = ({
           onCloseModal={handleCloseModal}
           title={selectedDecision ? "Editar Decisión" : "Nueva decisión"}
         >
-          {/* <RulesForm
-            id={
-              selectedDecision
-                ? selectedDecision.id!
-                : `Decisión ${decisions.length + 1}`
-            }
-            decision={selectedDecision || decisionTemplate}
-            onCloseModal={handleCloseModal}
-            onSubmitEvent={handleSubmitForm}
-            textValues={textValues}
-            onCancel={() => handleCloseModal()}
-          /> */}
           <RulesForm
             decision={selectedDecision || decisionTemplate}
             onSubmitEvent={handleSubmitForm}

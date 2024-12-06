@@ -28,7 +28,17 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
     endDate: date().when("checkClosed", (_checkClosed, schema, { parent }) => {
       const checkClosed = parent?.checkClosed;
       return checkClosed
-        ? schema.required("End date is required")
+        ? schema
+            .required("End date is required")
+            .test(
+              "is-after-startDate",
+              "End date must be greater than or equal to Start date",
+              function (endDate) {
+                const startDate = this.parent.startDate;
+                if (!startDate || !endDate) return true;
+                return new Date(endDate) >= new Date(startDate);
+              },
+            )
         : schema.notRequired();
     }),
     value: object({
