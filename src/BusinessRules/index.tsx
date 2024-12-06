@@ -1,21 +1,14 @@
-import { MdAdd } from "react-icons/md";
 import { Stack } from "@inubekit/stack";
 import { Grid } from "@inubekit/grid";
-import { BusinessRuleCard } from "./Cards/BusinessRuleCard";
-import { BusinessRuleView } from "./BusinessRuleView";
 import { Text } from "@inubekit/text";
 import { ModalRules } from "./ModalRules";
 import { IRuleDecision } from "@isettingkit/input";
-import {
-  StyledEmptyCardContainer,
-  StyledFadeInStack,
-  StyledGridContainer,
-  StyledScrollContainer,
-} from "./styles";
-import { Icon } from "@inubekit/icon";
+import { StyledGridContainer, StyledScrollContainer } from "./styles";
 import { useMediaQuery } from "@inubekit/hooks";
 import { IRulesFormTextValues } from "./Form/types";
 import { RulesForm } from "./Form";
+import { getBusinessRulesLayout } from "./helper/getBusinessRulesLayout";
+import { renderCard } from "./helper/renderCard";
 
 interface IBusinessRules {
   controls?: boolean;
@@ -45,7 +38,18 @@ const BusinessRules = (props: IBusinessRules) => {
     handleSubmitForm,
     handleDelete,
   } = props;
+
   const smallScreen = useMediaQuery("(max-width: 681px)");
+
+  const { renderedCards, shouldRenderAddCard } = getBusinessRulesLayout({
+    controls,
+    decisions,
+    loading,
+    handleOpenModal,
+    handleDelete,
+    textValues,
+  });
+
   return (
     <>
       <StyledGridContainer>
@@ -53,7 +57,7 @@ const BusinessRules = (props: IBusinessRules) => {
           <Stack direction="column" gap="16px" padding="6px">
             {decisions.length === 0 && !loading && (
               <Text as="span" type="label" size="large" appearance="gray">
-                Aún no tienes definidas tasas de interés efectivas. Presiona{" "}
+                Aún no tienes definidas tasas de interés efectivas. Presiona
                 <Text
                   as="span"
                   type="label"
@@ -62,7 +66,7 @@ const BusinessRules = (props: IBusinessRules) => {
                   weight="bold"
                 >
                   “+ Agregar decisión”
-                </Text>{" "}
+                </Text>
                 para empezar.
               </Text>
             )}
@@ -77,98 +81,17 @@ const BusinessRules = (props: IBusinessRules) => {
               padding="6px"
               height={smallScreen ? "auto" : "484px"}
             >
-              {loading
-                ? Array.from({ length: 3 }).map((_, index) => (
-                    <BusinessRuleCard
-                      key={`loading-card-${index}`}
-                      id={`loading-card-${index}`}
-                      handleDelete={() => {}}
-                      handleView={() => handleOpenModal()}
-                      controls={false}
-                    >
-                      <BusinessRuleView loading />
-                    </BusinessRuleCard>
-                  ))
-                : decisions.map((decision) => (
-                    <StyledFadeInStack key={decision.id}>
-                      <Stack
-                        key={decision.id}
-                        direction="column"
-                        gap="4px"
-                        width="100%"
-                        padding="0 0 12px 0"
-                      >
-                        <Text
-                          type="title"
-                          size="medium"
-                          appearance="gray"
-                          weight="bold"
-                        >
-                          {decision.id}
-                        </Text>
-                        <BusinessRuleCard
-                          id={decision.id!}
-                          handleDelete={() => handleDelete(decision.id!)}
-                          handleView={() => handleOpenModal(decision)}
-                          controls={controls}
-                        >
-                          <BusinessRuleView
-                            decision={decision}
-                            textValues={textValues}
-                          />
-                        </BusinessRuleCard>
-                      </Stack>
-                    </StyledFadeInStack>
-                  ))}
-
-              {(decisions.length === 0 ||
-                decisions.length < Math.floor(window.innerWidth / 300)) &&
-                !loading &&
-                controls && (
-                  <StyledFadeInStack key={`add-decision-${decisions.length}`}>
-                    <Stack
-                      key={`add-decision-${decisions.length}`}
-                      direction="column"
-                      gap="4px"
-                      width="100%"
-                      height="100%"
-                    >
-                      <Text
-                        type="title"
-                        size="medium"
-                        appearance="gray"
-                        weight="bold"
-                      >
-                        Nueva decisión
-                      </Text>
-                      <StyledEmptyCardContainer
-                        onClick={() => handleOpenModal()}
-                      >
-                        <BusinessRuleCard
-                          id={`add-decision-${decisions.length}`}
-                          handleDelete={() => {}}
-                          handleView={() => handleOpenModal()}
-                          controls={false}
-                        >
-                          <Stack
-                            direction="column"
-                            gap="12px"
-                            alignItems="center"
-                          >
-                            <Icon
-                              appearance="gray"
-                              icon={<MdAdd />}
-                              size="35px"
-                            />
-                            <Text appearance="gray" type="body" size="large">
-                              Agregar decisión
-                            </Text>
-                          </Stack>
-                        </BusinessRuleCard>
-                      </StyledEmptyCardContainer>
-                    </Stack>
-                  </StyledFadeInStack>
-                )}
+              {renderedCards}
+              {shouldRenderAddCard &&
+                renderCard({
+                  type: "add",
+                  index: decisions.length,
+                  controls,
+                  loading,
+                  handleOpenModal,
+                  handleDelete,
+                  textValues,
+                })}
             </Grid>
           </Stack>
         </StyledScrollContainer>
