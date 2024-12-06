@@ -1,3 +1,15 @@
+# v0.1.29 (Fri Dec 06 2024)
+
+#### ⚠️ Pushed to `main`
+
+- fix: replace monolithic and hard-to-maintain switch statement with a flexible pattern ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.1.28 (Fri Dec 06 2024)
 
 #### ⚠️ Pushed to `main`
