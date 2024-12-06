@@ -1,3 +1,15 @@
+# v0.1.28 (Fri Dec 06 2024)
+
+#### ⚠️ Pushed to `main`
+
+- fix: adjustment to divide responsabilities for the elements inside of businessRules ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.1.27 (Fri Dec 06 2024)
 
 #### ⚠️ Pushed to `main`
