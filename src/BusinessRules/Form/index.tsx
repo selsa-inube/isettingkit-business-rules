@@ -1,10 +1,5 @@
-import {
-  MultipleChoices,
-  InputRange,
-  DynamicField,
-  ValueHowToSetUp,
-  IInputStatus,
-} from "@isettingkit/input";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { DecisionConditionRender, ValueHowToSetUp } from "@isettingkit/input";
 import { Stack } from "@inubekit/stack";
 import { Divider } from "@inubekit/divider";
 import { Button } from "@inubekit/button";
@@ -14,13 +9,7 @@ import { Text } from "@inubekit/text";
 import { StyledConditionContainer, StyledScrollContainer } from "./styles";
 import { ToggleOption } from "./ToggleOption";
 import { useRulesFormUtils } from "./utils";
-import {
-  FormikErrors,
-  FormikTouched,
-  IOptionItemChecked,
-  IRulesForm,
-  ITextfieldInputType,
-} from "./types";
+import { IRulesForm } from "./types";
 
 const RulesForm = (props: IRulesForm) => {
   const { decision, onSubmitEvent, textValues, onCancel } = props;
@@ -29,39 +18,21 @@ const RulesForm = (props: IRulesForm) => {
     onSubmitEvent,
   });
 
+  const normalizedDecision = {
+    name: decision.name,
+    valueUse: decision.valueUse,
+    dataType: decision.dataType,
+    possibleValue: decision.possibleValue,
+  };
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <Stack direction="column" gap="24px">
-        <InputRange
-          id="valueRange"
-          typeInput={decision.dataType.toLowerCase() as ITextfieldInputType}
-          label={decision.name}
-          valueFrom={formik.values.value.from}
-          valueTo={formik.values.value.to}
-          handleInputChangeFrom={(value) =>
-            formik.setFieldValue("value.from", value)
-          }
-          handleInputChangeTo={(value) =>
-            formik.setFieldValue("value.to", value)
-          }
-          messageFrom={(formik.errors.value as FormikErrors["value"])?.from}
-          messageTo={(formik.errors.value as FormikErrors["value"])?.to}
-          statusFrom={
-            ((formik.touched.value as FormikTouched["value"])?.from
-              ? (formik.errors.value as FormikErrors["value"])?.from
-                ? "invalid"
-                : "valid"
-              : "pending") as IInputStatus
-          }
-          statusTo={
-            ((formik.touched.value as FormikTouched["value"])?.to
-              ? (formik.errors.value as FormikErrors["value"])?.to
-                ? "invalid"
-                : "valid"
-              : "pending") as IInputStatus
-          }
-          onBlur={formik.handleBlur as () => void}
-        />
+        {DecisionConditionRender({
+          condition: normalizedDecision,
+          formik,
+          isDecision: true,
+        } as any)}
         <Divider dashed />
         <StyledConditionContainer>
           <StyledScrollContainer>
@@ -122,78 +93,7 @@ const RulesForm = (props: IRulesForm) => {
                       }
                     }}
                   >
-                    {condition.valueUse ===
-                    ValueHowToSetUp.LIST_OF_VALUES_MULTI ? (
-                      <MultipleChoices
-                        id={condition.name}
-                        labelSelect={condition.name}
-                        labelSelected={`Selected ${condition.name}`}
-                        options={
-                          condition.possibleValue?.list?.map((item) => ({
-                            id: item,
-                            label: item,
-                            checked: (
-                              formik.values.conditions[condition.name] || []
-                            ).includes(item),
-                          })) as IOptionItemChecked[]
-                        }
-                        onHandleSelectCheckChange={(newOptions) => {
-                          const selectedValues = newOptions
-                            .filter((option) => option.checked)
-                            .map((option) => option.id);
-
-                          formik.setFieldValue(
-                            `conditions.${condition.name}`,
-                            selectedValues,
-                          );
-                          formik.setFieldTouched(
-                            `conditions.${condition.name}`,
-                            true,
-                            true,
-                          );
-                        }}
-                        placeholderSelect={`Select ${condition.name}`}
-                        message={
-                          formik.touched.conditions?.[condition.name] &&
-                          formik.errors.conditions?.[condition.name]
-                            ? (formik.errors.conditions[
-                                condition.name
-                              ] as string)
-                            : undefined
-                        }
-                        onBlur={() =>
-                          formik.setFieldTouched(
-                            `conditions.${condition.name}`,
-                            true,
-                            true,
-                          )
-                        }
-                      />
-                    ) : (
-                      <DynamicField
-                        type={condition.dataType.toLowerCase()}
-                        name={`conditions.${condition.name}`}
-                        label={condition.name}
-                        value={formik.values.conditions[condition.name]}
-                        onChange={(value) =>
-                          formik.setFieldValue(
-                            `conditions.${condition.name}`,
-                            value,
-                          )
-                        }
-                        messageValidate={String(
-                          formik.errors.conditions?.[condition.name],
-                        )}
-                        statusValidate={
-                          formik.touched.conditions?.[condition.name]
-                            ? formik.errors.conditions?.[condition.name]
-                              ? "invalid"
-                              : "valid"
-                            : undefined
-                        }
-                        onBlur={formik.handleBlur as () => void}
-                      />
-                    )}
+                    {DecisionConditionRender({ condition, formik } as any)}
                   </ToggleOption>
                 ))}
               </Stack>
