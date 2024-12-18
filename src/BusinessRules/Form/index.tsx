@@ -42,8 +42,14 @@ const RulesForm = (props: IRulesForm) => {
               gap="16px"
               height="272px"
             >
-              <Stack direction="row" justifyContent="space-between">
-                <Text>{textValues.factsThatConditionIt}</Text>
+              <Stack
+                justifyContent="space-between"
+                alignItems="center"
+                gap="64px"
+              >
+                <Text type="title" size="small" weight="bold" appearance="gray">
+                  {textValues.factsThatConditionIt}
+                </Text>
                 <Toggle
                   id="toggleNone"
                   onChange={() =>

@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useFormik } from "formik";
-import { string, date, object, number, lazy, Schema } from "yup";
-import { IRuleDecision, ValueHowToSetUp } from "@isettingkit/input";
+import { string, date, object, lazy, Schema } from "yup";
+import {
+  IRuleDecision,
+  ValueDataType,
+  ValueHowToSetUp,
+} from "@isettingkit/input";
 import { getStrategy } from "./helpers/typeData/utils";
 
 interface IuseRulesFormUtils {
@@ -12,9 +16,9 @@ interface IuseRulesFormUtils {
 function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
   const initialValues = {
     name: decision.name || "",
-    dataType: decision.dataType || "",
+    dataType: decision.dataType || ValueDataType.ALPHABETICAL,
     valueUse: decision.valueUse || "",
-    value: decision.value || ({ from: 0, to: 0 } as any),
+    value: decision.value || "",
     startDate: decision.startDate || "",
     endDate: decision.endDate || "",
     toggleNone: true,
@@ -22,7 +26,7 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
     checkClosed: false,
   };
 
-  const validationSchema = object({
+  const validationSchema: Schema<any> = object({
     name: string().required("Name is required"),
     startDate: date().required("Start date is required"),
     endDate: date().when("checkClosed", (_checkClosed, schema, { parent }) => {
@@ -41,22 +45,11 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
             )
         : schema.notRequired();
     }),
-    value: object({
-      from: number()
-        .min(0, "From value must be greater than or equal to 0")
-        .required("From value is required"),
-      to: number()
-        .min(0, "To value must be greater than or equal to 0")
-        .required("To value is required")
-        .test(
-          "is-greater",
-          "To value must be greater than From value",
-          function (to) {
-            const { from } = this.parent;
-            return to > from;
-          },
-        ),
-    }).required("Range value is required"),
+    value: lazy(() => {
+      const strategy = getStrategy(formik.values.valueUse);
+      return strategy(formik.values.value as any, formik.values.dataType)
+        .schema;
+    }),
     conditions: lazy((_value, { parent }) => {
       const toggleNone = parent?.toggleNone && parent?.conditions?.length > 0;
       if (toggleNone) return object().shape({});

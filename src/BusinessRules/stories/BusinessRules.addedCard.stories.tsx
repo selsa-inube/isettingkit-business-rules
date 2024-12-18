@@ -66,7 +66,7 @@ const sampleDecisions: IRuleDecision[] = [
         valueUse: ValueHowToSetUp.EQUAL,
       },
       {
-        name: "Scoring de riesgo",
+        name: "ScoringDeRiesgo",
         dataType: ValueDataType.ALPHABETICAL,
         value: "0,2",
         valueUse: ValueHowToSetUp.EQUAL,

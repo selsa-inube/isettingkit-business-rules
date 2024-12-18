@@ -104,7 +104,7 @@ const BusinessRules = (props: IBusinessRules) => {
           title={selectedDecision ? "Editar Decisión" : "Nueva decisión"}
         >
           <RulesForm
-            decision={selectedDecision || decisionTemplate}
+            decision={selectedDecision ? selectedDecision : decisionTemplate}
             onSubmitEvent={handleSubmitForm}
             textValues={textValues}
             onCancel={() => handleCloseModal()}

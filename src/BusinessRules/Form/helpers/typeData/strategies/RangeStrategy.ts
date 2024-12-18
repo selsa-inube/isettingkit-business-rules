@@ -11,9 +11,16 @@ const RangeStrategy = (value: { from?: number; to?: number }) => {
         .max(toNumber, `'Range From' cannot be greater than 'Range To'`)
         .min(0, `'Range From' cannot be less than 0`),
       to: number()
-        .required("Range To is required")
-        .min(fromNumber, `'Range To' cannot be less than 'Range From'`)
-        .min(0, "'Range To' cannot be less than 0"),
+        .min(0, "To value must be greater than or equal to 0")
+        .required("To value is required")
+        .test(
+          "is-greater",
+          "To value must be greater than From value",
+          function (to) {
+            const { from } = this.parent;
+            return to > from;
+          },
+        ),
     }),
     value: { from: fromNumber, to: toNumber },
   };
