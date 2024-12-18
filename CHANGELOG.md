@@ -1,3 +1,15 @@
+# v0.1.32 (Wed Dec 18 2024)
+
+#### ⚠️ Pushed to `main`
+
+- fix: adjustment to ensure that all conditions are displayed consistently ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.1.31 (Wed Dec 18 2024)
 
 #### ⚠️ Pushed to `main`
