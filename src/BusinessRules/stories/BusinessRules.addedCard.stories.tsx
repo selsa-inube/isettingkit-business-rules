@@ -130,9 +130,9 @@ const sampleDecisions: IRuleDecision[] = [
 
 const decisionTemplate: IRuleDecision = {
   name: "TasaEfectivaAnual",
-  dataType: ValueDataType.PERCENTAGE,
-  valueUse: ValueHowToSetUp.RANGE,
-  value: { from: 0, to: 0 },
+  dataType: ValueDataType.ALPHABETICAL,
+  valueUse: ValueHowToSetUp.EQUAL,
+  value: "",
   startDate: "",
   endDate: "",
   conditions: [

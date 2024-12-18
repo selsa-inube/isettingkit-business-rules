@@ -7,7 +7,6 @@ import {
   ICondition,
   IDecision,
   IRuleDecision,
-  IValue,
   ValueDataType,
   ValueHowToSetUp,
 } from "@isettingkit/input";
@@ -25,9 +24,6 @@ interface IBusinessRuleView {
 
 const BusinessRuleView = (props: IBusinessRuleView) => {
   const { decision, loading = false, textValues } = props;
-
-  const isNonEmptyObject = (obj: string[] | IValue) =>
-    obj && Object.keys(obj).length > 0;
 
   const mapper: IDecision | ICondition = {
     name: decision?.name || "",
@@ -67,23 +63,15 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
           {decision.conditions &&
             decision.conditions.map((condition) => {
               if (condition.hidden) return null;
-              const conditionValue = condition.value as
-                | string
-                | number
-                | string[]
-                | undefined;
               return (
-                ((typeof conditionValue === "object" &&
-                  isNonEmptyObject(conditionValue)) ||
-                  (conditionValue !== undefined &&
-                    typeof conditionValue === "string" &&
-                    conditionValue.length > 0)) && (
+                console.log("condition: ", condition),
+                (
                   <StyledConditionContainer key={condition.name}>
                     <Stack direction="column" padding="8px">
                       <DecisionViewConditionRenderer
                         element={{
                           ...condition,
-                          value: conditionValue,
+                          value: condition.value as any,
                         }}
                         valueData={getValueData(condition)}
                       />
