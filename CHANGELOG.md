@@ -1,3 +1,15 @@
+# v0.1.33 (Fri Dec 20 2024)
+
+#### ⚠️ Pushed to `main`
+
+- fix: adjustment in order to use the new structure provided by the services ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.1.32 (Wed Dec 18 2024)
 
 #### ⚠️ Pushed to `main`
