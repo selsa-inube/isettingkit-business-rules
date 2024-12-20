@@ -4,8 +4,6 @@ import { Text } from "@inubekit/text";
 import { DecisionViewConditionRenderer } from "@isettingkit/view";
 
 import {
-  ICondition,
-  IDecision,
   IRuleDecision,
   ValueDataType,
   ValueHowToSetUp,
@@ -25,17 +23,17 @@ interface IBusinessRuleView {
 const BusinessRuleView = (props: IBusinessRuleView) => {
   const { decision, loading = false, textValues } = props;
 
-  const mapper: IDecision | ICondition = {
-    name: decision?.name || "",
-    dataType: decision?.dataType || "alphabetical",
-    value: getValueData(decision),
-    valueUse: decision?.valueUse || "equal",
+  const mapper: IRuleDecision = {
+    labelName: decision?.labelName || "",
+    decisionDataType: decision?.decisionDataType || "alphabetical",
+    value: getValueData(decision!),
+    howToSetTheDecision: decision?.howToSetTheDecision || "EqualTo",
   };
 
   return !loading && decision && textValues ? (
     <Stack direction="column" gap="12px">
       {decision && (
-        <Stack key={decision.name} direction="column" alignItems="center">
+        <Stack key={decision.ruleName} direction="column" alignItems="center">
           <DecisionViewConditionRenderer
             element={mapper as any}
             valueData={getValueData(mapper)}
@@ -60,63 +58,60 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
           >
             {textValues.factsThatConditionIt}
           </Text>
-          {decision.conditions &&
-            decision.conditions.map((condition) => {
+          {decision.conditionThatEstablishesTheDecision &&
+            decision.conditionThatEstablishesTheDecision.map((condition) => {
               if (condition.hidden) return null;
               return (
-                console.log("condition: ", condition),
-                (
-                  <StyledConditionContainer key={condition.name}>
-                    <Stack direction="column" padding="8px">
-                      <DecisionViewConditionRenderer
-                        element={{
-                          ...condition,
-                          value: condition.value as any,
-                        }}
-                        valueData={getValueData(condition)}
-                      />
-                    </Stack>
-                  </StyledConditionContainer>
-                )
+                <StyledConditionContainer key={condition.conditionName}>
+                  <Stack direction="column" padding="8px">
+                    <DecisionViewConditionRenderer
+                      element={{
+                        ...condition,
+                        value: condition.value as any,
+                      }}
+                      valueData={getValueData(condition)}
+                    />
+                  </Stack>
+                </StyledConditionContainer>
               );
             })}
           <Divider dashed />
           <Stack direction="column" gap="12px">
-            {decision?.startDate && decision?.endDate && (
+            {decision?.effectiveFrom && decision?.validUntil && (
               <DecisionViewConditionRenderer
                 key={textValues.terms}
                 element={{
-                  name: textValues.terms,
-                  value: String(decision.startDate),
-                  valueUse: ValueHowToSetUp.RANGE,
-                  dataType: ValueDataType.DATE,
+                  labelName: textValues.terms,
+                  value: String(decision.effectiveFrom),
+                  howToSetTheDecision: ValueHowToSetUp.RANGE,
+                  decisionDataType: ValueDataType.DATE,
                 }}
                 valueData={getValueData({
-                  name: textValues.terms,
+                  labelName: textValues.terms,
                   value: {
-                    from: String(decision.startDate),
-                    to: String(decision.endDate),
+                    from: String(decision.effectiveFrom),
+                    to: String(decision.validUntil),
                   },
-                  valueUse: ValueHowToSetUp.RANGE,
-                  dataType: ValueDataType.DATE,
+                  howToSetTheDecision: ValueHowToSetUp.RANGE,
+                  decisionDataType: ValueDataType.DATE,
                 })}
                 type="decision"
               />
             )}
-            {decision?.startDate && !decision?.endDate && (
+            {decision?.effectiveFrom && !decision?.validUntil && (
               <DecisionViewConditionRenderer
                 key={textValues.terms}
                 element={{
-                  name: textValues.terms,
-                  value: String(decision.startDate),
-                  valueUse: ValueHowToSetUp.EQUAL,
-                  dataType: ValueDataType.DATE,
+                  labelName: textValues.terms,
+                  value: String(decision.effectiveFrom),
+                  howToSetTheDecision: ValueHowToSetUp.EQUAL,
+                  decisionDataType: ValueDataType.DATE,
                 }}
                 valueData={getValueData({
-                  name: textValues.terms,
-                  value: String(decision.startDate),
-                  valueUse: ValueHowToSetUp.EQUAL,
-                  dataType: ValueDataType.DATE,
+                  labelName: textValues.terms,
+                  value: String(decision.effectiveFrom),
+                  howToSetTheDecision: ValueHowToSetUp.EQUAL,
+                  decisionDataType: ValueDataType.DATE,
                 })}
                 type="decision"
               />

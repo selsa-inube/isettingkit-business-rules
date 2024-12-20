@@ -1,12 +1,12 @@
 import { IValue } from "@isettingkit/input";
 
 enum ValueHowToSetUp {
-  EQUAL = "equal",
-  GREATER_THAN = "greater_than",
-  LESS_THAN = "less_than",
-  LIST_OF_VALUES = "list_of_values",
-  LIST_OF_VALUES_MULTI = "list_of_values_multi",
-  RANGE = "range",
+  EQUAL = "EqualTo",
+  GREATER_THAN = "GreaterThan",
+  LESS_THAN = "LessThan",
+  LIST_OF_VALUES = "ListOfValues",
+  LIST_OF_VALUES_MULTI = "ListOfValuesMulti",
+  RANGE = "Range",
 }
 
 type ValueReturnType =

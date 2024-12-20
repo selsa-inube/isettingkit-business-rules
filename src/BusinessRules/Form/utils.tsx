@@ -15,58 +15,82 @@ interface IuseRulesFormUtils {
 
 function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
   const initialValues = {
-    name: decision.name || "",
-    dataType: decision.dataType || ValueDataType.ALPHABETICAL,
-    valueUse: decision.valueUse || "",
+    ruleName: decision.ruleName || "",
+    decisionDataType: decision.decisionDataType || ValueDataType.ALPHABETICAL,
+    howToSetTheDecision: decision.howToSetTheDecision || "",
     value: decision.value || "",
-    startDate: decision.startDate || "",
-    endDate: decision.endDate || "",
+    effectiveFrom: decision.effectiveFrom || "",
+    validUntil: decision.validUntil || "",
     toggleNone: true,
-    conditions: {} as Record<string, any>,
+    conditionThatEstablishesTheDecision: {} as Record<string, any>,
     checkClosed: false,
   };
 
   const validationSchema: Schema<any> = object({
-    name: string().required("Name is required"),
-    startDate: date().required("Start date is required"),
-    endDate: date().when("checkClosed", (_checkClosed, schema, { parent }) => {
-      const checkClosed = parent?.checkClosed;
-      return checkClosed
-        ? schema
-            .required("End date is required")
-            .test(
-              "is-after-startDate",
-              "End date must be greater than or equal to Start date",
-              function (endDate) {
-                const startDate = this.parent.startDate;
-                if (!startDate || !endDate) return true;
-                return new Date(endDate) >= new Date(startDate);
-              },
-            )
-        : schema.notRequired();
-    }),
+    ruleName: string().required("Name is required"),
+    effectiveFrom: date().required("effective From date is required"),
+    validUntil: date().when(
+      "checkClosed",
+      (_checkClosed, schema, { parent }) => {
+        const checkClosed = parent?.checkClosed;
+        return checkClosed
+          ? schema
+              .required("valid Until date is required")
+              .test(
+                "is-after-startDate",
+                "valid Until date must be greater than or equal to Start date",
+                function (validUntil) {
+                  const effectiveFrom = this.parent.effectiveFrom;
+                  if (!effectiveFrom || !validUntil) return true;
+                  return new Date(validUntil) >= new Date(effectiveFrom);
+                },
+              )
+          : schema.notRequired();
+      },
+    ),
     value: lazy(() => {
-      const strategy = getStrategy(formik.values.valueUse);
-      return strategy(formik.values.value as any, formik.values.dataType)
-        .schema;
+      const strategy = getStrategy(formik.values.howToSetTheDecision as any);
+      return strategy(
+        formik.values.value as any,
+        formik.values.decisionDataType,
+      ).schema;
     }),
-    conditions: lazy((_value, { parent }) => {
-      const toggleNone = parent?.toggleNone && parent?.conditions?.length > 0;
+    conditionThatEstablishesTheDecision: lazy((_value, { parent }) => {
+      const toggleNone =
+        parent?.toggleNone &&
+        Object.keys(parent.conditionThatEstablishesTheDecision || {}).length >
+          0;
+
       if (toggleNone) return object().shape({});
-      return object(
-        decision.conditions?.reduce(
+
+      const conditionsSchema =
+        decision.conditionThatEstablishesTheDecision?.reduce(
           (schema, condition) => {
-            if (formik.values.conditions[condition.name] !== undefined) {
-              const strategy = getStrategy(condition.valueUse);
-              schema[condition.name] = strategy(
+            const conditionValue =
+              formik.values.conditionThatEstablishesTheDecision[
+                condition.conditionName
+              ];
+            if (conditionValue !== undefined) {
+              const strategy = getStrategy(condition.howToSetTheCondition);
+              schema[condition.conditionName] = strategy(
                 condition.value as any,
-                condition.dataType,
+                condition.conditionDataType,
               ).schema;
             }
             return schema;
           },
           {} as Record<string, Schema<any>>,
-        ),
+        );
+
+      return object(conditionsSchema).test(
+        "at-least-one-condition",
+        "It must be at least one condition in order for the decision to be validated correctly.",
+        (value) => {
+          if (!value) return false;
+          return Object.values(value).some(
+            (v) => v !== undefined && v !== null && v !== "",
+          );
+        },
       );
     }),
   });
@@ -78,16 +102,32 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
     onSubmit: (values) => {
       const updatedDecision: IRuleDecision = {
         ...decision,
-        name: values.name,
-        dataType: values.dataType,
-        valueUse: values.valueUse,
+        ruleName: values.ruleName,
+        decisionDataType: values.decisionDataType,
+        howToSetTheDecision: values.howToSetTheDecision as any,
         value: values.value,
-        startDate: values.startDate,
-        endDate: values.endDate,
-        conditions: decision.conditions?.map((condition) => ({
-          ...condition,
-          value: values.conditions[condition.name],
-        })),
+        effectiveFrom: values.effectiveFrom,
+        validUntil: values.validUntil,
+        conditionThatEstablishesTheDecision:
+          decision.conditionThatEstablishesTheDecision
+            ?.filter((condition) => {
+              const conditionValue =
+                values.conditionThatEstablishesTheDecision[
+                  condition.conditionName
+                ];
+              return (
+                conditionValue !== undefined &&
+                conditionValue !== null &&
+                conditionValue !== ""
+              );
+            })
+            .map((condition) => ({
+              ...condition,
+              value:
+                values.conditionThatEstablishesTheDecision[
+                  condition.conditionName
+                ],
+            })),
       };
       onSubmitEvent(updatedDecision);
     },
@@ -95,13 +135,22 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
 
   const handleToggleNoneChange = (isNoneSelected: boolean) => {
     formik.setFieldValue("toggleNone", isNoneSelected);
-    decision.conditions?.forEach((condition) => {
+    decision.conditionThatEstablishesTheDecision?.forEach((condition) => {
       if (isNoneSelected) {
-        formik.setFieldValue(`conditions.${condition.name}`, undefined);
+        formik.setFieldValue(
+          `conditionThatEstablishesTheDecision.${condition.conditionName}`,
+          undefined,
+        );
       } else {
         const defaultValue =
-          condition.valueUse === ValueHowToSetUp.LIST_OF_VALUES_MULTI ? [] : "";
-        formik.setFieldValue(`conditions.${condition.name}`, defaultValue);
+          condition.howToSetTheCondition ===
+          ValueHowToSetUp.LIST_OF_VALUES_MULTI
+            ? []
+            : "";
+        formik.setFieldValue(
+          `conditionThatEstablishesTheDecision.${condition.conditionName}`,
+          defaultValue,
+        );
       }
     });
   };

@@ -3,7 +3,7 @@ import { listOfValuesMultiHandler } from "../strategies/MultiListOfValuesStrateg
 import { rangeHandler } from "../strategies/RangeStrategy";
 import { greaterThanHandler } from "../strategies/greaterThan";
 import { lessThanHandler } from "../strategies/lessThan";
-import { equalHandler } from "../strategies/equal";
+import { equalHandler } from "../strategies/EqualTo";
 import {
   ValueHandler,
   ValueHowToSetUp,

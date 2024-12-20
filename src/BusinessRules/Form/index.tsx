@@ -19,10 +19,11 @@ const RulesForm = (props: IRulesForm) => {
   });
 
   const normalizedDecision = {
-    name: decision.name,
-    valueUse: decision.valueUse,
-    dataType: decision.dataType,
-    possibleValue: decision.possibleValue,
+    ruleName: decision.ruleName,
+    labelName: decision.labelName,
+    howToSetTheCondition: decision.howToSetTheDecision,
+    decisionDataType: decision.decisionDataType,
+    listOfPossibleValues: decision.listOfPossibleValues,
   };
 
   return (
@@ -64,44 +65,48 @@ const RulesForm = (props: IRulesForm) => {
                 </Toggle>
               </Stack>
               <Stack direction="column" gap="20px">
-                {decision.conditions?.map((condition) => (
-                  <ToggleOption
-                    key={condition.name}
-                    id={`toggle-${condition.name}`}
-                    name={`toggle.${condition.name}`}
-                    labelToggle={condition.name}
-                    checked={
-                      !formik.values.toggleNone &&
-                      formik.values.conditions[condition.name] !== undefined
-                    }
-                    handleToggleChange={(e) => {
-                      const isChecked = e.target.checked;
-                      if (!isChecked) {
-                        formik.setFieldValue(
-                          `conditions.${condition.name}`,
-                          undefined,
-                        );
-                        formik.setFieldTouched(
-                          `conditions.${condition.name}`,
-                          false,
-                          false,
-                        );
-                      } else {
-                        const defaultValue =
-                          condition.valueUse ===
-                          ValueHowToSetUp.LIST_OF_VALUES_MULTI
-                            ? []
-                            : "";
-                        formik.setFieldValue(
-                          `conditions.${condition.name}`,
-                          defaultValue,
-                        );
+                {decision.conditionThatEstablishesTheDecision?.map(
+                  (condition) => (
+                    <ToggleOption
+                      key={condition.conditionName}
+                      id={`toggle-${condition.conditionName}`}
+                      name={`toggle.${condition.conditionName}`}
+                      labelToggle={condition.labelName}
+                      checked={
+                        !formik.values.toggleNone &&
+                        formik.values.conditionThatEstablishesTheDecision[
+                          condition.conditionName
+                        ] !== undefined
                       }
-                    }}
-                  >
-                    {DecisionConditionRender({ condition, formik } as any)}
-                  </ToggleOption>
-                ))}
+                      handleToggleChange={(e) => {
+                        const isChecked = e.target.checked;
+                        if (!isChecked) {
+                          formik.setFieldValue(
+                            `conditionThatEstablishesTheDecision.${condition.conditionName}`,
+                            undefined,
+                          );
+                          formik.setFieldTouched(
+                            `conditionThatEstablishesTheDecision.${condition.conditionName}`,
+                            false,
+                            false,
+                          );
+                        } else {
+                          const defaultValue =
+                            condition.howToSetTheCondition ===
+                            ValueHowToSetUp.LIST_OF_VALUES_MULTI
+                              ? []
+                              : "";
+                          formik.setFieldValue(
+                            `conditionThatEstablishesTheDecision.${condition.conditionName}`,
+                            defaultValue,
+                          );
+                        }
+                      }}
+                    >
+                      {DecisionConditionRender({ condition, formik } as any)}
+                    </ToggleOption>
+                  ),
+                )}
               </Stack>
             </Stack>
           </StyledScrollContainer>
@@ -110,39 +115,45 @@ const RulesForm = (props: IRulesForm) => {
         <Term
           labelStart={textValues.termStart}
           labelEnd={textValues.termEnd}
-          valueStart={formik.values.startDate}
-          valueEnd={formik.values.endDate}
-          messageStart={formik.errors.startDate}
-          messageEnd={formik.errors.endDate}
+          valueStart={formik.values.effectiveFrom}
+          valueEnd={formik.values.validUntil}
+          messageStart={formik.errors.effectiveFrom}
+          messageEnd={formik.errors.validUntil}
           statusStart={
-            formik.touched.startDate
-              ? formik.errors.startDate
+            formik.touched.effectiveFrom
+              ? formik.errors.effectiveFrom
                 ? "invalid"
                 : "valid"
               : undefined
           }
           statusEnd={
-            formik.touched.endDate
-              ? formik.errors.endDate
+            formik.touched.validUntil
+              ? formik.errors.validUntil
                 ? "invalid"
                 : "valid"
               : undefined
           }
           onHandleStartChange={(e) =>
-            formik.setFieldValue("startDate", e.target.value)
+            formik.setFieldValue("effectiveFrom", e.target.value)
           }
           onHandleEndChange={(e) =>
-            formik.setFieldValue("endDate", e.target.value)
+            formik.setFieldValue("validUntil", e.target.value)
           }
           onCheckClosedChange={(isClosed) => {
             formik.setFieldValue("checkClosed", isClosed);
             if (isClosed) {
-              formik.setFieldValue("endDate", "");
+              formik.setFieldValue("validUntil", "");
             }
           }}
           checkedClosed={formik.values.checkClosed}
         />
         <Divider />
+        {formik.errors.conditionThatEstablishesTheDecision &&
+          formik.submitCount > 0 && (
+            <Text type="label" size="medium" appearance="danger">
+              {String(formik.errors.conditionThatEstablishesTheDecision)}
+            </Text>
+          )}
         <Stack direction="row" justifyContent="end" gap="16px">
           <Button appearance="gray" onClick={onCancel}>
             {textValues.cancel}

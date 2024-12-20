@@ -49,12 +49,12 @@ const BusinessRulesWithLoadingController = ({
           ...decisionTemplate,
           ...dataDecision,
           id: `Decisión ${decisions.length + 1}`,
-          conditions: decisionTemplate.conditions!.map(
+          conditions: decisionTemplate.conditionThatEstablishesTheDecision!.map(
             (conditionTemplate, index) => ({
               ...conditionTemplate,
               value:
-                dataDecision.conditions![index]?.value ||
-                conditionTemplate.value,
+                dataDecision.conditionThatEstablishesTheDecision![index]
+                  ?.value || conditionTemplate.value,
             }),
           ),
         };
@@ -62,7 +62,9 @@ const BusinessRulesWithLoadingController = ({
     setDecisions((prevDecisions) =>
       isEditing
         ? prevDecisions.map((decision) =>
-            decision.id === selectedDecision!.id ? newDecision : decision,
+            decision.businessRuleId === selectedDecision!.businessRuleId
+              ? newDecision
+              : decision,
           )
         : [...prevDecisions, newDecision],
     );
@@ -72,7 +74,7 @@ const BusinessRulesWithLoadingController = ({
 
   const handleDelete = (id: string) => {
     setDecisions((prevDecisions) =>
-      prevDecisions.filter((decision) => decision.id !== id),
+      prevDecisions.filter((decision) => decision.businessRuleId !== id),
     );
   };
 

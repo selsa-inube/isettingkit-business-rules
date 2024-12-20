@@ -15,14 +15,14 @@ function renderDecisionCard({
   if (!decision) return null;
 
   return (
-    <StyledFadeInStack key={decision.id}>
+    <StyledFadeInStack key={decision.decisionId}>
       <Stack direction="column" gap="4px" width="100%" padding="0 0 12px 0">
         <Text type="title" size="medium" appearance="gray" weight="bold">
-          {decision.id}
+          {decision.decisionId}
         </Text>
         <BusinessRuleCard
-          id={decision.id!}
-          handleDelete={() => handleDelete(decision.id!)}
+          id={decision.decisionId!}
+          handleDelete={() => handleDelete(decision.decisionId!)}
           handleView={() => handleOpenModal(decision)}
           controls={controls}
         >
