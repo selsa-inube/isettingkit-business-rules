@@ -11,7 +11,7 @@ function renderLoadingCard({
       key={`loading-card-${index}`}
       id={`loading-card-${index}`}
       handleDelete={() => {}}
-      handleView={() => handleOpenModal()}
+      handleView={() => (handleOpenModal ? handleOpenModal() : null)}
       controls={false}
     >
       <BusinessRuleView loading />

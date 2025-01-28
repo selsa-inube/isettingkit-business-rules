@@ -174,6 +174,7 @@ const decisionTemplate: IRuleDecision = {
       conditionDataType: ValueDataType.ALPHABETICAL,
       howToSetTheCondition: ValueHowToSetUp.EQUAL,
       value: "",
+      switchPlaces: true,
     },
     {
       labelName: "Categoría Del Cliente",
@@ -232,10 +233,10 @@ const decisionTemplate: IRuleDecision = {
   ],
 };
 
-export const addedCard: Story = (args: IBusinessRulesController) => (
-  <BusinessRulesController {...args} />
-);
-addedCard.args = {
+export const addCardWithSwitchPlaces: Story = (
+  args: IBusinessRulesController,
+) => <BusinessRulesController {...args} />;
+addCardWithSwitchPlaces.args = {
   controls: true,
   initialDecisions: sampleDecisions,
   decisionTemplate,

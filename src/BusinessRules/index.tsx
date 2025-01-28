@@ -18,10 +18,10 @@ interface IBusinessRules {
   isModalOpen: boolean;
   selectedDecision: IRuleDecision | null;
   loading: boolean;
-  handleOpenModal: (decision?: IRuleDecision | null) => void;
-  handleCloseModal: () => void;
-  handleSubmitForm: (dataDecision: IRuleDecision) => void;
-  handleDelete: (id: string) => void;
+  handleOpenModal?: (decision?: IRuleDecision | null) => void;
+  handleCloseModal?: () => void;
+  handleSubmitForm?: (dataDecision: IRuleDecision) => void;
+  handleDelete?: (id: string) => void;
 }
 
 const BusinessRules = (props: IBusinessRules) => {
@@ -100,14 +100,14 @@ const BusinessRules = (props: IBusinessRules) => {
       {isModalOpen && (
         <ModalRules
           portalId="modal-portal"
-          onCloseModal={handleCloseModal}
+          onCloseModal={handleCloseModal!}
           title={selectedDecision ? "Editar Decisión" : "Nueva decisión"}
         >
           <RulesForm
             decision={selectedDecision ? selectedDecision : decisionTemplate}
-            onSubmitEvent={handleSubmitForm}
+            onSubmitEvent={handleSubmitForm!}
             textValues={textValues}
-            onCancel={() => handleCloseModal()}
+            onCancel={() => (handleCloseModal ? handleCloseModal() : () => {})}
           />
         </ModalRules>
       )}

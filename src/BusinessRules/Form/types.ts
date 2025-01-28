@@ -18,7 +18,7 @@ interface IOptionItemChecked {
 }
 interface IRulesForm {
   decision: IRuleDecision;
-  onCancel: () => void;
+  onCancel?: () => void;
   onSubmitEvent: (dataDecision: IRuleDecision) => void;
   textValues: IRulesFormTextValues;
 }

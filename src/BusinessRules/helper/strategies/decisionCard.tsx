@@ -22,8 +22,12 @@ function renderDecisionCard({
         </Text>
         <BusinessRuleCard
           id={decision.decisionId!}
-          handleDelete={() => handleDelete(decision.decisionId!)}
-          handleView={() => handleOpenModal(decision)}
+          handleDelete={() =>
+            handleDelete ? handleDelete(decision.decisionId!) : null
+          }
+          handleView={() =>
+            handleOpenModal ? handleOpenModal(decision) : null
+          }
           controls={controls}
         >
           <BusinessRuleView decision={decision} textValues={textValues} />

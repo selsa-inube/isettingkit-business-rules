@@ -19,11 +19,13 @@ function renderAddCard({
         <Text type="title" size="medium" appearance="gray" weight="bold">
           Nueva decisión
         </Text>
-        <StyledEmptyCardContainer onClick={() => handleOpenModal()}>
+        <StyledEmptyCardContainer
+          onClick={() => (handleOpenModal ? handleOpenModal() : null)}
+        >
           <BusinessRuleCard
             id={`add-decision-${index}`}
             handleDelete={() => {}}
-            handleView={() => handleOpenModal()}
+            handleView={() => (handleOpenModal ? handleOpenModal() : null)}
             controls={false}
           >
             <Stack direction="column" gap="12px" alignItems="center">

@@ -66,46 +66,49 @@ const RulesForm = (props: IRulesForm) => {
               </Stack>
               <Stack direction="column" gap="20px">
                 {decision.conditionThatEstablishesTheDecision?.map(
-                  (condition) => (
-                    <ToggleOption
-                      key={condition.conditionName}
-                      id={`toggle-${condition.conditionName}`}
-                      name={`toggle.${condition.conditionName}`}
-                      labelToggle={condition.labelName}
-                      checked={
-                        !formik.values.toggleNone &&
-                        formik.values.conditionThatEstablishesTheDecision[
-                          condition.conditionName
-                        ] !== undefined
-                      }
-                      handleToggleChange={(e) => {
-                        const isChecked = e.target.checked;
-                        if (!isChecked) {
-                          formik.setFieldValue(
-                            `conditionThatEstablishesTheDecision.${condition.conditionName}`,
-                            undefined,
-                          );
-                          formik.setFieldTouched(
-                            `conditionThatEstablishesTheDecision.${condition.conditionName}`,
-                            false,
-                            false,
-                          );
-                        } else {
-                          const defaultValue =
-                            condition.howToSetTheCondition ===
-                            ValueHowToSetUp.LIST_OF_VALUES_MULTI
-                              ? []
-                              : "";
-                          formik.setFieldValue(
-                            `conditionThatEstablishesTheDecision.${condition.conditionName}`,
-                            defaultValue,
-                          );
+                  (condition) => {
+                    if (condition.hidden) return null;
+                    return (
+                      <ToggleOption
+                        key={condition.conditionName}
+                        id={`toggle-${condition.conditionName}`}
+                        name={`toggle.${condition.conditionName}`}
+                        labelToggle={condition.labelName}
+                        checked={
+                          !formik.values.toggleNone &&
+                          formik.values.conditionThatEstablishesTheDecision[
+                            condition.conditionName
+                          ] !== undefined
                         }
-                      }}
-                    >
-                      {DecisionConditionRender({ condition, formik } as any)}
-                    </ToggleOption>
-                  ),
+                        handleToggleChange={(e) => {
+                          const isChecked = e.target.checked;
+                          if (!isChecked) {
+                            formik.setFieldValue(
+                              `conditionThatEstablishesTheDecision.${condition.conditionName}`,
+                              undefined,
+                            );
+                            formik.setFieldTouched(
+                              `conditionThatEstablishesTheDecision.${condition.conditionName}`,
+                              false,
+                              false,
+                            );
+                          } else {
+                            const defaultValue =
+                              condition.howToSetTheCondition ===
+                              ValueHowToSetUp.LIST_OF_VALUES_MULTI
+                                ? []
+                                : "";
+                            formik.setFieldValue(
+                              `conditionThatEstablishesTheDecision.${condition.conditionName}`,
+                              defaultValue,
+                            );
+                          }
+                        }}
+                      >
+                        {DecisionConditionRender({ condition, formik } as any)}
+                      </ToggleOption>
+                    );
+                  },
                 )}
               </Stack>
             </Stack>

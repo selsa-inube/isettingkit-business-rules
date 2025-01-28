@@ -7,8 +7,8 @@ interface RenderCardParams {
   index?: number;
   controls: boolean;
   loading: boolean;
-  handleOpenModal: (decision?: IRuleDecision | null) => void;
-  handleDelete: (id: string) => void;
+  handleOpenModal?: (decision?: IRuleDecision | null) => void;
+  handleDelete?: (id: string) => void;
   textValues: IRulesFormTextValues;
 }
 
