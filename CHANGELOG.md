@@ -1,3 +1,15 @@
+# v0.1.34 (Tue Jan 28 2025)
+
+#### ⚠️ Pushed to `main`
+
+- feat: add functionality to handle tricks for data decisions ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.1.33 (Fri Dec 20 2024)
 
 #### ⚠️ Pushed to `main`
