@@ -12,6 +12,7 @@ import { BusinessRuleCard } from "../../../BusinessRules/Cards/BusinessRuleCard"
 function renderAddCard({
   index,
   handleOpenModal,
+  customTitleContentAddCard,
 }: RenderCardParams): JSX.Element {
   return (
     <StyledFadeInStack key={`add-decision-${index}`}>
@@ -31,7 +32,9 @@ function renderAddCard({
             <Stack direction="column" gap="12px" alignItems="center">
               <Icon appearance="gray" icon={<MdAdd />} size="35px" />
               <Text appearance="gray" type="body" size="large">
-                Agregar decisión
+                {customTitleContentAddCard
+                  ? customTitleContentAddCard
+                  : "Agregar decisión"}
               </Text>
             </Stack>
           </BusinessRuleCard>

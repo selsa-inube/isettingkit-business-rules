@@ -7,6 +7,8 @@ import { sortDisplayDataSampleSwitchPlaces } from "../helper/utils/sortDisplayDa
 
 interface IBusinessRulesController {
   controls?: boolean;
+  customTitleContentAddCard?: string;
+  customMessageEmptyDecisions?: string;
   initialDecisions: IRuleDecision[];
   textValues: IRulesFormTextValues;
   decisionTemplate: IRuleDecision;
@@ -15,6 +17,8 @@ interface IBusinessRulesController {
 
 const BusinessRulesController = ({
   controls,
+  customMessageEmptyDecisions,
+  customTitleContentAddCard,
   initialDecisions,
   textValues,
   decisionTemplate,
@@ -80,6 +84,8 @@ const BusinessRulesController = ({
   return (
     <BusinessRules
       controls={controls}
+      customTitleContentAddCard={customTitleContentAddCard}
+      customMessageEmptyDecisions={customMessageEmptyDecisions}
       decisions={sortDisplayDataSwitchPlaces(decisions)}
       textValues={textValues}
       decisionTemplate={sortDisplayDataSampleSwitchPlaces(decisionTemplate)}

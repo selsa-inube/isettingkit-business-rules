@@ -12,6 +12,8 @@ import { renderCard } from "./helper/renderCard";
 
 interface IBusinessRules {
   controls?: boolean;
+  customTitleContentAddCard?: string;
+  customMessageEmptyDecisions?: string;
   decisions: IRuleDecision[];
   textValues: IRulesFormTextValues;
   decisionTemplate: IRuleDecision;
@@ -27,6 +29,8 @@ interface IBusinessRules {
 const BusinessRules = (props: IBusinessRules) => {
   const {
     controls = true,
+    customTitleContentAddCard,
+    customMessageEmptyDecisions,
     decisions,
     textValues,
     decisionTemplate,
@@ -43,6 +47,7 @@ const BusinessRules = (props: IBusinessRules) => {
 
   const { renderedCards, shouldRenderAddCard } = getBusinessRulesLayout({
     controls,
+    customTitleContentAddCard,
     decisions,
     loading,
     handleOpenModal,
@@ -57,7 +62,10 @@ const BusinessRules = (props: IBusinessRules) => {
           <Stack direction="column" gap="16px" padding="6px">
             {decisions.length === 0 && !loading && (
               <Text as="span" type="label" size="large" appearance="gray">
-                Aún no tienes definidas tasas de interés efectivas. Presiona
+                {customMessageEmptyDecisions
+                  ? customMessageEmptyDecisions
+                  : "Aún NO tienes definidas tasas de interés efectivas"}
+                . Presiona{" "}
                 <Text
                   as="span"
                   type="label"
@@ -65,8 +73,12 @@ const BusinessRules = (props: IBusinessRules) => {
                   appearance="gray"
                   weight="bold"
                 >
-                  “+ Agregar decisión”
-                </Text>
+                  “
+                  {customTitleContentAddCard
+                    ? customTitleContentAddCard
+                    : "+ Agregar decisión"}
+                  ”
+                </Text>{" "}
                 para empezar.
               </Text>
             )}
@@ -87,6 +99,7 @@ const BusinessRules = (props: IBusinessRules) => {
                   type: "add",
                   index: decisions.length,
                   controls,
+                  customTitleContentAddCard,
                   loading,
                   handleOpenModal,
                   handleDelete,

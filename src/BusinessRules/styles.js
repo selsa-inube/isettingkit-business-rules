@@ -66,10 +66,10 @@ const StyledGridContainer = styled.div`
 
 const StyledEmptyCardContainer = styled.div`
   & > div {
-    background-color: ${inube.palette.neutral.N30};
+    background-color: ${inube.palette.neutral.N10};
     justify-content: center;
   }
-  min-height: 300px;
+  min-height: 350px;
   width: 100%;
   height: 100%;
   padding-bottom: 12px;

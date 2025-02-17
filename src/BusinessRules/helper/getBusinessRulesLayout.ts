@@ -4,6 +4,7 @@ import { renderCard } from "./renderCard";
 
 interface GetBusinessRulesLayoutParams {
   controls: boolean;
+  customTitleContentAddCard?: string;
   decisions: IRuleDecision[];
   loading: boolean;
   handleOpenModal?: (decision?: IRuleDecision | null) => void;
@@ -18,6 +19,7 @@ interface GetBusinessRulesLayoutReturn {
 
 function getBusinessRulesLayout({
   controls,
+  customTitleContentAddCard,
   decisions,
   loading,
   handleOpenModal,
@@ -30,6 +32,7 @@ function getBusinessRulesLayout({
           type: "loading",
           index,
           controls,
+          customTitleContentAddCard,
           loading,
           handleOpenModal,
           handleDelete,
@@ -41,6 +44,7 @@ function getBusinessRulesLayout({
           type: "decision",
           decision,
           controls,
+          customTitleContentAddCard,
           loading,
           handleOpenModal,
           handleDelete,

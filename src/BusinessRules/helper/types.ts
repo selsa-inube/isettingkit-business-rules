@@ -1,15 +1,16 @@
-import { IRuleDecision } from "@isettingkit/input";
 import { IRulesFormTextValues } from "../Form/types";
+import { IRuleDecision } from "@isettingkit/input";
 
 interface RenderCardParams {
-  type: "loading" | "decision" | "add";
-  decision?: IRuleDecision;
-  index?: number;
   controls: boolean;
-  loading: boolean;
-  handleOpenModal?: (decision?: IRuleDecision | null) => void;
+  customTitleContentAddCard?: string;
+  decision?: IRuleDecision;
   handleDelete?: (id: string) => void;
+  handleOpenModal?: (decision?: IRuleDecision | null) => void;
+  index?: number;
+  loading: boolean;
   textValues: IRulesFormTextValues;
+  type: "loading" | "decision" | "add";
 }
 
 export type { RenderCardParams };
