@@ -1,3 +1,15 @@
+# v0.1.35 (Mon Feb 17 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: update background color for empty card and message that shows in it ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.1.34 (Tue Jan 28 2025)
 
 #### ⚠️ Pushed to `main`
