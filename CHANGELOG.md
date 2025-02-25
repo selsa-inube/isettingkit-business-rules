@@ -1,3 +1,15 @@
+# v0.1.36 (Tue Feb 25 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: adjustment for list of values handler ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.1.35 (Mon Feb 17 2025)
 
 #### ⚠️ Pushed to `main`
