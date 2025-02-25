@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DecisionConditionRender, ValueHowToSetUp } from "@isettingkit/input";
-import { Stack } from "@inubekit/stack";
-import { Divider } from "@inubekit/divider";
-import { Button } from "@inubekit/button";
+import { Stack } from "@inubekit/inubekit";
+import { Divider } from "@inubekit/inubekit";
+import { Button } from "@inubekit/inubekit";
 import { Term } from "./Term";
-import { Toggle } from "@inubekit/toggle";
-import { Text } from "@inubekit/text";
+import { Toggle } from "@inubekit/inubekit";
+import { Text } from "@inubekit/inubekit";
 import { StyledConditionContainer, StyledScrollContainer } from "./styles";
 import { ToggleOption } from "./ToggleOption";
 import { useRulesFormUtils } from "./utils";

@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
-import { Date, IDateStatus } from "@inubekit/date";
-import { Checkbox } from "@inubekit/checkbox";
+import { Stack } from "@inubekit/inubekit";
+import { Text } from "@inubekit/inubekit";
+import { Date, IDateStatus } from "@inubekit/inubekit";
+import { Checkbox } from "@inubekit/inubekit";
 
 interface ITermProps {
   onHandleStartChange: (event: React.ChangeEvent<HTMLInputElement>) => void;

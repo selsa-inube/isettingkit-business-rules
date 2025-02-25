@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Toggle } from "@inubekit/toggle";
-import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/stack";
+import { Toggle } from "@inubekit/inubekit";
+import { Text } from "@inubekit/inubekit";
+import { Stack } from "@inubekit/inubekit";
 
 interface IToggleOption {
   checked: boolean;

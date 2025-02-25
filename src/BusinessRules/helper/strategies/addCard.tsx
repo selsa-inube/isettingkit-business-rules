@@ -1,7 +1,7 @@
 import { MdAdd } from "react-icons/md";
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
-import { Icon } from "@inubekit/icon";
+import { Stack } from "@inubekit/inubekit";
+import { Text } from "@inubekit/inubekit";
+import { Icon } from "@inubekit/inubekit";
 import { RenderCardParams } from "../types";
 import {
   StyledEmptyCardContainer,

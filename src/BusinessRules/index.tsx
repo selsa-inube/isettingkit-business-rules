@@ -1,10 +1,10 @@
-import { Stack } from "@inubekit/stack";
-import { Grid } from "@inubekit/grid";
-import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/inubekit";
+import { Grid } from "@inubekit/inubekit";
+import { Text } from "@inubekit/inubekit";
 import { ModalRules } from "./ModalRules";
 import { IRuleDecision } from "@isettingkit/input";
 import { StyledGridContainer, StyledScrollContainer } from "./styles";
-import { useMediaQuery } from "@inubekit/hooks";
+import { useMediaQuery } from "@inubekit/inubekit";
 import { IRulesFormTextValues } from "./Form/types";
 import { RulesForm } from "./Form";
 import { getBusinessRulesLayout } from "./helper/getBusinessRulesLayout";

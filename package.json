@@ -36,22 +36,8 @@
     "autorelease": "auto shipit"
   },
   "dependencies": {
-    "@inubekit/button": "^4.44.1",
-    "@inubekit/blanket": "2.25.0",
-    "@inubekit/checkbox": "^0.2.2",
-    "@inubekit/date": "^2.39.1",
-    "@inubekit/divider": "^0.16.1",
-    "@inubekit/foundations": "^5.11.3",
-    "@inubekit/hooks": "^1.2.0",
-    "@inubekit/grid": "^2.14.1",
-    "@inubekit/icon": "^2.18.1",
-    "@inubekit/input": "^1.6.3",
-    "@inubekit/stack": "^3.8.1",
-    "@inubekit/skeleton": "^2.11.1",
-    "@inubekit/text": "^2.17.0",
-    "@inubekit/textarea": "^2.45.0",
-    "@inubekit/toggle": "^3.8.2",
-    "@isettingkit/input": "^0.1.43",
+    "@inubekit/inubekit": "^1.1.0",
+    "@isettingkit/input": "^0.1.46",
     "@isettingkit/view": "^0.1.22"
   },
   "peerDependencies": {

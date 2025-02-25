@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/inubekit";
+import { Text } from "@inubekit/inubekit";
 import { DecisionViewConditionRenderer } from "@isettingkit/view";
 
 import {
@@ -9,8 +9,8 @@ import {
   ValueHowToSetUp,
 } from "@isettingkit/input";
 import { StyledConditionContainer, StyledScrollContainer } from "./styles";
-import { Divider } from "@inubekit/divider";
-import { SkeletonLine } from "@inubekit/skeleton";
+import { Divider } from "@inubekit/inubekit";
+import { SkeletonLine } from "@inubekit/inubekit";
 import { IRulesFormTextValues } from "../Form/types";
 import { getValueData } from "./helper/getValueData";
 

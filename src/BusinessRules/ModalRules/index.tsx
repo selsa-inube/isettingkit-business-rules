@@ -1,8 +1,8 @@
 import { MdClear } from "react-icons/md";
 import { createPortal } from "react-dom";
-import { Blanket } from "@inubekit/blanket";
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
+import { Blanket } from "@inubekit/inubekit";
+import { Stack } from "@inubekit/inubekit";
+import { Text } from "@inubekit/inubekit";
 import { StyledContainer, StyledModal } from "./styles";
 
 interface IModalRules {

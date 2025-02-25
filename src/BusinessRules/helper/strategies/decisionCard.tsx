@@ -1,5 +1,5 @@
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/inubekit";
+import { Text } from "@inubekit/inubekit";
 import { RenderCardParams } from "../types";
 import { StyledFadeInStack } from "../../../BusinessRules/styles";
 import { BusinessRuleCard } from "../../../BusinessRules/Cards/BusinessRuleCard";
