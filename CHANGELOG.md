@@ -1,3 +1,15 @@
+# v0.1.37 (Mon Mar 03 2025)
+
+#### ⚠️ Pushed to `main`
+
+- feat: adjustment for cards mobile responsive ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.1.36 (Tue Feb 25 2025)
 
 #### ⚠️ Pushed to `main`
