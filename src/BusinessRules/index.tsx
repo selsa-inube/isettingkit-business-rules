@@ -43,8 +43,8 @@ const BusinessRules = (props: IBusinessRules) => {
     handleDelete,
   } = props;
 
-  const smallScreen = useMediaQuery("(max-width: 681px)");
-
+  const mediumScreen = useMediaQuery("(max-width: 681px)");
+  const smallScreen = useMediaQuery("(max-width: 400px)");
   const { renderedCards, shouldRenderAddCard } = getBusinessRulesLayout({
     controls,
     customTitleContentAddCard,
@@ -83,7 +83,11 @@ const BusinessRules = (props: IBusinessRules) => {
               </Text>
             )}
             <Grid
-              templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
+              templateColumns={
+                smallScreen
+                  ? "repeat(auto-fill, minmax(200px, 1fr))"
+                  : "repeat(auto-fill, minmax(300px, 1fr))"
+              }
               autoFlow="row dense"
               gap="24px"
               alignItems="start"
@@ -91,7 +95,7 @@ const BusinessRules = (props: IBusinessRules) => {
               autoRows="1fr"
               justifyItems="center"
               padding="6px"
-              height={smallScreen ? "auto" : "484px"}
+              height={mediumScreen ? "auto" : "484px"}
             >
               {renderedCards}
               {shouldRenderAddCard &&
