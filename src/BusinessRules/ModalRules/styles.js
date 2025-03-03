@@ -13,7 +13,7 @@ const StyledModal = styled.div`
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   max-width: 450px;
   max-height: 90vh;
-  overflow-y: hidden;
+  overflow-y: ${({ smallScreen }) => (smallScreen ? "hidden" : "auto")};
   border-radius: 8px;
   transition: overflow-y 0.3s ease-in-out;
   & > div {

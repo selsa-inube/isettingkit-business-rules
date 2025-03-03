@@ -1,6 +1,6 @@
 import { MdClear } from "react-icons/md";
 import { createPortal } from "react-dom";
-import { Blanket } from "@inubekit/inubekit";
+import { Blanket, useMediaQuery } from "@inubekit/inubekit";
 import { Stack } from "@inubekit/inubekit";
 import { Text } from "@inubekit/inubekit";
 import { StyledContainer, StyledModal } from "./styles";
@@ -20,8 +20,10 @@ const ModalRules = (props: IModalRules) => {
       "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly.",
     );
   }
+  const smallScreen = useMediaQuery("(max-width: 400px)");
+
   return createPortal(
-    <StyledContainer>
+    <StyledContainer smallScreen={smallScreen}>
       <Blanket>
         <StyledModal>
           <Stack direction="column" gap="24px">
