@@ -59,7 +59,7 @@ const RulesForm = (props: IRulesForm) => {
                   checked={formik.values.toggleNone}
                   size="small"
                 >
-                  <Text size="medium" type="label" weight="bold">
+                  <Text as="span" size="medium" type="label" weight="bold">
                     {textValues.none}
                   </Text>
                 </Toggle>

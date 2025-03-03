@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@inubekit/inubekit": "^1.1.0",
-    "@isettingkit/input": "^0.1.46",
+    "@isettingkit/input": "^0.1.47",
     "@isettingkit/view": "^0.1.22"
   },
   "peerDependencies": {

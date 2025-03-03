@@ -65,7 +65,7 @@ const BusinessRules = (props: IBusinessRules) => {
                 {customMessageEmptyDecisions
                   ? customMessageEmptyDecisions
                   : "Aún NO tienes definidas tasas de interés efectivas"}
-                . Presiona{" "}
+                . Presiona
                 <Text
                   as="span"
                   type="label"
@@ -78,7 +78,7 @@ const BusinessRules = (props: IBusinessRules) => {
                     ? customTitleContentAddCard
                     : "+ Agregar decisión"}
                   ”
-                </Text>{" "}
+                </Text>
                 para empezar.
               </Text>
             )}

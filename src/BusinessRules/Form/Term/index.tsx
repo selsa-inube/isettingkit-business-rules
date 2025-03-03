@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Stack } from "@inubekit/inubekit";
+import { Stack, useMediaQuery } from "@inubekit/inubekit";
 import { Text } from "@inubekit/inubekit";
 import { Date, IDateStatus } from "@inubekit/inubekit";
 import { Checkbox } from "@inubekit/inubekit";
@@ -58,20 +58,20 @@ const Term = (props: ITermProps) => {
     onHandleEndChange(event);
   };
 
+  const smallScreen = useMediaQuery("(max-width: 400px)");
+
   return (
     <>
       <Stack direction="row" justifyContent="space-between" margin="10px 0">
-        <Stack>
-          <Text
-            appearance="gray"
-            margin="10px 0"
-            size="medium"
-            type="title"
-            weight="bold"
-          >
-            Vigencia
-          </Text>
-        </Stack>
+        <Text
+          appearance="gray"
+          margin="10px 0"
+          size="medium"
+          type="title"
+          weight="bold"
+        >
+          Vigencia
+        </Text>
         <Stack
           alignContent="center"
           justifyContent="center"
@@ -86,32 +86,32 @@ const Term = (props: ITermProps) => {
           />
         </Stack>
       </Stack>
-      <Stack justifyContent="space-between" gap="24px">
-        <Stack width="189px">
+      <Stack
+        direction={smallScreen ? "column" : "row"}
+        justifyContent="space-between"
+        gap="24px"
+      >
+        <Date
+          id="dateStart"
+          label={labelStart}
+          onChange={onStartChange}
+          value={start as string}
+          required={required}
+          size="compact"
+          status={statusStart as IDateStatus}
+          message={messageStart}
+        />
+        {checkClosed && (
           <Date
-            id="dateStart"
-            label={labelStart}
-            onChange={onStartChange}
-            value={start as string}
+            id="dateEnd"
+            label={labelEnd}
+            onChange={onEndChange}
+            value={end as string}
             required={required}
             size="compact"
-            status={statusStart as IDateStatus}
-            message={messageStart}
+            status={statusEnd as IDateStatus}
+            message={messageEnd}
           />
-        </Stack>
-        {checkClosed && (
-          <Stack width="189px">
-            <Date
-              id="dateEnd"
-              label={labelEnd}
-              onChange={onEndChange}
-              value={end as string}
-              required={required}
-              size="compact"
-              status={statusEnd as IDateStatus}
-              message={messageEnd}
-            />
-          </Stack>
         )}
       </Stack>
     </>
