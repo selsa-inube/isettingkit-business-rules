@@ -49,14 +49,15 @@ const BusinessRulesWithLoadingController = ({
           ...decisionTemplate,
           ...dataDecision,
           id: `Decisión ${decisions.length + 1}`,
-          conditions: decisionTemplate.conditionThatEstablishesTheDecision!.map(
-            (conditionTemplate, index) => ({
-              ...conditionTemplate,
-              value:
-                dataDecision.conditionThatEstablishesTheDecision![index]
-                  ?.value || conditionTemplate.value,
-            }),
-          ),
+          conditions:
+            decisionTemplate.conditionsThatEstablishesTheDecision!.map(
+              (conditionTemplate, index) => ({
+                ...conditionTemplate,
+                value:
+                  dataDecision.conditionsThatEstablishesTheDecision![index]
+                    ?.value || conditionTemplate.value,
+              }),
+            ),
         };
 
     setDecisions((prevDecisions) =>

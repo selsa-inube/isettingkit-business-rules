@@ -43,7 +43,7 @@ const getData = (): IRuleDecision => {
     howToSetTheDecision: ValueHowToSetUp.RANGE,
     effectiveFrom: "2024-12-31",
     validUntil: "2024-12-31",
-    conditionThatEstablishesTheDecision: [
+    conditionsThatEstablishesTheDecision: [
       {
         labelName: "Antigüedad del cliente (Días)",
         conditionName: "AntigüedadDelCliente(Días)",

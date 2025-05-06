@@ -1,7 +1,5 @@
 import { MdOutlineDelete } from "react-icons/md";
-import { Stack } from "@inubekit/inubekit";
-import { Icon } from "@inubekit/inubekit";
-import { Divider } from "@inubekit/inubekit";
+import { Divider, Stack, Icon } from "@inubekit/inubekit";
 import { StyledCard } from "./styles";
 
 interface IBusinessRuleCard {

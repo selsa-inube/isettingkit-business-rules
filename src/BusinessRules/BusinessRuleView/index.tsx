@@ -58,8 +58,8 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
           >
             {textValues.factsThatConditionIt}
           </Text>
-          {decision.conditionThatEstablishesTheDecision &&
-            decision.conditionThatEstablishesTheDecision.map((condition) => {
+          {decision.conditionsThatEstablishesTheDecision &&
+            decision.conditionsThatEstablishesTheDecision.map((condition) => {
               if (condition.hidden) return null;
               return (
                 <StyledConditionContainer key={condition.conditionName}>

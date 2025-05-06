@@ -65,7 +65,7 @@ const RulesForm = (props: IRulesForm) => {
                 </Toggle>
               </Stack>
               <Stack direction="column" gap="20px">
-                {decision.conditionThatEstablishesTheDecision?.map(
+                {decision.conditionsThatEstablishesTheDecision?.map(
                   (condition) => {
                     if (condition.hidden) return null;
                     return (
@@ -76,7 +76,7 @@ const RulesForm = (props: IRulesForm) => {
                         labelToggle={condition.labelName}
                         checked={
                           !formik.values.toggleNone &&
-                          formik.values.conditionThatEstablishesTheDecision[
+                          formik.values.conditionsThatEstablishesTheDecision[
                             condition.conditionName
                           ] !== undefined
                         }
@@ -84,11 +84,11 @@ const RulesForm = (props: IRulesForm) => {
                           const isChecked = e.target.checked;
                           if (!isChecked) {
                             formik.setFieldValue(
-                              `conditionThatEstablishesTheDecision.${condition.conditionName}`,
+                              `conditionsThatEstablishesTheDecision.${condition.conditionName}`,
                               undefined,
                             );
                             formik.setFieldTouched(
-                              `conditionThatEstablishesTheDecision.${condition.conditionName}`,
+                              `conditionsThatEstablishesTheDecision.${condition.conditionName}`,
                               false,
                               false,
                             );
@@ -99,7 +99,7 @@ const RulesForm = (props: IRulesForm) => {
                                 ? []
                                 : "";
                             formik.setFieldValue(
-                              `conditionThatEstablishesTheDecision.${condition.conditionName}`,
+                              `conditionsThatEstablishesTheDecision.${condition.conditionName}`,
                               defaultValue,
                             );
                           }
@@ -151,10 +151,10 @@ const RulesForm = (props: IRulesForm) => {
           checkedClosed={formik.values.checkClosed}
         />
         <Divider />
-        {formik.errors.conditionThatEstablishesTheDecision &&
+        {formik.errors.conditionsThatEstablishesTheDecision &&
           formik.submitCount > 0 && (
             <Text type="label" size="medium" appearance="danger">
-              {String(formik.errors.conditionThatEstablishesTheDecision)}
+              {String(formik.errors.conditionsThatEstablishesTheDecision)}
             </Text>
           )}
         <Stack direction="row" justifyContent="end" gap="16px">

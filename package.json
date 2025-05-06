@@ -36,9 +36,9 @@
     "autorelease": "auto shipit"
   },
   "dependencies": {
-    "@inubekit/inubekit": "^1.1.0",
-    "@isettingkit/input": "^0.1.47",
-    "@isettingkit/view": "^0.1.22"
+    "@inubekit/inubekit": "^2.1.0",
+    "@isettingkit/input": "^0.1.50",
+    "@isettingkit/view": "^0.1.23"
   },
   "peerDependencies": {
     "formik": "^2.4.6",

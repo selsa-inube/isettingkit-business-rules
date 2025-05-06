@@ -2,7 +2,7 @@ import { IRuleDecision } from "@isettingkit/input";
 
 const revertSortedDataSwitchPlaces = (decisions: IRuleDecision[]) =>
   decisions.map((decision) => {
-    const hiddenCondition = decision.conditionThatEstablishesTheDecision?.find(
+    const hiddenCondition = decision.conditionsThatEstablishesTheDecision?.find(
       (condition) => condition.hidden,
     );
 
@@ -14,8 +14,8 @@ const revertSortedDataSwitchPlaces = (decisions: IRuleDecision[]) =>
         decisionDataType: decision.decisionDataType,
         value: decision.value,
         howToSetTheDecision: decision.howToSetTheDecision,
-        conditionThatEstablishesTheDecision:
-          decision.conditionThatEstablishesTheDecision!.map((condition) =>
+        conditionsThatEstablishesTheDecision:
+          decision.conditionsThatEstablishesTheDecision!.map((condition) =>
             condition.hidden
               ? { ...hiddenCondition, hidden: false }
               : condition,

@@ -22,7 +22,7 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
     effectiveFrom: decision.effectiveFrom || "",
     validUntil: decision.validUntil || "",
     toggleNone: true,
-    conditionThatEstablishesTheDecision: {} as Record<string, any>,
+    conditionsThatEstablishesTheDecision: {} as Record<string, any>,
     checkClosed: false,
   };
 
@@ -55,19 +55,19 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
         formik.values.decisionDataType,
       ).schema;
     }),
-    conditionThatEstablishesTheDecision: lazy((_value, { parent }) => {
+    conditionsThatEstablishesTheDecision: lazy((_value, { parent }) => {
       const toggleNone =
         parent?.toggleNone &&
-        Object.keys(parent.conditionThatEstablishesTheDecision || {}).length >
+        Object.keys(parent.conditionsThatEstablishesTheDecision || {}).length >
           0;
 
       if (toggleNone) return object().shape({});
 
       const conditionsSchema =
-        decision.conditionThatEstablishesTheDecision?.reduce(
+        decision.conditionsThatEstablishesTheDecision?.reduce(
           (schema, condition) => {
             const conditionValue =
-              formik.values.conditionThatEstablishesTheDecision[
+              formik.values.conditionsThatEstablishesTheDecision[
                 condition.conditionName
               ];
             if (conditionValue !== undefined) {
@@ -108,11 +108,11 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
         value: values.value,
         effectiveFrom: values.effectiveFrom,
         validUntil: values.validUntil,
-        conditionThatEstablishesTheDecision:
-          decision.conditionThatEstablishesTheDecision
+        conditionsThatEstablishesTheDecision:
+          decision.conditionsThatEstablishesTheDecision
             ?.filter((condition) => {
               const conditionValue =
-                values.conditionThatEstablishesTheDecision[
+                values.conditionsThatEstablishesTheDecision[
                   condition.conditionName
                 ];
               return (
@@ -124,7 +124,7 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
             .map((condition) => ({
               ...condition,
               value:
-                values.conditionThatEstablishesTheDecision[
+                values.conditionsThatEstablishesTheDecision[
                   condition.conditionName
                 ],
             })),
@@ -135,10 +135,10 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
 
   const handleToggleNoneChange = (isNoneSelected: boolean) => {
     formik.setFieldValue("toggleNone", isNoneSelected);
-    decision.conditionThatEstablishesTheDecision?.forEach((condition) => {
+    decision.conditionsThatEstablishesTheDecision?.forEach((condition) => {
       if (isNoneSelected) {
         formik.setFieldValue(
-          `conditionThatEstablishesTheDecision.${condition.conditionName}`,
+          `conditionsThatEstablishesTheDecision.${condition.conditionName}`,
           undefined,
         );
       } else {
@@ -148,7 +148,7 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
             ? []
             : "";
         formik.setFieldValue(
-          `conditionThatEstablishesTheDecision.${condition.conditionName}`,
+          `conditionsThatEstablishesTheDecision.${condition.conditionName}`,
           defaultValue,
         );
       }

@@ -16,8 +16,8 @@ const revertSortedDataSampleSwitchPlaces = (
 
   return {
     ...originalDecision,
-    conditionThatEstablishesTheDecision:
-      originalDecision.conditionThatEstablishesTheDecision!.map((condition) =>
+    conditionsThatEstablishesTheDecision:
+      originalDecision.conditionsThatEstablishesTheDecision!.map((condition) =>
         condition.hidden ? { ...conditionToRestore } : condition,
       ),
   };

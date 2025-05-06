@@ -3,7 +3,7 @@ import { IRuleDecision } from "@isettingkit/input";
 const sortDisplayDataSwitchPlaces = (decisions: IRuleDecision[]) =>
   decisions.map((decision) => {
     const conditionToDisplay =
-      decision.conditionThatEstablishesTheDecision?.find(
+      decision.conditionsThatEstablishesTheDecision?.find(
         (condition) => condition.switchPlaces,
       );
 
@@ -15,8 +15,8 @@ const sortDisplayDataSwitchPlaces = (decisions: IRuleDecision[]) =>
         decisionDataType: conditionToDisplay.conditionDataType,
         value: conditionToDisplay.value,
         howToSetTheDecision: conditionToDisplay.howToSetTheCondition,
-        conditionThatEstablishesTheDecision:
-          decision.conditionThatEstablishesTheDecision!.map((condition) =>
+        conditionsThatEstablishesTheDecision:
+          decision.conditionsThatEstablishesTheDecision!.map((condition) =>
             condition.conditionName === conditionToDisplay.conditionName
               ? { ...condition, hidden: true }
               : condition,
