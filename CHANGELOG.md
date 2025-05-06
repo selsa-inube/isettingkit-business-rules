@@ -1,3 +1,15 @@
+# v0.1.40 (Tue May 06 2025)
+
+#### ⚠️ Pushed to `main`
+
+- chore: update isetting and inubekit dependencies ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.1.39 (Mon Mar 03 2025)
 
 #### ⚠️ Pushed to `main`
