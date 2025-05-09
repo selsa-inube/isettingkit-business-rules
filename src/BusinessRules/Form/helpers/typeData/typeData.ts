@@ -1,18 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DefaultStrategy } from "./strategies/DefaultStrategy";
-import { getStrategy } from "./utils";
+
+import { defaultStrategy } from "../strategies/defaultStrategy";
+import { strategyFormFactoryHandlerManager } from "../utils";
 
 const typeData = (element: any) => {
   if (!element || typeof element !== "object") {
     console.warn("typeData: Invalid element", element);
-    return DefaultStrategy;
+    return defaultStrategy;
   }
   if (
     "value" in element &&
     "valueUse" in element &&
     element.value !== undefined
   ) {
-    const strategy = getStrategy(element.valueUse);
+    const strategy = strategyFormFactoryHandlerManager(element.valueUse);
     if (strategy) {
       return strategy(
         element.value,
@@ -21,7 +22,7 @@ const typeData = (element: any) => {
     }
   }
   console.warn("typeData: Default strategy applied for", element);
-  return DefaultStrategy(element.value || "");
+  return defaultStrategy(element.value || "");
 };
 
 export { typeData };

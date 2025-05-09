@@ -1,11 +1,9 @@
 import { BusinessRuleCard } from "../../../BusinessRules/Cards/BusinessRuleCard";
-import { RenderCardParams } from "../types";
 import { BusinessRuleView } from "../../../BusinessRules/BusinessRuleView";
+import { IRenderCard } from "../../../BusinessRules/types/helper";
 
-function renderLoadingCard({
-  index,
-  handleOpenModal,
-}: RenderCardParams): JSX.Element {
+function renderLoadingCard(props: IRenderCard) {
+  const { index, handleOpenModal } = props;
   return (
     <BusinessRuleCard
       key={`loading-card-${index}`}

@@ -1,7 +1,9 @@
-import { IRuleDecision } from "@isettingkit/input";
+import { IRevertSortedData } from "src/BusinessRules/types/helper/utils/IRevertSortedData";
 
-const revertSortedDataSwitchPlaces = (decisions: IRuleDecision[]) =>
-  decisions.map((decision) => {
+const revertSortedDataSwitchPlaces = (props: IRevertSortedData) => {
+  const { decisions } = props;
+
+  return decisions?.map((decision) => {
     const hiddenCondition = decision.conditionsThatEstablishesTheDecision?.find(
       (condition) => condition.hidden,
     );
@@ -25,5 +27,6 @@ const revertSortedDataSwitchPlaces = (decisions: IRuleDecision[]) =>
 
     return decision;
   });
+};
 
 export { revertSortedDataSwitchPlaces };

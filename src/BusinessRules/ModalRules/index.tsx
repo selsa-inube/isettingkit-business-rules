@@ -4,13 +4,7 @@ import { Blanket, useMediaQuery } from "@inubekit/inubekit";
 import { Stack } from "@inubekit/inubekit";
 import { Text } from "@inubekit/inubekit";
 import { StyledContainer, StyledModal } from "./styles";
-
-interface IModalRules {
-  children: React.ReactNode;
-  onCloseModal: () => void;
-  portalId: string;
-  title: string;
-}
+import { IModalRules } from "../types/IModalRules";
 
 const ModalRules = (props: IModalRules) => {
   const { children, portalId, onCloseModal, title } = props;

@@ -1,26 +1,15 @@
 import { useState } from "react";
-import { Stack, useMediaQuery } from "@inubekit/inubekit";
-import { Text } from "@inubekit/inubekit";
-import { Date, IDateStatus } from "@inubekit/inubekit";
-import { Checkbox } from "@inubekit/inubekit";
+import {
+  Checkbox,
+  Date,
+  IDateStatus,
+  Text,
+  Stack,
+  useMediaQuery,
+} from "@inubekit/inubekit";
+import { ITerm } from "../../types/Forms/ITerm";
 
-interface ITermProps {
-  onHandleStartChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onHandleEndChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onCheckClosedChange?: (isClosed: boolean) => void;
-  labelStart: string;
-  labelEnd: string;
-  checkedClosed?: boolean;
-  required?: boolean;
-  valueStart?: string | Date;
-  valueEnd?: string | Date;
-  messageStart?: string;
-  messageEnd?: string;
-  statusStart?: string;
-  statusEnd?: string;
-}
-
-const Term = (props: ITermProps) => {
+const Term = (props: ITerm) => {
   const {
     onHandleStartChange,
     onHandleEndChange,
@@ -119,4 +108,3 @@ const Term = (props: ITermProps) => {
 };
 
 export { Term };
-export type { ITermProps };

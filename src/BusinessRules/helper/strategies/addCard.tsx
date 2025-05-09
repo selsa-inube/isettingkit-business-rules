@@ -1,19 +1,15 @@
 import { MdAdd } from "react-icons/md";
-import { Stack } from "@inubekit/inubekit";
-import { Text } from "@inubekit/inubekit";
-import { Icon } from "@inubekit/inubekit";
-import { RenderCardParams } from "../types";
+import { Icon, Text, Stack } from "@inubekit/inubekit";
+
 import {
   StyledEmptyCardContainer,
   StyledFadeInStack,
 } from "../../../BusinessRules/styles";
 import { BusinessRuleCard } from "../../../BusinessRules/Cards/BusinessRuleCard";
+import { IRenderCard } from "../../../BusinessRules/types/helper";
 
-function renderAddCard({
-  index,
-  handleOpenModal,
-  customTitleContentAddCard,
-}: RenderCardParams): JSX.Element {
+function renderAddCard(props: IRenderCard) {
+  const { customTitleContentAddCard, index, handleOpenModal } = props;
   return (
     <StyledFadeInStack key={`add-decision-${index}`}>
       <Stack direction="column" gap="4px" width="100%" height="100%">

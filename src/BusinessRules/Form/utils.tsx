@@ -6,7 +6,7 @@ import {
   ValueDataType,
   ValueHowToSetUp,
 } from "@isettingkit/input";
-import { getStrategy } from "./helpers/typeData/utils";
+import { strategyFormFactoryHandlerManager } from "./helpers/utils";
 
 interface IuseRulesFormUtils {
   decision: IRuleDecision;
@@ -49,7 +49,9 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
       },
     ),
     value: lazy(() => {
-      const strategy = getStrategy(formik.values.howToSetTheDecision as any);
+      const strategy = strategyFormFactoryHandlerManager(
+        formik.values.howToSetTheDecision as any,
+      );
       return strategy(
         formik.values.value as any,
         formik.values.decisionDataType,
@@ -71,7 +73,9 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
                 condition.conditionName
               ];
             if (conditionValue !== undefined) {
-              const strategy = getStrategy(condition.howToSetTheCondition);
+              const strategy = strategyFormFactoryHandlerManager(
+                condition.howToSetTheCondition,
+              );
               schema[condition.conditionName] = strategy(
                 condition.value as any,
                 condition.conditionDataType,

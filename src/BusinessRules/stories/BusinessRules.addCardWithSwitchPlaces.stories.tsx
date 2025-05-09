@@ -233,9 +233,9 @@ const decisionTemplate: IRuleDecision = {
   ],
 };
 
-export const addCardWithSwitchPlaces: Story = (
-  args: IBusinessRulesController,
-) => <BusinessRulesController {...args} />;
+const addCardWithSwitchPlaces: Story = (args: IBusinessRulesController) => (
+  <BusinessRulesController {...args} />
+);
 addCardWithSwitchPlaces.args = {
   controls: true,
   initialDecisions: sampleDecisions,
@@ -259,4 +259,5 @@ addCardWithSwitchPlaces.args = {
   },
 };
 
+export { addCardWithSwitchPlaces };
 export default meta;
