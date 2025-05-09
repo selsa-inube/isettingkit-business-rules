@@ -161,9 +161,9 @@ const sampleDecisions: IRuleDecision[] = [
 const decisionTemplate: IRuleDecision = {
   ruleName: "TasaEfectivaAnual",
   labelName: "Tasa Efectiva Anual",
-  decisionDataType: ValueDataType.PERCENTAGE,
-  howToSetTheDecision: ValueHowToSetUp.RANGE,
-  value: "",
+  decisionDataType: ValueDataType.ALPHABETICAL,
+  howToSetTheDecision: ValueHowToSetUp.LIST_OF_VALUES,
+  value: ["Alto"],
   effectiveFrom: "",
   validUntil: "",
   conditionsThatEstablishesTheDecision: [
@@ -232,7 +232,7 @@ const decisionTemplate: IRuleDecision = {
   ],
 };
 
-export const addCard: Story = (args: IBusinessRulesController) => (
+const addCard: Story = (args: IBusinessRulesController) => (
   <BusinessRulesController {...args} />
 );
 addCard.args = {
@@ -260,4 +260,5 @@ addCard.args = {
   },
 };
 
+export { addCard };
 export default meta;

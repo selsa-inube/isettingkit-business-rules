@@ -8,6 +8,6 @@ export { sortDisplayDataSwitchPlaces } from "./BusinessRules/helper/utils/sortDi
 export { revertSortedDataSampleSwitchPlaces } from "./BusinessRules/helper/utils/revertSortedDataSampleSwitchPlaces";
 export { revertSortedDataSwitchPlaces } from "./BusinessRules/helper/utils/revertSortedDataSwitchPlaces";
 
-export type { IRulesForm } from "./BusinessRules/Form";
-export type { IBusinessRuleView } from "./BusinessRules/BusinessRuleView";
-export type { IBusinessRuleCard } from "./BusinessRules/Cards/BusinessRuleCard";
+export type { IRulesForm } from "./BusinessRules/types/Forms/IRulesForm";
+export type { IBusinessRuleView } from "./BusinessRules/types/BusinessRuleView";
+export type { IBusinessRuleCard } from "./BusinessRules/types/Cards/BusinessRuleCard/IBusinessRuleCard";

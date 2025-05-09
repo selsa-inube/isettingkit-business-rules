@@ -34,7 +34,7 @@ const Template: StoryFn<IModalRules> = (
   );
 };
 
-export const Default = Template.bind({});
+const Default = Template.bind({});
 Default.args = {
   portalId: "portal",
   title: "Rules Configuration",
@@ -69,7 +69,7 @@ const TemplateWithPlannedAutomatic: StoryFn<IModalRules> = (
   );
 };
 
-export const WithPlannedAutomaticExecution: StoryFn<IModalRules> =
+const WithPlannedAutomaticExecution: StoryFn<IModalRules> =
   TemplateWithPlannedAutomatic.bind({});
 WithPlannedAutomaticExecution.args = {
   portalId: "portal",
@@ -90,4 +90,6 @@ WithPlannedAutomaticExecution.args = {
   ),
 };
 
+export { Default };
+export { WithPlannedAutomaticExecution };
 export default meta;

@@ -4,7 +4,9 @@ import styled from "styled-components";
 const StyledConditionContainer = styled.div`
   & > div {
     border-radius: 8px;
-    border: 1px solid ${inube.palette.neutral.N30};
+    border: 1px solid
+      ${({ theme }) =>
+        theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
   }
 `;
 

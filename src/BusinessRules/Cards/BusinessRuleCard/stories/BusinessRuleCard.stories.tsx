@@ -105,7 +105,7 @@ const getData = (): IRuleDecision => {
   return decision;
 };
 
-export const Container: Story = (args: IBusinessRuleCard) => (
+const Container: Story = (args: IBusinessRuleCard) => (
   <BusinessRuleCard {...args} />
 );
 Container.args = {
@@ -136,4 +136,5 @@ Container.args = {
   id: "2",
 };
 
+export { Container };
 export default meta;

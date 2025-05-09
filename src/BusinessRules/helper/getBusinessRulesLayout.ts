@@ -1,31 +1,16 @@
-import { IRuleDecision } from "@isettingkit/input";
-import { IRulesFormTextValues } from "../Form/types";
+import { IGetBusinessRulesLayout } from "../types/helper/IGetBusinessRulesLayout";
 import { renderCard } from "./renderCard";
 
-interface GetBusinessRulesLayoutParams {
-  controls: boolean;
-  customTitleContentAddCard?: string;
-  decisions: IRuleDecision[];
-  loading: boolean;
-  handleOpenModal?: (decision?: IRuleDecision | null) => void;
-  handleDelete?: (id: string) => void;
-  textValues: IRulesFormTextValues;
-}
-
-interface GetBusinessRulesLayoutReturn {
-  renderedCards: React.ReactNode[];
-  shouldRenderAddCard: boolean;
-}
-
-function getBusinessRulesLayout({
-  controls,
-  customTitleContentAddCard,
-  decisions,
-  loading,
-  handleOpenModal,
-  handleDelete,
-  textValues,
-}: GetBusinessRulesLayoutParams): GetBusinessRulesLayoutReturn {
+const getBusinessRulesLayout = (props: IGetBusinessRulesLayout) => {
+  const {
+    controls,
+    customTitleContentAddCard,
+    decisions,
+    loading,
+    handleOpenModal,
+    handleDelete,
+    textValues,
+  } = props;
   const renderedCards = loading
     ? Array.from({ length: 3 }).map((_, index) =>
         renderCard({
@@ -39,7 +24,7 @@ function getBusinessRulesLayout({
           textValues,
         }),
       )
-    : decisions.map((decision) =>
+    : decisions?.map((decision) =>
         renderCard({
           type: "decision",
           decision,
@@ -53,12 +38,12 @@ function getBusinessRulesLayout({
       );
 
   const shouldRenderAddCard =
-    (decisions.length === 0 ||
-      decisions.length < Math.floor(window.innerWidth / 300)) &&
+    (decisions?.length === 0 ||
+      decisions?.length < Math.floor(window.innerWidth / 300)) &&
     !loading &&
     controls;
 
   return { renderedCards, shouldRenderAddCard };
-}
+};
 
 export { getBusinessRulesLayout };

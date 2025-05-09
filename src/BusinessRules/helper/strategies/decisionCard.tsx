@@ -1,17 +1,13 @@
-import { Stack } from "@inubekit/inubekit";
-import { Text } from "@inubekit/inubekit";
-import { RenderCardParams } from "../types";
+import { Text, Stack } from "@inubekit/inubekit";
+
 import { StyledFadeInStack } from "../../../BusinessRules/styles";
 import { BusinessRuleCard } from "../../../BusinessRules/Cards/BusinessRuleCard";
 import { BusinessRuleView } from "../../../BusinessRules/BusinessRuleView";
+import { IRenderCard } from "../../../BusinessRules/types/helper";
 
-function renderDecisionCard({
-  decision,
-  controls,
-  handleOpenModal,
-  handleDelete,
-  textValues,
-}: RenderCardParams): JSX.Element | null {
+function renderDecisionCard(props: IRenderCard) {
+  const { decision, controls, handleOpenModal, handleDelete, textValues } =
+    props;
   if (!decision) return null;
 
   return (

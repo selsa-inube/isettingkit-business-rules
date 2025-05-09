@@ -1,17 +1,6 @@
 import { useEffect, useState } from "react";
-import { Toggle } from "@inubekit/inubekit";
-import { Text } from "@inubekit/inubekit";
-import { Stack } from "@inubekit/inubekit";
-
-interface IToggleOption {
-  checked: boolean;
-  children: React.ReactNode;
-  handleToggleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  id: string;
-  labelToggle: string;
-  name: string;
-  valueToggle?: string;
-}
+import { Toggle, Text, Stack } from "@inubekit/inubekit";
+import { IToggleOption } from "../../../BusinessRules/types/Forms/IToggleOption";
 
 const ToggleOption = (props: IToggleOption) => {
   const {
@@ -56,4 +45,3 @@ const ToggleOption = (props: IToggleOption) => {
 };
 
 export { ToggleOption };
-export type { IToggleOption };

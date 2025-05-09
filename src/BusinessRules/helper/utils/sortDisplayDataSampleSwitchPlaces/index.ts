@@ -1,7 +1,8 @@
-import { IRuleDecision } from "@isettingkit/input";
+import { IRevertSortedData } from "../../../../BusinessRules/types/helper/utils/IRevertSortedData";
 
-const sortDisplayDataSampleSwitchPlaces = (decision: IRuleDecision) => {
-  const data: IRuleDecision = { ...decision };
+const sortDisplayDataSampleSwitchPlaces = (props: IRevertSortedData) => {
+  const { decisionTemplate } = props;
+  const data = { ...decisionTemplate };
   const conditionToDisplay = data.conditionsThatEstablishesTheDecision?.find(
     (condition) => condition.switchPlaces,
   );

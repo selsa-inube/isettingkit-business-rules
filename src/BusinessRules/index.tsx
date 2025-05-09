@@ -1,30 +1,10 @@
-import { Stack } from "@inubekit/inubekit";
-import { Grid } from "@inubekit/inubekit";
-import { Text } from "@inubekit/inubekit";
+import { Grid, Text, useMediaQuery, Stack } from "@inubekit/inubekit";
 import { ModalRules } from "./ModalRules";
-import { IRuleDecision } from "@isettingkit/input";
 import { StyledGridContainer, StyledScrollContainer } from "./styles";
-import { useMediaQuery } from "@inubekit/inubekit";
-import { IRulesFormTextValues } from "./Form/types";
-import { RulesForm } from "./Form";
 import { getBusinessRulesLayout } from "./helper/getBusinessRulesLayout";
 import { renderCard } from "./helper/renderCard";
-
-interface IBusinessRules {
-  controls?: boolean;
-  customTitleContentAddCard?: string;
-  customMessageEmptyDecisions?: string;
-  decisions: IRuleDecision[];
-  textValues: IRulesFormTextValues;
-  decisionTemplate: IRuleDecision;
-  isModalOpen: boolean;
-  selectedDecision: IRuleDecision | null;
-  loading: boolean;
-  handleOpenModal?: (decision?: IRuleDecision | null) => void;
-  handleCloseModal?: () => void;
-  handleSubmitForm?: (dataDecision: IRuleDecision) => void;
-  handleDelete?: (id: string) => void;
-}
+import { IBusinessRules } from "./types/IBusinessRules";
+import { RulesForm } from "..";
 
 const BusinessRules = (props: IBusinessRules) => {
   const {
@@ -55,12 +35,13 @@ const BusinessRules = (props: IBusinessRules) => {
     textValues,
   });
 
+  const shouldRenderEmptyMessage = decisions?.length === 0 && !loading;
   return (
     <>
       <StyledGridContainer>
         <StyledScrollContainer>
           <Stack direction="column" gap="16px" padding="6px">
-            {decisions.length === 0 && !loading && (
+            {shouldRenderEmptyMessage && (
               <Text as="span" type="label" size="large" appearance="gray">
                 {customMessageEmptyDecisions
                   ? customMessageEmptyDecisions
@@ -133,4 +114,3 @@ const BusinessRules = (props: IBusinessRules) => {
 };
 
 export { BusinessRules };
-export type { IBusinessRules };

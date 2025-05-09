@@ -87,7 +87,7 @@ const Template: StoryFn<typeof BusinessRuleView> = (args) => (
   <BusinessRuleView {...args} />
 );
 
-export const Default = Template.bind({});
+const Default = Template.bind({});
 Default.args = {
   decision: getData(),
   textValues: {
@@ -109,4 +109,5 @@ Default.args = {
   },
 };
 
+export { Default };
 export default meta;
