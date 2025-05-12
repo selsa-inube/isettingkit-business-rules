@@ -4,6 +4,7 @@ import { IRulesFormTextValues } from "../Forms/IRulesFormTextValues";
 interface IRenderCard {
   controls: boolean;
   customTitleContentAddCard?: string;
+  customMessageEmptyDecisions?: string;
   decision?: IRuleDecision;
   handleDelete?: (id: string) => void;
   handleOpenModal?: (decision?: IRuleDecision | null) => void;
@@ -11,6 +12,7 @@ interface IRenderCard {
   loading: boolean;
   textValues: IRulesFormTextValues;
   type: "loading" | "decision" | "add";
+  shouldRenderEmptyMessage?: boolean;
 }
 
 export type { IRenderCard };
