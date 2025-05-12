@@ -1,5 +1,5 @@
 import { IRuleDecision } from "@isettingkit/input";
-import { IRulesFormTextValues } from "../../../BusinessRules/Form/types";
+import { IRulesFormTextValues } from "../Forms/IRulesFormTextValues";
 
 interface IBusinessRules {
   controls?: boolean;

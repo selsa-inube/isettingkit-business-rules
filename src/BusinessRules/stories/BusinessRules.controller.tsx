@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { IRuleDecision } from "@isettingkit/input";
 import { BusinessRules } from "..";
-import { IRulesFormTextValues } from "../Form/types";
 import { sortDisplayDataSwitchPlaces } from "../helper/utils/sortDisplayDataSwitchPlaces";
 import { sortDisplayDataSampleSwitchPlaces } from "../helper/utils/sortDisplayDataSampleSwitchPlaces";
+import { IRulesFormTextValues } from "../types/Forms/IRulesFormTextValues";
 
 interface IBusinessRulesController {
   controls?: boolean;

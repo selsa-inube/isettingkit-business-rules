@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { parameters, props } from "./props";
-import { BusinessRuleCard, IBusinessRuleCard } from "..";
+import { BusinessRuleCard } from "..";
 import { BusinessRuleView } from "../../../BusinessRuleView";
 
 import {
@@ -9,6 +9,8 @@ import {
   ValueDataType,
   ValueHowToSetUp,
 } from "@isettingkit/input";
+import { IBusinessRuleCard } from "../../../../BusinessRules/types/Cards/BusinessRuleCard/IBusinessRuleCard";
+import { EValueHowToSetUp } from "../../../../BusinessRules/enums/EValueHowToSetUp";
 
 const meta: Meta<typeof BusinessRuleCard> = {
   title: "components/cards/BusinessRuleCard",
@@ -50,7 +52,7 @@ const getData = (): IRuleDecision => {
         descriptionUse: "Antigüedad del cliente (Días)",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "Mayor a: 720",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Categoría del cliente ",
@@ -58,7 +60,7 @@ const getData = (): IRuleDecision => {
         descriptionUse: "Categoría del cliente",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: ["Independiente", "Pensionado"],
-        howToSetTheCondition: ValueHowToSetUp.LIST_OF_VALUES_MULTI,
+        howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES_MULTI,
       },
       {
         labelName: "Nivel de membresía",
@@ -66,7 +68,7 @@ const getData = (): IRuleDecision => {
         descriptionUse: "Nivel de membresía",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: ["Alto"],
-        howToSetTheCondition: ValueHowToSetUp.LIST_OF_VALUES,
+        howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
       },
       {
         labelName: "Reciprocidad de ahorro",
@@ -74,7 +76,7 @@ const getData = (): IRuleDecision => {
         descriptionUse: "Reciprocidad de ahorro",
         conditionDataType: ValueDataType.PERCENTAGE,
         value: 19,
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Reciprocidad de ahorro",
@@ -82,7 +84,7 @@ const getData = (): IRuleDecision => {
         descriptionUse: "Reciprocidad de ahorro",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "Crédito Vehículo",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Temporada",
@@ -90,7 +92,7 @@ const getData = (): IRuleDecision => {
         descriptionUse: "Temporada",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "Normal",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Scoring De Riesgo",
@@ -98,7 +100,7 @@ const getData = (): IRuleDecision => {
         descriptionUse: "ScoringDeRiesgo",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "0,2",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
     ],
   };

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IRuleDecision } from "@isettingkit/input";
 import { BusinessRules } from "..";
-import { IRulesFormTextValues } from "../Form/types";
+import { IRulesFormTextValues } from "../types/Forms/IRulesFormTextValues";
 
 interface IBusinessRulesController {
   initialDecisions: IRuleDecision[];

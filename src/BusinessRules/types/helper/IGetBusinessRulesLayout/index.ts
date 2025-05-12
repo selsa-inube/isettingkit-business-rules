@@ -1,10 +1,10 @@
 import { IRuleDecision } from "@isettingkit/input";
-import { IRulesFormTextValues } from "../../../../BusinessRules/Form/types";
+import { IRulesFormTextValues } from "../../Forms/IRulesFormTextValues";
 
 interface IGetBusinessRulesLayout {
   controls: boolean;
   customTitleContentAddCard?: string;
-  decisions: IRuleDecision[];
+  decisions?: IRuleDecision[];
   loading: boolean;
   handleOpenModal?: (decision?: IRuleDecision | null) => void;
   handleDelete?: (id: string) => void;

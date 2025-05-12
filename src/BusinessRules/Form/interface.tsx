@@ -60,7 +60,7 @@ const RulesFormUI = (props: IRulesFormUI) => {
               </Stack>
 
               <Stack direction="column" gap="20px">
-                {visibleConditions.map((condition) => (
+                {visibleConditions?.map((condition) => (
                   <ToggleOption
                     key={condition.conditionName}
                     id={`toggle-${condition.conditionName}`}

@@ -39,7 +39,7 @@ const getBusinessRulesLayout = (props: IGetBusinessRulesLayout) => {
 
   const shouldRenderAddCard =
     (decisions?.length === 0 ||
-      decisions?.length < Math.floor(window.innerWidth / 300)) &&
+      decisions!.length < Math.floor(window.innerWidth / 300)) &&
     !loading &&
     controls;
 

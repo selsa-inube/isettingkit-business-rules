@@ -9,7 +9,7 @@ import { Text } from "@inubekit/inubekit";
 import { StyledConditionContainer, StyledScrollContainer } from "./styles";
 import { ToggleOption } from "./ToggleOption";
 import { useRulesFormUtils } from "./utils";
-import { IRulesForm } from "./types";
+import { IRulesForm } from "../types/Forms/IRulesForm";
 
 const RulesForm1 = (props: IRulesForm) => {
   const { decision, onSubmitEvent, textValues, onCancel } = props;

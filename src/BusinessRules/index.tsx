@@ -82,7 +82,7 @@ const BusinessRules = (props: IBusinessRules) => {
               {shouldRenderAddCard &&
                 renderCard({
                   type: "add",
-                  index: decisions.length,
+                  index: decisions?.length,
                   controls,
                   customTitleContentAddCard,
                   loading,
