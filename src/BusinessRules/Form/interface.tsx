@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Divider, Stack, Button, Toggle, Text } from "@inubekit/inubekit";
-import { DecisionConditionRender, ValueHowToSetUp } from "@isettingkit/input";
+import { DecisionConditionRender } from "@isettingkit/input";
 import { StyledConditionContainer, StyledScrollContainer } from "./styles";
 import { ToggleOption } from "./ToggleOption";
 import { Term } from "./Term";
 import { IRulesFormUI } from "../types/Forms/IRulesFormUI";
+import { EValueHowToSetUp } from "../enums/EValueHowToSetUp";
 
 const RulesFormUI = (props: IRulesFormUI) => {
   const {
@@ -76,7 +77,7 @@ const RulesFormUI = (props: IRulesFormUI) => {
                       handleConditionToggleChange(
                         condition.conditionName,
                         condition.howToSetTheCondition ===
-                          ValueHowToSetUp.LIST_OF_VALUES_MULTI,
+                          EValueHowToSetUp.LIST_OF_VALUES_MULTI,
                       )(e.target.checked)
                     }
                   >

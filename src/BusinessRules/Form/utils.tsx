@@ -4,13 +4,9 @@ import { string, date, object, lazy, Schema } from "yup";
 import { IRuleDecision, ValueDataType } from "@isettingkit/input";
 import { strategyFormFactoryHandlerManager } from "./helpers/utils";
 import { EValueHowToSetUp } from "../enums/EValueHowToSetUp";
+import { IUseRulesFormUtils } from "../types/Forms/IUseRulesFormUtils";
 
-interface IuseRulesFormUtils {
-  decision: IRuleDecision;
-  onSubmitEvent: (dataDecision: IRuleDecision) => void;
-}
-
-function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
+function useRulesFormUtils({ decision, onSubmitEvent }: IUseRulesFormUtils) {
   const initialValues = {
     ruleName: decision.ruleName || "",
     decisionDataType: decision.decisionDataType || ValueDataType.ALPHABETICAL,
