@@ -1,5 +1,5 @@
 import { currencyFormat, percentageFormat } from "@isettingkit/input";
-import { ITextfieldInputType } from "../../../../../isettingkit-view/src/View/DynamicViewField";
+import { ITextfieldInputType } from "../../../BusinessRules/types/Forms/ITextfieldInputType";
 
 const formatters: Record<
   ITextfieldInputType,

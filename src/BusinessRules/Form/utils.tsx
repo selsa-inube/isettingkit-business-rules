@@ -1,12 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useFormik } from "formik";
 import { string, date, object, lazy, Schema } from "yup";
-import {
-  IRuleDecision,
-  ValueDataType,
-  ValueHowToSetUp,
-} from "@isettingkit/input";
+import { IRuleDecision, ValueDataType } from "@isettingkit/input";
 import { strategyFormFactoryHandlerManager } from "./helpers/utils";
+import { EValueHowToSetUp } from "../enums/EValueHowToSetUp";
 
 interface IuseRulesFormUtils {
   decision: IRuleDecision;
@@ -148,7 +145,7 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
       } else {
         const defaultValue =
           condition.howToSetTheCondition ===
-          ValueHowToSetUp.LIST_OF_VALUES_MULTI
+          EValueHowToSetUp.LIST_OF_VALUES_MULTI
             ? []
             : "";
         formik.setFieldValue(

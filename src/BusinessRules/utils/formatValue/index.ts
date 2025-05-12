@@ -1,4 +1,4 @@
-import { ITextfieldInputType } from "../../../../../isettingkit-view/src/View/DynamicViewField";
+import { ITextfieldInputType } from "../../../BusinessRules/types/Forms/ITextfieldInputType";
 import { formatters } from "../formatters";
 
 const formatValue = (value: number | string, type: ITextfieldInputType) => {
