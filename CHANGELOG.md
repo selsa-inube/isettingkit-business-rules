@@ -1,3 +1,15 @@
+# v0.2.0 (Mon May 12 2025)
+
+#### 🚀 Enhancement
+
+- update code organization in order to make it more scalable [#1](https://github.com/selsa-inube/isettingkit-business-rules/pull/1) ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.1.40 (Tue May 06 2025)
 
 #### ⚠️ Pushed to `main`
