@@ -159,7 +159,12 @@ const decisionTemplate: IRuleDecision = {
   ruleName: "TasaEfectivaAnual",
   labelName: "Tasa Efectiva Anual",
   decisionDataType: ValueDataType.PERCENTAGE,
-  howToSetTheDecision: EValueHowToSetUp.RANGE,
+  // howToSetTheDecision: EValueHowToSetUp.RANGE,
+  // value: "",
+  howToSetTheDecision: EValueHowToSetUp.LIST_OF_VALUES,
+  listOfPossibleValues: {
+    list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
+  },
   value: "",
   effectiveFrom: "",
   validUntil: "",
