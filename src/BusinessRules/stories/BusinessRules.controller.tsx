@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { IRuleDecision } from "@isettingkit/input";
 import { BusinessRules } from "..";
-import { IRulesFormTextValues } from "../Form/types";
 import { sortDisplayDataSwitchPlaces } from "../helper/utils/sortDisplayDataSwitchPlaces";
 import { sortDisplayDataSampleSwitchPlaces } from "../helper/utils/sortDisplayDataSampleSwitchPlaces";
+import { IRulesFormTextValues } from "../types/Forms/IRulesFormTextValues";
 
 interface IBusinessRulesController {
   controls?: boolean;
@@ -87,9 +87,9 @@ const BusinessRulesController = ({
       controls={controls}
       customTitleContentAddCard={customTitleContentAddCard}
       customMessageEmptyDecisions={customMessageEmptyDecisions}
-      decisions={sortDisplayDataSwitchPlaces(decisions)}
+      decisions={sortDisplayDataSwitchPlaces({ decisions })}
       textValues={textValues}
-      decisionTemplate={sortDisplayDataSampleSwitchPlaces(decisionTemplate)}
+      decisionTemplate={sortDisplayDataSampleSwitchPlaces({ decisionTemplate })}
       isModalOpen={isModalOpen}
       selectedDecision={selectedDecision}
       loading={loading}

@@ -1,30 +1,11 @@
-import { Stack } from "@inubekit/inubekit";
-import { Grid } from "@inubekit/inubekit";
-import { Text } from "@inubekit/inubekit";
+import { Grid, Text, useMediaQuery, Stack, Button } from "@inubekit/inubekit";
 import { ModalRules } from "./ModalRules";
-import { IRuleDecision } from "@isettingkit/input";
 import { StyledGridContainer, StyledScrollContainer } from "./styles";
-import { useMediaQuery } from "@inubekit/inubekit";
-import { IRulesFormTextValues } from "./Form/types";
-import { RulesForm } from "./Form";
 import { getBusinessRulesLayout } from "./helper/getBusinessRulesLayout";
 import { renderCard } from "./helper/renderCard";
-
-interface IBusinessRules {
-  controls?: boolean;
-  customTitleContentAddCard?: string;
-  customMessageEmptyDecisions?: string;
-  decisions: IRuleDecision[];
-  textValues: IRulesFormTextValues;
-  decisionTemplate: IRuleDecision;
-  isModalOpen: boolean;
-  selectedDecision: IRuleDecision | null;
-  loading: boolean;
-  handleOpenModal?: (decision?: IRuleDecision | null) => void;
-  handleCloseModal?: () => void;
-  handleSubmitForm?: (dataDecision: IRuleDecision) => void;
-  handleDelete?: (id: string) => void;
-}
+import { IBusinessRules } from "./types/IBusinessRules";
+import { RulesForm } from "..";
+import { MdAdd } from "react-icons/md";
 
 const BusinessRules = (props: IBusinessRules) => {
   const {
@@ -55,61 +36,87 @@ const BusinessRules = (props: IBusinessRules) => {
     textValues,
   });
 
+  const shouldRenderEmptyMessage = decisions?.length === 0 && !loading;
+  const title = customTitleContentAddCard
+    ? customTitleContentAddCard
+    : "Agregar decisión";
   return (
     <>
       <StyledGridContainer>
         <StyledScrollContainer>
           <Stack direction="column" gap="16px" padding="6px">
-            {decisions.length === 0 && !loading && (
-              <Text as="span" type="label" size="large" appearance="gray">
-                {customMessageEmptyDecisions
-                  ? customMessageEmptyDecisions
-                  : "Aún NO tienes definidas tasas de interés efectivas"}
-                . Presiona
-                <Text
-                  as="span"
-                  type="label"
-                  size="large"
-                  appearance="gray"
-                  weight="bold"
-                >
-                  “
-                  {customTitleContentAddCard
-                    ? customTitleContentAddCard
-                    : "+ Agregar decisión"}
-                  ”
+            {shouldRenderEmptyMessage ? (
+              <Stack
+                direction="column"
+                gap="28px"
+                width="100%"
+                height={mediumScreen ? "auto" : "435px"}
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Text as="span" type="label" size="large" appearance="gray">
+                  {customMessageEmptyDecisions ? (
+                    customMessageEmptyDecisions
+                  ) : (
+                    <>
+                      Aún NO tienes definidas tasas de interés efectivas .
+                      Presiona
+                      <Text
+                        as="span"
+                        type="label"
+                        size="large"
+                        appearance="gray"
+                        weight="bold"
+                      >
+                        “
+                        {customTitleContentAddCard
+                          ? customTitleContentAddCard
+                          : "+ Agregar decisión"}
+                        ”
+                      </Text>
+                      para empezar.
+                    </>
+                  )}
                 </Text>
-                para empezar.
-              </Text>
+                <Button
+                  iconBefore={<MdAdd />}
+                  onClick={() => (handleOpenModal ? handleOpenModal() : null)}
+                >
+                  {title}
+                </Button>
+              </Stack>
+            ) : (
+              <Grid
+                templateColumns={
+                  smallScreen
+                    ? "repeat(auto-fill, minmax(200px, 1fr))"
+                    : "repeat(auto-fill, minmax(300px, 1fr))"
+                }
+                autoFlow="row dense"
+                gap="24px"
+                alignItems="start"
+                justifyContent="center"
+                autoRows="1fr"
+                justifyItems="center"
+                padding="6px"
+                height={mediumScreen ? "auto" : "484px"}
+              >
+                {renderedCards}
+                {shouldRenderAddCard &&
+                  renderCard({
+                    type: "add",
+                    index: decisions?.length,
+                    controls,
+                    customTitleContentAddCard,
+                    customMessageEmptyDecisions,
+                    loading,
+                    handleOpenModal,
+                    handleDelete,
+                    textValues,
+                    shouldRenderEmptyMessage,
+                  })}
+              </Grid>
             )}
-            <Grid
-              templateColumns={
-                smallScreen
-                  ? "repeat(auto-fill, minmax(200px, 1fr))"
-                  : "repeat(auto-fill, minmax(300px, 1fr))"
-              }
-              autoFlow="row dense"
-              gap="24px"
-              alignItems="start"
-              justifyContent="center"
-              autoRows="1fr"
-              justifyItems="center"
-              padding="6px"
-              height={mediumScreen ? "auto" : "484px"}
-            >
-              {renderedCards}
-              {shouldRenderAddCard &&
-                renderCard({
-                  type: "add",
-                  index: decisions.length,
-                  controls,
-                  customTitleContentAddCard,
-                  loading,
-                  handleOpenModal,
-                  handleDelete,
-                  textValues,
-                })}
-            </Grid>
           </Stack>
         </StyledScrollContainer>
       </StyledGridContainer>
@@ -133,4 +140,3 @@ const BusinessRules = (props: IBusinessRules) => {
 };
 
 export { BusinessRules };
-export type { IBusinessRules };

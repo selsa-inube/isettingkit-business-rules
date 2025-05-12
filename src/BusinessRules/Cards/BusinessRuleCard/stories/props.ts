@@ -1,6 +1,5 @@
 import { ArgTypes } from "@storybook/react";
-
-import { IBusinessRuleCard } from "..";
+import { IBusinessRuleCard } from "../../../../BusinessRules/types/Cards/BusinessRuleCard/IBusinessRuleCard";
 
 export const parameters = {
   docs: {

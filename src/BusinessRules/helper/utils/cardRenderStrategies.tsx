@@ -1,11 +1,12 @@
 import { renderLoadingCard } from "../strategies/loadingCard";
-import { RenderCardParams } from "../types";
+
 import { renderDecisionCard } from "../strategies/decisionCard";
 import { renderAddCard } from "../strategies/addCard";
+import { IRenderCard } from "../../../BusinessRules/types/helper";
 
 const cardRenderStrategies: Record<
-  RenderCardParams["type"],
-  (params: RenderCardParams) => JSX.Element | null
+  IRenderCard["type"],
+  (props: IRenderCard) => JSX.Element | null
 > = {
   loading: renderLoadingCard,
   decision: renderDecisionCard,

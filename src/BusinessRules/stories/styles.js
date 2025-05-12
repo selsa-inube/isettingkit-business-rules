@@ -1,4 +1,3 @@
-import { inube } from "@inubekit/foundations";
 import styled from "styled-components";
 
 const StyledCardContainer = styled.div`

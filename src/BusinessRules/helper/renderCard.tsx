@@ -1,10 +1,10 @@
-import { RenderCardParams } from "./types";
+import { IRenderCard } from "../types/helper";
 import { cardRenderStrategies } from "./utils/cardRenderStrategies";
 
-function renderCard(params: RenderCardParams): JSX.Element | null {
-  const { type } = params;
+const renderCard = (props: IRenderCard) => {
+  const { type } = props;
   const strategy = cardRenderStrategies[type];
-  return strategy ? strategy(params) : null;
-}
+  return strategy ? strategy(props) : null;
+};
 
 export { renderCard };

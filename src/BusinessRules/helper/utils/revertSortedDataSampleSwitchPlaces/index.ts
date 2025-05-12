@@ -1,15 +1,14 @@
-import { IRuleDecision } from "@isettingkit/input";
+import { IRevertSortedData } from "../../../types/helper/utils/IRevertSortedData";
 
-const revertSortedDataSampleSwitchPlaces = (
-  dataDecision: IRuleDecision,
-  originalDecision: IRuleDecision,
-): IRuleDecision => {
+const revertSortedDataSampleSwitchPlaces = (props: IRevertSortedData) => {
+  console.log(props);
+  const { dataDecision, originalDecision } = props;
   const conditionToRestore = {
-    conditionName: dataDecision.ruleName || "",
-    labelName: dataDecision.labelName || "",
-    conditionDataType: dataDecision.decisionDataType || "alphabetical",
-    value: dataDecision.value || "",
-    howToSetTheCondition: dataDecision.howToSetTheDecision || "EqualTo",
+    conditionName: dataDecision!.ruleName || "",
+    labelName: dataDecision!.labelName || "",
+    conditionDataType: dataDecision!.decisionDataType || "alphabetical",
+    value: dataDecision!.value || "",
+    howToSetTheCondition: dataDecision!.howToSetTheDecision || "EqualTo",
     switchPlaces: true,
     hidden: false,
   };
@@ -17,8 +16,9 @@ const revertSortedDataSampleSwitchPlaces = (
   return {
     ...originalDecision,
     conditionsThatEstablishesTheDecision:
-      originalDecision.conditionsThatEstablishesTheDecision!.map((condition) =>
-        condition.hidden ? { ...conditionToRestore } : condition,
+      originalDecision!.conditionsThatEstablishesTheDecision!.map(
+        (condition) =>
+          condition.hidden ? { ...conditionToRestore } : condition,
       ),
   };
 };

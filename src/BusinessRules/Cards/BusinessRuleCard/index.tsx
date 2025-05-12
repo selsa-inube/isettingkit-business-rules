@@ -1,14 +1,7 @@
 import { MdOutlineDelete } from "react-icons/md";
 import { Divider, Stack, Icon } from "@inubekit/inubekit";
 import { StyledCard } from "./styles";
-
-interface IBusinessRuleCard {
-  children: React.ReactNode;
-  controls?: boolean;
-  handleDelete: (id: string) => void;
-  handleView: (id: string) => void;
-  id: string;
-}
+import { IBusinessRuleCard } from "../../../BusinessRules/types/Cards/BusinessRuleCard/IBusinessRuleCard";
 
 const BusinessRuleCard = (props: IBusinessRuleCard) => {
   const { children, controls = true, handleDelete, id } = props;
@@ -20,18 +13,9 @@ const BusinessRuleCard = (props: IBusinessRuleCard) => {
           <>
             <Divider />
             <Stack gap="16px" justifyContent="end">
-              {/* <Icon
-                appearance="dark"
-                size="24px"
-                cursorHover
-                icon={<MdOutlineEdit />}
-                onClick={() => {
-                  handleView(id);
-                }}
-              /> */}
               <Icon
                 cursorHover
-                appearance="dark"
+                appearance="danger"
                 size="24px"
                 icon={<MdOutlineDelete />}
                 onClick={() => {
@@ -47,4 +31,3 @@ const BusinessRuleCard = (props: IBusinessRuleCard) => {
 };
 
 export { BusinessRuleCard };
-export type { IBusinessRuleCard };

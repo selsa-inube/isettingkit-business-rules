@@ -1,14 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { parameters } from "./props";
-import {
-  IRuleDecision,
-  ValueDataType,
-  ValueHowToSetUp,
-} from "@isettingkit/input";
+import { IRuleDecision, ValueDataType } from "@isettingkit/input";
 import {
   BusinessRulesController,
   IBusinessRulesController,
 } from "./BusinessRules.controller";
+import { EValueHowToSetUp } from "../enums/EValueHowToSetUp";
 
 const meta: Meta<typeof BusinessRulesController> = {
   title: "components/BusinessRules",
@@ -26,7 +23,7 @@ const sampleDecisions: IRuleDecision[] = [
     labelName: "Tasa Efectiva Anual",
     decisionDataType: ValueDataType.PERCENTAGE,
     value: { from: 4, to: 8 },
-    howToSetTheDecision: ValueHowToSetUp.RANGE,
+    howToSetTheDecision: EValueHowToSetUp.RANGE,
     effectiveFrom: "2024-12-31",
     validUntil: "2024-12-31",
     conditionsThatEstablishesTheDecision: [
@@ -36,7 +33,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Antigüedad del cliente (Días)",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "Mayor a: 720",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Categoría del cliente ",
@@ -44,7 +41,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Categoría del cliente",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: ["Independiente", "Pensionado"],
-        howToSetTheCondition: ValueHowToSetUp.LIST_OF_VALUES_MULTI,
+        howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES_MULTI,
       },
       {
         labelName: "Nivel de membresía",
@@ -52,7 +49,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Nivel de membresía",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: ["Alto"],
-        howToSetTheCondition: ValueHowToSetUp.LIST_OF_VALUES,
+        howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
       },
       {
         labelName: "Reciprocidad de ahorro",
@@ -60,7 +57,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Reciprocidad de ahorro",
         conditionDataType: ValueDataType.PERCENTAGE,
         value: 19,
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Reciprocidad de ahorro",
@@ -68,7 +65,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Reciprocidad de ahorro",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "Crédito Vehículo",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Temporada",
@@ -76,7 +73,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Temporada",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "Normal",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Scoring De Riesgo",
@@ -84,7 +81,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "ScoringDeRiesgo",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "0,2",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
     ],
   },
@@ -94,7 +91,7 @@ const sampleDecisions: IRuleDecision[] = [
     labelName: "Tasa Efectiva Anual",
     decisionDataType: ValueDataType.PERCENTAGE,
     value: { from: 4, to: 8 },
-    howToSetTheDecision: ValueHowToSetUp.RANGE,
+    howToSetTheDecision: EValueHowToSetUp.RANGE,
     effectiveFrom: "2024-12-31",
     validUntil: "2024-12-31",
     conditionsThatEstablishesTheDecision: [
@@ -104,7 +101,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Antigüedad del cliente (Días)",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "Mayor a: 720",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Categoría del cliente ",
@@ -112,7 +109,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Categoría del cliente",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: ["Independiente", "Pensionado"],
-        howToSetTheCondition: ValueHowToSetUp.LIST_OF_VALUES_MULTI,
+        howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES_MULTI,
       },
       {
         labelName: "Nivel de membresía",
@@ -120,7 +117,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Nivel de membresía",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: ["Alto"],
-        howToSetTheCondition: ValueHowToSetUp.LIST_OF_VALUES,
+        howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
       },
       {
         labelName: "Reciprocidad de ahorro",
@@ -128,7 +125,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Reciprocidad de ahorro",
         conditionDataType: ValueDataType.PERCENTAGE,
         value: 19,
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Reciprocidad de ahorro",
@@ -136,7 +133,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Reciprocidad de ahorro",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "Crédito Vehículo",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Temporada",
@@ -144,7 +141,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Temporada",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "Normal",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Scoring De Riesgo",
@@ -152,7 +149,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "ScoringDeRiesgo",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "0,2",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
     ],
   },
@@ -162,7 +159,7 @@ const sampleDecisions: IRuleDecision[] = [
     labelName: "Tasa Efectiva Anual",
     decisionDataType: ValueDataType.PERCENTAGE,
     value: { from: 4, to: 8 },
-    howToSetTheDecision: ValueHowToSetUp.RANGE,
+    howToSetTheDecision: EValueHowToSetUp.RANGE,
     effectiveFrom: "2024-12-31",
     validUntil: "2024-12-31",
     conditionsThatEstablishesTheDecision: [
@@ -172,7 +169,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Antigüedad del cliente (Días)",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "Mayor a: 720",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Categoría del cliente ",
@@ -180,7 +177,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Categoría del cliente",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: ["Independiente", "Pensionado"],
-        howToSetTheCondition: ValueHowToSetUp.LIST_OF_VALUES_MULTI,
+        howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES_MULTI,
       },
       {
         labelName: "Nivel de membresía",
@@ -188,7 +185,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Nivel de membresía",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: ["Alto"],
-        howToSetTheCondition: ValueHowToSetUp.LIST_OF_VALUES,
+        howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
       },
       {
         labelName: "Reciprocidad de ahorro",
@@ -196,7 +193,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Reciprocidad de ahorro",
         conditionDataType: ValueDataType.PERCENTAGE,
         value: 19,
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Reciprocidad de ahorro",
@@ -204,7 +201,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Reciprocidad de ahorro",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "Crédito Vehículo",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Temporada",
@@ -212,7 +209,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Temporada",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "Normal",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Scoring De Riesgo",
@@ -220,7 +217,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "ScoringDeRiesgo",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "0,2",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
     ],
   },
@@ -230,7 +227,7 @@ const sampleDecisions: IRuleDecision[] = [
     labelName: "Tasa Efectiva Anual",
     decisionDataType: ValueDataType.PERCENTAGE,
     value: { from: 4, to: 8 },
-    howToSetTheDecision: ValueHowToSetUp.RANGE,
+    howToSetTheDecision: EValueHowToSetUp.RANGE,
     effectiveFrom: "2024-12-31",
     validUntil: "2024-12-31",
     conditionsThatEstablishesTheDecision: [
@@ -240,7 +237,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Antigüedad del cliente (Días)",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "Mayor a: 720",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Categoría del cliente ",
@@ -248,7 +245,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Categoría del cliente",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: ["Independiente", "Pensionado"],
-        howToSetTheCondition: ValueHowToSetUp.LIST_OF_VALUES_MULTI,
+        howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES_MULTI,
       },
       {
         labelName: "Nivel de membresía",
@@ -256,7 +253,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Nivel de membresía",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: ["Alto"],
-        howToSetTheCondition: ValueHowToSetUp.LIST_OF_VALUES,
+        howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
       },
       {
         labelName: "Reciprocidad de ahorro",
@@ -264,7 +261,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Reciprocidad de ahorro",
         conditionDataType: ValueDataType.PERCENTAGE,
         value: 19,
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Reciprocidad de ahorro",
@@ -272,7 +269,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Reciprocidad de ahorro",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "Crédito Vehículo",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Temporada",
@@ -280,7 +277,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "Temporada",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "Normal",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
       {
         labelName: "Scoring De Riesgo",
@@ -288,7 +285,7 @@ const sampleDecisions: IRuleDecision[] = [
         descriptionUse: "ScoringDeRiesgo",
         conditionDataType: ValueDataType.ALPHABETICAL,
         value: "0,2",
-        howToSetTheCondition: ValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
       },
     ],
   },
@@ -297,7 +294,7 @@ const sampleDecisions: IRuleDecision[] = [
 const decisionTemplate: IRuleDecision = {
   ruleName: "TasaEfectivaAnual",
   decisionDataType: ValueDataType.ALPHABETICAL,
-  howToSetTheDecision: ValueHowToSetUp.EQUAL,
+  howToSetTheDecision: EValueHowToSetUp.EQUAL,
   value: "",
   effectiveFrom: "",
   validUntil: "",
@@ -307,7 +304,7 @@ const decisionTemplate: IRuleDecision = {
       conditionName: "AntigüedadDelCliente(Días)",
       descriptionUse: "Antigüedad del cliente (Días)",
       conditionDataType: ValueDataType.ALPHABETICAL,
-      howToSetTheCondition: ValueHowToSetUp.EQUAL,
+      howToSetTheCondition: EValueHowToSetUp.EQUAL,
       value: "",
     },
     {
@@ -315,7 +312,7 @@ const decisionTemplate: IRuleDecision = {
       conditionName: "CategoríaDelCliente",
       descriptionUse: "Categoría Del Cliente",
       conditionDataType: ValueDataType.ALPHABETICAL,
-      howToSetTheCondition: ValueHowToSetUp.LIST_OF_VALUES_MULTI,
+      howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES_MULTI,
       listOfPossibleValues: {
         list: ["Funcionario", "Independiente", "Pensionado", "Empleado"],
       },
@@ -326,7 +323,7 @@ const decisionTemplate: IRuleDecision = {
       conditionName: "NivelDeMembresía",
       descriptionUse: "Nivel De Membresía",
       conditionDataType: ValueDataType.ALPHABETICAL,
-      howToSetTheCondition: ValueHowToSetUp.LIST_OF_VALUES,
+      howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
       listOfPossibleValues: {
         list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
       },
@@ -337,7 +334,7 @@ const decisionTemplate: IRuleDecision = {
       conditionName: "ReciprocidadDeAhorro",
       descriptionUse: "Reciprocidad De Ahorro",
       conditionDataType: ValueDataType.PERCENTAGE,
-      howToSetTheCondition: ValueHowToSetUp.EQUAL,
+      howToSetTheCondition: EValueHowToSetUp.EQUAL,
       value: "",
     },
     {
@@ -345,7 +342,7 @@ const decisionTemplate: IRuleDecision = {
       conditionName: "DestinoDelDinero",
       descriptionUse: "Destino Del Dinero",
       conditionDataType: ValueDataType.ALPHABETICAL,
-      howToSetTheCondition: ValueHowToSetUp.EQUAL,
+      howToSetTheCondition: EValueHowToSetUp.EQUAL,
       value: "",
     },
     {
@@ -353,7 +350,7 @@ const decisionTemplate: IRuleDecision = {
       conditionName: "Temporada",
       descriptionUse: "Temporada",
       conditionDataType: ValueDataType.ALPHABETICAL,
-      howToSetTheCondition: ValueHowToSetUp.EQUAL,
+      howToSetTheCondition: EValueHowToSetUp.EQUAL,
       value: "",
     },
     {
@@ -361,7 +358,7 @@ const decisionTemplate: IRuleDecision = {
       conditionName: "ScoringDeRiesgo",
       descriptionUse: "ScoringDeRiesgo",
       conditionDataType: ValueDataType.ALPHABETICAL,
-      howToSetTheCondition: ValueHowToSetUp.EQUAL,
+      howToSetTheCondition: EValueHowToSetUp.EQUAL,
       value: "",
     },
   ],

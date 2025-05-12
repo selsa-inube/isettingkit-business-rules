@@ -1,19 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useFormik } from "formik";
 import { string, date, object, lazy, Schema } from "yup";
-import {
-  IRuleDecision,
-  ValueDataType,
-  ValueHowToSetUp,
-} from "@isettingkit/input";
-import { getStrategy } from "./helpers/typeData/utils";
+import { IRuleDecision, ValueDataType } from "@isettingkit/input";
+import { strategyFormFactoryHandlerManager } from "./helpers/utils";
+import { EValueHowToSetUp } from "../enums/EValueHowToSetUp";
+import { IUseRulesFormUtils } from "../types/Forms/IUseRulesFormUtils";
 
-interface IuseRulesFormUtils {
-  decision: IRuleDecision;
-  onSubmitEvent: (dataDecision: IRuleDecision) => void;
-}
-
-function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
+function useRulesFormUtils({ decision, onSubmitEvent }: IUseRulesFormUtils) {
   const initialValues = {
     ruleName: decision.ruleName || "",
     decisionDataType: decision.decisionDataType || ValueDataType.ALPHABETICAL,
@@ -49,7 +42,9 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
       },
     ),
     value: lazy(() => {
-      const strategy = getStrategy(formik.values.howToSetTheDecision as any);
+      const strategy = strategyFormFactoryHandlerManager(
+        formik.values.howToSetTheDecision as any,
+      );
       return strategy(
         formik.values.value as any,
         formik.values.decisionDataType,
@@ -71,7 +66,9 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
                 condition.conditionName
               ];
             if (conditionValue !== undefined) {
-              const strategy = getStrategy(condition.howToSetTheCondition);
+              const strategy = strategyFormFactoryHandlerManager(
+                condition.howToSetTheCondition as EValueHowToSetUp,
+              );
               schema[condition.conditionName] = strategy(
                 condition.value as any,
                 condition.conditionDataType,
@@ -144,7 +141,7 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
       } else {
         const defaultValue =
           condition.howToSetTheCondition ===
-          ValueHowToSetUp.LIST_OF_VALUES_MULTI
+          EValueHowToSetUp.LIST_OF_VALUES_MULTI
             ? []
             : "";
         formik.setFieldValue(
