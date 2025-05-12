@@ -71,7 +71,7 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IuseRulesFormUtils) {
               ];
             if (conditionValue !== undefined) {
               const strategy = strategyFormFactoryHandlerManager(
-                condition.howToSetTheCondition,
+                condition.howToSetTheCondition as EValueHowToSetUp,
               );
               schema[condition.conditionName] = strategy(
                 condition.value as any,
