@@ -43,13 +43,14 @@ Default.args = {
       id="10"
       labelSelect="Select"
       labelSelected="Selected"
-      onHandleSelectCheckChange={() => true}
       options={[
-        { id: "1", label: "Option 1", checked: false },
-        { id: "2", label: "Option 2", checked: false },
-        { id: "3", label: "Option 3", checked: false },
+        { id: "1", label: "Option 1", value: "Option 1" },
+        { id: "2", label: "Option 2", value: "Option 2" },
+        { id: "3", label: "Option 3", value: "Option 3" },
       ]}
       placeholderSelect="Seleccione opciones"
+      values={""}
+      onChange={() => true}
     />
   ),
 };
@@ -79,13 +80,14 @@ WithPlannedAutomaticExecution.args = {
       id="10"
       labelSelect="Select"
       labelSelected="Selected"
-      onHandleSelectCheckChange={() => true}
+      onChange={() => true}
       options={[
-        { id: "1", label: "Option 1", checked: false },
-        { id: "2", label: "Option 2", checked: false },
-        { id: "3", label: "Option 3", checked: false },
+        { id: "1", label: "Option 1", value: "Option 1" },
+        { id: "2", label: "Option 2", value: "Option 2" },
+        { id: "3", label: "Option 3", value: "Option 3" },
       ]}
       placeholderSelect="Seleccione opciones"
+      values={""}
     />
   ),
 };

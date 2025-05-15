@@ -27,7 +27,7 @@ const RulesFormUI = (props: IRulesFormUI) => {
           condition: normalizedDecision,
           formik,
           isDecision: true,
-        } as any)}
+        })}
 
         <Divider dashed />
         <StyledConditionContainer>

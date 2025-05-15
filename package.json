@@ -36,8 +36,8 @@
     "autorelease": "auto shipit"
   },
   "dependencies": {
-    "@inubekit/inubekit": "^2.1.0",
-    "@isettingkit/input": "^1.0.0",
+    "@inubekit/inubekit": "^3.0.0",
+    "@isettingkit/input": "^1.0.1",
     "@isettingkit/view": "^0.1.23"
   },
   "peerDependencies": {
