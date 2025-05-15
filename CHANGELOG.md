@@ -1,3 +1,15 @@
+# v0.2.1 (Thu May 15 2025)
+
+#### ⚠️ Pushed to `main`
+
+- chore: update inubekit dependencies ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.2.0 (Mon May 12 2025)
 
 #### 🚀 Enhancement
