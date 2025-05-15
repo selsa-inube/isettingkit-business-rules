@@ -4,7 +4,7 @@ import { IRulesFormTextValues } from "../IRulesFormTextValues";
 interface IRulesForm {
   decision: IRuleDecision;
   onCancel?: () => void;
-  onSubmitEvent: (dataDecision: IRuleDecision) => void;
+  onSubmitEvent?: (dataDecision: IRuleDecision) => void;
   textValues: IRulesFormTextValues;
 }
 

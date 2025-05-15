@@ -75,6 +75,7 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
       visibleConditions={visibleConditions}
       decisionDateElement={decisionDateElement}
       skeleton={skeleton}
+      terms={Boolean(textValues?.terms)}
     />
   );
 };

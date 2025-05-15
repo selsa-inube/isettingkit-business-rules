@@ -2,18 +2,19 @@ import { IRuleDecision } from "@isettingkit/input";
 import { IBusinessRuleView } from "..";
 
 interface IBusinessRuleViewUI {
-  loading: boolean;
-  textValues: IBusinessRuleView["textValues"];
   decision: IBusinessRuleView["decision"];
-  decisionMapper: IRuleDecision | null;
-  visibleConditions: NonNullable<
-    IBusinessRuleView["decision"]
-  >["conditionsThatEstablishesTheDecision"];
   decisionDateElement: {
     element: IRuleDecision;
     valueData: unknown;
   } | null;
+  decisionMapper: IRuleDecision | null;
+  loading: boolean;
   skeleton: unknown[];
+  terms: boolean;
+  textValues: IBusinessRuleView["textValues"];
+  visibleConditions: NonNullable<
+    IBusinessRuleView["decision"]
+  >["conditionsThatEstablishesTheDecision"];
 }
 
 export type { IBusinessRuleViewUI };

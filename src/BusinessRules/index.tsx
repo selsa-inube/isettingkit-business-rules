@@ -22,6 +22,7 @@ const BusinessRules = (props: IBusinessRules) => {
     handleCloseModal,
     handleSubmitForm,
     handleDelete,
+    terms = true,
   } = props;
 
   const mediumScreen = useMediaQuery("(max-width: 681px)");
@@ -114,6 +115,7 @@ const BusinessRules = (props: IBusinessRules) => {
                     handleDelete,
                     textValues,
                     shouldRenderEmptyMessage,
+                    terms,
                   })}
               </Grid>
             )}

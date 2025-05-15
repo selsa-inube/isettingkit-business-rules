@@ -89,33 +89,35 @@ const RulesFormUI = (props: IRulesFormUI) => {
           </StyledScrollContainer>
         </StyledConditionContainer>
 
-        <Divider dashed />
-        <Term
-          labelStart={textValues.termStart}
-          labelEnd={textValues.termEnd}
-          valueStart={formik.values.effectiveFrom}
-          valueEnd={formik.values.validUntil}
-          messageStart={formik.errors.effectiveFrom}
-          messageEnd={formik.errors.validUntil}
-          statusStart={termStartStatus}
-          statusEnd={termEndStatus}
-          onHandleStartChange={(e) =>
-            formik.setFieldValue("effectiveFrom", e.target.value)
-          }
-          onHandleEndChange={(e) =>
-            formik.setFieldValue("validUntil", e.target.value)
-          }
-          onCheckClosedChange={(isClosed) => {
-            formik.setFieldValue("checkClosed", isClosed);
-            if (isClosed) {
-              formik.setFieldValue("validUntil", "");
-            }
-          }}
-          checkedClosed={formik.values.checkClosed}
-        />
-
+        {textValues.terms && (
+          <>
+            <Divider dashed />
+            <Term
+              labelStart={textValues.termStart}
+              labelEnd={textValues.termEnd}
+              valueStart={formik.values.effectiveFrom}
+              valueEnd={formik.values.validUntil}
+              messageStart={formik.errors.effectiveFrom}
+              messageEnd={formik.errors.validUntil}
+              statusStart={termStartStatus}
+              statusEnd={termEndStatus}
+              onHandleStartChange={(e) =>
+                formik.setFieldValue("effectiveFrom", e.target.value)
+              }
+              onHandleEndChange={(e) =>
+                formik.setFieldValue("validUntil", e.target.value)
+              }
+              onCheckClosedChange={(isClosed) => {
+                formik.setFieldValue("checkClosed", isClosed);
+                if (isClosed) {
+                  formik.setFieldValue("validUntil", "");
+                }
+              }}
+              checkedClosed={formik.values.checkClosed}
+            />
+          </>
+        )}
         <Divider />
-
         {showConditionsError && (
           <Text type="label" size="medium" appearance="danger">
             {String(formik.errors.conditionsThatEstablishesTheDecision)}

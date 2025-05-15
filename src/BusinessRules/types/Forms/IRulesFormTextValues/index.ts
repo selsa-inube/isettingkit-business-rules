@@ -12,7 +12,7 @@ interface IRulesFormTextValues {
   selectOption: string;
   selectOptions: string;
   termEnd: string;
-  terms: string;
+  terms?: string;
   termStart: string;
 }
 

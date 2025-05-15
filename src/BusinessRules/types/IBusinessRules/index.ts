@@ -15,6 +15,7 @@ interface IBusinessRules {
   handleCloseModal?: () => void;
   handleSubmitForm?: (dataDecision: IRuleDecision) => void;
   handleDelete?: (id: string) => void;
+  terms?: boolean;
 }
 
 export type { IBusinessRules };

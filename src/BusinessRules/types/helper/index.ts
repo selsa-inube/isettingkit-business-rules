@@ -13,6 +13,7 @@ interface IRenderCard {
   textValues: IRulesFormTextValues;
   type: "loading" | "decision" | "add";
   shouldRenderEmptyMessage?: boolean;
+  terms?: boolean;
 }
 
 export type { IRenderCard };

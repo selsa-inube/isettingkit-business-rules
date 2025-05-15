@@ -13,6 +13,7 @@ interface IBusinessRulesController {
   textValues: IRulesFormTextValues;
   decisionTemplate: IRuleDecision;
   loading?: boolean;
+  terms?: boolean;
 }
 
 const BusinessRulesController = ({

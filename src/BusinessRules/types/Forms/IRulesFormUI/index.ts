@@ -3,18 +3,18 @@ import { IRulesForm } from "../IRulesForm";
 
 interface IRulesFormUI extends IRulesForm {
   formik: any;
-  visibleConditions: IRulesForm["decision"]["conditionsThatEstablishesTheDecision"];
-  normalizedDecision: any;
-  handleToggleNoneChange: (value: boolean) => void;
   handleConditionToggleChange: (
     conditionName: string,
     isMulti: boolean,
   ) => (checked: boolean) => void;
-  showConditionsError: boolean;
+  handleToggleNoneChange: (value: boolean) => void;
+  normalizedDecision: any;
   onCancel: () => void;
-  termStartStatus?: "valid" | "invalid";
+  showConditionsError: boolean;
   termEndStatus?: "valid" | "invalid";
+  termStartStatus?: "valid" | "invalid";
   textValues: IRulesForm["textValues"];
+  visibleConditions: IRulesForm["decision"]["conditionsThatEstablishesTheDecision"];
 }
 
 export type { IRulesFormUI };

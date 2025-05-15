@@ -16,6 +16,7 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
     visibleConditions,
     decisionDateElement,
     skeleton,
+    terms,
   } = props;
   if (loading) {
     return (
@@ -63,18 +64,21 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
                 </Stack>
               </StyledConditionContainer>
             ))}
+            {terms && (
+              <>
+                <Divider dashed />
 
-            <Divider dashed />
-
-            {decisionDateElement && (
-              <DecisionViewConditionRenderer
-                key={textValues!.terms}
-                element={decisionDateElement.element}
-                valueData={
-                  decisionDateElement.valueData as IDecisionViewConditionRenderer["valueData"]
-                }
-                type="decision"
-              />
+                {decisionDateElement && (
+                  <DecisionViewConditionRenderer
+                    key={textValues!.terms}
+                    element={decisionDateElement.element}
+                    valueData={
+                      decisionDateElement.valueData as IDecisionViewConditionRenderer["valueData"]
+                    }
+                    type="decision"
+                  />
+                )}
+              </>
             )}
           </Stack>
         </StyledScrollContainer>

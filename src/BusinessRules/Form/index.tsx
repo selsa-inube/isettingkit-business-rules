@@ -8,6 +8,7 @@ const RulesForm = (props: IRulesForm) => {
   const { formik, handleToggleNoneChange } = useRulesFormUtils({
     decision,
     onSubmitEvent,
+    textValues,
   });
 
   const normalizedDecision = {
@@ -73,7 +74,6 @@ const RulesForm = (props: IRulesForm) => {
       showConditionsError={showConditionsError}
       termStartStatus={termStartStatus}
       termEndStatus={termEndStatus}
-      onSubmitEvent={() => {}}
     />
   );
 };

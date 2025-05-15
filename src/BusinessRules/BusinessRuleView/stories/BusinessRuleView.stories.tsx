@@ -102,7 +102,7 @@ Default.args = {
     none: "Ninguno",
     factsThatConditionIt: "Condiciones que lo determinan",
     criteria: "Criterios",
-    terms: "Términos",
+    terms: "Vigencia",
   },
 };
 

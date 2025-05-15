@@ -5,8 +5,13 @@ import { IRuleDecision, ValueDataType } from "@isettingkit/input";
 import { strategyFormFactoryHandlerManager } from "./helpers/utils";
 import { EValueHowToSetUp } from "../enums/EValueHowToSetUp";
 import { IUseRulesFormUtils } from "../types/Forms/IUseRulesFormUtils";
+import { IRulesForm } from "../types/Forms/IRulesForm";
 
-function useRulesFormUtils({ decision, onSubmitEvent }: IUseRulesFormUtils) {
+function useRulesFormUtils({
+  decision,
+  onSubmitEvent,
+  textValues,
+}: IUseRulesFormUtils & { textValues: IRulesForm["textValues"] }) {
   const initialValues = {
     ruleName: decision.ruleName || "",
     decisionDataType: decision.decisionDataType || ValueDataType.ALPHABETICAL,
@@ -17,30 +22,13 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IUseRulesFormUtils) {
     toggleNone: true,
     conditionsThatEstablishesTheDecision: {} as Record<string, any>,
     checkClosed: false,
+    terms: true,
   };
+  // eslint-disable-next-line prefer-const
+  let formik: ReturnType<typeof useFormik>;
 
-  const validationSchema: Schema<any> = object({
+  const baseSchema: any = {
     ruleName: string().required("Name is required"),
-    effectiveFrom: date().required("effective From date is required"),
-    validUntil: date().when(
-      "checkClosed",
-      (_checkClosed, schema, { parent }) => {
-        const checkClosed = parent?.checkClosed;
-        return checkClosed
-          ? schema
-              .required("valid Until date is required")
-              .test(
-                "is-after-startDate",
-                "valid Until date must be greater than or equal to Start date",
-                function (validUntil) {
-                  const effectiveFrom = this.parent.effectiveFrom;
-                  if (!effectiveFrom || !validUntil) return true;
-                  return new Date(validUntil) >= new Date(effectiveFrom);
-                },
-              )
-          : schema.notRequired();
-      },
-    ),
     value: lazy(() => {
       const strategy = strategyFormFactoryHandlerManager(
         formik.values.howToSetTheDecision as any,
@@ -90,9 +78,36 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IUseRulesFormUtils) {
         },
       );
     }),
-  });
+  };
 
-  const formik = useFormik({
+  if (textValues.terms) {
+    baseSchema.effectiveFrom = date().required(
+      "effective From date is required",
+    );
+    baseSchema.validUntil = date().when(
+      "checkClosed",
+      (_checkClosed, schema, { parent }) => {
+        const checkClosed = parent?.checkClosed;
+        return checkClosed
+          ? schema
+              .required("valid Until date is required")
+              .test(
+                "is-after-startDate",
+                "valid Until date must be greater than or equal to Start date",
+                function (validUntil) {
+                  const effectiveFrom = this.parent.effectiveFrom;
+                  if (!effectiveFrom || !validUntil) return true;
+                  return new Date(validUntil) >= new Date(effectiveFrom);
+                },
+              )
+          : schema.notRequired();
+      },
+    );
+  }
+
+  const validationSchema: Schema<any> = object(baseSchema);
+
+  formik = useFormik({
     initialValues,
     validationSchema,
     validateOnBlur: true,
@@ -126,9 +141,9 @@ function useRulesFormUtils({ decision, onSubmitEvent }: IUseRulesFormUtils) {
                 ],
             })),
       };
-      onSubmitEvent(updatedDecision);
+      onSubmitEvent!(updatedDecision);
     },
-  });
+  }) as any;
 
   const handleToggleNoneChange = (isNoneSelected: boolean) => {
     formik.setFieldValue("toggleNone", isNoneSelected);
