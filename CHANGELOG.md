@@ -1,3 +1,15 @@
+# v0.2.2 (Thu May 15 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: include validation for terms according to its definition ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.2.1 (Thu May 15 2025)
 
 #### ⚠️ Pushed to `main`
