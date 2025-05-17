@@ -1,3 +1,15 @@
+# v1.0.0 (Sat May 17 2025)
+
+#### 💥 Breaking Change
+
+- Create Filter component with applied filters overflow handling [#2](https://github.com/selsa-inube/isettingkit-business-rules/pull/2) ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v0.2.2 (Thu May 15 2025)
 
 #### ⚠️ Pushed to `main`
