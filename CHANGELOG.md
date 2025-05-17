@@ -1,3 +1,15 @@
+# v1.0.1 (Sat May 17 2025)
+
+#### ⚠️ Pushed to `main`
+
+- Update README.md ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.0 (Sat May 17 2025)
 
 #### 💥 Breaking Change
