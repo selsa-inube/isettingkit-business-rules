@@ -1,173 +1,87 @@
-# 📦 isettingkit-business-rules: Business Rule Components Library
+# isettingkit
+isettingkit is a modular UI toolkit designed to streamline the creation and management of business rule-driven interfaces. It offers a suite of reusable components, utilities, and type definitions to facilitate the development of dynamic, rule-based forms and configurations.
 
-## Overview
+## 📁 Project Structure
+The src directory is organized into the following primary modules:
 
-The **`isettingkit-business-rules`** library is designed to handle business rules and decision-making in frontend applications. It includes a variety of components to display, modify, and manage business rules, decisions, and conditions. This documentation covers the core components, their functionality, and how to integrate them.
+### 1. businessRules
+Contains components and utilities for managing business rules:
 
----
+Cards/: Components like BusinessRuleCard for visual representation of individual rules.
 
-## 📚 Components
+Form/: Components such as RulesForm to create and edit business rules.
 
-### 1. `getValueData`
+Modal/: Modal components for rule creation and editing workflows.
 
-#### Description
-The `getValueData` function extracts and formats the value data from a decision or condition element.
+BusinessRuleView.tsx: A comprehensive view component to display business rules.
 
-#### Props
-- **element** (`IRuleDecision["decision"] | ICondition | undefined`): The decision or condition element to extract the value from.
+### 2. Filter
+Provides components to filter and search through business rules:
 
-#### Usage Example
-```tsx
-const value = getValueData(decision.decision);
+FilterModal/: Modal components for applying filters.
+
+FilterTag/: Tag components representing active filters.
+
+FormFilter/: Form components to define filter criteria.
+
+### 3. types
+Defines TypeScript interfaces and types to ensure type safety across components:
+
+businessRules/: Types related to business rule components.
+
+Filter/: Types associated with filtering functionalities.
+
+## 🚀 Getting Started
+Installation
+Install the package using npm:
+``` bash
+npm install @isettingkit/business-rules
 ```
-
-### 2. BusinessRuleView
-#### Description
-BusinessRuleView renders a detailed view of a business rule, displaying decisions and conditions, along with their corresponding values.
-
-#### Props
-- **decision** (IRuleDecision): The business rule decision data.
-- **textValues** (IRulesFormTextValues): Text values for displaying labels and descriptions.
-#### Usage Example
-```tsx
-<BusinessRuleView
-  decision={ruleDecision}
-  textValues={textValues}
-/>
+Usage
+Import and use the components in your project:
+``` bash
+import { BusinessRuleCard, RulesForm } from '@isettingkit/business-rules';
 ```
-
-### 3. BusinessRuleCard
-#### Description
-BusinessRuleCard is a card component used to display a business rule with options to view or delete the rule.
-
-#### Props
-- **children** (React.ReactNode): The content of the card.
-- **handleDelete** ((id: string) => void): Function to handle the deletion of a rule.
-- **handleView** ((id: string) => void): Function to handle viewing a rule.
-- **id (string)** : The ID of the business rule.
-#### Usage Example
-```tsx
-<BusinessRuleCard
-  id="rule1"
-  handleDelete={deleteRule}
-  handleView={viewRule}
-/>
+``` tsx
+function App() {
+return (
+<div>
+<BusinessRuleCard rule={ruleData} />
+<RulesForm onSubmit={handleSubmit} />
+</div>
+);
+}
 ```
-### 4. RulesForm
-#### Description
-RulesForm is a form component for handling and submitting business rule decisions. It integrates with Formik for form validation and submission.
+## Theming
+isettingkit utilizes styled-components for styling. Ensure your application is wrapped with a ThemeProvider and the appropriate theme is provided.
 
-#### Props
-- **id** (string): The unique ID for the form.
-- **decision** (IRuleDecision): The decision data for the form.
-- **onCloseModal** (() => void): Function to handle closing the modal.
-- **onCancel** (() => void): Function to handle cancelling the form.
-- **onSubmitEvent** ((dataDecision: IRuleDecision) => void): Function to handle submitting the form data.
-- **textValues** (IRulesFormTextValues): Text values for the form labels and descriptions.
-#### Usage Example
-```tsx
-<RulesForm
-  id="ruleForm1"
-  decision={ruleDecision}
-  onCloseModal={closeModal}
-  onCancel={cancelForm}
-  onSubmitEvent={submitDecision}
-/>
+## 📚 Documentation
+Each component is fully typed with TypeScript. Refer to the types directory for detailed type definitions:
+
+IBusinessRuleCard: Props for BusinessRuleCard component.
+
+IRulesForm: Props for RulesForm component.
+
+IFilterTag: Props for FilterTag component.
+
+## 🛠 Development
+To contribute or run the library locally:
+
+Clone the repository:
+``` bash
+git clone https://github.com/selsa-inube/isettingkit.git
 ```
+Navigate to the project directory:
 
-### 5. ReasonForChange
-#### Description
-ReasonForChange is a component that renders a textarea input to capture the reason for a change in a business rule.
+cd isettingkit
 
-#### Props
-- **label** (string): The label for the textarea.
-- **labelText** (string): The label text to display.
-- **onHandleChange** ((event: React.ChangeEvent<HTMLInputElement>) => void): Callback to handle textarea changes.
-- **placeholder** (string): The placeholder text for the textarea.
-- **required** (boolean): Indicates if the field is required.
-- **value** (string?): The value of the textarea (optional).
-#### Usage Example
-```tsx
-<ReasonForChange
-  label="Change Reason"
-  labelText="Reason for Change"
-  onHandleChange={handleChange}
-  placeholder="Enter reason for change"
-  required={true}
-/>
+Install dependencies:
+``` bash
+npm install
 ```
-
-### 6. Term
-#### Description
-Term is a component used to handle the start and end dates of a business rule term. It allows for toggling between an open and closed term, and managing start and end dates.
-
-#### Props
-- **onHandleStartChange** ((event: React.ChangeEvent<HTMLInputElement>) => void): Callback to handle the change in start date.
-- **onHandleEndChange** ((event: React.ChangeEvent<HTMLInputElement>) => void): Callback to handle the change in end date.
-- **labelStart** (string): The label for the start date input.
-- **labelEnd** (string): The label for the end date input.
-- **checkedClosed** (boolean?): Whether the term is closed (optional).
-- **required** (boolean?): Whether the fields are required (optional).
-- **valueStart** (string?): The value for the start date (optional).
-- **valueEnd** (string?): The value for the end date (optional).
-#### Usage Example
-```tsx
-<Term
-  labelStart="Start Date"
-  labelEnd="End Date"
-  onHandleStartChange={handleStartChange}
-  onHandleEndChange={handleEndChange}
-/>
-```
-
-### 7. ToggleOption
-#### Description
-ToggleOption is a component that renders a toggle switch and displays additional content when the toggle is checked.
-
-#### Props
-- **checked** (boolean): The current checked state of the toggle.
-- **children** (React.ReactNode): The content to display when the toggle is checked.
-- **handleToggleChange** ((e: React.ChangeEvent<HTMLInputElement>) => void): Callback to handle the toggle change event.
-- **id** (string): The unique ID for the toggle.
-- **labelToggle** (string): The label for the toggle.
-- **name** (string): The name of the toggle input.
-- **valueToggle** (string?): The value of the toggle input (optional).
-#### Usage Example
-```tsx
-<ToggleOption
-  checked={isChecked}
-  handleToggleChange={handleToggleChange}
-  id="toggleOption1"
-  labelToggle="Enable Option"
-  name="optionToggle"
-/>
-```
-
-#### 🚀 How to Use
-#### 1. Installation
-Install the library using npm:
-
-```bash
-npm install isettingkit-business-rules
-```
-#### 2. Import Components
-Once installed, you can import and use the components like this:
-
-```tsx
-import { BusinessRuleView, BusinessRuleCard, RulesForm, ReasonForChange, Term, ToggleOption } from 'isettingkit-business-rules';
-```
-#### 3. Storybook Integration
-To visualize the components in action, we use Storybook. Storybook allows developers to interact with the components in isolation, view different states, and confirm that they behave as expected.
-
-You can run Storybook for this library by navigating to the project folder and using the following command:
-
-```bash
+Run the development server:
+``` bash
 npm run storybook
 ```
-#### 📦 Available Components
-- **BusinessRuleView**: Displays a business rule's decision and conditions.
-- **BusinessRuleCard**: Displays a business rule in a card format with options to view or delete.
-- **RulesForm**: A form component for handling and submitting business rule decisions.
-- **ReasonForChange**: A textarea input for capturing the reason for a change.
-- **Term**: Manages the start and end dates for a business rule term.
-- **ToggleOption**: A toggle switch component with additional content.
+## 🧪 Testing
+The project uses Storybook for component development and visualization. Run Storybook to view and test components in isolation.
