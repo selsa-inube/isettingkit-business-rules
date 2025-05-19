@@ -1,7 +1,9 @@
+import { IStackJustifyContent } from "@inubekit/inubekit";
 import { IRuleDecision } from "@isettingkit/input";
 import { IBusinessRuleView } from "..";
 
 interface IBusinessRuleViewUI {
+  conditionsAlignment: IStackJustifyContent;
   decision: IBusinessRuleView["decision"];
   decisionDateElement: {
     element: IRuleDecision;

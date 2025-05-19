@@ -9,14 +9,15 @@ import { strategyFactoryHandlerManager } from "./helper";
 
 const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
   const {
-    loading,
-    textValues,
+    conditionsAlignment,
     decision,
-    decisionMapper,
-    visibleConditions,
     decisionDateElement,
+    decisionMapper,
+    loading,
     skeleton,
     terms,
+    textValues,
+    visibleConditions,
   } = props;
   if (loading) {
     return (
@@ -37,7 +38,7 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
           <Stack
             direction="column"
             gap="12px"
-            justifyContent="space-between"
+            justifyContent={conditionsAlignment}
             height="203px"
           >
             <Text

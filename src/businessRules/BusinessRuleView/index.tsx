@@ -66,16 +66,21 @@ const BusinessRuleView = (props: IBusinessRuleView) => {
   const loadingValidation = Boolean(
     !loading && decision && textValues && decisionMapper,
   );
+
+  const conditionsAlignment =
+    visibleConditions!.length < 2 ? "start" : "space-between";
+
   return (
     <BusinessRuleViewUI
-      loading={loadingValidation}
-      textValues={textValues}
+      conditionsAlignment={conditionsAlignment}
       decision={decision}
-      decisionMapper={decisionMapper}
-      visibleConditions={visibleConditions}
       decisionDateElement={decisionDateElement}
+      decisionMapper={decisionMapper}
+      loading={loadingValidation}
       skeleton={skeleton}
       terms={Boolean(textValues?.terms)}
+      textValues={textValues}
+      visibleConditions={visibleConditions}
     />
   );
 };
