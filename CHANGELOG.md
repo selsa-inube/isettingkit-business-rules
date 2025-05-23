@@ -1,3 +1,15 @@
+# v1.0.3 (Fri May 23 2025)
+
+#### ⚠️ Pushed to `main`
+
+- feat: added translator for inube-API responses ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.2 (Mon May 19 2025)
 
 #### ⚠️ Pushed to `main`
