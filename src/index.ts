@@ -11,6 +11,8 @@ export { RulesForm } from "./businessRules/Form";
 export { sortDisplayDataSampleSwitchPlaces } from "./businessRules/helper/utils/sortDisplayDataSampleSwitchPlaces";
 export { sortDisplayDataSwitchPlaces } from "./businessRules/helper/utils/sortDisplayDataSwitchPlaces";
 
+export { translateText } from "./translator/translateText";
+export { translateObject } from "./translator/translateObject";
 export type { IBusinessRuleCard } from "./businessRules/types/Cards/BusinessRuleCard/IBusinessRuleCard";
 export type { IBusinessRuleView } from "./businessRules/types/BusinessRuleView";
 export type { ICheckpickerField } from "./Filter/types/ICheckpickerField";

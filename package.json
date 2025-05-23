@@ -38,7 +38,8 @@
   "dependencies": {
     "@inubekit/inubekit": "^3.0.0",
     "@isettingkit/input": "^1.0.1",
-    "@isettingkit/view": "^0.1.23"
+    "@isettingkit/view": "^0.1.23",
+    "axios": "^1.9.0"
   },
   "peerDependencies": {
     "formik": "^2.4.6",
