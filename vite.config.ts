@@ -23,6 +23,8 @@ export default defineConfig({
         "@inubekit/inubekit",
         "@isettingkit/input",
         "@isettingkit/view",
+        "axios",
+        "franc-min",
       ],
       output: {
         globals: {
