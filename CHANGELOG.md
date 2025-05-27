@@ -1,3 +1,15 @@
+# v1.0.4 (Tue May 27 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: added auto-detec of language ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.3 (Fri May 23 2025)
 
 #### ⚠️ Pushed to `main`
