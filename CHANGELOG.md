@@ -1,3 +1,16 @@
+# v1.0.5 (Tue May 27 2025)
+
+#### ⚠️ Pushed to `main`
+
+- Merge branch 'main' of https://github.com/selsa-inube/isettingkit-business-rules ([@cmarin001](https://github.com/cmarin001))
+- fix: added vite-config in order to avoid oversized weight ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.4 (Tue May 27 2025)
 
 #### ⚠️ Pushed to `main`
