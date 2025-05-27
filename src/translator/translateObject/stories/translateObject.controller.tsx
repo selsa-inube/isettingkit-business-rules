@@ -6,8 +6,8 @@ const backendData = {
   nombre: "Juan Pérez",
   estado: "ACTIVO",
   detalles: {
-    rol: "ADMINISTRADOR",
-    notas: "Pendiente de confirmación",
+    rol: "Seguros Servicios",
+    notas: "Compra de seguros y servicios en CONVENIOS.",
   },
 };
 
@@ -18,7 +18,7 @@ const TranslateObjectController = () => {
 
   useEffect(() => {
     const fetchTranslation = async () => {
-      const result = await translateObject(backendData, "en-CA");
+      const result = await translateObject(backendData, "en-US");
       setTranslatedData(result as typeof backendData);
     };
 

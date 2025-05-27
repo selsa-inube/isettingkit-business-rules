@@ -1,6 +1,5 @@
 import axios from "axios";
 import { getCachedTranslation, setCachedTranslation } from "../cache";
-import { shouldSkipTranslation } from "../utils/shouldSkipTranslation";
 import { isThrottled } from "../utils/throttle";
 import { detectLang } from "../utils/detectLang";
 
@@ -10,8 +9,6 @@ const translateText = async (
   text: string,
   targetLang: string,
 ): Promise<string> => {
-  if (shouldSkipTranslation(text)) return text;
-
   const key = `${targetLang}:${text}`;
   const cached = getCachedTranslation(text, targetLang);
   if (cached) return cached;

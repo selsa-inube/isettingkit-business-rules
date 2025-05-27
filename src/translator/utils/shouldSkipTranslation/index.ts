@@ -9,9 +9,7 @@ const shouldSkipTranslation = (text: string): boolean => {
 
   const fullNameRegex =
     /^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+){1,2}$/;
-
   if (trimmed === trimmed.toUpperCase()) return false;
-
   return fullNameRegex.test(trimmed);
 };
 
