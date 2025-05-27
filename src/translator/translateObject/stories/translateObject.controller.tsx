@@ -18,7 +18,7 @@ const TranslateObjectController = () => {
 
   useEffect(() => {
     const fetchTranslation = async () => {
-      const result = await translateObject(backendData, "en");
+      const result = await translateObject(backendData, "en-CA");
       setTranslatedData(result as typeof backendData);
     };
 

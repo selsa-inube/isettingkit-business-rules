@@ -2,20 +2,17 @@ import axios from "axios";
 import { getCachedTranslation, setCachedTranslation } from "../cache";
 import { shouldSkipTranslation } from "../utils/shouldSkipTranslation";
 import { isThrottled } from "../utils/throttle";
+import { detectLang } from "../utils/detectLang";
 
 const TRANSLATE_URL = "https://api.mymemory.translated.net/get";
 
 const translateText = async (
   text: string,
   targetLang: string,
-  sourceLang = "es",
 ): Promise<string> => {
+  if (shouldSkipTranslation(text)) return text;
+
   const key = `${targetLang}:${text}`;
-
-  if (shouldSkipTranslation(text)) {
-    return text;
-  }
-
   const cached = getCachedTranslation(text, targetLang);
   if (cached) return cached;
 
@@ -23,6 +20,9 @@ const translateText = async (
     console.warn(`[Throttle] Skipped translation for: "${text}"`);
     return text;
   }
+
+  const sourceLang = detectLang(text);
+  console.log(`[Detected] ${text} => ${sourceLang}`);
 
   try {
     const { data } = await axios.get(TRANSLATE_URL, {
