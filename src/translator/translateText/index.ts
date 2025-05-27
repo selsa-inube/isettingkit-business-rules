@@ -22,7 +22,6 @@ const translateText = async (
   }
 
   const sourceLang = detectLang(text);
-  console.log(`[Detected] ${text} => ${sourceLang}`);
 
   try {
     const { data } = await axios.get(TRANSLATE_URL, {
