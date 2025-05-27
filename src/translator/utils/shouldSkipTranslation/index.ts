@@ -1,18 +1,18 @@
-/**
- * Skips translation if the string looks like a proper name.
- * Detects common name formats like "Juan Pérez", "Dr. Ana", etc.
- * @param text - The text to check.
- * @returns {boolean} - True if the text should be skipped, false otherwise.
- * @example
- * shouldSkipTranslation("Juan Pérez"); // true
- * shouldSkipTranslation("Hello World"); // false
- * shouldSkipTranslation("Dr. Ana"); // true
- * shouldSkipTranslation("Hello, Dr. Ana"); // false
- */
 const shouldSkipTranslation = (text: string): boolean => {
-  const nameRegex = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*$/;
+  const trimmed = text.trim();
 
-  return nameRegex.test(text.trim());
+  if (trimmed.length < 3) return false;
+
+  const titleNameRegex =
+    /^(Mr|Mrs|Ms|Dr|Sr|Sra)\.?\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)?$/;
+  if (titleNameRegex.test(trimmed)) return true;
+
+  const fullNameRegex =
+    /^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+){1,2}$/;
+
+  if (trimmed === trimmed.toUpperCase()) return false;
+
+  return fullNameRegex.test(trimmed);
 };
 
 export { shouldSkipTranslation };
