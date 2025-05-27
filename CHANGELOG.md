@@ -1,3 +1,15 @@
+# v1.0.6 (Tue May 27 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: remove unnecessary console.log ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.5 (Tue May 27 2025)
 
 #### ⚠️ Pushed to `main`
