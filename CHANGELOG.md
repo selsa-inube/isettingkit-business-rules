@@ -1,3 +1,15 @@
+# v1.0.8 (Tue May 27 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: remove the use of the REGEX to validate names ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.7 (Tue May 27 2025)
 
 #### ⚠️ Pushed to `main`
