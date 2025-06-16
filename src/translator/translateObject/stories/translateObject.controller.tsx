@@ -11,6 +11,11 @@ const backendData = {
   },
 };
 
+const config = {
+  url: "https://libretranslate.inube.dev/translate",
+  apiKey: "6c6fdf33-ece2-4848-ab4b-5abb267be2f6",
+};
+
 const TranslateObjectController = () => {
   const [translatedData, setTranslatedData] = useState<
     typeof backendData | null
@@ -18,7 +23,7 @@ const TranslateObjectController = () => {
 
   useEffect(() => {
     const fetchTranslation = async () => {
-      const result = await translateObject(backendData, "en-US");
+      const result = await translateObject(backendData, "en", config);
       setTranslatedData(result as typeof backendData);
     };
 

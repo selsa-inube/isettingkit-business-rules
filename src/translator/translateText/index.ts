@@ -2,12 +2,12 @@ import axios from "axios";
 import { getCachedTranslation, setCachedTranslation } from "../cache";
 import { isThrottled } from "../utils/throttle";
 import { detectLang } from "../utils/detectLang";
-
-const TRANSLATE_URL = "https://api.mymemory.translated.net/get";
+import { ITranslateOptions } from "../types/translateText/TranslateOptions";
 
 const translateText = async (
   text: string,
   targetLang: string,
+  { url, apiKey }: ITranslateOptions,
 ): Promise<string> => {
   const key = `${targetLang}:${text}`;
   const cached = getCachedTranslation(text, targetLang);
@@ -21,14 +21,22 @@ const translateText = async (
   const sourceLang = detectLang(text);
 
   try {
-    const { data } = await axios.get(TRANSLATE_URL, {
-      params: {
+    const { data } = await axios.post(
+      url,
+      {
         q: text,
-        langpair: `${sourceLang}|${targetLang}`,
+        source: sourceLang,
+        target: targetLang,
+        api_key: apiKey,
       },
-    });
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
 
-    const translated = data?.responseData?.translatedText || text;
+    const translated = data?.translatedText || text;
     setCachedTranslation(text, targetLang, translated);
     return translated;
   } catch (error) {
