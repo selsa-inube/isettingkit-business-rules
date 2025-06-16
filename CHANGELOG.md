@@ -1,3 +1,15 @@
+# v1.0.9 (Mon Jun 16 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: added libretranslate integration from dockerzided API ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.8 (Tue May 27 2025)
 
 #### ⚠️ Pushed to `main`
