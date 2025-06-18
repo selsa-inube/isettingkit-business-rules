@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom";
-import { MdClear } from "react-icons/md";
+import { MdClear, MdOutlineFilterAltOff } from "react-icons/md";
 import {
   Blanket,
   Button,
@@ -59,6 +59,7 @@ const FilterModal = (props: IFilterModal) => {
           <Button
             appearance="gray"
             onClick={onCloseModal}
+            iconBefore={<MdOutlineFilterAltOff />}
             spacing="wide"
             variant="outlined"
           >

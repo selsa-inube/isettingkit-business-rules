@@ -1,7 +1,12 @@
 import { useState } from "react";
-import { MdApps, MdOutlineApps, MdOutlineCategory } from "react-icons/md";
+import {
+  MdApps,
+  MdOutlineApps,
+  MdOutlineCategory,
+  MdOutlineMoreVert,
+} from "react-icons/md";
 
-import { IOption } from "@inubekit/inubekit";
+import { Icon, IOption, useMediaQuery } from "@inubekit/inubekit";
 
 import { Filter } from "..";
 import { FormFilter } from "../FormFilter";
@@ -96,26 +101,60 @@ const FilterController = () => {
     },
   ];
 
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
   return (
     <>
-      <Filter
-        appliedFilters={appliedFilters}
-        onClear={handleClear}
-        onClick={handleOpenModal}
-        titleClearFilter="Quitar"
-        titleFilter="Filtrar"
-      />
-      {showModal && (
-        <FilterModal
-          actionButtonLabel="Filtrar"
-          cancelButtonLabel="Cancelar"
-          onClick={handleApply}
-          onCloseModal={handleCloseModal}
-          portalId="portalModal"
-          title="Filtrar"
-        >
-          <FormFilter fields={formFields} onChange={handleFilterChange} />
-        </FilterModal>
+      {isMobile ? (
+        <>
+          <Icon
+            appearance={"primary"}
+            icon={<MdOutlineMoreVert />}
+            onClick={handleOpenModal}
+          />{" "}
+          {showModal && (
+            <FilterModal
+              actionButtonLabel="Filtrar"
+              cancelButtonLabel="Quitar"
+              onClick={handleApply}
+              onCloseModal={handleCloseModal}
+              portalId="portalModal"
+              title="Filtrar"
+            >
+              <FormFilter
+                appliedFilters={appliedFilters}
+                fields={formFields}
+                onChange={handleFilterChange}
+              />
+            </FilterModal>
+          )}
+        </>
+      ) : (
+        <>
+          <Filter
+            appliedFilters={appliedFilters}
+            onClear={handleClear}
+            onClick={handleOpenModal}
+            titleClearFilter="Quitar"
+            titleFilter="Filtrar"
+          />
+          {showModal && (
+            <FilterModal
+              actionButtonLabel="Filtrar"
+              cancelButtonLabel="Quitar"
+              onClick={handleApply}
+              onCloseModal={handleCloseModal}
+              portalId="portalModal"
+              title="Filtrar"
+            >
+              <FormFilter
+                appliedFilters={appliedFilters}
+                fields={formFields}
+                onChange={handleFilterChange}
+              />
+            </FilterModal>
+          )}
+        </>
       )}
     </>
   );

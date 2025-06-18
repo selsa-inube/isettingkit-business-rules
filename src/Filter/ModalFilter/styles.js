@@ -6,7 +6,7 @@ const StyledModal = styled.div`
   flex-direction: column;
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
-  width: ${({ smallScreen }) => (smallScreen ? "335px" : "450px")};
+  width: ${({ $smallScreen }) => ($smallScreen ? "auto" : "450px")};
   height: auto;
   border-radius: 8px;
   padding: 24px;
