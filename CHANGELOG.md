@@ -1,3 +1,15 @@
+# v1.0.10 (Wed Jun 18 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: solve responsive issue card filter ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.9 (Mon Jun 16 2025)
 
 #### ⚠️ Pushed to `main`
