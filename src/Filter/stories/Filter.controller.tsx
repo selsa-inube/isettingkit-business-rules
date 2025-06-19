@@ -134,6 +134,7 @@ const FilterController = () => {
                 appliedFilters={appliedFilters}
                 fields={formFields}
                 onChange={handleFilterChange}
+                noFiltersLabel="Sin filtros aún."
               />
             </FilterModal>
           )}
@@ -146,6 +147,7 @@ const FilterController = () => {
             onClick={() => setShowModal(true)}
             titleClearFilter="Quitar"
             titleFilter="Filtrar"
+            noFiltersLabel="Sin filtros aún."
           />
           {showModal && (
             <FilterModal

@@ -12,7 +12,7 @@ const story = {
       </BrowserRouter>
     ),
   ],
-  title: "components/Filter/FilterController",
+  title: "components/Filter/Filter",
 };
 
 const Default = () => <FilterController />;

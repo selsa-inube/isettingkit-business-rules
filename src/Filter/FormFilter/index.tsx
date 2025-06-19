@@ -1,41 +1,59 @@
-import { Divider, Icon, Stack, Tag, useMediaQuery } from "@inubekit/inubekit";
+import {
+  Divider,
+  Icon,
+  Stack,
+  Tag,
+  Text,
+  useMediaQuery,
+} from "@inubekit/inubekit";
 import { Checkpicker } from "@inubekit/inubekit";
 import { IFormFilter } from "../types/IFormFilter";
 import { BorderStack } from "../BorderStack";
 import { MdOutlineFilterAlt } from "react-icons/md";
 
 const FormFilter = (props: IFormFilter) => {
-  const { appliedFilters, fields, onChange } = props;
+  const { appliedFilters, fields, onChange, noFiltersLabel } = props;
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const hasAppliedFilters = !appliedFilters || appliedFilters.length === 0;
   return (
     <Stack direction="column" gap="16px">
-      {isMobile && appliedFilters?.length && appliedFilters.length > 0 ? (
+      {isMobile && (
         <>
-          <Stack gap="6px">
-            <Icon appearance="primary" icon={<MdOutlineFilterAlt />} />
+          <Stack gap="6px" width="100%" alignItems="center">
+            <Icon appearance="gray" icon={<MdOutlineFilterAlt />} />
             <BorderStack
               background
               borderRadius="8px"
-              height="100%"
               direction="row"
               gap="8px"
               alignItems="center"
               padding="0px 8px"
+              border
+              width="100%"
+              height="32px"
             >
-              {appliedFilters?.map((filter) => (
-                <Tag
-                  key={filter.label}
-                  appearance="primary"
-                  displayIcon
-                  icon={filter.icon}
-                  label={filter.label!}
-                />
-              ))}
+              {hasAppliedFilters ? (
+                <Text size="small" type="label" appearance="gray">
+                  {noFiltersLabel}
+                </Text>
+              ) : (
+                appliedFilters?.map((filter) => (
+                  <Tag
+                    key={filter.label}
+                    appearance="primary"
+                    displayIcon
+                    icon={filter.icon}
+                    label={filter.label!}
+                    onClose={filter.onClose}
+                    removable
+                  />
+                ))
+              )}
             </BorderStack>
           </Stack>
           <Divider dashed />
         </>
-      ) : null}
+      )}
       {fields.map((field) => (
         <Stack key={field.name} gap="6px" alignItems="center">
           <Stack padding="22px 0 0 0">

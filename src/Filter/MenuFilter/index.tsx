@@ -13,7 +13,7 @@ import {
 import { StyledModal } from "./styles";
 import { IFilterModal } from "../types/IFilterModal";
 
-const FilterModal = (props: IFilterModal) => {
+const MenuFilter = (props: IFilterModal) => {
   const {
     actionButtonLabel,
     cancelButtonLabel,
@@ -81,4 +81,4 @@ const FilterModal = (props: IFilterModal) => {
   );
 };
 
-export { FilterModal };
+export { MenuFilter };

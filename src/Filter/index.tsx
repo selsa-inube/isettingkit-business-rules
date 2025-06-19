@@ -1,11 +1,17 @@
-import { Box, Button, Grid, Tag } from "@inubekit/inubekit";
+import { Box, Button, Grid, Tag, Text } from "@inubekit/inubekit";
 import { MdOutlineFilterAlt, MdOutlineFilterAltOff } from "react-icons/md";
 import { BorderStack } from "./BorderStack";
 import { IFilter } from "./types/IFilter";
 
 const Filter = (props: IFilter) => {
-  const { appliedFilters, onClear, onClick, titleClearFilter, titleFilter } =
-    props;
+  const {
+    appliedFilters,
+    onClear,
+    onClick,
+    noFiltersLabel,
+    titleClearFilter,
+    titleFilter,
+  } = props;
   const filters = !appliedFilters || appliedFilters.length === 0;
   return (
     <Box borderRadius="8px" width="100%">
@@ -18,18 +24,25 @@ const Filter = (props: IFilter) => {
           gap="8px"
           alignItems="center"
           padding="0px 8px"
+          border
         >
-          {appliedFilters?.map((filter) => (
-            <Tag
-              key={filter.label}
-              appearance="primary"
-              displayIcon
-              removable
-              icon={filter.icon}
-              label={filter.label}
-              onClose={filter.onClose}
-            />
-          ))}
+          {filters ? (
+            <Text size="small" type="label" appearance="gray">
+              {noFiltersLabel}
+            </Text>
+          ) : (
+            appliedFilters?.map((filter) => (
+              <Tag
+                key={filter.label}
+                appearance="primary"
+                displayIcon
+                removable
+                icon={filter.icon}
+                label={filter.label}
+                onClose={filter.onClose}
+              />
+            ))
+          )}
         </BorderStack>
         <Button
           cursorHover

@@ -1,7 +1,8 @@
 import { BrowserRouter } from "react-router-dom";
 import { StoryFn } from "@storybook/react";
-import { FilterModal, IFilterModal } from ".";
+import { FilterModal } from ".";
 import { Text } from "@inubekit/inubekit";
+import { IFilterModal } from "../types/IFilterModal";
 
 const story = {
   component: FilterModal,
