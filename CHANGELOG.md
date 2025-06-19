@@ -1,3 +1,15 @@
+# v1.0.11 (Thu Jun 19 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: added remomable tags to filter ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.10 (Wed Jun 18 2025)
 
 #### ⚠️ Pushed to `main`
