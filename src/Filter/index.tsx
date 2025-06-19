@@ -8,7 +8,7 @@ const Filter = (props: IFilter) => {
     props;
   const filters = !appliedFilters || appliedFilters.length === 0;
   return (
-    <Box borderRadius="8px">
+    <Box borderRadius="8px" width="100%">
       <Grid gap="12px" templateColumns="1fr auto auto">
         <BorderStack
           background
@@ -24,8 +24,10 @@ const Filter = (props: IFilter) => {
               key={filter.label}
               appearance="primary"
               displayIcon
+              removable
               icon={filter.icon}
               label={filter.label}
+              onClose={filter.onClose}
             />
           ))}
         </BorderStack>

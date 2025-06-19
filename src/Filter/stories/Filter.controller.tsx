@@ -5,7 +5,6 @@ import {
   MdOutlineCategory,
   MdOutlineMoreVert,
 } from "react-icons/md";
-
 import { Icon, IOption, useMediaQuery } from "@inubekit/inubekit";
 
 import { Filter } from "..";
@@ -14,21 +13,17 @@ import { FilterModal } from "../ModalFilter";
 import { IFilterTag } from "../types/IFilterTag";
 
 const FilterController = () => {
-  const [filters, setFilters] = useState({
-    apps: "",
-    clients: "",
-  });
-
+  /* ---------- state ---------- */
+  const [filters, setFilters] = useState({ apps: "", clients: "" });
   const [appliedValues, setAppliedValues] = useState({
     apps: "",
     clients: "",
   });
-
   const [showModal, setShowModal] = useState(false);
 
-  const handleFilterChange = (name: string, values: string) => {
-    setFilters((prev) => ({ ...prev, [name]: values }));
-  };
+  /* ---------- helpers ---------- */
+  const handleFilterChange = (name: string, values: string) =>
+    setFilters((p) => ({ ...p, [name]: values }));
 
   const handleClear = () => {
     setFilters({ apps: "", clients: "" });
@@ -40,14 +35,21 @@ const FilterController = () => {
     setShowModal(false);
   };
 
-  const handleOpenModal = () => {
-    setShowModal(true);
+  const removeApp = (app: string) => {
+    const next = filters.apps
+      .split(",")
+      .filter((a) => a && a !== app)
+      .join(",");
+    setFilters((p) => ({ ...p, apps: next }));
+    setAppliedValues((p) => ({ ...p, apps: next }));
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
+  const removeClient = () => {
+    setFilters((p) => ({ ...p, clients: "" }));
+    setAppliedValues((p) => ({ ...p, clients: "" }));
   };
 
+  /* ---------- label maps ---------- */
   const appLabelMap: Record<string, string> = {
     app1: "Aplicación 1",
     app2: "Aplicación 2",
@@ -61,6 +63,7 @@ const FilterController = () => {
     cartera: "Cartera",
   };
 
+  /* ---------- build tag list ---------- */
   const appliedFilters: IFilterTag[] = [
     ...appliedValues.apps
       .split(",")
@@ -68,13 +71,18 @@ const FilterController = () => {
       .map((app) => ({
         icon: <MdOutlineApps />,
         label: appLabelMap[app] || app,
+        removable: true,
+        onClose: () => removeApp(app),
       })),
     appliedValues.clients && {
       icon: <MdOutlineCategory />,
       label: clientLabelMap[appliedValues.clients] || appliedValues.clients,
+      removable: true,
+      onClose: removeClient,
     },
-  ].filter((item): item is IFilterTag => !!item);
+  ].filter(Boolean) as IFilterTag[];
 
+  /* ---------- static form metadata (unchanged) ---------- */
   const formFields = [
     {
       icon: <MdApps />,
@@ -103,21 +111,22 @@ const FilterController = () => {
 
   const isMobile = useMediaQuery("(max-width: 768px)");
 
+  /* ---------- render ---------- */
   return (
     <>
       {isMobile ? (
         <>
           <Icon
-            appearance={"primary"}
+            appearance="primary"
             icon={<MdOutlineMoreVert />}
-            onClick={handleOpenModal}
-          />{" "}
+            onClick={() => setShowModal(true)}
+          />
           {showModal && (
             <FilterModal
               actionButtonLabel="Filtrar"
               cancelButtonLabel="Quitar"
               onClick={handleApply}
-              onCloseModal={handleCloseModal}
+              onCloseModal={() => setShowModal(false)}
               portalId="portalModal"
               title="Filtrar"
             >
@@ -134,7 +143,7 @@ const FilterController = () => {
           <Filter
             appliedFilters={appliedFilters}
             onClear={handleClear}
-            onClick={handleOpenModal}
+            onClick={() => setShowModal(true)}
             titleClearFilter="Quitar"
             titleFilter="Filtrar"
           />
@@ -143,7 +152,7 @@ const FilterController = () => {
               actionButtonLabel="Filtrar"
               cancelButtonLabel="Quitar"
               onClick={handleApply}
-              onCloseModal={handleCloseModal}
+              onCloseModal={() => setShowModal(false)}
               portalId="portalModal"
               title="Filtrar"
             >

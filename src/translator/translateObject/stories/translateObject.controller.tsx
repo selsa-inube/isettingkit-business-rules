@@ -3,11 +3,23 @@ import { Text } from "@inubekit/inubekit";
 import { translateObject } from "../index";
 
 const backendData = {
-  nombre: "Juan Pérez",
-  estado: "ACTIVO",
-  detalles: {
-    rol: "Seguros Servicios",
-    notas: "Compra de seguros y servicios en CONVENIOS.",
+  "0": {
+    moneyDestinationId: "983e1dfa-092f-471c-9bfe-d3e515fdbea1",
+    abbreviatedName: "Seguros Servicios",
+    descriptionUse: "Purchase of insurance and services in CONVENIOS.",
+    iconReference: "MdOutlineVolunteerActivism",
+  },
+  "1": {
+    moneyDestinationId: "ddda2652-da8c-416d-8b7d-23dd05635839",
+    abbreviatedName: "Emprendimiento",
+    descriptionUse: "Investing in ventures.",
+    iconReference: "MdOutlineLightbulb",
+  },
+  "2": {
+    moneyDestinationId: "8bf6fa16-bc57-4a51-b4a4-d67975781459",
+    abbreviatedName: "Tarjeta interna",
+    descriptionUse: "Consumption with credit cards.",
+    iconReference: "MdOutlineCreditCard",
   },
 };
 
