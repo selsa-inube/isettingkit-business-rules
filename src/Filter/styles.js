@@ -1,10 +1,9 @@
 import styled from "styled-components";
 
-const StyledCardContainer = styled.div`
+const StyledBoxContainer = styled.div`
   & > div {
-    height: 340px;
-    width: 332px;
+    width: 100%;
   }
 `;
 
-export { StyledCardContainer };
+export { StyledBoxContainer };

@@ -13,7 +13,6 @@ import { FilterModal } from "../ModalFilter";
 import { IFilterTag } from "../types/IFilterTag";
 
 const FilterController = () => {
-  /* ---------- state ---------- */
   const [filters, setFilters] = useState({ apps: "", clients: "" });
   const [appliedValues, setAppliedValues] = useState({
     apps: "",
@@ -21,7 +20,6 @@ const FilterController = () => {
   });
   const [showModal, setShowModal] = useState(false);
 
-  /* ---------- helpers ---------- */
   const handleFilterChange = (name: string, values: string) =>
     setFilters((p) => ({ ...p, [name]: values }));
 
@@ -49,7 +47,6 @@ const FilterController = () => {
     setAppliedValues((p) => ({ ...p, clients: "" }));
   };
 
-  /* ---------- label maps ---------- */
   const appLabelMap: Record<string, string> = {
     app1: "Aplicación 1",
     app2: "Aplicación 2",
@@ -63,7 +60,6 @@ const FilterController = () => {
     cartera: "Cartera",
   };
 
-  /* ---------- build tag list ---------- */
   const appliedFilters: IFilterTag[] = [
     ...appliedValues.apps
       .split(",")
@@ -82,7 +78,6 @@ const FilterController = () => {
     },
   ].filter(Boolean) as IFilterTag[];
 
-  /* ---------- static form metadata (unchanged) ---------- */
   const formFields = [
     {
       icon: <MdApps />,
@@ -111,7 +106,6 @@ const FilterController = () => {
 
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  /* ---------- render ---------- */
   return (
     <>
       {isMobile ? (
