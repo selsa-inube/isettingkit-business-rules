@@ -3,7 +3,8 @@ import styled from "styled-components";
 
 const StyledCard = styled.div`
   border-radius: 8px;
-  border: 1px solid ${inube.palette.neutral.N30};
+  border: 1px solid
+    ${({ theme }) => theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
