@@ -1,3 +1,15 @@
+# v1.0.16 (Tue Jun 24 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: add support for themes to the card ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.15 (Tue Jun 24 2025)
 
 #### ⚠️ Pushed to `main`
