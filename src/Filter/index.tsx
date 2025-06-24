@@ -15,7 +15,7 @@ const Filter = (props: IFilter) => {
   const filters = !appliedFilters || appliedFilters.length === 0;
   return (
     <Box borderRadius="8px" width="100%">
-      <Grid gap="12px" templateColumns="1fr auto auto">
+      <Grid gap="12px" templateColumns="1fr auto auto" width="100%">
         <BorderStack
           background
           borderRadius="8px"

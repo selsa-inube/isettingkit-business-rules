@@ -17,7 +17,7 @@ const backendData = {
   },
   "2": {
     moneyDestinationId: "8bf6fa16-bc57-4a51-b4a4-d67975781459",
-    abbreviatedName: "Tarjeta interna",
+    abbreviatedName: "Tarjetas interna",
     descriptionUse: "Consumption with credit cards.",
     iconReference: "MdOutlineCreditCard",
   },
