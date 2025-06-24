@@ -36,7 +36,7 @@
     "autorelease": "auto shipit"
   },
   "dependencies": {
-    "@inubekit/inubekit": "^3.0.0",
+    "@inubekit/inubekit": "^4.1.0",
     "@isettingkit/input": "^1.0.1",
     "@isettingkit/view": "^0.1.23",
     "axios": "^1.9.0",
