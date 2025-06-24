@@ -1,3 +1,15 @@
+# v1.0.15 (Tue Jun 24 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: add a wrapper in order to fix the width for the box ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.14 (Tue Jun 24 2025)
 
 #### ⚠️ Pushed to `main`
