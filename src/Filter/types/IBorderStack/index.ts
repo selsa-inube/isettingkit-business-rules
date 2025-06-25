@@ -7,6 +7,7 @@ interface IBorderStack extends IStack {
   boxSizing?: string;
   boxShadow?: string;
   scroll?: boolean;
+  ref?: React.Ref<HTMLDivElement>;
 }
 
 export type { IBorderStack };

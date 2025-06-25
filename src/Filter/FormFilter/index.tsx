@@ -30,7 +30,7 @@ const FormFilter = (props: IFormFilter) => {
               padding="0px 8px"
               border
               width="100%"
-              height="32px"
+              height="36px"
             >
               {hasAppliedFilters ? (
                 <Text size="small" type="label" appearance="gray">
