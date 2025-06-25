@@ -1,3 +1,15 @@
+# v1.0.18 (Wed Jun 25 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: added options menu in order to show the ones that doesn't fit on the filter ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.17 (Tue Jun 24 2025)
 
 #### ⚠️ Pushed to `main`
