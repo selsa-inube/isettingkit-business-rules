@@ -1,3 +1,15 @@
+# v1.0.19 (Wed Jul 30 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: added an adapter to normalize malformed data received from the backend ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.18 (Wed Jun 25 2025)
 
 #### ⚠️ Pushed to `main`
