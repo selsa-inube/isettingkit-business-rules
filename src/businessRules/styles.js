@@ -43,6 +43,7 @@ const StyledEmptyCardContainer = styled.div`
   width: 100%;
   height: 100%;
   padding-bottom: 12px;
+  cursor: pointer;
 `;
 
 const StyledFadeInStack = styled.div`

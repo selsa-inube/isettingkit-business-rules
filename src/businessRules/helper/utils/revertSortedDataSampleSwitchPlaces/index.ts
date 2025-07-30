@@ -1,7 +1,6 @@
 import { IRevertSortedData } from "../../../types/helper/utils/IRevertSortedData";
 
 const revertSortedDataSampleSwitchPlaces = (props: IRevertSortedData) => {
-  console.log(props);
   const { dataDecision, originalDecision } = props;
   const conditionToRestore = {
     conditionName: dataDecision!.ruleName || "",
