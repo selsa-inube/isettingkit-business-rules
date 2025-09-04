@@ -14,6 +14,8 @@ interface IRenderCard {
   type: "loading" | "decision" | "add";
   shouldRenderEmptyMessage?: boolean;
   terms?: boolean;
+  isOpen?: boolean;
+  onToggle?: (isOpen: boolean) => void;
 }
 
 export type { IRenderCard };

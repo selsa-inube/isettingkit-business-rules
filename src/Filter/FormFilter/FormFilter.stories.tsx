@@ -1,20 +1,20 @@
 import { BrowserRouter } from "react-router-dom";
 import { StoryFn } from "@storybook/react";
 import { MdOutlineApps, MdOutlineCategory } from "react-icons/md";
-
+import type { Decorator } from "@storybook/react";
 import { FormFilter } from ".";
 import { IOption } from "@inubekit/inubekit";
 import { IFormFilter } from "../types/IFormFilter";
 
+const withRouter: Decorator = (Story) => (
+  <BrowserRouter>
+    <Story />
+  </BrowserRouter>
+);
+
 const story = {
   component: FormFilter,
-  decorators: [
-    (Story: StoryFn) => (
-      <BrowserRouter>
-        <Story />
-      </BrowserRouter>
-    ),
-  ],
+  decorators: [withRouter],
   title: "components/Filter/FormFilter",
 };
 

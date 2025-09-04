@@ -1,6 +1,9 @@
 export { BusinessRuleCard } from "./businessRules/Cards/BusinessRuleCard";
 export { BusinessRuleView } from "./businessRules/BusinessRuleView";
 export { BusinessRules } from "./businessRules";
+export { BusinessRuleCardNew } from "./businessRulesNew/Cards/BusinessRuleCard";
+export { BusinessRuleViewNew } from "./businessRulesNew/BusinessRuleView";
+export { BusinessRulesNew } from "./businessRulesNew";
 export { Filter } from "./Filter";
 export { FilterModal } from "./Filter/ModalFilter";
 export { FormFilter } from "./Filter/FormFilter";

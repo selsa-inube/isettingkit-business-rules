@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { IFilterTag } from "../../../Filter/types/IFilterTag";
 
 const useVisibleTags = (
-  containerRef: React.RefObject<HTMLElement>,
+  containerRef: React.RefObject<HTMLDivElement | null>,
   tags: IFilterTag[],
 ) => {
   const [visible, setVisible] = useState<typeof tags>([]);

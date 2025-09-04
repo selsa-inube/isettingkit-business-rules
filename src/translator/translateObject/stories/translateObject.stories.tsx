@@ -1,17 +1,17 @@
 import { BrowserRouter } from "react-router-dom";
-import { StoryFn } from "@storybook/react";
 import { TranslateObjectController } from "./translateObject.controller";
+import type { Decorator } from "@storybook/react";
+
+const withRouter: Decorator = (Story) => (
+  <BrowserRouter>
+    <Story />
+  </BrowserRouter>
+);
 
 const story = {
   title: "translator/translateObject",
   component: TranslateObjectController,
-  decorators: [
-    (Story: StoryFn) => (
-      <BrowserRouter>
-        <Story />
-      </BrowserRouter>
-    ),
-  ],
+  decorators: [withRouter],
 };
 
 const Default = () => <TranslateObjectController />;

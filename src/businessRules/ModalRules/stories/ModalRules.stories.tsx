@@ -6,17 +6,17 @@ import { Button } from "@inubekit/inubekit";
 import { MultipleChoices } from "@isettingkit/input";
 import { JSX } from "react/jsx-runtime";
 import { IModalRules, ModalRules } from "..";
+import type { Decorator } from "@storybook/react";
 
+const withRouter: Decorator = (Story) => (
+  <BrowserRouter>
+    <Story />
+  </BrowserRouter>
+);
 const meta: Meta<typeof ModalRules> = {
   title: "components/modals/ModalRules",
   component: ModalRules,
-  decorators: [
-    (Story: StoryFn) => (
-      <BrowserRouter>
-        <Story />
-      </BrowserRouter>
-    ),
-  ],
+  decorators: [withRouter],
 };
 
 const Template: StoryFn<IModalRules> = (

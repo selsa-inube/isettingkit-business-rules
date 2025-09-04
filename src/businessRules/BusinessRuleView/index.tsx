@@ -4,8 +4,8 @@ import {
   ValueHowToSetUp,
 } from "@isettingkit/input";
 import { IBusinessRuleView } from "../types/BusinessRuleView";
-import { BusinessRuleViewUI } from "./interface";
 import { strategyFactoryHandlerManager } from "./helper";
+import { BusinessRuleViewUI } from "./interface";
 
 const BusinessRuleView = (props: IBusinessRuleView) => {
   const { decision, loading = false, textValues } = props;

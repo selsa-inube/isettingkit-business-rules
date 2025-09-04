@@ -1,11 +1,10 @@
 import { Text, Stack } from "@inubekit/inubekit";
-
 import { StyledFadeInStack } from "../../../businessRules/styles";
 import { BusinessRuleCard } from "../../../businessRules/Cards/BusinessRuleCard";
 import { BusinessRuleView } from "../../../businessRules/BusinessRuleView";
 import { IRenderCard } from "../../../businessRules/types/helper";
 
-function renderDecisionCard(props: IRenderCard) {
+const renderDecisionCard = (props: IRenderCard) => {
   const { decision, controls, handleOpenModal, handleDelete, textValues } =
     props;
   if (!decision) return null;
@@ -31,6 +30,6 @@ function renderDecisionCard(props: IRenderCard) {
       </Stack>
     </StyledFadeInStack>
   );
-}
+};
 
 export { renderDecisionCard };

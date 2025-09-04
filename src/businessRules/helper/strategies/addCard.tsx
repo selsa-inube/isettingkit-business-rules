@@ -8,7 +8,7 @@ import {
 import { BusinessRuleCard } from "../../../businessRules/Cards/BusinessRuleCard";
 import { IRenderCard } from "../../../businessRules/types/helper";
 
-function renderAddCard(props: IRenderCard) {
+const renderAddCard = (props: IRenderCard) => {
   const {
     customTitleContentAddCard,
     index,
@@ -46,6 +46,6 @@ function renderAddCard(props: IRenderCard) {
       )}
     </StyledFadeInStack>
   );
-}
+};
 
 export { renderAddCard };

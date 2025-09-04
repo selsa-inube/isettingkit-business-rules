@@ -2,7 +2,7 @@ import { BusinessRuleCard } from "../../../businessRules/Cards/BusinessRuleCard"
 import { BusinessRuleView } from "../../../businessRules/BusinessRuleView";
 import { IRenderCard } from "../../../businessRules/types/helper";
 
-function renderLoadingCard(props: IRenderCard) {
+const renderLoadingCard = (props: IRenderCard) => {
   const { index, handleOpenModal } = props;
   return (
     <BusinessRuleCard
@@ -15,6 +15,6 @@ function renderLoadingCard(props: IRenderCard) {
       <BusinessRuleView loading />
     </BusinessRuleCard>
   );
-}
+};
 
 export { renderLoadingCard };

@@ -3,17 +3,18 @@ import { StoryFn } from "@storybook/react";
 import { FilterModal } from ".";
 import { Text } from "@inubekit/inubekit";
 import { IFilterModal } from "../types/IFilterModal";
+import type { Decorator } from "@storybook/react";
+
+const withRouter: Decorator = (Story) => (
+  <BrowserRouter>
+    <Story />
+  </BrowserRouter>
+);
 
 const story = {
   component: FilterModal,
   title: "components/modals/FilterModal",
-  decorators: [
-    (Story: StoryFn) => (
-      <BrowserRouter>
-        <Story />
-      </BrowserRouter>
-    ),
-  ],
+  decorators: [withRouter],
 };
 
 const Template: StoryFn<IFilterModal> = (args) => <FilterModal {...args} />;

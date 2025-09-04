@@ -1,3 +1,4 @@
+import { JSX } from "react";
 import { ICheckpickerField } from "../ICheckpickerField";
 import { IFilterTag } from "../IFilterTag";
 

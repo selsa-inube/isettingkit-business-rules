@@ -17,6 +17,7 @@ interface IBusinessRuleViewUI {
   visibleConditions: NonNullable<
     IBusinessRuleView["decision"]
   >["conditionsThatEstablishesTheDecision"];
+  tagLabel?: string;
 }
 
 export type { IBusinessRuleViewUI };

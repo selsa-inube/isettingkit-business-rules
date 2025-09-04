@@ -1,17 +1,16 @@
 import { BrowserRouter } from "react-router-dom";
-import { StoryFn } from "@storybook/react";
 import { FilterController } from "./Filter.controller";
+import type { Decorator } from "@storybook/react";
+
+const withRouter: Decorator = (Story) => (
+  <BrowserRouter>
+    <Story />
+  </BrowserRouter>
+);
 
 const story = {
   component: FilterController,
-  decorators: [
-    (Story: StoryFn) => (
-      <BrowserRouter>
-        <div id="portalModal" />
-        <Story />
-      </BrowserRouter>
-    ),
-  ],
+  decorators: [withRouter],
   title: "components/Filter/Filter",
 };
 
