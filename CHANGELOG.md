@@ -1,3 +1,15 @@
+# v1.0.20 (Thu Sep 04 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: include new layout for credit lines ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.19 (Wed Jul 30 2025)
 
 #### ⚠️ Pushed to `main`
