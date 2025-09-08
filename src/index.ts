@@ -16,6 +16,8 @@ export { revertSortedDataSwitchPlaces } from "./businessRules/helper/utils/rever
 export { RulesForm } from "./businessRules/Form";
 export { sortDisplayDataSampleSwitchPlaces } from "./businessRules/helper/utils/sortDisplayDataSampleSwitchPlaces";
 export { sortDisplayDataSwitchPlaces } from "./businessRules/helper/utils/sortDisplayDataSwitchPlaces";
+export { DropdownMenu } from "./DropdownMenu";
+export { DropdownMenuContainer } from "./DropdownMenu/DropdownMenuContainer";
 
 export { translateText } from "./translator/translateText";
 export { translateObject } from "./translator/translateObject";
@@ -27,3 +29,7 @@ export type { IFilterModal } from "./Filter/types/IFilterModal";
 export type { IFilterTag } from "./Filter/types/IFilterTag";
 export type { IFormFilter } from "./Filter/types/IFormFilter";
 export type { IRulesForm } from "./businessRules/types/Forms/IRulesForm";
+export type { IDropdownMenu } from "./DropdownMenu/types/IDropdownMenu";
+export type { IDropdownMenuContainer } from "./DropdownMenu/types/IDropdownMenuContainer";
+export type { IDropdownMenuGroup } from "./DropdownMenu/types/IDropdownMenuGroup";
+export type { TLinkItem } from "./DropdownMenu/types/TLinkItem";
