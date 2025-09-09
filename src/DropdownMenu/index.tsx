@@ -13,9 +13,9 @@ import { IDropdownMenu } from "./types/IDropdownMenu";
 const DropdownMenu = (props: IDropdownMenu) => {
   const { isOpen, links, onClick, title, activeId } = props;
 
-  const handleHeaderKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
+  const handleHeaderKey = (eventKey: React.KeyboardEvent<HTMLDivElement>) => {
+    if (eventKey.key === "Enter" || eventKey.key === " ") {
+      eventKey.preventDefault();
       onClick();
     }
   };
