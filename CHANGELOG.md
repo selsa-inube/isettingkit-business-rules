@@ -1,3 +1,16 @@
+# v1.0.22 (Tue Sep 09 2025)
+
+#### ⚠️ Pushed to `main`
+
+- Merge branch 'main' of https://github.com/selsa-inube/isettingkit-business-rules ([@cmarin001](https://github.com/cmarin001))
+- fix: adjust layout in order to fix add card for old version ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.21 (Mon Sep 08 2025)
 
 #### ⚠️ Pushed to `main`
