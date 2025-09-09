@@ -1,3 +1,15 @@
+# v1.0.23 (Tue Sep 09 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: added background container ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.22 (Tue Sep 09 2025)
 
 #### ⚠️ Pushed to `main`
