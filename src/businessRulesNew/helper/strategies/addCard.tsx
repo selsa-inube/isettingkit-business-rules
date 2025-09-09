@@ -1,12 +1,12 @@
 import { MdAdd } from "react-icons/md";
 import { Icon, Text, Stack } from "@inubekit/inubekit";
 
-import {
-  StyledEmptyCardContainer,
-  StyledFadeInStack,
-} from "../../../businessRules/styles";
 import { IRenderCard } from "../../../businessRules/types/helper";
 import { BorderStack } from "../../../Filter/BorderStack";
+import {
+  StyledEmptyCardContainerNew,
+  StyledFadeInStack,
+} from "../../../businessRulesNew/styles";
 
 const renderAddCard = (props: IRenderCard) => {
   const {
@@ -21,7 +21,7 @@ const renderAddCard = (props: IRenderCard) => {
   return (
     <StyledFadeInStack key={`add-decision-${index}`}>
       {shouldRenderEmptyMessage ? null : (
-        <StyledEmptyCardContainer
+        <StyledEmptyCardContainerNew
           onClick={() => (handleOpenModal ? handleOpenModal() : null)}
         >
           <BorderStack
@@ -48,7 +48,7 @@ const renderAddCard = (props: IRenderCard) => {
               />
             </Stack>
           </BorderStack>
-        </StyledEmptyCardContainer>
+        </StyledEmptyCardContainerNew>
       )}
     </StyledFadeInStack>
   );

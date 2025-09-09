@@ -33,17 +33,13 @@ const StyledConditionContainer = styled.div`
   }
 `;
 
-const StyledEmptyCardContainer = styled.div`
+const StyledEmptyCardContainerNew = styled.div`
   & > div {
-    background-color: ${({ theme }) =>
-      theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};
-    justify-content: center;
+    box-shadow: 0px 2px 3px 0px
+      ${({ theme }) =>
+        theme?.palette?.neutralAlpha?.N30A || inube.palette.neutralAlpha.N30A};
+    cursor: pointer;
   }
-  min-height: 350px;
-  width: 100%;
-  height: 100%;
-  padding-bottom: 12px;
-  cursor: pointer;
 `;
 
 const StyledFadeInStack = styled.div`
@@ -86,7 +82,7 @@ const StyledScrollContainer = styled.div`
 export {
   StyledCard,
   StyledConditionContainer,
-  StyledEmptyCardContainer,
+  StyledEmptyCardContainerNew,
   StyledFadeInStack,
   StyledGridContainer,
   StyledScrollContainer,
