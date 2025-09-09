@@ -1,3 +1,15 @@
+# v1.0.21 (Mon Sep 08 2025)
+
+#### ⚠️ Pushed to `main`
+
+- feat: added DropdownMenu component ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.20 (Thu Sep 04 2025)
 
 #### ⚠️ Pushed to `main`
