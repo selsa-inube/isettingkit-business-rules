@@ -19,6 +19,7 @@ export default meta;
 type Story = StoryObj<typeof DropdownMenuContainer>;
 
 const OPTIONS = {
+  lineNamesAndDescriptions: {},
   deductibleCustomerExpenses: {
     links: {
       maxTerm: { id: "maxTerm", label: "Plazo máximo", path: "/maxTerm" },
@@ -96,6 +97,11 @@ const toLinksArray = (
 ) => Object.values(obj);
 
 const GROUPS = [
+  {
+    id: "lineNamesAndDescriptions",
+    title: "lineNamesAndDescriptions",
+    links: toLinksArray(OPTIONS.lineNamesAndDescriptions),
+  },
   {
     id: "deductible",
     title: "Gastos para el cliente descontables",

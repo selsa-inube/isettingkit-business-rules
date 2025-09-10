@@ -29,6 +29,9 @@ const StyledMenuItem = styled.div`
       ? theme?.menu?.item?.background?.active || tokens.item.background.active
       : theme?.menu?.item?.background?.inactive ||
         tokens.item.background.inactive};
+  &:last-child {
+    border-radius: 0 0 8px 8px;
+  }
   &:hover {
     cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
     background-color: ${({ $active, theme, $disabled }) => {
@@ -50,4 +53,20 @@ const StyledHeaderOptionContainer = styled.div`
   cursor: pointer;
 `;
 
-export { StyledBoxContainer, StyledHeaderOptionContainer, StyledMenuItem };
+const StyledMainOptionContainer = styled.div`
+  & > div {
+    border-bottom: 1px solid
+      ${({ theme, $active }) =>
+        $active
+          ? theme?.border?.expanded?.color || tokens.border.expanded.color
+          : theme?.border?.contracted?.color || tokens.border.contracted.color};
+    border-radius: 8px 8px 0 0;
+  }
+`;
+
+export {
+  StyledBoxContainer,
+  StyledHeaderOptionContainer,
+  StyledMenuItem,
+  StyledMainOptionContainer,
+};

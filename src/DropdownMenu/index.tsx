@@ -1,4 +1,4 @@
-import { Divider, Icon, Stack, Text } from "@inubekit/inubekit";
+import { Icon, Stack, Text } from "@inubekit/inubekit";
 import { Link } from "react-router-dom";
 import { MdArrowRight, MdChevronRight, MdExpandMore } from "react-icons/md";
 
@@ -6,6 +6,7 @@ import { BorderStack } from "../Filter/BorderStack";
 import {
   StyledBoxContainer,
   StyledHeaderOptionContainer,
+  StyledMainOptionContainer,
   StyledMenuItem,
 } from "./styles";
 import { IDropdownMenu } from "./types/IDropdownMenu";
@@ -23,41 +24,47 @@ const DropdownMenu = (props: IDropdownMenu) => {
   return (
     <StyledBoxContainer $active={isOpen}>
       <BorderStack border borderRadius="8px" width="100%">
-        <BorderStack
-          alignItems="center"
-          borderRadius="8px"
-          direction="row"
-          gap="12px"
-          padding="12px 8px"
-        >
-          <StyledHeaderOptionContainer
-            onClick={onClick}
-            onKeyDown={handleHeaderKey}
-            role="button"
-            tabIndex={0}
-            aria-expanded={isOpen}
-            aria-controls="dropdown-links"
+        <StyledMainOptionContainer $active={isOpen && links.length > 0}>
+          <BorderStack
+            alignItems="center"
+            borderRadius="8px"
+            direction="row"
+            gap="12px"
+            padding="12px 8px"
           >
-            <Icon
-              appearance={isOpen ? "primary" : "dark"}
-              cursorHover
-              icon={isOpen ? <MdExpandMore /> : <MdChevronRight />}
-            />
-            <Text
-              appearance={isOpen ? "primary" : "dark"}
-              cursorHover
-              size="small"
-              type="title"
-              weight={isOpen ? "bold" : "normal"}
+            <StyledHeaderOptionContainer
+              onClick={onClick}
+              onKeyDown={handleHeaderKey}
+              role="button"
+              tabIndex={0}
+              aria-expanded={isOpen}
+              aria-controls="dropdown-links"
             >
-              {title}
-            </Text>
-          </StyledHeaderOptionContainer>
-        </BorderStack>
-
-        {isOpen && (
+              <Icon
+                appearance={isOpen ? "primary" : "dark"}
+                cursorHover
+                icon={
+                  isOpen && links.length > 0 ? (
+                    <MdExpandMore />
+                  ) : (
+                    <MdChevronRight />
+                  )
+                }
+              />
+              <Text
+                appearance={isOpen ? "primary" : "dark"}
+                cursorHover
+                size="small"
+                type="title"
+                weight={isOpen ? "bold" : "normal"}
+              >
+                {title}
+              </Text>
+            </StyledHeaderOptionContainer>
+          </BorderStack>
+        </StyledMainOptionContainer>
+        {isOpen && links.length > 0 && (
           <>
-            <Divider />
             <Stack direction="column">
               {links.map((item) => {
                 const isActive = item.id === activeId;
