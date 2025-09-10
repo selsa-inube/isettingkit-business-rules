@@ -14,7 +14,7 @@ import {
 import { IBusinessRuleViewUI } from "../types/BusinessRuleView/IBusinessRuleViewUI";
 import { strategyFactoryHandlerManager } from "./helper";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
-import { BorderStack } from "../../Filter/BorderStack";
+import { BorderStack } from "../../filter/BorderStack";
 
 const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
   const {

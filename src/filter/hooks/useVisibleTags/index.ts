@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { IFilterTag } from "../../../Filter/types/IFilterTag";
+import { IFilterTag } from "../../../filter/types/IFilterTag";
 
 const useVisibleTags = (
   containerRef: React.RefObject<HTMLDivElement | null>,

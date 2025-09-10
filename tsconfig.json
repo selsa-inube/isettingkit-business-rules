@@ -23,6 +23,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*", "../isettingkit-view/src/View"],
+  "include": [
+    "src/**/*",
+    "../isettingkit-view/src/View",
+    "src/dragAndDropBoxes/stories/DragAndDropBoxes.controller.tsx"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

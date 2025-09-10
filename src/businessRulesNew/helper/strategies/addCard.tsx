@@ -2,7 +2,7 @@ import { MdAdd } from "react-icons/md";
 import { Icon, Text, Stack } from "@inubekit/inubekit";
 
 import { IRenderCard } from "../../../businessRules/types/helper";
-import { BorderStack } from "../../../Filter/BorderStack";
+import { BorderStack } from "../../../filter/BorderStack";
 import {
   StyledEmptyCardContainerNew,
   StyledFadeInStack,

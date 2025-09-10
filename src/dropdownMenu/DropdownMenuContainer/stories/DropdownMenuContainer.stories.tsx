@@ -1,7 +1,7 @@
 import { BrowserRouter } from "react-router-dom";
 import type { Decorator, Meta, StoryObj } from "@storybook/react";
 import { DropdownMenuContainer } from "..";
-import { IDropdownMenuGroup } from "../../../DropdownMenu/types/IDropdownMenuGroup";
+import { IDropdownMenuGroup } from "../../../dropdownMenu/types/IDropdownMenuGroup";
 
 const withRouter: Decorator = (Story) => (
   <BrowserRouter>
@@ -96,9 +96,10 @@ const toLinksArray = (
   obj: Record<string, { id: string; label: string; path: string }>,
 ) => Object.values(obj);
 
-const GROUPS = [
+const GROUPS: IDropdownMenuGroup[] = [
   {
     id: "lineNamesAndDescriptions",
+    path: "/lines",
     title: "lineNamesAndDescriptions",
     links: toLinksArray(OPTIONS.lineNamesAndDescriptions),
   },
@@ -112,26 +113,28 @@ const GROUPS = [
     title: "Gastos para el cliente no descontables",
     links: toLinksArray(OPTIONS.nonDeductibleCustomerExpenses.links),
   },
-] as const;
+];
 
-export const AllContracted: Story = {
+const AllContracted: Story = {
   args: {
     groups: GROUPS as unknown as IDropdownMenuGroup[],
     defaultOpenId: null,
   },
 };
 
-export const DeductibleOpen: Story = {
+const DeductibleOpen: Story = {
   args: {
     groups: GROUPS as unknown as IDropdownMenuGroup[],
     defaultOpenId: "deductible",
   },
 };
 
-export const CollapseOnNavigate: Story = {
+const CollapseOnNavigate: Story = {
   args: {
     groups: GROUPS as unknown as IDropdownMenuGroup[],
     defaultOpenId: "deductible",
     collapseOnNavigate: true,
   },
 };
+
+export { AllContracted, DeductibleOpen, CollapseOnNavigate };

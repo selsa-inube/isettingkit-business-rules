@@ -18,7 +18,18 @@ const DropdownMenuContainer = (props: IDropdownMenuContainer) => {
 
   const getActiveId = React.useCallback(
     (links: TLinkItem[]) =>
-      links.find((links) => links.path === location.pathname)?.id,
+      links.find((label) => label.path === location.pathname)?.id,
+    [location.pathname],
+  );
+
+  const isHeaderActive = React.useCallback(
+    (groupPath?: string) => {
+      if (!groupPath) return false;
+      return (
+        location.pathname === groupPath ||
+        location.pathname.startsWith(groupPath + "/")
+      );
+    },
     [location.pathname],
   );
 
@@ -29,6 +40,8 @@ const DropdownMenuContainer = (props: IDropdownMenuContainer) => {
           <DropdownMenu
             key={group.id}
             activeId={getActiveId(group.links)}
+            headerPath={group.path}
+            headerActive={isHeaderActive(group.path)}
             isOpen={openId === group.id}
             links={group.links}
             onClick={() =>

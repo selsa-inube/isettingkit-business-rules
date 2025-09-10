@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { tokens } from "./tokens";
 
@@ -18,6 +19,45 @@ const StyledBoxContainer = styled.div`
         );
       }
     }};
+  }
+`;
+
+const StyledHeaderOptionContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  outline: none;
+  cursor: pointer;
+`;
+
+const StyledHeaderTitleButton = styled.div`
+  display: flex;
+  align-items: center;
+  outline: none;
+  cursor: pointer;
+`;
+
+const StyledHeaderTitleLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+`;
+
+const StyledItemLink = styled(Link)`
+  display: block;
+  text-decoration: none;
+  color: inherit;
+`;
+
+const StyledMainOptionContainer = styled.div`
+  & > div {
+    border-bottom: 1px solid
+      ${({ theme, $active }) =>
+        $active
+          ? theme?.border?.expanded?.color || tokens.border.expanded.color
+          : theme?.border?.contracted?.color || tokens.border.contracted.color};
+    border-radius: 8px 8px 0 0;
   }
 `;
 
@@ -44,29 +84,22 @@ const StyledMenuItem = styled.div`
   }
 `;
 
-const StyledHeaderOptionContainer = styled.div`
+const StyledLinksColumn = styled.div`
   display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  outline: none;
-  cursor: pointer;
-`;
+  flex-direction: column;
 
-const StyledMainOptionContainer = styled.div`
-  & > div {
-    border-bottom: 1px solid
-      ${({ theme, $active }) =>
-        $active
-          ? theme?.border?.expanded?.color || tokens.border.expanded.color
-          : theme?.border?.contracted?.color || tokens.border.contracted.color};
-    border-radius: 8px 8px 0 0;
+  & > a:last-child ${StyledMenuItem} {
+    border-radius: 0 0 8px 8px;
   }
 `;
 
 export {
   StyledBoxContainer,
   StyledHeaderOptionContainer,
-  StyledMenuItem,
+  StyledHeaderTitleButton,
+  StyledHeaderTitleLink,
+  StyledItemLink,
+  StyledLinksColumn,
   StyledMainOptionContainer,
+  StyledMenuItem,
 };
