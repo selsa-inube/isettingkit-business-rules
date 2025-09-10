@@ -1,3 +1,15 @@
+# v1.0.25 (Wed Sep 10 2025)
+
+#### ⚠️ Pushed to `main`
+
+- feat: added dragAndDropBoxes ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.24 (Wed Sep 10 2025)
 
 #### ⚠️ Pushed to `main`
