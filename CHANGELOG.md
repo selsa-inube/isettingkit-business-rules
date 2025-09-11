@@ -1,3 +1,15 @@
+# v1.0.26 (Thu Sep 11 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: added a way to know which record is passing from left to right and vice versa ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.25 (Wed Sep 10 2025)
 
 #### ⚠️ Pushed to `main`
