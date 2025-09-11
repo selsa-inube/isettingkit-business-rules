@@ -1,3 +1,15 @@
+# v1.0.27 (Thu Sep 11 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: change errors language ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.26 (Thu Sep 11 2025)
 
 #### ⚠️ Pushed to `main`
