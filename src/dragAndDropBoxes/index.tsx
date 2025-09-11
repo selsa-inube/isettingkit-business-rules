@@ -1,10 +1,17 @@
-// DragAndDropBoxes.tsx (unchanged except it still works with the new behavior)
 import { Stack } from "@inubekit/inubekit";
 import { DraggableList } from "./DraggableList";
 import type { IDragAndDropBoxes } from "./types/IDragAndDropBoxes";
 
 const DragAndDropBoxes = (props: IDragAndDropBoxes) => {
-  const { group = "clients", left, right } = props;
+  const { group = "clients", left, right, onMove } = props;
+
+  const handleMove = (payload: {
+    item: string;
+    from: "left" | "right";
+    to: "left" | "right";
+  }) => {
+    onMove?.(payload);
+  };
 
   return (
     <Stack
@@ -16,14 +23,20 @@ const DragAndDropBoxes = (props: IDragAndDropBoxes) => {
       <DraggableList
         group={group}
         highlightFirst={left.highlightFirst}
+        id="left"
         initialItems={left.items}
         legend={left.legend}
+        onMove={handleMove}
+        emptyMessage={left.emptyMessage}
       />
       <DraggableList
         group={group}
         highlightFirst={right.highlightFirst}
+        id="right"
         initialItems={right.items}
         legend={right.legend}
+        onMove={handleMove}
+        emptyMessage={right.emptyMessage}
       />
     </Stack>
   );

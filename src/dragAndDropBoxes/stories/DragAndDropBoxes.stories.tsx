@@ -1,6 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
 import type { Decorator, Meta, StoryObj } from "@storybook/react";
-import { DragAndDropBoxes } from "..";
+import { DragAndDropBoxesController } from "./DragAndDropBoxes.controller";
 
 const withRouter: Decorator = (Story) => (
   <BrowserRouter>
@@ -8,14 +8,14 @@ const withRouter: Decorator = (Story) => (
   </BrowserRouter>
 );
 
-const meta: Meta<typeof DragAndDropBoxes> = {
-  component: DragAndDropBoxes,
+const meta: Meta<typeof DragAndDropBoxesController> = {
+  component: DragAndDropBoxesController,
   decorators: [withRouter],
   title: "components/DragAndDropBoxes",
 };
 export default meta;
 
-type Story = StoryObj<typeof DragAndDropBoxes>;
+type Story = StoryObj<typeof DragAndDropBoxesController>;
 
 const LEFT_DEFAULT = [
   "Personas que NO están en nómina de convenio",
@@ -30,22 +30,26 @@ const RIGHT_DEFAULT = [
   "Personas sin enrolamiento seguro",
 ];
 
-export const Default: Story = {
+const Default: Story = {
   args: {
     group: "clients",
     left: {
       highlightFirst: true,
       items: LEFT_DEFAULT,
       legend: "Clientes para los que NO aplica la línea",
+      emptyMessage: "No has excluido ningún cliente para esta línea de crédito",
     },
     right: {
       items: RIGHT_DEFAULT,
       legend: "Clientes para los que NO aplica la línea",
+      emptyMessage: "No has excluido ningún cliente para esta línea de crédito",
     },
+    onMove: (p) => console.log("Controller onMove", p),
+    targetInsertMode: "append",
   },
 };
 
-export const CustomTitlesAndLists: Story = {
+const CustomTitlesAndLists: Story = {
   args: {
     group: "clients",
     left: {
@@ -69,7 +73,7 @@ export const CustomTitlesAndLists: Story = {
   },
 };
 
-export const DifferentGroupName: Story = {
+const DifferentGroupName: Story = {
   args: {
     group: "eligibility",
     left: {
@@ -82,3 +86,5 @@ export const DifferentGroupName: Story = {
     },
   },
 };
+
+export { Default, CustomTitlesAndLists, DifferentGroupName };

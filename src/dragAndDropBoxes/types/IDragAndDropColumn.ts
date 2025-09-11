@@ -1,6 +1,7 @@
 import { IClientLabel } from "./IClientLabel";
 
 interface IDragAndDropColumn {
+  emptyMessage?: string;
   highlightFirst?: boolean;
   items: IClientLabel[];
   legend: string;

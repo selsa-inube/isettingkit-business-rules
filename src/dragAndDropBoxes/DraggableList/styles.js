@@ -9,6 +9,7 @@ const StyledListContainer = styled.ul`
   flex-direction: column;
   gap: 12px;
   width: 100%;
+  justify-content: ${({ $isEmpty }) => ($isEmpty ? "center" : "flex-start")};
 `;
 
 const StyledOptionList = styled.li`
