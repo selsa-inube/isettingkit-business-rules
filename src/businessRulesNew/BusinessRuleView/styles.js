@@ -30,4 +30,12 @@ const StyledScrollContainer = styled.div`
   }
 `;
 
-export { StyledConditionContainer, StyledScrollContainer };
+const StyledRecordCardContainer = styled.div`
+  cursor: pointer;
+`;
+
+export {
+  StyledConditionContainer,
+  StyledScrollContainer,
+  StyledRecordCardContainer,
+};

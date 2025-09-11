@@ -20,6 +20,7 @@ const RulesFormUI = (props: IRulesFormUI) => {
     termStartStatus,
     termEndStatus,
   } = props;
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <Stack direction="column" gap="24px">
@@ -120,7 +121,10 @@ const RulesFormUI = (props: IRulesFormUI) => {
         <Divider />
         {showConditionsError && (
           <Text type="label" size="medium" appearance="danger">
-            {String(formik.errors.conditionsThatEstablishesTheDecision)}
+            {typeof formik.errors.conditionsThatEstablishesTheDecision ===
+            "string"
+              ? formik.errors.conditionsThatEstablishesTheDecision
+              : "Existen errores en el formulario, por favor revísalos."}
           </Text>
         )}
 

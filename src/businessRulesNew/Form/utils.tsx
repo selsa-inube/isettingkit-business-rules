@@ -69,7 +69,7 @@ function useRulesFormUtils({
 
       return object(conditionsSchema).test(
         "at-least-one-condition",
-        "It must be at least one condition in order for the decision to be validated correctly.",
+        "Debe existir al menos una condición para que la decisión se valide correctamente.",
         (value) => {
           if (!value) return false;
           return Object.values(value).some(

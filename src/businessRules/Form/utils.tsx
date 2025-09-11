@@ -28,7 +28,7 @@ function useRulesFormUtils({
   let formik: ReturnType<typeof useFormik>;
 
   const baseSchema: any = {
-    ruleName: string().required("Name is required"),
+    ruleName: string().required("El nombre de la regla es requerido"),
     value: lazy(() => {
       const strategy = strategyFormFactoryHandlerManager(
         formik.values.howToSetTheDecision as any,
@@ -38,6 +38,46 @@ function useRulesFormUtils({
         formik.values.decisionDataType,
       ).schema;
     }),
+    // conditionsThatEstablishesTheDecision: lazy((_value, { parent }) => {
+    //   const toggleNone =
+    //     parent?.toggleNone &&
+    //     Object.keys(parent.conditionsThatEstablishesTheDecision || {}).length >
+    //       0;
+
+    //   if (toggleNone) return object().shape({});
+
+    //   const conditionsSchema =
+    //     decision.conditionsThatEstablishesTheDecision?.reduce(
+    //       (schema, condition) => {
+    //         const conditionValue =
+    //           formik.values.conditionsThatEstablishesTheDecision[
+    //             condition.conditionName
+    //           ];
+    //         if (conditionValue !== undefined) {
+    //           const strategy = strategyFormFactoryHandlerManager(
+    //             condition.howToSetTheCondition as EValueHowToSetUp,
+    //           );
+    //           schema[condition.conditionName] = strategy(
+    //             condition.value as any,
+    //             condition.conditionDataType,
+    //           ).schema;
+    //         }
+    //         return schema;
+    //       },
+    //       {} as Record<string, Schema<any>>,
+    //     );
+
+    //   return object(conditionsSchema).test(
+    //     "at-least-one-condition",
+    //     "Debe existir al menos una condición para que la decisión se valide correctamente.",
+    //     (value) => {
+    //       if (!value) return false;
+    //       return Object.values(value).some(
+    //         (v) => v !== undefined && v !== null && v !== "",
+    //       );
+    //     },
+    //   );
+    // }),
     conditionsThatEstablishesTheDecision: lazy((_value, { parent }) => {
       const toggleNone =
         parent?.toggleNone &&
@@ -47,7 +87,7 @@ function useRulesFormUtils({
       if (toggleNone) return object().shape({});
 
       const conditionsSchema =
-        decision.conditionsThatEstablishesTheDecision?.reduce(
+        (decision.conditionsThatEstablishesTheDecision?.reduce(
           (schema, condition) => {
             const conditionValue =
               formik.values.conditionsThatEstablishesTheDecision[
@@ -65,24 +105,15 @@ function useRulesFormUtils({
             return schema;
           },
           {} as Record<string, Schema<any>>,
-        );
+        ) ?? {}) as Record<string, Schema<any>>;
 
-      return object(conditionsSchema).test(
-        "at-least-one-condition",
-        "It must be at least one condition in order for the decision to be validated correctly.",
-        (value) => {
-          if (!value) return false;
-          return Object.values(value).some(
-            (v) => v !== undefined && v !== null && v !== "",
-          );
-        },
-      );
+      return object(conditionsSchema);
     }),
   };
 
   if (textValues.terms) {
     baseSchema.effectiveFrom = date().required(
-      "effective From date is required",
+      "La fecha de inicio es requerida",
     );
     baseSchema.validUntil = date().when(
       "checkClosed",
@@ -90,10 +121,10 @@ function useRulesFormUtils({
         const checkClosed = parent?.checkClosed;
         return checkClosed
           ? schema
-              .required("valid Until date is required")
+              .required("La fecha de finalización es requerida")
               .test(
                 "is-after-startDate",
-                "valid Until date must be greater than or equal to Start date",
+                "La fecha de finalización debe ser mayor o igual a la fecha de inicio",
                 function (validUntil) {
                   const effectiveFrom = this.parent.effectiveFrom;
                   if (!effectiveFrom || !validUntil) return true;

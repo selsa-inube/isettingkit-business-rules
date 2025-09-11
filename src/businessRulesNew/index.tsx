@@ -4,9 +4,10 @@ import { StyledGridContainer, StyledScrollContainer } from "./styles";
 import { getBusinessRulesLayoutNew } from "./helper/getBusinessRulesLayout";
 import { renderCardNew } from "./helper/renderCard";
 import { IBusinessRules } from "./types/IBusinessRules";
-import { ModalRules, RulesForm } from "..";
 import { MdAdd } from "react-icons/md";
 import { useState } from "react";
+import { ModalRulesNew } from "./ModalRules";
+import { RulesForm } from "./Form";
 
 const BusinessRulesNew = (props: IBusinessRules) => {
   const {
@@ -125,10 +126,11 @@ const BusinessRulesNew = (props: IBusinessRules) => {
       </StyledGridContainer>
 
       {isModalOpen && (
-        <ModalRules
+        <ModalRulesNew
           portalId="modal-portal"
           onCloseModal={handleCloseModal!}
-          title={selectedDecision ? "Editar Decisión" : "Nueva decisión"}
+          title={selectedDecision ? "Editar Decisión" : "Configurar Decisión"}
+          description="Diligencia los campos para configurar tu decisión."
         >
           <RulesForm
             decision={selectedDecision ? selectedDecision : decisionTemplate}
@@ -136,7 +138,7 @@ const BusinessRulesNew = (props: IBusinessRules) => {
             textValues={textValues}
             onCancel={() => (handleCloseModal ? handleCloseModal() : () => {})}
           />
-        </ModalRules>
+        </ModalRulesNew>
       )}
     </>
   );

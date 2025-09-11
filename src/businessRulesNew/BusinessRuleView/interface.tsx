@@ -13,8 +13,14 @@ import {
 } from "@isettingkit/view";
 import { IBusinessRuleViewUI } from "../types/BusinessRuleView/IBusinessRuleViewUI";
 import { strategyFactoryHandlerManager } from "./helper";
-import { MdExpandLess, MdExpandMore } from "react-icons/md";
+import {
+  MdExpandLess,
+  MdExpandMore,
+  MdOutlineCreate,
+  MdOutlineDelete,
+} from "react-icons/md";
 import { BorderStack } from "../../filter/BorderStack";
+import { StyledRecordCardContainer } from "./styles";
 
 const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
   const {
@@ -35,31 +41,52 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
   if (loading) {
     return (
       <Stack direction="column" gap="16px">
-        <Stack
-          key={decision!.ruleName}
-          alignItems="start"
-          justifyContent="space-between"
-        >
-          <DecisionViewConditionRendererNew
-            element={decisionMapper!}
-            valueData={
-              strategyFactoryHandlerManager(
-                decisionMapper!,
-              ) as IDecisionViewConditionRenderer["valueData"]
-            }
-            type="decision"
-          />
-          <Stack gap="8px">
-            <Tag appearance="gray" label={tagLabel} displayIcon={false} />
-            <Icon
-              appearance="dark"
-              icon={isOpen ? <MdExpandLess /> : <MdExpandMore />}
-              onClick={onToggle}
-              size="24px"
-              cursorHover
-            />
+        <StyledRecordCardContainer onClick={onToggle}>
+          <Stack
+            key={decision!.ruleName}
+            alignItems="start"
+            justifyContent="space-between"
+          >
+            <Stack gap="12px">
+              <Tag appearance="gray" label={tagLabel} displayIcon={false} />
+              <DecisionViewConditionRendererNew
+                element={decisionMapper!}
+                valueData={
+                  strategyFactoryHandlerManager(
+                    decisionMapper!,
+                  ) as IDecisionViewConditionRenderer["valueData"]
+                }
+                type="decision"
+              />
+            </Stack>
+            <Stack gap="12px">
+              <Icon
+                appearance="primary"
+                icon={<MdOutlineCreate />}
+                size="24px"
+                cursorHover
+                // onClick={() => {
+                //   handleDelete(id);
+                // }}
+              />
+              <Icon
+                appearance="danger"
+                icon={<MdOutlineDelete />}
+                size="24px"
+                cursorHover
+                // onClick={() => {
+                //   handleDelete(id);
+                // }}
+              />
+              <Icon
+                appearance="dark"
+                icon={isOpen ? <MdExpandLess /> : <MdExpandMore />}
+                size="24px"
+                cursorHover
+              />
+            </Stack>
           </Stack>
-        </Stack>
+        </StyledRecordCardContainer>
         {isOpen && (
           <>
             <Divider dashed />

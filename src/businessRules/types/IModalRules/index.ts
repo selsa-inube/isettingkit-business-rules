@@ -3,6 +3,7 @@ interface IModalRules {
   onCloseModal: () => void;
   portalId: string;
   title: string;
+  description?: string;
 }
 
 export type { IModalRules };

@@ -3,10 +3,10 @@ import { string } from "yup";
 const defaultStrategy = (value: string) => {
   return {
     schema: string()
-      .required("Required")
+      .required("Requerido")
       .test(
         "non-empty",
-        "Value cannot be empty",
+        "El valor no puede estar vacío",
         (val) => val !== undefined && val !== null && val.trim() !== "",
       ),
     value,

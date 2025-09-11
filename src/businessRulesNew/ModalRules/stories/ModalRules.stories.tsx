@@ -5,7 +5,7 @@ import { Button } from "@inubekit/inubekit";
 
 import { MultipleChoices } from "@isettingkit/input";
 import { JSX } from "react/jsx-runtime";
-import { ModalRules } from "..";
+import { ModalRulesNew } from "..";
 import type { Decorator } from "@storybook/react";
 import { IModalRules } from "../../../businessRules/types/IModalRules";
 
@@ -14,9 +14,9 @@ const withRouter: Decorator = (Story) => (
     <Story />
   </BrowserRouter>
 );
-const meta: Meta<typeof ModalRules> = {
-  title: "components/modals/ModalRules",
-  component: ModalRules,
+const meta: Meta<typeof ModalRulesNew> = {
+  title: "components/modals/ModalRulesNew",
+  component: ModalRulesNew,
   decorators: [withRouter],
 };
 
@@ -29,7 +29,7 @@ const Template: StoryFn<IModalRules> = (
     <>
       <Button onClick={() => setShowModal(true)}>Show Modal</Button>
       {showModal && (
-        <ModalRules {...args} onCloseModal={() => setShowModal(false)} />
+        <ModalRulesNew {...args} onCloseModal={() => setShowModal(false)} />
       )}
     </>
   );
@@ -65,7 +65,7 @@ const TemplateWithPlannedAutomatic: StoryFn<IModalRules> = (
     <>
       <Button onClick={() => setShowModal(true)}>Show Modal</Button>
       {showModal && (
-        <ModalRules {...args} onCloseModal={() => setShowModal(false)} />
+        <ModalRulesNew {...args} onCloseModal={() => setShowModal(false)} />
       )}
     </>
   );

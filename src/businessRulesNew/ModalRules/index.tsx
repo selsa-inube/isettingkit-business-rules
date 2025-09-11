@@ -1,13 +1,13 @@
 import { MdClear } from "react-icons/md";
 import { createPortal } from "react-dom";
-import { Blanket, useMediaQuery } from "@inubekit/inubekit";
+import { Blanket, Divider, useMediaQuery } from "@inubekit/inubekit";
 import { Stack } from "@inubekit/inubekit";
 import { Text } from "@inubekit/inubekit";
 import { StyledContainer, StyledModal } from "./styles";
 import { IModalRules } from "../types/IModalRules";
 
-const ModalRules = (props: IModalRules) => {
-  const { children, portalId, onCloseModal, title } = props;
+const ModalRulesNew = (props: IModalRules) => {
+  const { children, description, portalId, onCloseModal, title } = props;
   const node = document.getElementById(portalId);
   if (!node) {
     throw new Error(
@@ -23,13 +23,23 @@ const ModalRules = (props: IModalRules) => {
           <Stack direction="column" gap="24px">
             <Stack direction="column" gap="24px">
               <Stack alignItems="center" justifyContent="space-between">
-                <Text type="title" size="large" appearance="dark" weight="bold">
-                  {title}
-                </Text>
+                <Stack direction="column" gap="8px">
+                  <Text
+                    type="title"
+                    size="medium"
+                    appearance="dark"
+                    weight="bold"
+                  >
+                    {title}
+                  </Text>
+                  <Text size="medium" appearance="gray">
+                    {description}
+                  </Text>
+                </Stack>
                 <MdClear size="24px" cursor="pointer" onClick={onCloseModal} />
               </Stack>
+              <Divider dashed />
             </Stack>
-
             {children}
           </Stack>
         </StyledModal>
@@ -39,4 +49,4 @@ const ModalRules = (props: IModalRules) => {
   );
 };
 
-export { ModalRules };
+export { ModalRulesNew };

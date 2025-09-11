@@ -41,34 +41,37 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
             justifyContent={conditionsAlignment}
             height="203px"
           >
-            <Text
-              type="label"
-              size="large"
-              appearance="dark"
-              weight="bold"
-              textAlign="center"
-            >
-              {textValues!.factsThatConditionIt}
-            </Text>
+            {visibleConditions!.length > 0 && (
+              <Text
+                type="label"
+                size="large"
+                appearance="dark"
+                weight="bold"
+                textAlign="center"
+              >
+                {textValues!.factsThatConditionIt}
+              </Text>
+            )}
 
-            {visibleConditions!.map((condition) => (
-              <StyledConditionContainer key={condition.conditionName}>
-                <Stack direction="column" padding="8px">
-                  <DecisionViewConditionRenderer
-                    element={{ ...condition, value: condition.value }}
-                    valueData={
-                      strategyFactoryHandlerManager(
-                        condition,
-                      ) as IDecisionViewConditionRenderer["valueData"]
-                    }
-                  />
-                </Stack>
-              </StyledConditionContainer>
-            ))}
+            {visibleConditions!.length > 0 &&
+              visibleConditions!.map((condition) => (
+                <StyledConditionContainer key={condition.conditionName}>
+                  <Stack direction="column" padding="8px">
+                    <DecisionViewConditionRenderer
+                      element={{ ...condition, value: condition.value }}
+                      valueData={
+                        strategyFactoryHandlerManager(
+                          condition,
+                        ) as IDecisionViewConditionRenderer["valueData"]
+                      }
+                    />
+                  </Stack>
+                </StyledConditionContainer>
+              ))}
+            {visibleConditions!.length > 0 && <Divider dashed />}
+
             {terms && (
               <>
-                <Divider dashed />
-
                 {decisionDateElement && (
                   <DecisionViewConditionRenderer
                     key={textValues!.terms}
