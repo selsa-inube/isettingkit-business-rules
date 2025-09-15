@@ -1,3 +1,15 @@
+# v1.0.30 (Mon Sep 15 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: adjust empty page according to new figma design ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.29 (Mon Sep 15 2025)
 
 #### ⚠️ Pushed to `main`
