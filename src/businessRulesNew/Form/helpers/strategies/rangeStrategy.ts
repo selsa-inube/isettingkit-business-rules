@@ -7,15 +7,15 @@ const rangeStrategy = (value: { from?: number; to?: number }) => {
   return {
     schema: object({
       from: number()
-        .required("Range From is required")
-        .max(toNumber, `'Range From' cannot be greater than 'Range To'`)
-        .min(0, `'Range From' cannot be less than 0`),
+        .required("El campo de tipo rango es requerido")
+        .max(toNumber, `El rango desde no puede ser mayor al rango hasta`)
+        .min(0, `El rango desde no puede ser menor a 0`),
       to: number()
-        .min(0, "To value must be greater than or equal to 0")
-        .required("To value is required")
+        .min(0, "El rengo hasta debe ser mayor o igual a 0")
+        .required("El rango hasta es requerido")
         .test(
           "is-greater",
-          "To value must be greater than From value",
+          "El rengo hasta debe ser mayor a el rango desde",
           function (to) {
             const { from } = this.parent;
             return to > from;

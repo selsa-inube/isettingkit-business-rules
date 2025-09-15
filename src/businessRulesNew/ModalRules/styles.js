@@ -5,6 +5,7 @@ const StyledContainer = styled.div`
   position: relative;
   & > div {
     padding: 24px 16px;
+    place-items: unset;
   }
 `;
 

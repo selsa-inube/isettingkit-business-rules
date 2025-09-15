@@ -50,30 +50,18 @@ const Term = (props: ITerm) => {
   const smallScreen = useMediaQuery("(max-width: 400px)");
 
   return (
-    <>
-      <Stack direction="row" justifyContent="space-between" margin="10px 0">
-        <Text
-          appearance="gray"
-          margin="10px 0"
-          size="medium"
-          type="title"
-          weight="bold"
-        >
-          Vigencia
+    <Stack direction="column" width="100%" gap="20px">
+      <Stack justifyContent="space-between">
+        <Text appearance="dark" size="large" type="label">
+          ¿La vigencia para este decisión es cerrada?
         </Text>
-        <Stack
-          alignContent="center"
-          justifyContent="center"
-          wrap="wrap"
-          gap="4px"
-        >
-          <Checkbox
-            label="Cerrada"
-            onChange={onHandleCheck}
-            checked={checkClosed}
-            value={""}
-          />
-        </Stack>
+
+        <Checkbox
+          label="Cerrada"
+          onChange={onHandleCheck}
+          checked={checkClosed}
+          value={""}
+        />
       </Stack>
       <Stack
         direction={smallScreen ? "column" : "row"}
@@ -89,6 +77,7 @@ const Term = (props: ITerm) => {
           size="compact"
           status={statusStart as IDateStatus}
           message={messageStart}
+          fullwidth
         />
         {checkClosed && (
           <Date
@@ -100,10 +89,11 @@ const Term = (props: ITerm) => {
             size="compact"
             status={statusEnd as IDateStatus}
             message={messageEnd}
+            fullwidth
           />
         )}
       </Stack>
-    </>
+    </Stack>
   );
 };
 

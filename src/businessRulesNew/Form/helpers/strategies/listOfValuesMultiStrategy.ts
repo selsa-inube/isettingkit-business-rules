@@ -5,7 +5,7 @@ const listOfValuesMultiStrategy = (value: IValue) => {
   return {
     schema: mixed().test(
       "isArrayOrString",
-      "Must be an array of strings/numbers or a single string",
+      "Por favor selecciona al menos una opcion",
       (val) =>
         Array.isArray(val)
           ? val.every(

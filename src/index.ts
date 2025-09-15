@@ -20,6 +20,8 @@ export { DropdownMenu } from "./dropdownMenu";
 export { DropdownMenuContainer } from "./dropdownMenu/DropdownMenuContainer";
 export { DragAndDropBoxes } from "./dragAndDropBoxes";
 export { DraggableList } from "./dragAndDropBoxes/DraggableList";
+export { SendButton } from "./button";
+export { BackAndNextButton } from "./button/BackAndNext";
 
 export { translateText } from "./translator/translateText";
 export { translateObject } from "./translator/translateObject";
@@ -39,3 +41,4 @@ export type { IDragAndDropBoxes } from "./dragAndDropBoxes/types/IDragAndDropBox
 export type { IDraggableList } from "./dragAndDropBoxes/types/IDraggableList";
 export type { IClientLabel } from "./dragAndDropBoxes/types/IClientLabel";
 export type { IDragAndDropColumn } from "./dragAndDropBoxes/types/IDragAndDropColumn";
+export type { IBackAndNextButton } from "./button/types/IBackAndNextButton";

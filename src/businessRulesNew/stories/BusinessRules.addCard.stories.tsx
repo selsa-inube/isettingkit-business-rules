@@ -28,7 +28,7 @@ const sampleDecisions: IRuleDecision[] = [
     validUntil: "2024-12-31",
     conditionsThatEstablishesTheDecision: [
       {
-        labelName: "Antigüedad del cliente (Días)",
+        labelName: "Que la antigüedad del cliente este entre",
         conditionName: "AntigüedadDelCliente(Días)",
         descriptionUse: "Antigüedad del cliente (Días)",
         conditionDataType: ValueDataType.ALPHABETICAL,

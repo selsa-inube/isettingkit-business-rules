@@ -24,6 +24,7 @@ export default defineConfig({
         "@inubekit/inubekit",
         "@isettingkit/input",
         "@isettingkit/view",
+        "@formkit/drag-and-drop",
         "axios",
         "franc-min",
       ],

@@ -5,15 +5,15 @@ const comparisonStrategy = (value: string | number, dataType: string) => {
   if (dataType === ValueDataType.PERCENTAGE) {
     return {
       schema: number()
-        .required("Percentage is required")
-        .min(0, "Percentage cannot be less than 0")
-        .max(100, "Percentage cannot be greater than 100"),
+        .required("El campo porcentaje es requerido")
+        .min(0, "El porcentaje no puede ser menor a 0")
+        .max(100, "El porcentaje no puede ser mayor a 100"),
       value,
     };
   }
 
   return {
-    schema: string().required("Required"),
+    schema: string().required("Requerido"),
     value,
   };
 };

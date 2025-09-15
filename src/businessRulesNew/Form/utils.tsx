@@ -28,7 +28,7 @@ function useRulesFormUtils({
   let formik: ReturnType<typeof useFormik>;
 
   const baseSchema: any = {
-    ruleName: string().required("Name is required"),
+    ruleName: string().required("El nombre de la decision es requerido"),
     value: lazy(() => {
       const strategy = strategyFormFactoryHandlerManager(
         formik.values.howToSetTheDecision as any,
@@ -82,7 +82,7 @@ function useRulesFormUtils({
 
   if (textValues.terms) {
     baseSchema.effectiveFrom = date().required(
-      "effective From date is required",
+      "Se requiere la fecha de vigencia desde",
     );
     baseSchema.validUntil = date().when(
       "checkClosed",
@@ -90,10 +90,10 @@ function useRulesFormUtils({
         const checkClosed = parent?.checkClosed;
         return checkClosed
           ? schema
-              .required("valid Until date is required")
+              .required("Se requiere la fecha de vigencia hasta")
               .test(
                 "is-after-startDate",
-                "valid Until date must be greater than or equal to Start date",
+                "La fecha válida para la vigencia hasta debe ser mayor o igual a la fecha de inicio",
                 function (validUntil) {
                   const effectiveFrom = this.parent.effectiveFrom;
                   if (!effectiveFrom || !validUntil) return true;
