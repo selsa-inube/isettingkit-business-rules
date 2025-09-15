@@ -1,10 +1,17 @@
-import { Grid, Text, useMediaQuery, Stack, Button } from "@inubekit/inubekit";
+import {
+  Grid,
+  Text,
+  useMediaQuery,
+  Stack,
+  Fieldset,
+  Icon,
+} from "@inubekit/inubekit";
 
 import { StyledGridContainer, StyledScrollContainer } from "./styles";
 import { getBusinessRulesLayoutNew } from "./helper/getBusinessRulesLayout";
 import { renderCardNew } from "./helper/renderCard";
 import { IBusinessRules } from "./types/IBusinessRules";
-import { MdAdd } from "react-icons/md";
+import { MdOutlineInfo } from "react-icons/md";
 import { useState } from "react";
 import { ModalRulesNew } from "./ModalRules";
 import { RulesForm } from "./Form";
@@ -43,9 +50,6 @@ const BusinessRulesNew = (props: IBusinessRules) => {
   });
 
   const shouldRenderEmptyMessage = decisions?.length === 0 && !loading;
-  const title = customTitleContentAddCard
-    ? customTitleContentAddCard
-    : "Agregar decisión";
 
   return (
     <>
@@ -53,45 +57,49 @@ const BusinessRulesNew = (props: IBusinessRules) => {
         <StyledScrollContainer>
           <Stack direction="column" gap="16px" padding="6px">
             {shouldRenderEmptyMessage ? (
-              <Stack
-                direction="column"
-                gap="28px"
-                width="100%"
-                height={mediumScreen ? "auto" : "435px"}
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Text as="span" type="label" size="large" appearance="gray">
-                  {customMessageEmptyDecisions ? (
-                    customMessageEmptyDecisions
-                  ) : (
-                    <>
-                      Aún NO tienes definidas tasas de interés efectivas .
-                      Presiona
-                      <Text
-                        as="span"
-                        type="label"
-                        size="large"
-                        appearance="gray"
-                        weight="bold"
-                      >
-                        “
-                        {customTitleContentAddCard
-                          ? customTitleContentAddCard
-                          : "+ Agregar decisión"}
-                        ”
-                      </Text>
-                      para empezar.
-                    </>
-                  )}
-                </Text>
-                <Button
-                  iconBefore={<MdAdd />}
-                  onClick={() => (handleOpenModal ? handleOpenModal() : null)}
+              <Fieldset legend="Decisiones">
+                <Stack
+                  direction="column"
+                  gap="16px"
+                  width="100%"
+                  justifyContent="center"
+                  alignItems="center"
                 >
-                  {title}
-                </Button>
-              </Stack>
+                  <Icon
+                    appearance="help"
+                    icon={<MdOutlineInfo />}
+                    size="40px"
+                  />
+                  <Text
+                    type="title"
+                    size="medium"
+                    weight="bold"
+                    appearance="dark"
+                  >
+                    Sin decisiones
+                  </Text>
+                  <Text as="span" size="medium" appearance="gray">
+                    {customMessageEmptyDecisions ? (
+                      customMessageEmptyDecisions
+                    ) : (
+                      <>
+                        Aun no tienes decisiones definidas, para empezar haz
+                        clic en
+                        <Text
+                          as="span"
+                          size="medium"
+                          appearance="gray"
+                          weight="bold"
+                        >
+                          {customTitleContentAddCard
+                            ? customTitleContentAddCard
+                            : ` "Agregar decisión"`}
+                        </Text>
+                      </>
+                    )}
+                  </Text>
+                </Stack>
+              </Fieldset>
             ) : (
               <Grid
                 templateColumns="1fr"
