@@ -2,11 +2,11 @@ import styled from "styled-components";
 
 const StyledSendButton = styled.div`
   display: flex;
-  justify-content: space-between; /* ensures buttons are evenly spaced */
+  justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
   border-radius: 16px;
-  background-color: white; /* ensures it looks like a card */
+  background-color: white;
   box-shadow:
     0px 1px 3px 1px rgba(0, 0, 0, 0.15),
     0px 1px 2px 0px rgba(0, 0, 0, 0.3);
@@ -20,6 +20,10 @@ const StyledSendButton = styled.div`
 
     & > div > div {
       flex-direction: column;
+      & > figure > svg {
+        width: 20px;
+        height: 20px;
+      }
       & > p {
         font-weight: 400;
       }
