@@ -7,4 +7,8 @@ const StyledCardContainer = styled.div`
   }
 `;
 
-export { StyledCardContainer };
+const StyledMultipleChoiceContainer = styled.div`
+   width: -webkit-fill-available;
+`;
+
+export { StyledCardContainer, StyledMultipleChoiceContainer };

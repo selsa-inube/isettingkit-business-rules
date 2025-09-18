@@ -84,17 +84,9 @@ const BusinessRulesNew = (props: IBusinessRules) => {
                     ) : (
                       <>
                         Aun no tienes decisiones definidas, para empezar haz
-                        clic en
-                        <Text
-                          as="span"
-                          size="medium"
-                          appearance="gray"
-                          weight="bold"
-                        >
-                          {customTitleContentAddCard
+                        clic en {customTitleContentAddCard
                             ? customTitleContentAddCard
                             : ` "Agregar decisión"`}
-                        </Text>
                       </>
                     )}
                   </Text>

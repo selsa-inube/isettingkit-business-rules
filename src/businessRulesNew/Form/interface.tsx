@@ -6,14 +6,16 @@ import {
   Text,
   Fieldset,
   Tabs,
+  Icon,
 } from "@inubekit/inubekit";
-import { DecisionConditionRender } from "@isettingkit/input";
+import { DecisionConditionRender, DecisionConditionRenderNew } from "@isettingkit/input";
 import { StyledConditionContainer, StyledScrollContainer } from "./styles";
 import { ToggleOption } from "./ToggleOption";
 import { Term } from "./Term";
 import { IRulesFormUI } from "../types/Forms/IRulesFormUI";
 import { EValueHowToSetUp } from "../enums/EValueHowToSetUp";
 import { useEffect, useState } from "react";
+import { MdCached, MdInfo, MdOutlineDelete } from "react-icons/md";
 
 const tabs = [
   {
@@ -58,81 +60,32 @@ const RulesFormUI = (props: IRulesFormUI) => {
     <form onSubmit={formik.handleSubmit}>
       <Stack direction="column" gap="24px" width="100%">
         <Fieldset legend="Decisión N° 01" spacing="wide">
-          {DecisionConditionRender({
+          {DecisionConditionRenderNew({
             condition: normalizedDecision,
             formik,
             isDecision: true,
           })}
         </Fieldset>
         <Fieldset legend="Condiciones a evaluar" spacing="wide">
-          <Tabs
-            onChange={handleTabChange}
-            tabs={tabs}
-            selectedTab={activeTab}
-          />
-          <StyledConditionContainer>
-            <StyledScrollContainer>
-              <Stack
-                direction="column"
-                padding="6px 12px"
-                gap="16px"
-                height="272px"
-              >
-                <Stack
-                  justifyContent="space-between"
-                  alignItems="center"
-                  gap="64px"
-                >
-                  <Text
-                    type="title"
-                    size="small"
-                    weight="bold"
-                    appearance="gray"
-                  >
-                    {textValues.factsThatConditionIt}
-                  </Text>
-                  <Toggle
-                    id="toggleNone"
-                    onChange={() =>
-                      handleToggleNoneChange(!formik.values.toggleNone)
-                    }
-                    checked={formik.values.toggleNone}
-                    size="small"
-                  >
-                    <Text as="span" size="medium" type="label" weight="bold">
-                      {textValues.none}
-                    </Text>
-                  </Toggle>
-                </Stack>
-
-                <Stack direction="column" gap="20px">
-                  {visibleConditions?.map((condition) => (
-                    <ToggleOption
-                      key={condition.conditionName}
-                      id={`toggle-${condition.conditionName}`}
-                      name={`toggle.${condition.conditionName}`}
-                      labelToggle={condition.labelName}
-                      checked={
-                        !formik.values.toggleNone &&
-                        formik.values.conditionsThatEstablishesTheDecision[
-                          condition.conditionName
-                        ] !== undefined
-                      }
-                      handleToggleChange={(e) =>
-                        handleConditionToggleChange(
-                          condition.conditionName,
-                          condition.howToSetTheCondition ===
-                            EValueHowToSetUp.LIST_OF_VALUES_MULTI,
-                        )(e.target.checked)
-                      }
-                    >
-                      {DecisionConditionRender({ condition, formik } as any)}
-                    </ToggleOption>
-                  ))}
-                </Stack>
+          <Stack direction="column" gap="20px" width="100%">
+            <Tabs
+              onChange={handleTabChange}
+              tabs={tabs}
+              selectedTab={activeTab}
+            />
+            <Stack justifyContent="flex-end" alignItems="center">
+              <Icon  icon={<MdInfo />} appearance="help" />
+              <Button iconBefore={<MdCached/>} variant="none" appearance="gray" onClick={()=> {}}>
+                Redefinir la condición
+              </Button>
+            </Stack>
+            <Stack direction="column" gap="20px">
+              <Stack direction="column" gap="12px">
+                {visibleConditions?.map((condition) => (DecisionConditionRenderNew({ condition, formik } as any)))}
+                <Icon icon={<MdOutlineDelete />} appearance="danger" />
               </Stack>
-            </StyledScrollContainer>
-          </StyledConditionContainer>
+            </Stack>
+          </Stack>
         </Fieldset>
 
         <Fieldset legend="Vigencia" spacing="wide">
@@ -167,7 +120,7 @@ const RulesFormUI = (props: IRulesFormUI) => {
         {showConditionsError && (
           <Text type="label" size="medium" appearance="danger">
             {typeof formik.errors.conditionsThatEstablishesTheDecision ===
-            "string"
+              "string"
               ? formik.errors.conditionsThatEstablishesTheDecision
               : "Existen errores en el formulario, por favor revísalos."}
           </Text>
