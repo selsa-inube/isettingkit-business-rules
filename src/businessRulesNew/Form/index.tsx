@@ -1,6 +1,8 @@
 import { useRulesFormUtils } from "./utils";
 import { RulesFormUI } from "./interface";
 import { IRulesForm } from "../types/Forms/IRulesForm";
+import { getConditionsByGroup } from "../helper/utils/getConditionsByGroup";
+import { filterByGroup } from "../helper/utils/filterByGroup";
 
 const RulesForm = (props: IRulesForm) => {
   const { decision, onSubmitEvent, textValues, onCancel } = props;
@@ -10,6 +12,12 @@ const RulesForm = (props: IRulesForm) => {
     onSubmitEvent,
     textValues,
   });
+  
+  const conditionsByGroup = getConditionsByGroup(decision);
+  const visibleConditionsByGroup = filterByGroup(
+    conditionsByGroup,
+    (c:any) => !c.hidden
+  );
 
   const normalizedDecision = {
     ruleName: decision.ruleName,
@@ -19,10 +27,13 @@ const RulesForm = (props: IRulesForm) => {
     listOfPossibleValues: decision.listOfPossibleValues,
   };
 
-  const visibleConditions =
-    decision.conditionsThatEstablishesTheDecision?.filter(
-      (condition) => !condition.hidden,
-    ) || [];
+  // const visibleConditions =
+  //   decision.conditionsThatEstablishesTheDecision?.filter(
+  //     (condition) => !condition.hidden,
+  //   ) || [];
+
+      const visibleConditions =
+    visibleConditionsByGroup["group-primary"] ?? [];
 
   const showConditionsError =
     Boolean(formik.errors.conditionsThatEstablishesTheDecision) &&
@@ -68,6 +79,7 @@ const RulesForm = (props: IRulesForm) => {
       textValues={textValues}
       decision={decision}
       visibleConditions={visibleConditions}
+      visibleConditionsByGroup={visibleConditionsByGroup}
       normalizedDecision={normalizedDecision}
       handleToggleNoneChange={handleToggleNoneChange}
       handleConditionToggleChange={handleConditionToggleChange}

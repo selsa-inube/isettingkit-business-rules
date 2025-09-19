@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { IRuleDecision } from "@isettingkit/input";
+import { IRuleDecision, IValue } from "@isettingkit/input";
 import { BusinessRulesNew } from "..";
 import { sortDisplayDataSwitchPlaces } from "../helper/utils/sortDisplayDataSwitchPlaces";
 import { sortDisplayDataSampleSwitchPlaces } from "../helper/utils/sortDisplayDataSampleSwitchPlaces";
@@ -11,6 +11,8 @@ import { MdAdd } from "react-icons/md";
 import { MultipleChoices } from "@isettingkit/input";
 import type { IOption } from "@inubekit/inubekit";
 import { StyledMultipleChoiceContainer } from "./styles";
+import { getConditionsByGroup } from "../helper/utils/getConditionsByGroup";
+import { mapByGroup } from "../helper/utils/mapByGroup";
 
 interface IBusinessRulesNewController {
   controls?: boolean;
@@ -35,27 +37,31 @@ const BusinessRulesNewController = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDecision, setSelectedDecision] =
     useState<IRuleDecision | null>(null);
-  const [decisions, setDecisions] = useState<IRuleDecision[]>(
-    initialDecisions.map((decision) => ({
-      ...decision,
-      value: parseRangeFromString(decision.value),
-      conditionsThatEstablishesTheDecision:
-        decision.conditionsThatEstablishesTheDecision?.map((condition) => ({
-          ...condition,
-          value: parseRangeFromString(condition.value),
-        })),
-    })),
-  );
+const [decisions, setDecisions] = useState<any[]>(
+  initialDecisions.map((decision) => ({
+    ...decision,
+    value: parseRangeFromString(decision.value),
+    conditionsThatEstablishesTheDecision: mapByGroup(
+      getConditionsByGroup(decision),
+      (condition: { value: string | number | IValue | string[] | undefined; }) => ({
+        ...condition,
+        value: parseRangeFromString(condition.value),
+      })
+    ),
+  }))
+);
 
   const multipleChoicesOptions: IOption[] = useMemo(() => {
-    const list =
-      decisionTemplate.conditionsThatEstablishesTheDecision ?? [];
-    return list.map((c) => ({
-      id: c.conditionName,
-      label: c.labelName,
-      value: c.conditionName,
-    }));
+    const groups = decisionTemplate.conditionsThatEstablishesTheDecision ?? {};
+    return Object.values(groups)
+      .flat()
+      .map((c: any) => ({
+        id: c.conditionName,
+        label: c.labelName,
+        value: c.conditionName,
+      }));
   }, [decisionTemplate]);
+
 
   const [selectedConditionsCSV, setSelectedConditionsCSV] = useState<string>("");
 
@@ -77,46 +83,65 @@ const BusinessRulesNewController = ({
     setSelectedDecision(null);
   };
 
-  const handleSubmitForm = (dataDecision: IRuleDecision) => {
-    const isEditing = selectedDecision !== null;
+const handleSubmitForm = (dataDecision: any) => {
+  const isEditing = selectedDecision !== null;
 
-    const newDecision = isEditing
-      ? { ...selectedDecision, ...dataDecision }
-      : {
+  const base = isEditing
+    ? { ...selectedDecision, ...dataDecision }
+    : {
         ...decisionTemplate,
         ...dataDecision,
         decisionId: `Decisión ${decisions.length + 1}`,
-        conditions:
-          decisionTemplate.conditionsThatEstablishesTheDecision?.map(
-            (conditionTemplate, index) => ({
-              ...conditionTemplate,
-              value:
-                dataDecision.conditionsThatEstablishesTheDecision?.[index]
-                  ?.value ?? conditionTemplate.value,
-            }),
-          ) ?? [],
       };
 
-    const backendFormattedDecision = formatDecisionForBackend({
-      decision: newDecision,
-      template: decisionTemplate,
-      fallbackId: newDecision.decisionId!,
-    });
 
-    console.log("Formatted for backend:", backendFormattedDecision);
+  const tplGroups = decisionTemplate.conditionsThatEstablishesTheDecision ?? {};
+  const dataGroups = dataDecision.conditionsThatEstablishesTheDecision ?? {};
 
-    setDecisions((prev) =>
-      isEditing
-        ? prev.map((d) =>
-          d.businessRuleId === selectedDecision!.businessRuleId
-            ? newDecision
-            : d,
-        )
-        : [...prev, newDecision],
-    );
+  const mergedGroups = Object.fromEntries(
+    Object.entries(tplGroups).map(([group, tplList]) => {
+      const dataList = dataGroups[group] ?? [];
+      return [
+        group,
+        (tplList as any).map((tplItem:any) => {
+          const match = dataList.find(
+            (d:any) => d.conditionName === tplItem.conditionName
+          );
+          return {
+            ...tplItem,
+            value: match?.value ?? tplItem.value,
+            listOfPossibleValues:
+              match?.listOfPossibleValues ?? tplItem.listOfPossibleValues,
+          };
+        }),
+      ];
+    })
+  );
 
-    handleCloseModal();
+  const newDecision: IRuleDecision = {
+    ...base,
+    conditionsThatEstablishesTheDecision: mergedGroups,
   };
+
+  const backendFormattedDecision = formatDecisionForBackend({
+    decision: newDecision,
+    template: decisionTemplate,
+    fallbackId: newDecision.decisionId!,
+  });
+
+  console.log("Formatted for backend:", backendFormattedDecision);
+
+  setDecisions((prev) =>
+    isEditing
+      ? prev.map((d) =>
+          d.businessRuleId === selectedDecision!.businessRuleId ? newDecision : d
+        )
+      : [...prev, newDecision]
+  );
+
+  handleCloseModal();
+};
+
 
   useEffect(() => { }, [decisions]);
 
