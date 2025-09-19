@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useMemo, useState } from "react";
 import { IRuleDecision, IValue } from "@isettingkit/input";
 import { BusinessRulesNew } from "..";
@@ -37,22 +38,24 @@ const BusinessRulesNewController = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDecision, setSelectedDecision] =
     useState<IRuleDecision | null>(null);
-const [decisions, setDecisions] = useState<any[]>(
-  initialDecisions.map((decision) => ({
-    ...decision,
-    value: parseRangeFromString(decision.value),
-    conditionsThatEstablishesTheDecision: mapByGroup(
-      getConditionsByGroup(decision),
-      (condition: { value: string | number | IValue | string[] | undefined; }) => ({
-        ...condition,
-        value: parseRangeFromString(condition.value),
-      })
-    ),
-  }))
-);
+  const [decisions, setDecisions] = useState<any[]>(
+    initialDecisions.map((decision) => ({
+      ...decision,
+      value: parseRangeFromString(decision.value),
+      conditionsThatEstablishesTheDecision: mapByGroup(
+        getConditionsByGroup(decision),
+        (condition: {
+          value: string | number | IValue | string[] | undefined;
+        }) => ({
+          ...condition,
+          value: parseRangeFromString(condition.value),
+        }),
+      ),
+    })),
+  );
 
   const multipleChoicesOptions: IOption[] = useMemo(() => {
-    const groups = decisionTemplate.conditionsThatEstablishesTheDecision ?? {};
+    const groups = getConditionsByGroup(decisionTemplate);
     return Object.values(groups)
       .flat()
       .map((c: any) => ({
@@ -62,12 +65,11 @@ const [decisions, setDecisions] = useState<any[]>(
       }));
   }, [decisionTemplate]);
 
-
-  const [selectedConditionsCSV, setSelectedConditionsCSV] = useState<string>("");
+  const [selectedConditionsCSV, setSelectedConditionsCSV] =
+    useState<string>("");
 
   const handleMultipleChoicesChange = (_name: string, valueCSV: string) => {
     setSelectedConditionsCSV(valueCSV);
-
     const ids = valueCSV.split(",").filter(Boolean);
     const selected = multipleChoicesOptions.filter((o) => ids.includes(o.id));
     console.log("Selected conditions:", selected);
@@ -83,67 +85,72 @@ const [decisions, setDecisions] = useState<any[]>(
     setSelectedDecision(null);
   };
 
-const handleSubmitForm = (dataDecision: any) => {
-  const isEditing = selectedDecision !== null;
+  const handleSubmitForm = (dataDecision: any) => {
+    const isEditing = selectedDecision !== null;
 
-  const base = isEditing
-    ? { ...selectedDecision, ...dataDecision }
-    : {
-        ...decisionTemplate,
-        ...dataDecision,
-        decisionId: `Decisión ${decisions.length + 1}`,
-      };
+    const base = isEditing
+      ? { ...selectedDecision, ...dataDecision }
+      : {
+          ...decisionTemplate,
+          ...dataDecision,
+          decisionId: `Decisión ${decisions.length + 1}`,
+        };
 
+    const tplGroups = getConditionsByGroup(decisionTemplate);
+    const dataGroups = getConditionsByGroup(dataDecision) as Record<
+      string,
+      any[]
+    >;
+    const mergedGroups = Object.fromEntries(
+      Object.entries(tplGroups).map(([group, tplList]) => {
+        const dataList = dataGroups[group] ?? [];
+        return [
+          group,
+          (tplList as any).map((tplItem: any) => {
+            const match = dataList.find(
+              (d: any) => d.conditionName === tplItem.conditionName,
+            );
+            return {
+              ...tplItem,
+              value: match?.value ?? tplItem.value,
+              listOfPossibleValues:
+                match?.listOfPossibleValues ?? tplItem.listOfPossibleValues,
+            };
+          }),
+        ];
+      }),
+    );
 
-  const tplGroups = decisionTemplate.conditionsThatEstablishesTheDecision ?? {};
-  const dataGroups = dataDecision.conditionsThatEstablishesTheDecision ?? {};
+    const newDecision: IRuleDecision = {
+      ...base,
+      conditionsThatEstablishesTheDecision: mergedGroups,
+    };
 
-  const mergedGroups = Object.fromEntries(
-    Object.entries(tplGroups).map(([group, tplList]) => {
-      const dataList = dataGroups[group] ?? [];
-      return [
-        group,
-        (tplList as any).map((tplItem:any) => {
-          const match = dataList.find(
-            (d:any) => d.conditionName === tplItem.conditionName
-          );
-          return {
-            ...tplItem,
-            value: match?.value ?? tplItem.value,
-            listOfPossibleValues:
-              match?.listOfPossibleValues ?? tplItem.listOfPossibleValues,
-          };
-        }),
-      ];
-    })
-  );
+    const backendFormattedDecision = formatDecisionForBackend({
+      decision: newDecision,
+      template: decisionTemplate,
+      fallbackId: newDecision.decisionId!,
+    });
+    console.log("Formatted for backend:", backendFormattedDecision);
 
-  const newDecision: IRuleDecision = {
-    ...base,
-    conditionsThatEstablishesTheDecision: mergedGroups,
+    setDecisions((prev) =>
+      isEditing
+        ? prev.map((d) => {
+            const sameByBusinessRule =
+              selectedDecision?.businessRuleId &&
+              d.businessRuleId === selectedDecision.businessRuleId;
+            const sameByDecisionId =
+              selectedDecision?.decisionId &&
+              d.decisionId === selectedDecision.decisionId;
+            return sameByBusinessRule || sameByDecisionId ? newDecision : d;
+          })
+        : [...prev, newDecision],
+    );
+
+    handleCloseModal();
   };
 
-  const backendFormattedDecision = formatDecisionForBackend({
-    decision: newDecision,
-    template: decisionTemplate,
-    fallbackId: newDecision.decisionId!,
-  });
-
-  console.log("Formatted for backend:", backendFormattedDecision);
-
-  setDecisions((prev) =>
-    isEditing
-      ? prev.map((d) =>
-          d.businessRuleId === selectedDecision!.businessRuleId ? newDecision : d
-        )
-      : [...prev, newDecision]
-  );
-
-  handleCloseModal();
-};
-
-
-  useEffect(() => { }, [decisions]);
+  useEffect(() => {}, [decisions]);
 
   const handleDelete = (id: string) => {
     setDecisions((prev) => prev.filter((d) => d.decisionId !== id));
@@ -175,13 +182,16 @@ const handleSubmitForm = (dataDecision: any) => {
           </Stack>
         </>
       )}
+
       <BusinessRulesNew
         controls={controls}
         customTitleContentAddCard={customTitleContentAddCard}
         customMessageEmptyDecisions={customMessageEmptyDecisions}
         decisions={sortDisplayDataSwitchPlaces({ decisions })}
         textValues={textValues}
-        decisionTemplate={sortDisplayDataSampleSwitchPlaces({ decisionTemplate })}
+        decisionTemplate={sortDisplayDataSampleSwitchPlaces({
+          decisionTemplate,
+        })}
         isModalOpen={isModalOpen}
         selectedDecision={selectedDecision}
         loading={loading}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Meta, StoryObj } from "@storybook/react";
 import { parameters } from "./props";
 import { IRuleDecision, ValueDataType } from "@isettingkit/input";
@@ -18,7 +19,7 @@ type Story = StoryObj<typeof BusinessRulesNewController>;
 
 const sampleDecisions: IRuleDecision[] = [];
 
-const decisionTemplate: IRuleDecision = {
+const decisionTemplate: any = {
   ruleName: "TasaEfectivaAnual",
   labelName: "Tasa Efectiva Anual",
   decisionDataType: ValueDataType.PERCENTAGE,

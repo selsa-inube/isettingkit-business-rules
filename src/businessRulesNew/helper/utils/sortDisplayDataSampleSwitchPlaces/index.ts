@@ -1,12 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IRevertSortedData } from "../../../../businessRules/types/helper/utils/IRevertSortedData";
 
-// Narrow helpers
 type Condition = {
   conditionName: string;
   labelName: string;
-  conditionDataType: any; // replace with your enum/type
+  conditionDataType: any;
   value: any;
-  howToSetTheCondition: any; // replace with your enum/type
+  howToSetTheCondition: any;
   hidden?: boolean;
   switchPlaces?: boolean;
 };
@@ -26,7 +26,6 @@ const sortDisplayDataSampleSwitchPlaces = (props: IRevertSortedData) => {
 
   if (!source) return data;
 
-  // 1) Find the first condition with switchPlaces
   let chosen: Condition | undefined;
   let chosenGroupKey: string | undefined;
 
@@ -44,13 +43,11 @@ const sortDisplayDataSampleSwitchPlaces = (props: IRevertSortedData) => {
   }
 
   if (!chosen) return data;
-
-  // 2) Hide the chosen condition in its collection
   let nextConditions: typeof source;
 
   if (Array.isArray(source)) {
     nextConditions = source.map((c) =>
-      c.conditionName === chosen!.conditionName ? { ...c, hidden: true } : c
+      c.conditionName === chosen!.conditionName ? { ...c, hidden: true } : c,
     );
   } else {
     nextConditions = Object.fromEntries(
@@ -59,13 +56,12 @@ const sortDisplayDataSampleSwitchPlaces = (props: IRevertSortedData) => {
         arr.map((c) =>
           gk === chosenGroupKey && c.conditionName === chosen!.conditionName
             ? { ...c, hidden: true }
-            : c
+            : c,
         ),
-      ])
+      ]),
     );
   }
 
-  // 3) Promote chosen condition fields to decision-level
   return {
     ...data,
     ruleName: chosen.conditionName,

@@ -1,52 +1,30 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Stack,
-  Button,
-  Text,
-  Fieldset,
-  Tabs,
-  Icon,
-} from "@inubekit/inubekit";
+import { Stack, Button, Text, Fieldset, Tabs, Icon } from "@inubekit/inubekit";
 import { DecisionConditionRenderNew } from "@isettingkit/input";
 import { StyledConditionFieldContainer } from "./styles";
 import { Term } from "./Term";
 import { IRulesFormUI } from "../types/Forms/IRulesFormUI";
-import { useState } from "react";
 import { MdCached, MdInfo, MdOutlineDelete } from "react-icons/md";
-
-const tabs = [
-  { id: "mainCondition",        label: "Condición principal",    isDisabled: false },
-  { id: "alternateCondition-1", label: "Condición alterna N° 01", isDisabled: false },
-  { id: "alternateCondition-2", label: "Condición alterna N° 02", isDisabled: false },
-];
-
-const TAB_TO_GROUP: Record<string, string> = {
-  "mainCondition": "group-primary",
-  "alternateCondition-1": "aditional-group-1",
-  "alternateCondition-2": "aditional-group-2",
-};
-
 
 const RulesFormUI = (props: IRulesFormUI) => {
   const {
+    activeTab,
+    conditionsErrorText,
+    currentConditions,
     formik,
-    textValues,
-    onCancel,
-    visibleConditions,
     normalizedDecision,
-    handleToggleNoneChange,
-    handleConditionToggleChange,
+    onCancel,
+    // onClearCondition,
+    // onEndBlur,
+    onRedefineCurrentTab,
+    // onStartBlur,
+    onTabChange,
     showConditionsError,
-    termStartStatus,
+    tabs,
     termEndStatus,
-    visibleConditionsByGroup
+    termStartStatus,
+    textValues,
   } = props;
-
-  const [activeTab, setActiveTab] = useState(tabs[0].id);
-  const handleTabChange = (id: string) => setActiveTab(id);
-
-  const groupKey = TAB_TO_GROUP[activeTab] ?? "group-primary";
-  const currentConditions = visibleConditionsByGroup[groupKey] ?? [];
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -60,71 +38,85 @@ const RulesFormUI = (props: IRulesFormUI) => {
             })}
           </Stack>
         </Fieldset>
+
         <Fieldset legend="Condiciones a evaluar" spacing="wide">
           <Stack direction="column" gap="20px" width="100%">
-            <Tabs onChange={handleTabChange} tabs={tabs} selectedTab={activeTab} />
+            <Tabs
+              onChange={onTabChange!}
+              tabs={tabs!}
+              selectedTab={activeTab!}
+            />
             <Stack justifyContent="flex-end" alignItems="center">
               <Icon icon={<MdInfo />} appearance="help" />
-              <Button iconBefore={<MdCached />} variant="none" appearance="gray" onClick={() => { }}>
+              <Button
+                iconBefore={<MdCached />}
+                variant="none"
+                appearance="gray"
+                onClick={onRedefineCurrentTab}
+              >
                 Redefinir la condición
               </Button>
             </Stack>
+
             <Stack direction="column" gap="20px">
-
-
-              {currentConditions?.map((condition) => (
-                <Stack key={condition.conditionName} gap="16px" alignItems="center">
+              {currentConditions?.map((condition: any) => (
+                <Stack
+                  key={condition.conditionName}
+                  gap="16px"
+                  alignItems="center"
+                >
                   <StyledConditionFieldContainer>
-                    <DecisionConditionRenderNew condition={condition as any} formik={formik} />
+                    <DecisionConditionRenderNew
+                      condition={condition}
+                      formik={formik}
+                    />
                   </StyledConditionFieldContainer>
                   <Icon
                     icon={<MdOutlineDelete />}
                     appearance="danger"
                     cursorHover
+                    // onClick={() => onClearCondition(condition.conditionName)}
                   />
                 </Stack>
               ))}
             </Stack>
+
+            {showConditionsError && (
+              <Text type="label" size="medium" appearance="danger">
+                {conditionsErrorText ??
+                  "Existen errores en el formulario, por favor revísalos."}
+              </Text>
+            )}
           </Stack>
         </Fieldset>
 
         <Fieldset legend="Vigencia" spacing="wide">
           {textValues.terms && (
-            <>
-              <Term
-                labelStart={textValues.termStart}
-                labelEnd={textValues.termEnd}
-                valueStart={formik.values.effectiveFrom}
-                valueEnd={formik.values.validUntil}
-                messageStart={formik.errors.effectiveFrom}
-                messageEnd={formik.errors.validUntil}
-                statusStart={termStartStatus}
-                statusEnd={termEndStatus}
-                onHandleStartChange={(e) =>
-                  formik.setFieldValue("effectiveFrom", e.target.value)
-                }
-                onHandleEndChange={(e) =>
-                  formik.setFieldValue("validUntil", e.target.value)
-                }
-                onCheckClosedChange={(isClosed) => {
-                  formik.setFieldValue("checkClosed", isClosed);
-                  if (isClosed) {
-                    formik.setFieldValue("validUntil", "");
-                  }
-                }}
-                checkedClosed={formik.values.checkClosed}
-              />
-            </>
+            <Term
+              labelStart={textValues.termStart}
+              labelEnd={textValues.termEnd}
+              valueStart={formik.values.effectiveFrom}
+              valueEnd={formik.values.validUntil}
+              messageStart={formik.errors.effectiveFrom}
+              messageEnd={formik.errors.validUntil}
+              statusStart={termStartStatus}
+              statusEnd={termEndStatus}
+              onHandleStartChange={(e) =>
+                formik.setFieldValue("effectiveFrom", e.target.value)
+              }
+              onHandleEndChange={(e) =>
+                formik.setFieldValue("validUntil", e.target.value)
+              }
+              // onHandleStartBlur={onStartBlur}
+              // onHandleEndBlur={onEndBlur}
+              onCheckClosedChange={(isClosed) => {
+                formik.setFieldValue("checkClosed", isClosed);
+                if (isClosed) formik.setFieldValue("validUntil", "");
+              }}
+              checkedClosed={formik.values.checkClosed}
+            />
           )}
         </Fieldset>
-        {showConditionsError && (
-          <Text type="label" size="medium" appearance="danger">
-            {typeof formik.errors.conditionsThatEstablishesTheDecision ===
-              "string"
-              ? formik.errors.conditionsThatEstablishesTheDecision
-              : "Existen errores en el formulario, por favor revísalos."}
-          </Text>
-        )}
 
         <Stack direction="row" justifyContent="end" gap="16px">
           <Button appearance="gray" onClick={onCancel} variant="outlined">
