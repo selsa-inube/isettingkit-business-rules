@@ -68,6 +68,11 @@ const BusinessRulesNewController = ({
   const [selectedConditionsCSV, setSelectedConditionsCSV] =
     useState<string>("");
 
+  const selectedIds = useMemo(
+    () => new Set(selectedConditionsCSV.split(",").filter(Boolean)),
+    [selectedConditionsCSV],
+  );
+
   const handleMultipleChoicesChange = (_name: string, valueCSV: string) => {
     setSelectedConditionsCSV(valueCSV);
     const ids = valueCSV.split(",").filter(Boolean);
@@ -101,23 +106,28 @@ const BusinessRulesNewController = ({
       string,
       any[]
     >;
+
     const mergedGroups = Object.fromEntries(
       Object.entries(tplGroups).map(([group, tplList]) => {
         const dataList = dataGroups[group] ?? [];
-        return [
-          group,
-          (tplList as any).map((tplItem: any) => {
-            const match = dataList.find(
-              (d: any) => d.conditionName === tplItem.conditionName,
-            );
-            return {
-              ...tplItem,
-              value: match?.value ?? tplItem.value,
-              listOfPossibleValues:
-                match?.listOfPossibleValues ?? tplItem.listOfPossibleValues,
-            };
-          }),
-        ];
+        const merged = (tplList as any).map((tplItem: any) => {
+          const match = dataList.find(
+            (d: any) => d.conditionName === tplItem.conditionName,
+          );
+          return {
+            ...tplItem,
+            value: match?.value ?? tplItem.value,
+            listOfPossibleValues:
+              match?.listOfPossibleValues ?? tplItem.listOfPossibleValues,
+          };
+        });
+
+        const finalList =
+          selectedIds.size === 0
+            ? merged
+            : merged.filter((m: any) => selectedIds.has(m.conditionName));
+
+        return [group, finalList];
       }),
     );
 
@@ -156,6 +166,21 @@ const BusinessRulesNewController = ({
     setDecisions((prev) => prev.filter((d) => d.decisionId !== id));
   };
 
+  const filteredDecisionTemplate = useMemo(() => {
+    const tpl = sortDisplayDataSampleSwitchPlaces({ decisionTemplate });
+    if (selectedIds.size === 0) return tpl;
+
+    const groups = tpl.conditionsThatEstablishesTheDecision || {};
+    const filtered = Object.fromEntries(
+      Object.entries(groups).map(([group, list]) => [
+        group,
+        (list as any[]).filter((c) => selectedIds.has(c.conditionName)),
+      ]),
+    );
+
+    return { ...tpl, conditionsThatEstablishesTheDecision: filtered };
+  }, [decisionTemplate, selectedIds]);
+
   return (
     <Stack direction="column" gap="24px">
       {decisions.length === 0 && (
@@ -190,9 +215,7 @@ const BusinessRulesNewController = ({
         customMessageEmptyDecisions={customMessageEmptyDecisions}
         decisions={sortDisplayDataSwitchPlaces({ decisions })}
         textValues={textValues}
-        decisionTemplate={sortDisplayDataSampleSwitchPlaces({
-          decisionTemplate,
-        })}
+        decisionTemplate={filteredDecisionTemplate as any}
         isModalOpen={isModalOpen}
         selectedDecision={selectedDecision}
         loading={loading}
