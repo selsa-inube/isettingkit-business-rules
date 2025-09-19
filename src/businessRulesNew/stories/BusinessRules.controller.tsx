@@ -9,11 +9,11 @@ import { formatDecisionForBackend } from "../helper/utils/formatDecisionForBacke
 import { parseRangeFromString } from "../helper/utils/parseRangeFromString";
 import { Button, Fieldset, Stack } from "@inubekit/inubekit";
 import { MdAdd } from "react-icons/md";
-import { MultipleChoices } from "@isettingkit/input";
 import type { IOption } from "@inubekit/inubekit";
 import { StyledMultipleChoiceContainer } from "./styles";
 import { getConditionsByGroup } from "../helper/utils/getConditionsByGroup";
 import { mapByGroup } from "../helper/utils/mapByGroup";
+import { Checkpicker } from "../../checkpicker";
 
 interface IBusinessRulesNewController {
   controls?: boolean;
@@ -162,16 +162,17 @@ const BusinessRulesNewController = ({
         <>
           <Fieldset legend="Condiciones que determinan las decisiones">
             <StyledMultipleChoiceContainer>
-              <MultipleChoices
+              <Checkpicker
                 id="conditionsPicker"
-                labelSelect=""
-                labelSelected=""
+                name="conditionsPicker"
+                label=""
+                placeholder="Seleccione una o varias condiciones"
                 options={multipleChoicesOptions}
-                placeholderSelect="Seleccione una o varias condiciones"
                 required={false}
                 values={selectedConditionsCSV}
                 onChange={handleMultipleChoicesChange}
                 size="wide"
+                fullwidth
               />
             </StyledMultipleChoiceContainer>
           </Fieldset>
