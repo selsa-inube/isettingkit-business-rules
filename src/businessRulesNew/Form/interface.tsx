@@ -16,8 +16,6 @@ const RulesFormUI = (props: IRulesFormUI) => {
     normalizedDecision,
     onCancel,
     onClearCondition,
-    // onEndBlur,
-    // onStartBlur,
     onTabChange,
     showConditionsError,
     tabs,
@@ -119,8 +117,6 @@ const RulesFormUI = (props: IRulesFormUI) => {
                 onHandleEndChange={(e) =>
                   formik.setFieldValue("validUntil", e.target.value)
                 }
-                // onHandleStartBlur={onStartBlur}
-                // onHandleEndBlur={onEndBlur}
                 onCheckClosedChange={(isClosed) => {
                   formik.setFieldValue("checkClosed", isClosed);
                   if (isClosed) formik.setFieldValue("validUntil", "");
@@ -148,7 +144,7 @@ const RulesFormUI = (props: IRulesFormUI) => {
             <Text type="body" size="large" appearance="gray">
               ¿Estás seguro? Se perderá todo lo que tienes actualmente definido
               y deberás reescribir completamente la condición, de esta manera
-              podrás usar los últimas variables condicionales que están
+              podrás usar las últimas variables condicionales que están
               definidas en la actualidad para esta decisión .
             </Text>
 

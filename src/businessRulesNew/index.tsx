@@ -33,6 +33,8 @@ const BusinessRulesNew = (props: IBusinessRules) => {
     handleDelete,
     terms = true,
     onRemoveCondition,
+    onRestoreConditions,
+    baseDecisionTemplate,
   } = props;
 
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -136,10 +138,12 @@ const BusinessRulesNew = (props: IBusinessRules) => {
         >
           <RulesForm
             decision={selectedDecision ? selectedDecision : decisionTemplate}
+            fullTemplate={baseDecisionTemplate ?? decisionTemplate}
             onSubmitEvent={handleSubmitForm!}
             textValues={textValues}
             onCancel={() => (handleCloseModal ? handleCloseModal() : () => {})}
             onRemoveCondition={onRemoveCondition}
+            onRestoreConditions={onRestoreConditions}
           />
         </ModalRulesNew>
       )}

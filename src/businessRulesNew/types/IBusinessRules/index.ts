@@ -17,6 +17,8 @@ interface IBusinessRules {
   handleDelete?: (id: string) => void;
   terms?: boolean;
   onRemoveCondition?: (conditionName: string) => void;
+  onRestoreConditions?: (conditionNames: string[]) => void;
+  baseDecisionTemplate?: IRuleDecision;
 }
 
 export type { IBusinessRules };

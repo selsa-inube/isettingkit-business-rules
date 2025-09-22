@@ -16,6 +16,7 @@ import { mapByGroup } from "../helper/utils/mapByGroup";
 import { Checkpicker } from "../../checkpicker";
 
 interface IBusinessRulesNewController {
+  language?: "es" | "en";
   controls?: boolean;
   customTitleContentAddCard?: string;
   customMessageEmptyDecisions?: string;
@@ -55,7 +56,6 @@ const BusinessRulesNewController = ({
     })),
   );
 
-  // NEW: track removed conditions by conditionName
   const [removedConditionNames, setRemovedConditionNames] = useState<
     Set<string>
   >(new Set());
@@ -64,6 +64,16 @@ const BusinessRulesNewController = ({
     setRemovedConditionNames((prev) => {
       const next = new Set(prev);
       next.add(conditionName);
+      return next;
+    });
+  };
+
+  const handleRestoreConditions = (names: string[]) => {
+    if (!names?.length) return;
+    setRemovedConditionNames((prev) => {
+      if (prev.size === 0) return prev;
+      const next = new Set(prev);
+      names.forEach((n) => next.delete(n));
       return next;
     });
   };
@@ -137,7 +147,6 @@ const BusinessRulesNewController = ({
           };
         });
 
-        // honor the current “selected” and “removed” filters at submit-time
         const finalList = merged.filter((m: any) => {
           const passesSelected =
             selectedIds.size === 0 || selectedIds.has(m.conditionName);
@@ -245,6 +254,8 @@ const BusinessRulesNewController = ({
         handleSubmitForm={handleSubmitForm}
         handleDelete={handleDelete}
         onRemoveCondition={handleRemoveCondition}
+        onRestoreConditions={handleRestoreConditions}
+        baseDecisionTemplate={decisionTemplate}
       />
     </Stack>
   );

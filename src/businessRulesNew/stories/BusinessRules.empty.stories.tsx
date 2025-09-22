@@ -20,8 +20,10 @@ type Story = StoryObj<typeof BusinessRulesNewController>;
 const sampleDecisions: IRuleDecision[] = [];
 
 const decisionTemplate: any = {
-  ruleName: "TasaEfectivaAnual",
-  labelName: "Tasa Efectiva Anual",
+  ruleName: "InterestRateType",
+  labelName: "Interest Rate Type",
+  descriptionUse:
+    "It presents the list of available rate types according to the credit line (mv ma)",
   decisionDataType: ValueDataType.PERCENTAGE,
   howToSetTheDecision: EValueHowToSetUp.EQUAL,
   value: "",
@@ -30,115 +32,212 @@ const decisionTemplate: any = {
   conditionsThatEstablishesTheDecision: {
     "group-primary": [
       {
-        labelName: "Antigüedad del cliente Días",
-        conditionName: "AntigüedadDelClienteDías",
-        descriptionUse: "Antigüedad del cliente Días",
+        labelName: "Line of credit",
+        conditionName: "LineOfCredit",
+        descriptionUse: "Line of credit.",
+        conditionDataType: ValueDataType.ALPHABETICAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
+        value: "",
+        i18n: {
+          es: "Línea de crédito",
+        },
+      },
+      {
+        labelName: "Money Destination",
+        conditionName: "MoneyDestination",
+        descriptionUse: "Money Destination.",
+        conditionDataType: ValueDataType.ALPHABETICAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
+        value: "",
+        i18n: {
+          es: "Destino de dinero",
+        },
+      },
+      {
+        labelName: "Loan amount",
+        conditionName: "LoanAmount",
+        descriptionUse: "Loan amount",
+        conditionDataType: ValueDataType.CURRENCY,
+        howToSetTheCondition: EValueHowToSetUp.RANGE,
+        value: "",
+        i18n: {
+          es: "Monto del préstamo",
+        },
+      },
+      {
+        labelName: "Primary Income Type.",
+        conditionName: "PrimaryIncomeType",
+        descriptionUse: "Primary income type.",
+        conditionDataType: ValueDataType.ALPHABETICAL,
+        howToSetTheCondition: EValueHowToSetUp.RANGE,
+        value: "",
+        i18n: {
+          es: "Tipo de fuente de ingreso primaria.",
+        },
+      },
+      {
+        labelName: "Client Type",
+        conditionName: "ClientType",
+        descriptionUse: "Client Type.",
+        conditionDataType: ValueDataType.ALPHABETICAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
+        value: "",
+        i18n: {
+          es: "Tipo de cliente",
+        },
+      },
+      {
+        labelName: "Loan Term",
+        conditionName: "LoanTerm",
+        descriptionUse: "Loan Term.",
         conditionDataType: ValueDataType.NUMBER,
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
-      },
-      {
-        labelName: "Porcentaje de riesgo",
-        conditionName: "PorcentajeDeRiesgo",
-        descriptionUse: "Porcentaje De Riesgo",
-        conditionDataType: ValueDataType.PERCENTAGE,
-        howToSetTheCondition: EValueHowToSetUp.RANGE,
-        value: "",
-      },
-      {
-        labelName: "Membresia del cliente",
-        conditionName: "NivelDeMembresía",
-        descriptionUse: "Nivel De Membresía",
-        conditionDataType: ValueDataType.ALPHABETICAL,
-        howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
-        listOfPossibleValues: {
-          list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
+        i18n: {
+          es: "Plazo del préstamo",
         },
-        value: "",
-      },
-      {
-        labelName: "reciprocidad de ahorro",
-        conditionName: "ReciprocidadDeAhorro",
-        descriptionUse: "Reciprocidad De Ahorro",
-        conditionDataType: ValueDataType.PERCENTAGE,
-        howToSetTheCondition: EValueHowToSetUp.RANGE,
-        value: "",
       },
     ],
     "aditional-group-1": [
       {
-        labelName: "Antigüedad del cliente (Días)1",
-        conditionName: "AntigüedadDelCliente(Días)1",
-        descriptionUse: "Antigüedad del cliente (Días)1",
+        labelName: "Line of credit",
+        conditionName: "LineOfCredit1",
+        descriptionUse: "Line of credit.",
+        conditionDataType: ValueDataType.ALPHABETICAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
+        value: "",
+        i18n: {
+          es: "Línea de crédito",
+        },
+      },
+      {
+        labelName: "Money Destination",
+        conditionName: "MoneyDestination1",
+        descriptionUse: "Money Destination.",
+        conditionDataType: ValueDataType.ALPHABETICAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
+        value: "",
+        i18n: {
+          es: "Destino de dinero",
+        },
+      },
+      {
+        labelName: "Loan amount",
+        conditionName: "LoanAmount1",
+        descriptionUse: "Loan amount",
+        conditionDataType: ValueDataType.CURRENCY,
+        howToSetTheCondition: EValueHowToSetUp.RANGE,
+        value: "",
+        i18n: {
+          es: "Monto del préstamo",
+        },
+      },
+      {
+        labelName: "Primary income type.",
+        conditionName: "PrimaryIncomeType1",
+        descriptionUse: "Primary income type.",
+        conditionDataType: ValueDataType.ALPHABETICAL,
+        howToSetTheCondition: EValueHowToSetUp.RANGE,
+        value: "",
+        i18n: {
+          es: "Tipo de fuente de ingreso primaria.",
+        },
+      },
+      {
+        labelName: "Client Type",
+        conditionName: "ClientType1",
+        descriptionUse: "Client Type.",
+        conditionDataType: ValueDataType.ALPHABETICAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
+        value: "",
+        i18n: {
+          es: "Tipo de cliente",
+        },
+      },
+      {
+        labelName: "Loan Term",
+        conditionName: "LoanTerm1",
+        descriptionUse: "Loan Term.",
         conditionDataType: ValueDataType.NUMBER,
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
-      },
-      {
-        labelName: "Porcentaje de riesgo1",
-        conditionName: "PorcentajeDeRiesgo1",
-        descriptionUse: "Porcentaje De Riesgo1",
-        conditionDataType: ValueDataType.PERCENTAGE,
-        howToSetTheCondition: EValueHowToSetUp.RANGE,
-        value: "",
-      },
-      {
-        labelName: "Membresia del cliente1",
-        conditionName: "NivelDeMembresía1",
-        descriptionUse: "Nivel De Membresía1",
-        conditionDataType: ValueDataType.ALPHABETICAL,
-        howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
-        listOfPossibleValues: {
-          list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
+        i18n: {
+          es: "Plazo del préstamo",
         },
-        value: "",
-      },
-      {
-        labelName: "reciprocidad de ahorro1",
-        conditionName: "ReciprocidadDeAhorro1",
-        descriptionUse: "Reciprocidad De Ahorro1",
-        conditionDataType: ValueDataType.PERCENTAGE,
-        howToSetTheCondition: EValueHowToSetUp.RANGE,
-        value: "",
       },
     ],
     "aditional-group-2": [
       {
-        labelName: "Antigüedad del cliente (Días)2",
-        conditionName: "AntigüedadDelCliente(Días)2",
-        descriptionUse: "Antigüedad del cliente (Días)2",
+        labelName: "Line of credit",
+        conditionName: "LineOfCredit2",
+        descriptionUse: "Line of credit.",
+        conditionDataType: ValueDataType.ALPHABETICAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
+        value: "",
+        i18n: {
+          es: "Línea de crédito",
+        },
+      },
+      {
+        labelName: "Money Destination",
+        conditionName: "MoneyDestination2",
+        descriptionUse: "Money Destination.",
+        conditionDataType: ValueDataType.ALPHABETICAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
+        value: "",
+        i18n: {
+          es: "Destino de dinero",
+        },
+      },
+      {
+        labelName: "Loan amount",
+        conditionName: "LoanAmount2",
+        descriptionUse: "Loan amount",
+        conditionDataType: ValueDataType.CURRENCY,
+        howToSetTheCondition: EValueHowToSetUp.RANGE,
+        value: "",
+        i18n: {
+          es: "Monto del préstamo",
+        },
+      },
+      {
+        labelName: "Primary income type.",
+        conditionName: "PrimaryIncomeType2",
+        descriptionUse: "Primary income type.",
+        conditionDataType: ValueDataType.ALPHABETICAL,
+        howToSetTheCondition: EValueHowToSetUp.RANGE,
+        value: "",
+        i18n: {
+          es: "Tipo de fuente de ingreso primaria.",
+        },
+      },
+      {
+        labelName: "Client Type",
+        conditionName: "ClientType2",
+        descriptionUse: "Client Type.",
+        conditionDataType: ValueDataType.ALPHABETICAL,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
+        value: "",
+        i18n: {
+          es: "Tipo de cliente",
+        },
+      },
+      {
+        labelName: "Loan Term",
+        conditionName: "LoanTerm2",
+        descriptionUse: "Loan Term.",
         conditionDataType: ValueDataType.NUMBER,
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
-      },
-      {
-        labelName: "Porcentaje de riesgo2",
-        conditionName: "PorcentajeDeRiesgo2",
-        descriptionUse: "Porcentaje De Riesgo2",
-        conditionDataType: ValueDataType.PERCENTAGE,
-        howToSetTheCondition: EValueHowToSetUp.RANGE,
-        value: "",
-      },
-      {
-        labelName: "Membresia del cliente2",
-        conditionName: "NivelDeMembresía2",
-        descriptionUse: "Nivel De Membresía2",
-        conditionDataType: ValueDataType.ALPHABETICAL,
-        howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
-        listOfPossibleValues: {
-          list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
+        i18n: {
+          es: "Plazo del préstamo",
         },
-        value: "",
-      },
-      {
-        labelName: "reciprocidad de ahorro2",
-        conditionName: "ReciprocidadDeAhorro2",
-        descriptionUse: "Reciprocidad De Ahorro2",
-        conditionDataType: ValueDataType.PERCENTAGE,
-        howToSetTheCondition: EValueHowToSetUp.RANGE,
-        value: "",
       },
     ],
+  },
+  i18n: {
+    en: "Interest rate type",
+    es: "Tipo de tasa de interés",
   },
 };
 
@@ -148,6 +247,7 @@ export const Empty: Story = (args: IBusinessRulesNewController) => (
 Empty.args = {
   initialDecisions: sampleDecisions,
   decisionTemplate,
+  language: "es",
   textValues: {
     selectOptions: "Seleccione las opciones",
     selectOption: "Seleccione una opción",

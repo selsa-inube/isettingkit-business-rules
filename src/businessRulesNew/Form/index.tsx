@@ -5,11 +5,14 @@ import { IRulesForm } from "../types/Forms/IRulesForm";
 import { getConditionsByGroup } from "../helper/utils/getConditionsByGroup";
 import { filterByGroup } from "../helper/utils/filterByGroup";
 import React from "react";
+import { IRuleDecision } from "@isettingkit/input";
 
 type TTab = { id: string; label: string; isDisabled?: boolean };
 
 type TRulesFormExtraProps = {
   onRemoveCondition?: (conditionName: string) => void;
+  onRestoreConditions?: (conditionNames: string[]) => void;
+  fullTemplate?: IRuleDecision;
 };
 
 const labelForGroup = (groupKey: string, indexAlt: number) => {
@@ -18,8 +21,15 @@ const labelForGroup = (groupKey: string, indexAlt: number) => {
 };
 
 const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
-  const { decision, onSubmitEvent, textValues, onCancel, onRemoveCondition } =
-    props;
+  const {
+    decision,
+    onSubmitEvent,
+    textValues,
+    onCancel,
+    onRemoveCondition,
+    onRestoreConditions,
+    fullTemplate,
+  } = props;
 
   const { formik, handleToggleNoneChange } = useRulesFormUtils({
     decision,
@@ -27,16 +37,20 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
     textValues,
   });
 
-  const conditionsByGroup = getConditionsByGroup(decision);
+  const sourceForGroups = fullTemplate ?? decision;
+  const conditionsByGroupFull: { [key: string]: any[] } =
+    getConditionsByGroup(sourceForGroups);
+
+  const conditionsByGroupVisible = getConditionsByGroup(decision);
   const visibleConditionsByGroup = filterByGroup(
-    conditionsByGroup,
-    (c: any) => !c.hidden,
+    conditionsByGroupVisible,
+    (condition: any) => !condition.hidden,
   );
 
   const groupKeys = Object.keys(visibleConditionsByGroup);
   const orderedGroupKeys = [
-    ...groupKeys.filter((k) => k === "group-primary"),
-    ...groupKeys.filter((k) => k !== "group-primary"),
+    ...groupKeys.filter((key) => key === "group-primary"),
+    ...groupKeys.filter((key) => key !== "group-primary"),
   ];
 
   const tabIdByGroup: Record<string, string> = {};
@@ -119,22 +133,6 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
 
   const showConditionsError = formik.submitCount > 0 && !!firstConditionError;
 
-  const handleStartBlur = () =>
-    formik.setFieldTouched("effectiveFrom", true, false);
-  const handleEndBlur = () => formik.setFieldTouched("validUntil", true, false);
-
-  const handleClearCondition = (conditionName: string) => {
-    formik.setFieldValue(
-      `conditionsThatEstablishesTheDecision.${conditionName}`,
-      undefined,
-    );
-    formik.setFieldTouched(
-      `conditionsThatEstablishesTheDecision.${conditionName}`,
-      false,
-      false,
-    );
-  };
-
   const getDefaultValueFor = (condition: any) => {
     if (
       condition?.isMulti ||
@@ -146,6 +144,21 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
     return "";
   };
 
+  const handleClearCondition = (conditionName: string) => {
+    const all = Object.values(conditionsByGroupFull).flat() as any[];
+    const cond = all.find((c) => c.conditionName === conditionName);
+    const defaultVal = getDefaultValueFor(cond);
+    formik.setFieldValue(
+      `conditionsThatEstablishesTheDecision.${conditionName}`,
+      defaultVal,
+    );
+    formik.setFieldTouched(
+      `conditionsThatEstablishesTheDecision.${conditionName}`,
+      false,
+      false,
+    );
+  };
+
   const handleRedefineCurrentTab = () => {
     currentConditions.forEach((cond: any) => {
       const path = `conditionsThatEstablishesTheDecision.${cond.conditionName}`;
@@ -154,16 +167,19 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
     });
   };
 
-  // Modal state
   const [showRedefineConfirm, setShowRedefineConfirm] = React.useState(false);
   const openRedefineConfirm = () => setShowRedefineConfirm(true);
   const closeRedefineConfirm = () => setShowRedefineConfirm(false);
+
   const confirmRedefine = () => {
     handleRedefineCurrentTab();
+    const allNamesInTab = (conditionsByGroupFull[activeGroupKey] ?? []).map(
+      (condition: any) => condition.conditionName,
+    );
+    onRestoreConditions?.(allNamesInTab);
     setShowRedefineConfirm(false);
   };
 
-  // NEW: wrapper so the UI "delete" clears formik AND asks the parent to remove the condition from template
   const handleRemoveCondition = (conditionName: string) => {
     handleClearCondition(conditionName);
     onRemoveCondition?.(conditionName);
@@ -178,10 +194,8 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
       formik={formik}
       normalizedDecision={normalizedDecision}
       onCancel={onCancel!}
-      onEndBlur={handleEndBlur}
       onRedefineCurrentTab={handleRedefineCurrentTab}
       onTabChange={handleTabChange}
-      onStartBlur={handleStartBlur}
       onClearCondition={handleRemoveCondition}
       showConditionsError={showConditionsError}
       tabs={tabs}
@@ -191,7 +205,7 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
       visibleConditions={visibleConditions}
       visibleConditionsByGroup={visibleConditionsByGroup}
       handleToggleNoneChange={handleToggleNoneChange}
-      portalId={"redefine-confirm-portal"}
+      portalId="redefine-confirm-portal"
       showRedefineConfirm={showRedefineConfirm}
       onOpenRedefineConfirm={openRedefineConfirm}
       onCloseRedefineConfirm={closeRedefineConfirm}
