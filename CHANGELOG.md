@@ -1,3 +1,19 @@
+# v2.0.0 (Mon Sep 22 2025)
+
+#### 💥 Breaking Change
+
+- Cmarin/563/layout adjustment [#3](https://github.com/selsa-inube/isettingkit-business-rules/pull/3) ([@cmarin001](https://github.com/cmarin001))
+
+#### ⚠️ Pushed to `main`
+
+- fix: general adjustments ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v1.0.30 (Mon Sep 15 2025)
 
 #### ⚠️ Pushed to `main`
