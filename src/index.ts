@@ -22,6 +22,7 @@ export { DragAndDropBoxes } from "./dragAndDropBoxes";
 export { DraggableList } from "./dragAndDropBoxes/DraggableList";
 export { SendButton } from "./button";
 export { BackAndNextButton } from "./button/BackAndNext";
+export { Checkpicker } from "./checkpicker";
 
 export { translateText } from "./translator/translateText";
 export { translateObject } from "./translator/translateObject";

@@ -32,6 +32,7 @@ const BusinessRulesNew = (props: IBusinessRules) => {
     handleSubmitForm,
     handleDelete,
     terms = true,
+    onRemoveCondition,
   } = props;
 
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -84,9 +85,10 @@ const BusinessRulesNew = (props: IBusinessRules) => {
                     ) : (
                       <>
                         Aun no tienes decisiones definidas, para empezar haz
-                        clic en {customTitleContentAddCard
-                            ? customTitleContentAddCard
-                            : ` "Agregar decisión"`}
+                        clic en{" "}
+                        {customTitleContentAddCard
+                          ? customTitleContentAddCard
+                          : ` "Agregar decisión"`}
                       </>
                     )}
                   </Text>
@@ -137,6 +139,7 @@ const BusinessRulesNew = (props: IBusinessRules) => {
             onSubmitEvent={handleSubmitForm!}
             textValues={textValues}
             onCancel={() => (handleCloseModal ? handleCloseModal() : () => {})}
+            onRemoveCondition={onRemoveCondition}
           />
         </ModalRulesNew>
       )}

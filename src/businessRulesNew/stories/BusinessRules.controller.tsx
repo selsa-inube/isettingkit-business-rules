@@ -38,6 +38,7 @@ const BusinessRulesNewController = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDecision, setSelectedDecision] =
     useState<IRuleDecision | null>(null);
+
   const [decisions, setDecisions] = useState<any[]>(
     initialDecisions.map((decision) => ({
       ...decision,
@@ -53,6 +54,19 @@ const BusinessRulesNewController = ({
       ),
     })),
   );
+
+  // NEW: track removed conditions by conditionName
+  const [removedConditionNames, setRemovedConditionNames] = useState<
+    Set<string>
+  >(new Set());
+
+  const handleRemoveCondition = (conditionName: string) => {
+    setRemovedConditionNames((prev) => {
+      const next = new Set(prev);
+      next.add(conditionName);
+      return next;
+    });
+  };
 
   const multipleChoicesOptions: IOption[] = useMemo(() => {
     const groups = getConditionsByGroup(decisionTemplate);
@@ -110,6 +124,7 @@ const BusinessRulesNewController = ({
     const mergedGroups = Object.fromEntries(
       Object.entries(tplGroups).map(([group, tplList]) => {
         const dataList = dataGroups[group] ?? [];
+
         const merged = (tplList as any).map((tplItem: any) => {
           const match = dataList.find(
             (d: any) => d.conditionName === tplItem.conditionName,
@@ -122,10 +137,13 @@ const BusinessRulesNewController = ({
           };
         });
 
-        const finalList =
-          selectedIds.size === 0
-            ? merged
-            : merged.filter((m: any) => selectedIds.has(m.conditionName));
+        // honor the current “selected” and “removed” filters at submit-time
+        const finalList = merged.filter((m: any) => {
+          const passesSelected =
+            selectedIds.size === 0 || selectedIds.has(m.conditionName);
+          const notRemoved = !removedConditionNames.has(m.conditionName);
+          return passesSelected && notRemoved;
+        });
 
         return [group, finalList];
       }),
@@ -168,46 +186,49 @@ const BusinessRulesNewController = ({
 
   const filteredDecisionTemplate = useMemo(() => {
     const tpl = sortDisplayDataSampleSwitchPlaces({ decisionTemplate });
-    if (selectedIds.size === 0) return tpl;
-
     const groups = tpl.conditionsThatEstablishesTheDecision || {};
+
     const filtered = Object.fromEntries(
       Object.entries(groups).map(([group, list]) => [
         group,
-        (list as any[]).filter((c) => selectedIds.has(c.conditionName)),
+        (list as any[]).filter(
+          (c) =>
+            (selectedIds.size === 0 || selectedIds.has(c.conditionName)) &&
+            !removedConditionNames.has(c.conditionName),
+        ),
       ]),
     );
 
     return { ...tpl, conditionsThatEstablishesTheDecision: filtered };
-  }, [decisionTemplate, selectedIds]);
+  }, [decisionTemplate, selectedIds, removedConditionNames]);
 
   return (
     <Stack direction="column" gap="24px">
-      {decisions.length === 0 && (
-        <>
-          <Fieldset legend="Condiciones que determinan las decisiones">
-            <StyledMultipleChoiceContainer>
-              <Checkpicker
-                id="conditionsPicker"
-                name="conditionsPicker"
-                label=""
-                placeholder="Seleccione una o varias condiciones"
-                options={multipleChoicesOptions}
-                required={false}
-                values={selectedConditionsCSV}
-                onChange={handleMultipleChoicesChange}
-                size="wide"
-                fullwidth
-              />
-            </StyledMultipleChoiceContainer>
-          </Fieldset>
-          <Stack justifyContent="flex-end">
-            <Button iconBefore={<MdAdd />} onClick={() => handleOpenModal()}>
-              Agregar plazo
-            </Button>
-          </Stack>
-        </>
-      )}
+      {/* {decisions.length === 0 && (
+        <> */}
+      <Fieldset legend="Condiciones que determinan las decisiones">
+        <StyledMultipleChoiceContainer>
+          <Checkpicker
+            id="conditionsPicker"
+            name="conditionsPicker"
+            label=""
+            placeholder="Seleccione una o varias condiciones"
+            options={multipleChoicesOptions}
+            required={false}
+            values={selectedConditionsCSV}
+            onChange={handleMultipleChoicesChange}
+            size="wide"
+            fullwidth
+          />
+        </StyledMultipleChoiceContainer>
+      </Fieldset>
+      <Stack justifyContent="flex-end">
+        <Button iconBefore={<MdAdd />} onClick={() => handleOpenModal()}>
+          Agregar plazo
+        </Button>
+      </Stack>
+      {/* </>
+      )} */}
 
       <BusinessRulesNew
         controls={controls}
@@ -223,6 +244,7 @@ const BusinessRulesNewController = ({
         handleCloseModal={handleCloseModal}
         handleSubmitForm={handleSubmitForm}
         handleDelete={handleDelete}
+        onRemoveCondition={handleRemoveCondition}
       />
     </Stack>
   );

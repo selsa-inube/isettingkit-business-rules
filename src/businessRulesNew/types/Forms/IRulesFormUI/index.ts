@@ -8,7 +8,7 @@ interface IRulesFormUI extends IRulesForm {
   currentConditions?: any[];
   onTabChange?: (_tab: string) => void;
   tabs?: ITab[];
-  onClearCondition?: (conditionName: string) => void;
+  onClearCondition: (conditionName: string) => void;
   onEndBlur?: () => void;
   onRedefineCurrentTab?: () => void;
   onStartBlur?: () => void;
@@ -26,6 +26,11 @@ interface IRulesFormUI extends IRulesForm {
   textValues: IRulesForm["textValues"];
   visibleConditions: IRulesForm["decision"]["conditionsThatEstablishesTheDecision"];
   visibleConditionsByGroup?: { [group: string]: any[] };
+  portalId?: string;
+  showRedefineConfirm?: boolean;
+  onOpenRedefineConfirm?: () => void;
+  onCloseRedefineConfirm?: () => void;
+  onConfirmRedefine?: () => void;
 }
 
 export type { IRulesFormUI };

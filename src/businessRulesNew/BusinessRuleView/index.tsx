@@ -18,6 +18,8 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
     position,
     isOpen = false,
     onToggle,
+    onEdit,
+    onDelete,
   } = props;
 
   const hasEffectiveFrom = Boolean(decision?.effectiveFrom);
@@ -97,6 +99,8 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
       hasValidUntil={hasValidUntil}
       effectiveFromRenderer={effectiveFromRenderer}
       validUntilRenderer={validUntilRenderer}
+      onEdit={onEdit}
+      onDelete={onDelete}
     />
   );
 };

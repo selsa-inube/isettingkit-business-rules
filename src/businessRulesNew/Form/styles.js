@@ -6,7 +6,7 @@ const StyledConditionContainer = styled.div`
     border-radius: 8px;
     border: 1px solid
       ${({ theme }) =>
-    theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
+        theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
   }
 `;
 
@@ -31,18 +31,16 @@ const StyledScrollContainer = styled.div`
 const StyledConditionFieldContainer = styled.div`
   display: flex;
   width: -webkit-fill-available;
-  & > div   {
+  & > div {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
     width: -webkit-fill-available;
-  }
-
-  & > div  > p {
-    padding-right: 32px;
-    text-wrap-mode: nowrap;
-  }
-  & > div > div  > p {
-    // padding-right: 32px;
-    text-wrap-mode: nowrap;
   }
 `;
 
-export { StyledConditionContainer, StyledConditionFieldContainer, StyledScrollContainer };
+export {
+  StyledConditionContainer,
+  StyledConditionFieldContainer,
+  StyledScrollContainer,
+};

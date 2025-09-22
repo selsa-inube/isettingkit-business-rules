@@ -30,9 +30,9 @@ const decisionTemplate: any = {
   conditionsThatEstablishesTheDecision: {
     "group-primary": [
       {
-        labelName: "Antigüedad del cliente (Días)",
-        conditionName: "AntigüedadDelCliente(Días)",
-        descriptionUse: "Antigüedad del cliente (Días)",
+        labelName: "Antigüedad del cliente Días",
+        conditionName: "AntigüedadDelClienteDías",
+        descriptionUse: "Antigüedad del cliente Días",
         conditionDataType: ValueDataType.NUMBER,
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",

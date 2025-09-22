@@ -8,13 +8,18 @@ import React from "react";
 
 type TTab = { id: string; label: string; isDisabled?: boolean };
 
+type TRulesFormExtraProps = {
+  onRemoveCondition?: (conditionName: string) => void;
+};
+
 const labelForGroup = (groupKey: string, indexAlt: number) => {
   if (groupKey === "group-primary") return "Condición principal";
   return `Condición alterna N° ${String(indexAlt).padStart(2, "0")}`;
 };
 
-const RulesForm = (props: IRulesForm) => {
-  const { decision, onSubmitEvent, textValues, onCancel } = props;
+const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
+  const { decision, onSubmitEvent, textValues, onCancel, onRemoveCondition } =
+    props;
 
   const { formik, handleToggleNoneChange } = useRulesFormUtils({
     decision,
@@ -149,6 +154,21 @@ const RulesForm = (props: IRulesForm) => {
     });
   };
 
+  // Modal state
+  const [showRedefineConfirm, setShowRedefineConfirm] = React.useState(false);
+  const openRedefineConfirm = () => setShowRedefineConfirm(true);
+  const closeRedefineConfirm = () => setShowRedefineConfirm(false);
+  const confirmRedefine = () => {
+    handleRedefineCurrentTab();
+    setShowRedefineConfirm(false);
+  };
+
+  // NEW: wrapper so the UI "delete" clears formik AND asks the parent to remove the condition from template
+  const handleRemoveCondition = (conditionName: string) => {
+    handleClearCondition(conditionName);
+    onRemoveCondition?.(conditionName);
+  };
+
   return (
     <RulesFormUI
       activeTab={activeTab}
@@ -162,7 +182,7 @@ const RulesForm = (props: IRulesForm) => {
       onRedefineCurrentTab={handleRedefineCurrentTab}
       onTabChange={handleTabChange}
       onStartBlur={handleStartBlur}
-      onClearCondition={handleClearCondition}
+      onClearCondition={handleRemoveCondition}
       showConditionsError={showConditionsError}
       tabs={tabs}
       termEndStatus={termEndStatus}
@@ -171,6 +191,11 @@ const RulesForm = (props: IRulesForm) => {
       visibleConditions={visibleConditions}
       visibleConditionsByGroup={visibleConditionsByGroup}
       handleToggleNoneChange={handleToggleNoneChange}
+      portalId={"redefine-confirm-portal"}
+      showRedefineConfirm={showRedefineConfirm}
+      onOpenRedefineConfirm={openRedefineConfirm}
+      onCloseRedefineConfirm={closeRedefineConfirm}
+      onConfirmRedefine={confirmRedefine}
     />
   );
 };

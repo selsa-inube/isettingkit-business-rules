@@ -37,6 +37,8 @@ const renderDecisionCard = (props: IRenderCard) => {
             position={index}
             isOpen={!!isOpen}
             onToggle={() => handleToggle?.(!isOpen)}
+            onEdit={() => handleOpenModal?.(decision)}
+            onDelete={() => handleDelete?.(decision.decisionId!)}
           />
         </BusinessRuleCardNew>
       </Stack>
