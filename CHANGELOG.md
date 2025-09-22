@@ -1,3 +1,15 @@
+# v2.0.1 (Mon Sep 22 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: add layout in order to allow remove records from conditions ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.0.0 (Mon Sep 22 2025)
 
 #### 💥 Breaking Change
