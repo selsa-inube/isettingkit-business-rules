@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useMemo, useState } from "react";
-import { IRuleDecision } from "@isettingkit/input";
+import { IRuleDecision, IValue } from "@isettingkit/input";
 import { BusinessRulesNew } from "..";
 import { sortDisplayDataSwitchPlaces } from "../helper/utils/sortDisplayDataSwitchPlaces";
 import { sortDisplayDataSampleSwitchPlaces } from "../helper/utils/sortDisplayDataSampleSwitchPlaces";
@@ -8,9 +9,11 @@ import { formatDecisionForBackend } from "../helper/utils/formatDecisionForBacke
 import { parseRangeFromString } from "../helper/utils/parseRangeFromString";
 import { Button, Fieldset, Stack } from "@inubekit/inubekit";
 import { MdAdd } from "react-icons/md";
-import { MultipleChoices } from "@isettingkit/input";
 import type { IOption } from "@inubekit/inubekit";
 import { StyledMultipleChoiceContainer } from "./styles";
+import { getConditionsByGroup } from "../helper/utils/getConditionsByGroup";
+import { mapByGroup } from "../helper/utils/mapByGroup";
+import { Checkpicker } from "../../checkpicker";
 
 interface IBusinessRulesNewController {
   controls?: boolean;
@@ -35,33 +38,57 @@ const BusinessRulesNewController = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDecision, setSelectedDecision] =
     useState<IRuleDecision | null>(null);
-  const [decisions, setDecisions] = useState<IRuleDecision[]>(
+
+  const [decisions, setDecisions] = useState<any[]>(
     initialDecisions.map((decision) => ({
       ...decision,
       value: parseRangeFromString(decision.value),
-      conditionsThatEstablishesTheDecision:
-        decision.conditionsThatEstablishesTheDecision?.map((condition) => ({
+      conditionsThatEstablishesTheDecision: mapByGroup(
+        getConditionsByGroup(decision),
+        (condition: {
+          value: string | number | IValue | string[] | undefined;
+        }) => ({
           ...condition,
           value: parseRangeFromString(condition.value),
-        })),
+        }),
+      ),
     })),
   );
 
+  // NEW: track removed conditions by conditionName
+  const [removedConditionNames, setRemovedConditionNames] = useState<
+    Set<string>
+  >(new Set());
+
+  const handleRemoveCondition = (conditionName: string) => {
+    setRemovedConditionNames((prev) => {
+      const next = new Set(prev);
+      next.add(conditionName);
+      return next;
+    });
+  };
+
   const multipleChoicesOptions: IOption[] = useMemo(() => {
-    const list =
-      decisionTemplate.conditionsThatEstablishesTheDecision ?? [];
-    return list.map((c) => ({
-      id: c.conditionName,
-      label: c.labelName,
-      value: c.conditionName,
-    }));
+    const groups = getConditionsByGroup(decisionTemplate);
+    return Object.values(groups)
+      .flat()
+      .map((c: any) => ({
+        id: c.conditionName,
+        label: c.labelName,
+        value: c.conditionName,
+      }));
   }, [decisionTemplate]);
 
-  const [selectedConditionsCSV, setSelectedConditionsCSV] = useState<string>("");
+  const [selectedConditionsCSV, setSelectedConditionsCSV] =
+    useState<string>("");
+
+  const selectedIds = useMemo(
+    () => new Set(selectedConditionsCSV.split(",").filter(Boolean)),
+    [selectedConditionsCSV],
+  );
 
   const handleMultipleChoicesChange = (_name: string, valueCSV: string) => {
     setSelectedConditionsCSV(valueCSV);
-
     const ids = valueCSV.split(",").filter(Boolean);
     const selected = multipleChoicesOptions.filter((o) => ids.includes(o.id));
     console.log("Selected conditions:", selected);
@@ -77,86 +104,139 @@ const BusinessRulesNewController = ({
     setSelectedDecision(null);
   };
 
-  const handleSubmitForm = (dataDecision: IRuleDecision) => {
+  const handleSubmitForm = (dataDecision: any) => {
     const isEditing = selectedDecision !== null;
 
-    const newDecision = isEditing
+    const base = isEditing
       ? { ...selectedDecision, ...dataDecision }
       : {
-        ...decisionTemplate,
-        ...dataDecision,
-        decisionId: `Decisión ${decisions.length + 1}`,
-        conditions:
-          decisionTemplate.conditionsThatEstablishesTheDecision?.map(
-            (conditionTemplate, index) => ({
-              ...conditionTemplate,
-              value:
-                dataDecision.conditionsThatEstablishesTheDecision?.[index]
-                  ?.value ?? conditionTemplate.value,
-            }),
-          ) ?? [],
-      };
+          ...decisionTemplate,
+          ...dataDecision,
+          decisionId: `Decisión ${decisions.length + 1}`,
+        };
+
+    const tplGroups = getConditionsByGroup(decisionTemplate);
+    const dataGroups = getConditionsByGroup(dataDecision) as Record<
+      string,
+      any[]
+    >;
+
+    const mergedGroups = Object.fromEntries(
+      Object.entries(tplGroups).map(([group, tplList]) => {
+        const dataList = dataGroups[group] ?? [];
+
+        const merged = (tplList as any).map((tplItem: any) => {
+          const match = dataList.find(
+            (d: any) => d.conditionName === tplItem.conditionName,
+          );
+          return {
+            ...tplItem,
+            value: match?.value ?? tplItem.value,
+            listOfPossibleValues:
+              match?.listOfPossibleValues ?? tplItem.listOfPossibleValues,
+          };
+        });
+
+        // honor the current “selected” and “removed” filters at submit-time
+        const finalList = merged.filter((m: any) => {
+          const passesSelected =
+            selectedIds.size === 0 || selectedIds.has(m.conditionName);
+          const notRemoved = !removedConditionNames.has(m.conditionName);
+          return passesSelected && notRemoved;
+        });
+
+        return [group, finalList];
+      }),
+    );
+
+    const newDecision: IRuleDecision = {
+      ...base,
+      conditionsThatEstablishesTheDecision: mergedGroups,
+    };
 
     const backendFormattedDecision = formatDecisionForBackend({
       decision: newDecision,
       template: decisionTemplate,
       fallbackId: newDecision.decisionId!,
     });
-
     console.log("Formatted for backend:", backendFormattedDecision);
 
     setDecisions((prev) =>
       isEditing
-        ? prev.map((d) =>
-          d.businessRuleId === selectedDecision!.businessRuleId
-            ? newDecision
-            : d,
-        )
+        ? prev.map((d) => {
+            const sameByBusinessRule =
+              selectedDecision?.businessRuleId &&
+              d.businessRuleId === selectedDecision.businessRuleId;
+            const sameByDecisionId =
+              selectedDecision?.decisionId &&
+              d.decisionId === selectedDecision.decisionId;
+            return sameByBusinessRule || sameByDecisionId ? newDecision : d;
+          })
         : [...prev, newDecision],
     );
 
     handleCloseModal();
   };
 
-  useEffect(() => { }, [decisions]);
+  useEffect(() => {}, [decisions]);
 
   const handleDelete = (id: string) => {
     setDecisions((prev) => prev.filter((d) => d.decisionId !== id));
   };
 
+  const filteredDecisionTemplate = useMemo(() => {
+    const tpl = sortDisplayDataSampleSwitchPlaces({ decisionTemplate });
+    const groups = tpl.conditionsThatEstablishesTheDecision || {};
+
+    const filtered = Object.fromEntries(
+      Object.entries(groups).map(([group, list]) => [
+        group,
+        (list as any[]).filter(
+          (c) =>
+            (selectedIds.size === 0 || selectedIds.has(c.conditionName)) &&
+            !removedConditionNames.has(c.conditionName),
+        ),
+      ]),
+    );
+
+    return { ...tpl, conditionsThatEstablishesTheDecision: filtered };
+  }, [decisionTemplate, selectedIds, removedConditionNames]);
+
   return (
     <Stack direction="column" gap="24px">
-      {decisions.length === 0 && (
-        <>
-          <Fieldset legend="Condiciones que determinan las decisiones">
-            <StyledMultipleChoiceContainer>
-              <MultipleChoices
-                id="conditionsPicker"
-                labelSelect=""
-                labelSelected=""
-                options={multipleChoicesOptions}
-                placeholderSelect="Seleccione una o varias condiciones"
-                required={false}
-                values={selectedConditionsCSV}
-                onChange={handleMultipleChoicesChange}
-                size="wide"
-              />
-            </StyledMultipleChoiceContainer>
-          </Fieldset>
-          <Stack justifyContent="flex-end">
-            <Button iconBefore={<MdAdd />} onClick={() => handleOpenModal()}>
-              Agregar plazo
-            </Button>
-          </Stack>
-        </>
-      )}
+      {/* {decisions.length === 0 && (
+        <> */}
+      <Fieldset legend="Condiciones que determinan las decisiones">
+        <StyledMultipleChoiceContainer>
+          <Checkpicker
+            id="conditionsPicker"
+            name="conditionsPicker"
+            label=""
+            placeholder="Seleccione una o varias condiciones"
+            options={multipleChoicesOptions}
+            required={false}
+            values={selectedConditionsCSV}
+            onChange={handleMultipleChoicesChange}
+            size="wide"
+            fullwidth
+          />
+        </StyledMultipleChoiceContainer>
+      </Fieldset>
+      <Stack justifyContent="flex-end">
+        <Button iconBefore={<MdAdd />} onClick={() => handleOpenModal()}>
+          Agregar plazo
+        </Button>
+      </Stack>
+      {/* </>
+      )} */}
+
       <BusinessRulesNew
         controls={controls}
         customTitleContentAddCard={customTitleContentAddCard}
         customMessageEmptyDecisions={customMessageEmptyDecisions}
         decisions={sortDisplayDataSwitchPlaces({ decisions })}
         textValues={textValues}
-        decisionTemplate={sortDisplayDataSampleSwitchPlaces({ decisionTemplate })}
+        decisionTemplate={filteredDecisionTemplate as any}
         isModalOpen={isModalOpen}
         selectedDecision={selectedDecision}
         loading={loading}
@@ -164,6 +244,7 @@ const BusinessRulesNewController = ({
         handleCloseModal={handleCloseModal}
         handleSubmitForm={handleSubmitForm}
         handleDelete={handleDelete}
+        onRemoveCondition={handleRemoveCondition}
       />
     </Stack>
   );

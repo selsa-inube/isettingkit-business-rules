@@ -2,50 +2,77 @@
 import { IRuleDecision } from "@isettingkit/input";
 import { convertRangeToString } from "../convertRangeToString";
 
+type TCond = {
+  conditionName: string;
+  value?: any;
+  [k: string]: any;
+};
+
+const toArray = (input: any): TCond[] => {
+  if (!input) return [];
+  if (Array.isArray(input)) return input as TCond[];
+  if (typeof input === "object") {
+    // grouped object: { groupKey: TCond[] }
+    return Object.values(input).flat() as TCond[];
+  }
+  return [];
+};
+
+const formatValue = (val: any) => {
+  if (val && typeof val === "object" && "from" in val && "to" in val) {
+    return convertRangeToString(val);
+  }
+  return val;
+};
+
 const formatDecisionForBackend = (props: {
   decision: IRuleDecision;
   fallbackId: string;
   template: IRuleDecision;
 }) => {
   const { decision, fallbackId, template } = props;
-  const formatValue = (val: any) => {
-    if (
-      typeof val === "object" &&
-      val !== null &&
-      "from" in val &&
-      "to" in val
-    ) {
-      return convertRangeToString(val);
-    }
-    return val;
-  };
 
-  const formattedConditions: any =
-    decision.conditionsThatEstablishesTheDecision
-      ?.map((incomingCondition, index) => {
-        const val = incomingCondition?.value;
+  // Normalize both decision & template to arrays
+  const incomingConds = toArray(
+    (decision as any).conditionsThatEstablishesTheDecision,
+  );
+  const templateConds = toArray(
+    (template as any).conditionsThatEstablishesTheDecision,
+  );
 
-        const isEmpty =
-          val === undefined ||
-          val === null ||
-          (typeof val === "string" && val.trim() === "") ||
-          (Array.isArray(val) && val.length === 0);
+  // Build a quick lookup by conditionName from the template
+  const tplByName = new Map<string, TCond>();
+  templateConds.forEach((c) => tplByName.set(c.conditionName, c));
 
-        if (isEmpty) return null;
+  // Filter empty values and merge with template by conditionName
+  const formattedConditions = incomingConds
+    .map((incoming) => {
+      const val = incoming?.value;
 
-        return {
-          ...template.conditionsThatEstablishesTheDecision?.[index],
-          ...incomingCondition,
-          value: formatValue(val),
-        };
-      })
-      .filter(Boolean) ?? [];
+      const isEmpty =
+        val === undefined ||
+        val === null ||
+        (typeof val === "string" && val.trim() === "") ||
+        (Array.isArray(val) && val.length === 0);
+
+      if (isEmpty) return null;
+
+      const tpl = tplByName.get(incoming.conditionName);
+
+      return {
+        ...(tpl ?? {}), // keep template fields if present
+        ...incoming, // allow incoming to override
+        value: formatValue(val),
+      };
+    })
+    .filter(Boolean);
 
   return {
     ...template,
     ...decision,
-    decisionId: fallbackId,
-    value: formatValue(decision.value),
+    decisionId: decision.decisionId ?? fallbackId,
+    value: formatValue((decision as any).value),
+    // Backend expects a flat array
     conditionsThatEstablishesTheDecision: formattedConditions,
   };
 };

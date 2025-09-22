@@ -32,6 +32,8 @@ interface IBusinessRuleViewUI {
     element: IRuleDecision;
     valueData: unknown;
   } | null;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
 export type { IBusinessRuleViewUI };

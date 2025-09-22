@@ -20,7 +20,11 @@ import {
   MdOutlineDelete,
 } from "react-icons/md";
 import { BorderStack } from "../../filter/BorderStack";
-import { StyledRecordCardContainer } from "./styles";
+import {
+  StyledDecisionContainer,
+  StyledRecordCardContainer,
+  StyledTagContainer,
+} from "./styles";
 
 const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
   const {
@@ -37,6 +41,8 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
     hasValidUntil,
     effectiveFromRenderer,
     validUntilRenderer,
+    onEdit,
+    onDelete,
   } = props;
   if (loading) {
     return (
@@ -48,16 +54,25 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
             justifyContent="space-between"
           >
             <Stack gap="12px">
-              <Tag appearance="gray" label={tagLabel} displayIcon={false} />
-              <DecisionViewConditionRendererNew
-                element={decisionMapper!}
-                valueData={
-                  strategyFactoryHandlerManager(
-                    decisionMapper!,
-                  ) as IDecisionViewConditionRenderer["valueData"]
-                }
-                type="decision"
-              />
+              <StyledTagContainer>
+                <Tag
+                  id="tag"
+                  appearance="gray"
+                  label={tagLabel}
+                  displayIcon={false}
+                />
+              </StyledTagContainer>
+              <StyledDecisionContainer>
+                <DecisionViewConditionRendererNew
+                  element={decisionMapper!}
+                  valueData={
+                    strategyFactoryHandlerManager(
+                      decisionMapper!,
+                    ) as IDecisionViewConditionRenderer["valueData"]
+                  }
+                  type="decision"
+                />
+              </StyledDecisionContainer>
             </Stack>
             <Stack gap="12px">
               <Icon
@@ -65,18 +80,20 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
                 icon={<MdOutlineCreate />}
                 size="24px"
                 cursorHover
-                // onClick={() => {
-                //   handleDelete(id);
-                // }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit?.();
+                }}
               />
               <Icon
                 appearance="danger"
                 icon={<MdOutlineDelete />}
                 size="24px"
                 cursorHover
-                // onClick={() => {
-                //   handleDelete(id);
-                // }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete?.();
+                }}
               />
               <Icon
                 appearance="dark"

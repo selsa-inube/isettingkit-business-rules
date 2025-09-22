@@ -34,8 +34,23 @@ const StyledRecordCardContainer = styled.div`
   cursor: pointer;
 `;
 
+const StyledTagContainer = styled.div`
+  & > div > div > div > p {
+    text-wrap-mode: nowrap;
+  }
+`;
+
+const StyledDecisionContainer = styled.div`
+  & > div {
+    justify-content: auto;
+    gap: 8px;
+  }
+`;
+
 export {
+  StyledDecisionContainer,
   StyledConditionContainer,
   StyledScrollContainer,
   StyledRecordCardContainer,
+  StyledTagContainer,
 };

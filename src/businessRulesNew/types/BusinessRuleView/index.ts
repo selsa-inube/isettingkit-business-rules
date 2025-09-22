@@ -8,6 +8,8 @@ interface IBusinessRuleView {
   position?: number;
   isOpen?: boolean;
   onToggle?: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
 export type { IBusinessRuleView };

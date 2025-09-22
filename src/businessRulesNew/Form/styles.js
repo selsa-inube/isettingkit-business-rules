@@ -28,5 +28,19 @@ const StyledScrollContainer = styled.div`
     border-radius: 8px;
   }
 `;
+const StyledConditionFieldContainer = styled.div`
+  display: flex;
+  width: -webkit-fill-available;
+  & > div {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    width: -webkit-fill-available;
+  }
+`;
 
-export { StyledConditionContainer, StyledScrollContainer };
+export {
+  StyledConditionContainer,
+  StyledConditionFieldContainer,
+  StyledScrollContainer,
+};

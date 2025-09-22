@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   IRuleDecision,
   ValueDataType,
@@ -6,6 +7,8 @@ import {
 import { IBusinessRuleView } from "../types/BusinessRuleView";
 import { BusinessRuleViewUI } from "./interface";
 import { strategyFactoryHandlerManager } from "./helper";
+import { getConditionsByGroup } from "../helper/utils/getConditionsByGroup";
+import { filterByGroup } from "../helper/utils/filterByGroup";
 
 const BusinessRuleViewNew = (props: IBusinessRuleView) => {
   const {
@@ -15,7 +18,10 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
     position,
     isOpen = false,
     onToggle,
+    onEdit,
+    onDelete,
   } = props;
+
   const hasEffectiveFrom = Boolean(decision?.effectiveFrom);
   const hasValidUntil = Boolean(decision?.validUntil);
 
@@ -53,26 +59,28 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
       }
     : null;
 
-  const decisionMapper: IRuleDecision | null = decision
+  const decisionMapper: Partial<IRuleDecision> | null = decision
     ? {
         labelName: decision.labelName || "",
-        decisionDataType: decision.decisionDataType || "alphabetical",
+        decisionDataType:
+          decision.decisionDataType || ValueDataType.ALPHABETICAL,
         value: strategyFactoryHandlerManager(decision),
-        howToSetTheDecision: decision.howToSetTheDecision || "EqualTo",
+        howToSetTheDecision:
+          decision.howToSetTheDecision || ValueHowToSetUp.EQUAL,
       }
     : null;
 
-  const visibleConditions =
-    decision?.conditionsThatEstablishesTheDecision?.filter(
-      (condition) => !condition.hidden,
-    ) || [];
+  const byGroup = decision ? getConditionsByGroup(decision) : {};
+  const visibleByGroup = filterByGroup(byGroup, (c: any) => !c.hidden);
+  const visibleConditions = Object.values(visibleByGroup).flat();
+
   const skeleton = Array.from({ length: 5 });
   const loadingValidation = Boolean(
     !loading && decision && textValues && decisionMapper,
   );
 
   const conditionsAlignment =
-    visibleConditions!.length < 2 ? "start" : "space-between";
+    visibleConditions.length < 2 ? "start" : "space-between";
   const tagLabel = `N° ${String((position ?? 0) + 1).padStart(2, "0")}`;
 
   return (
@@ -91,6 +99,8 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
       hasValidUntil={hasValidUntil}
       effectiveFromRenderer={effectiveFromRenderer}
       validUntilRenderer={validUntilRenderer}
+      onEdit={onEdit}
+      onDelete={onDelete}
     />
   );
 };

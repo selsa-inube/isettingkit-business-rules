@@ -16,6 +16,7 @@ interface IBusinessRules {
   handleSubmitForm?: (dataDecision: IRuleDecision) => void;
   handleDelete?: (id: string) => void;
   terms?: boolean;
+  onRemoveCondition?: (conditionName: string) => void;
 }
 
 export type { IBusinessRules };

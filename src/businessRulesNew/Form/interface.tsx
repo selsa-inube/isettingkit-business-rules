@@ -1,96 +1,109 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Stack,
-  Button,
-  Toggle,
-  Text,
-  Fieldset,
-  Tabs,
-  Icon,
-} from "@inubekit/inubekit";
-import { DecisionConditionRender, DecisionConditionRenderNew } from "@isettingkit/input";
-import { StyledConditionContainer, StyledScrollContainer } from "./styles";
-import { ToggleOption } from "./ToggleOption";
+import { Stack, Button, Text, Fieldset, Tabs, Icon } from "@inubekit/inubekit";
+import { DecisionConditionRenderNew } from "@isettingkit/input";
+import { StyledConditionFieldContainer } from "./styles";
 import { Term } from "./Term";
 import { IRulesFormUI } from "../types/Forms/IRulesFormUI";
-import { EValueHowToSetUp } from "../enums/EValueHowToSetUp";
-import { useEffect, useState } from "react";
 import { MdCached, MdInfo, MdOutlineDelete } from "react-icons/md";
-
-const tabs = [
-  {
-    id: "mainCondition",
-    label: "Condición principal",
-    isDisabled: false,
-  },
-  {
-    id: "alternateCondition-1",
-    label: "Condición alterna N° 01",
-    isDisabled: false,
-  },
-  {
-    id: "alternateCondition-2",
-    label: "Condición  alterna N° 02",
-    isDisabled: false,
-  },
-];
+import { ModalRules } from "../../businessRules/ModalRules";
 
 const RulesFormUI = (props: IRulesFormUI) => {
   const {
+    activeTab,
+    conditionsErrorText,
+    currentConditions,
     formik,
-    textValues,
-    onCancel,
-    visibleConditions,
     normalizedDecision,
-    handleToggleNoneChange,
-    handleConditionToggleChange,
+    onCancel,
+    onClearCondition,
+    // onEndBlur,
+    // onStartBlur,
+    onTabChange,
     showConditionsError,
-    termStartStatus,
+    tabs,
     termEndStatus,
+    termStartStatus,
+    textValues,
+    portalId,
+    showRedefineConfirm,
+    onOpenRedefineConfirm,
+    onCloseRedefineConfirm,
+    onConfirmRedefine,
   } = props;
 
-  const [activeTab, setActiveTab] = useState(tabs[0].id);
-  const handleTabChange = (id: string) => setActiveTab(id);
-  const component = location.pathname.split("/").pop();
-  useEffect(() => {
-    setActiveTab(tabs[0].id);
-  }, [component]);
-
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <Stack direction="column" gap="24px" width="100%">
-        <Fieldset legend="Decisión N° 01" spacing="wide">
-          {DecisionConditionRenderNew({
-            condition: normalizedDecision,
-            formik,
-            isDecision: true,
-          })}
-        </Fieldset>
-        <Fieldset legend="Condiciones a evaluar" spacing="wide">
-          <Stack direction="column" gap="20px" width="100%">
-            <Tabs
-              onChange={handleTabChange}
-              tabs={tabs}
-              selectedTab={activeTab}
-            />
-            <Stack justifyContent="flex-end" alignItems="center">
-              <Icon  icon={<MdInfo />} appearance="help" />
-              <Button iconBefore={<MdCached/>} variant="none" appearance="gray" onClick={()=> {}}>
-                Redefinir la condición
-              </Button>
+    <>
+      <form onSubmit={formik.handleSubmit}>
+        <Stack direction="column" gap="24px" width="100%">
+          <Fieldset legend="Decisión N° 01" spacing="wide">
+            <Stack justifyContent="center" width="-webkit-fill-available">
+              {DecisionConditionRenderNew({
+                condition: normalizedDecision,
+                formik,
+                isDecision: true,
+              })}
             </Stack>
-            <Stack direction="column" gap="20px">
-              <Stack direction="column" gap="12px">
-                {visibleConditions?.map((condition) => (DecisionConditionRenderNew({ condition, formik } as any)))}
-                <Icon icon={<MdOutlineDelete />} appearance="danger" />
-              </Stack>
-            </Stack>
-          </Stack>
-        </Fieldset>
+          </Fieldset>
 
-        <Fieldset legend="Vigencia" spacing="wide">
-          {textValues.terms && (
-            <>
+          <Fieldset legend="Condiciones a evaluar" spacing="wide">
+            <Stack direction="column" gap="20px" width="100%">
+              <Tabs
+                onChange={onTabChange!}
+                tabs={tabs!}
+                selectedTab={activeTab!}
+              />
+              <Stack justifyContent="flex-end" alignItems="center">
+                <Icon
+                  icon={<MdInfo />}
+                  appearance="help"
+                  onClick={onOpenRedefineConfirm}
+                  cursorHover
+                />
+                <Button
+                  type="button"
+                  iconBefore={<MdCached />}
+                  variant="none"
+                  appearance="gray"
+                  onClick={onOpenRedefineConfirm}
+                >
+                  Redefinir la condición
+                </Button>
+              </Stack>
+
+              <Stack direction="column" gap="20px">
+                {currentConditions?.map((condition: any) => (
+                  <Stack
+                    key={condition.conditionName}
+                    gap="16px"
+                    alignItems="center"
+                  >
+                    <StyledConditionFieldContainer>
+                      <DecisionConditionRenderNew
+                        condition={condition}
+                        formik={formik}
+                      />
+                    </StyledConditionFieldContainer>
+                    <Icon
+                      icon={<MdOutlineDelete />}
+                      appearance="danger"
+                      cursorHover
+                      onClick={() => onClearCondition(condition.conditionName)}
+                    />
+                  </Stack>
+                ))}
+              </Stack>
+
+              {showConditionsError && (
+                <Text type="label" size="medium" appearance="danger">
+                  {conditionsErrorText ??
+                    "Existen errores en el formulario, por favor revísalos."}
+                </Text>
+              )}
+            </Stack>
+          </Fieldset>
+
+          <Fieldset legend="Vigencia" spacing="wide">
+            {textValues.terms && (
               <Term
                 labelStart={textValues.termStart}
                 labelEnd={textValues.termEnd}
@@ -106,34 +119,57 @@ const RulesFormUI = (props: IRulesFormUI) => {
                 onHandleEndChange={(e) =>
                   formik.setFieldValue("validUntil", e.target.value)
                 }
+                // onHandleStartBlur={onStartBlur}
+                // onHandleEndBlur={onEndBlur}
                 onCheckClosedChange={(isClosed) => {
                   formik.setFieldValue("checkClosed", isClosed);
-                  if (isClosed) {
-                    formik.setFieldValue("validUntil", "");
-                  }
+                  if (isClosed) formik.setFieldValue("validUntil", "");
                 }}
                 checkedClosed={formik.values.checkClosed}
               />
-            </>
-          )}
-        </Fieldset>
-        {showConditionsError && (
-          <Text type="label" size="medium" appearance="danger">
-            {typeof formik.errors.conditionsThatEstablishesTheDecision ===
-              "string"
-              ? formik.errors.conditionsThatEstablishesTheDecision
-              : "Existen errores en el formulario, por favor revísalos."}
-          </Text>
-        )}
+            )}
+          </Fieldset>
 
-        <Stack direction="row" justifyContent="end" gap="16px">
-          <Button appearance="gray" onClick={onCancel} variant="outlined">
-            {textValues.cancel}
-          </Button>
-          <Button type="submit">{textValues.confirm}</Button>
+          <Stack direction="row" justifyContent="end" gap="16px">
+            <Button appearance="gray" onClick={onCancel} variant="outlined">
+              {textValues.cancel}
+            </Button>
+            <Button type="submit">{textValues.confirm}</Button>
+          </Stack>
         </Stack>
-      </Stack>
-    </form>
+      </form>
+      {showRedefineConfirm && portalId && (
+        <ModalRules
+          portalId={portalId}
+          title="Redefinir la condición"
+          onCloseModal={onCloseRedefineConfirm!}
+        >
+          <Stack direction="column" gap="16px">
+            <Text type="body" size="large" appearance="gray">
+              ¿Estás seguro? Se perderá todo lo que tienes actualmente definido
+              y deberás reescribir completamente la condición, de esta manera
+              podrás usar los últimas variables condicionales que están
+              definidas en la actualidad para esta decisión .
+            </Text>
+
+            <Stack justifyContent="end" gap="12px">
+              <Button
+                type="button"
+                appearance="gray"
+                variant="outlined"
+                onClick={onCloseRedefineConfirm}
+                cursorHover
+              >
+                Cancelar
+              </Button>
+              <Button type="button" onClick={onConfirmRedefine} cursorHover>
+                Confirmar
+              </Button>
+            </Stack>
+          </Stack>
+        </ModalRules>
+      )}
+    </>
   );
 };
 

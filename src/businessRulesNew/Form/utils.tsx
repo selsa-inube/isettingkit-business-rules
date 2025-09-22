@@ -6,12 +6,17 @@ import { strategyFormFactoryHandlerManager } from "./helpers/utils";
 import { EValueHowToSetUp } from "../enums/EValueHowToSetUp";
 import { IUseRulesFormUtils } from "../types/Forms/IUseRulesFormUtils";
 import { IRulesForm } from "../types/Forms/IRulesForm";
+import { getConditionsByGroup } from "../helper/utils/getConditionsByGroup"; // << use the same helper you use elsewhere
 
 function useRulesFormUtils({
   decision,
   onSubmitEvent,
   textValues,
 }: IUseRulesFormUtils & { textValues: IRulesForm["textValues"] }) {
+  // ---- helpers over grouped structure ----
+  const grouped = getConditionsByGroup(decision) || {};
+  const flattenConditions = (): any[] => Object.values(grouped).flat() as any[];
+
   const initialValues = {
     ruleName: decision.ruleName || "",
     decisionDataType: decision.decisionDataType || ValueDataType.ALPHABETICAL,
@@ -20,15 +25,18 @@ function useRulesFormUtils({
     effectiveFrom: decision.effectiveFrom || "",
     validUntil: decision.validUntil || "",
     toggleNone: true,
+    // form stores condition values in a flat dictionary by conditionName
     conditionsThatEstablishesTheDecision: {} as Record<string, any>,
     checkClosed: false,
     terms: true,
   };
+
   // eslint-disable-next-line prefer-const
   let formik: ReturnType<typeof useFormik>;
 
   const baseSchema: any = {
     ruleName: string().required("El nombre de la decision es requerido"),
+
     value: lazy(() => {
       const strategy = strategyFormFactoryHandlerManager(
         formik.values.howToSetTheDecision as any,
@@ -38,6 +46,7 @@ function useRulesFormUtils({
         formik.values.decisionDataType,
       ).schema;
     }),
+
     conditionsThatEstablishesTheDecision: lazy((_value, { parent }) => {
       const toggleNone =
         parent?.toggleNone &&
@@ -46,26 +55,27 @@ function useRulesFormUtils({
 
       if (toggleNone) return object().shape({});
 
-      const conditionsSchema =
-        decision.conditionsThatEstablishesTheDecision?.reduce(
-          (schema, condition) => {
-            const conditionValue =
-              formik.values.conditionsThatEstablishesTheDecision[
-                condition.conditionName
-              ];
-            if (conditionValue !== undefined) {
-              const strategy = strategyFormFactoryHandlerManager(
-                condition.howToSetTheCondition as EValueHowToSetUp,
-              );
-              schema[condition.conditionName] = strategy(
-                condition.value as any,
-                condition.conditionDataType,
-              ).schema;
-            }
-            return schema;
-          },
-          {} as Record<string, Schema<any>>,
-        );
+      // build schema from flattened conditions (visible or not — validation depends on user input)
+      const allConds = flattenConditions();
+      const conditionsSchema = allConds.reduce(
+        (schema, condition) => {
+          const conditionValue =
+            formik.values.conditionsThatEstablishesTheDecision?.[
+              condition.conditionName
+            ];
+          if (conditionValue !== undefined) {
+            const strat = strategyFormFactoryHandlerManager(
+              condition.howToSetTheCondition as EValueHowToSetUp,
+            );
+            schema[condition.conditionName] = strat(
+              condition.value as any,
+              condition.conditionDataType,
+            ).schema;
+          }
+          return schema;
+        },
+        {} as Record<string, Schema<any>>,
+      );
 
       return object(conditionsSchema).test(
         "at-least-one-condition",
@@ -112,6 +122,23 @@ function useRulesFormUtils({
     validationSchema,
     validateOnBlur: true,
     onSubmit: (values) => {
+      // rebuild grouped structure with only filled values
+      const updatedGrouped = Object.fromEntries(
+        Object.entries(grouped).map(([g, list]) => {
+          const filtered = (list as any[]).filter((cond) => {
+            const cv =
+              values.conditionsThatEstablishesTheDecision?.[cond.conditionName];
+            return cv !== undefined && cv !== null && cv !== "";
+          });
+          const mapped = filtered.map((cond) => ({
+            ...cond,
+            value:
+              values.conditionsThatEstablishesTheDecision?.[cond.conditionName],
+          }));
+          return [g, mapped];
+        }),
+      );
+
       const updatedDecision: IRuleDecision = {
         ...decision,
         ruleName: values.ruleName,
@@ -120,34 +147,18 @@ function useRulesFormUtils({
         value: values.value,
         effectiveFrom: values.effectiveFrom,
         validUntil: values.validUntil,
-        conditionsThatEstablishesTheDecision:
-          decision.conditionsThatEstablishesTheDecision
-            ?.filter((condition) => {
-              const conditionValue =
-                values.conditionsThatEstablishesTheDecision[
-                  condition.conditionName
-                ];
-              return (
-                conditionValue !== undefined &&
-                conditionValue !== null &&
-                conditionValue !== ""
-              );
-            })
-            .map((condition) => ({
-              ...condition,
-              value:
-                values.conditionsThatEstablishesTheDecision[
-                  condition.conditionName
-                ],
-            })),
+        conditionsThatEstablishesTheDecision: updatedGrouped as any,
       };
+
       onSubmitEvent!(updatedDecision);
     },
   }) as any;
 
   const handleToggleNoneChange = (isNoneSelected: boolean) => {
     formik.setFieldValue("toggleNone", isNoneSelected);
-    decision.conditionsThatEstablishesTheDecision?.forEach((condition) => {
+
+    const allConds = flattenConditions();
+    allConds.forEach((condition) => {
       if (isNoneSelected) {
         formik.setFieldValue(
           `conditionsThatEstablishesTheDecision.${condition.conditionName}`,
