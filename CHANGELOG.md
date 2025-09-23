@@ -1,3 +1,15 @@
+# v2.0.2 (Tue Sep 23 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: add utils that allow to add the prefix according to the condition ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.0.1 (Mon Sep 22 2025)
 
 #### ⚠️ Pushed to `main`
