@@ -30,7 +30,6 @@ interface IBusinessRulesNewController {
   textValues: IRulesFormTextValues;
 }
 
-/* -------------------------- i18n helpers -------------------------- */
 const localizeLabel = (
   base: { labelName?: string; i18n?: Record<string, string> } | undefined,
   lang: "es" | "en" | undefined,
@@ -55,7 +54,6 @@ const localizeDecision = (
   return cloned;
 };
 
-/* ----------------- how-to-set normalizer (string → enum) ----------------- */
 const normalizeHowToSet = (raw: unknown): EValueHowToSetUp => {
   if (typeof raw === "string") {
     const k = raw.toLowerCase();
@@ -71,7 +69,6 @@ const normalizeHowToSet = (raw: unknown): EValueHowToSetUp => {
   return (raw as EValueHowToSetUp) ?? EValueHowToSetUp.EQUAL;
 };
 
-/* ---- attach Spanish sentence to each condition as `labelSentence` ---- */
 const withConditionSentences = (
   decision: IRuleDecision,
   isPrimaryFirst = true,

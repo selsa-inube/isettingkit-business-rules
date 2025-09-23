@@ -32,7 +32,6 @@ const formatDecisionForBackend = (props: {
 }) => {
   const { decision, fallbackId, template } = props;
 
-  // Normalize both decision & template to arrays
   const incomingConds = toArray(
     (decision as any).conditionsThatEstablishesTheDecision,
   );
@@ -40,11 +39,9 @@ const formatDecisionForBackend = (props: {
     (template as any).conditionsThatEstablishesTheDecision,
   );
 
-  // Build a quick lookup by conditionName from the template
   const tplByName = new Map<string, TCond>();
   templateConds.forEach((c) => tplByName.set(c.conditionName, c));
 
-  // Filter empty values and merge with template by conditionName
   const formattedConditions = incomingConds
     .map((incoming) => {
       const val = incoming?.value;
@@ -60,8 +57,8 @@ const formatDecisionForBackend = (props: {
       const tpl = tplByName.get(incoming.conditionName);
 
       return {
-        ...(tpl ?? {}), // keep template fields if present
-        ...incoming, // allow incoming to override
+        ...(tpl ?? {}),
+        ...incoming,
         value: formatValue(val),
       };
     })
@@ -72,7 +69,6 @@ const formatDecisionForBackend = (props: {
     ...decision,
     decisionId: decision.decisionId ?? fallbackId,
     value: formatValue((decision as any).value),
-    // Backend expects a flat array
     conditionsThatEstablishesTheDecision: formattedConditions,
   };
 };

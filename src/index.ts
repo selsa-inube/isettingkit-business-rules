@@ -24,6 +24,10 @@ export { SendButton } from "./button";
 export { BackAndNextButton } from "./button/BackAndNext";
 export { Checkpicker } from "./checkpicker";
 export { buildEsConditionSentence } from "./businessRulesNew/utils/buildEsConditionSentence";
+export { filterByGroup } from "./businessRulesNew/helper/utils/filterByGroup";
+export { flatFromGroups } from "./businessRulesNew/helper/utils/flatFromGroups";
+export { getConditionsByGroup } from "./businessRulesNew/helper/utils/getConditionsByGroup";
+export { mapByGroup } from "./businessRulesNew/helper/utils/mapByGroup";
 
 export { translateText } from "./translator/translateText";
 export { translateObject } from "./translator/translateObject";
@@ -44,3 +48,4 @@ export type { IDraggableList } from "./dragAndDropBoxes/types/IDraggableList";
 export type { IClientLabel } from "./dragAndDropBoxes/types/IClientLabel";
 export type { IDragAndDropColumn } from "./dragAndDropBoxes/types/IDragAndDropColumn";
 export type { IBackAndNextButton } from "./button/types/IBackAndNextButton";
+export { EValueHowToSetUp } from "./businessRulesNew/enums/EValueHowToSetUp";
