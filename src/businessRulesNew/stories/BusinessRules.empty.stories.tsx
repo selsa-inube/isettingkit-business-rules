@@ -72,7 +72,7 @@ const decisionTemplate: any = {
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
         i18n: {
-          es: "Tipo de fuente de ingreso primaria.",
+          es: "Tipo de fuente de ingreso primaria",
         },
       },
       {

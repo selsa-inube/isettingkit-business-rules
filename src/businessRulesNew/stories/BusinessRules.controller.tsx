@@ -7,53 +7,165 @@ import { sortDisplayDataSampleSwitchPlaces } from "../helper/utils/sortDisplayDa
 import { IRulesFormTextValues } from "../types/Forms/IRulesFormTextValues";
 import { formatDecisionForBackend } from "../helper/utils/formatDecisionForBackend";
 import { parseRangeFromString } from "../helper/utils/parseRangeFromString";
-import { Button, Fieldset, Stack } from "@inubekit/inubekit";
-import { MdAdd } from "react-icons/md";
+import { Button, Fieldset, Icon, Stack, Text } from "@inubekit/inubekit";
+import { MdAdd, MdOutlineReportProblem } from "react-icons/md";
 import type { IOption } from "@inubekit/inubekit";
 import { StyledMultipleChoiceContainer } from "./styles";
 import { getConditionsByGroup } from "../helper/utils/getConditionsByGroup";
 import { mapByGroup } from "../helper/utils/mapByGroup";
 import { Checkpicker } from "../../checkpicker";
 
+import { EValueHowToSetUp } from "../enums/EValueHowToSetUp";
+import { buildEsConditionSentence } from "../utils/buildEsConditionSentence";
+
 interface IBusinessRulesNewController {
   language?: "es" | "en";
   controls?: boolean;
-  customTitleContentAddCard?: string;
   customMessageEmptyDecisions?: string;
-  initialDecisions: IRuleDecision[];
-  textValues: IRulesFormTextValues;
+  customTitleContentAddCard?: string;
   decisionTemplate: IRuleDecision;
+  initialDecisions: IRuleDecision[];
   loading?: boolean;
   terms?: boolean;
+  textValues: IRulesFormTextValues;
 }
+
+/* -------------------------- i18n helpers -------------------------- */
+const localizeLabel = (
+  base: { labelName?: string; i18n?: Record<string, string> } | undefined,
+  lang: "es" | "en" | undefined,
+) => (lang && base?.i18n?.[lang]) || base?.labelName || "";
+
+const localizeDecision = (
+  raw: IRuleDecision,
+  lang: "es" | "en" | undefined,
+): IRuleDecision => {
+  const cloned: IRuleDecision = JSON.parse(JSON.stringify(raw));
+  cloned.labelName = localizeLabel(raw, lang);
+
+  const groups = getConditionsByGroup(cloned) as Record<string, any[]>;
+  const localizedGroups = Object.fromEntries(
+    Object.entries(groups).map(([g, list]) => [
+      g,
+      list.map((c) => ({ ...c, labelName: localizeLabel(c, lang) })),
+    ]),
+  );
+
+  cloned.conditionsThatEstablishesTheDecision = localizedGroups as any;
+  return cloned;
+};
+
+/* ----------------- how-to-set normalizer (string → enum) ----------------- */
+const normalizeHowToSet = (raw: unknown): EValueHowToSetUp => {
+  if (typeof raw === "string") {
+    const k = raw.toLowerCase();
+    if (k.includes("equal")) return EValueHowToSetUp.EQUAL;
+    if (k.includes("greater")) return EValueHowToSetUp.GREATER_THAN;
+    if (k.includes("less")) return EValueHowToSetUp.LESS_THAN;
+    if (k.includes("range") || k.includes("between"))
+      return EValueHowToSetUp.RANGE;
+    if (k.includes("multi")) return EValueHowToSetUp.LIST_OF_VALUES_MULTI;
+    if (k.includes("list_of_values") || k.includes("among") || k.includes("in"))
+      return EValueHowToSetUp.LIST_OF_VALUES;
+  }
+  return (raw as EValueHowToSetUp) ?? EValueHowToSetUp.EQUAL;
+};
+
+/* ---- attach Spanish sentence to each condition as `labelSentence` ---- */
+const withConditionSentences = (
+  decision: IRuleDecision,
+  isPrimaryFirst = true,
+): IRuleDecision => {
+  const d: IRuleDecision = JSON.parse(JSON.stringify(decision));
+  const groups = getConditionsByGroup(d) as Record<string, any[]>;
+
+  const orderedKeys = [
+    ...Object.keys(groups).filter((k) => k === "group-primary"),
+    ...Object.keys(groups).filter((k) => k !== "group-primary"),
+  ];
+
+  let firstUsed = !isPrimaryFirst;
+
+  const decorated = Object.fromEntries(
+    orderedKeys.map((g) => {
+      const list = groups[g] ?? [];
+      const mapped = list.map((c: any, idx: number) => {
+        const isFirst = !firstUsed && g === "group-primary" && idx === 0;
+        if (isFirst) firstUsed = true;
+
+        const how = normalizeHowToSet(
+          c.howToSetTheCondition ?? c.valueUse ?? EValueHowToSetUp.EQUAL,
+        );
+
+        const sentence = buildEsConditionSentence({
+          label: c.labelName || "",
+          howToSet: how,
+          isFirst,
+        });
+        console.log("Sentence:", {
+          label: c.labelName,
+          how,
+          isFirst,
+          sentence,
+        });
+
+        return {
+          ...c,
+          labelName: sentence,
+        };
+      });
+      return [g, mapped];
+    }),
+  );
+
+  d.conditionsThatEstablishesTheDecision = decorated as any;
+  return d;
+};
 
 const BusinessRulesNewController = ({
   controls,
   customMessageEmptyDecisions,
   customTitleContentAddCard,
-  initialDecisions,
-  textValues,
   decisionTemplate,
+  initialDecisions,
+  language,
   loading = false,
+  textValues,
 }: IBusinessRulesNewController) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDecision, setSelectedDecision] =
     useState<IRuleDecision | null>(null);
 
+  const localizedTemplate = useMemo(
+    () => localizeDecision(decisionTemplate, language),
+    [decisionTemplate, language],
+  );
+
   const [decisions, setDecisions] = useState<any[]>(
-    initialDecisions.map((decision) => ({
-      ...decision,
-      value: parseRangeFromString(decision.value),
-      conditionsThatEstablishesTheDecision: mapByGroup(
-        getConditionsByGroup(decision),
-        (condition: {
-          value: string | number | IValue | string[] | undefined;
-        }) => ({
-          ...condition,
-          value: parseRangeFromString(condition.value),
-        }),
-      ),
-    })),
+    initialDecisions.map((d) => {
+      const loc = localizeDecision(d, language);
+      const withSentences = withConditionSentences(loc);
+      return {
+        ...withSentences,
+        value: parseRangeFromString(withSentences.value),
+        conditionsThatEstablishesTheDecision: mapByGroup(
+          getConditionsByGroup(withSentences),
+          (condition: {
+            value: string | number | IValue | string[] | undefined;
+          }) => ({
+            ...condition,
+            labelName: localizeLabel(
+              condition as {
+                labelName?: string;
+                i18n?: Record<string, string>;
+              },
+              language,
+            ),
+            value: parseRangeFromString(condition.value),
+          }),
+        ),
+      };
+    }),
   );
 
   const [removedConditionNames, setRemovedConditionNames] = useState<
@@ -79,15 +191,15 @@ const BusinessRulesNewController = ({
   };
 
   const multipleChoicesOptions: IOption[] = useMemo(() => {
-    const groups = getConditionsByGroup(decisionTemplate);
+    const groups = getConditionsByGroup(localizedTemplate);
     return Object.values(groups)
       .flat()
       .map((c: any) => ({
         id: c.conditionName,
-        label: c.labelName,
+        label: localizeLabel(c, language),
         value: c.conditionName,
       }));
-  }, [decisionTemplate]);
+  }, [localizedTemplate, language]);
 
   const [selectedConditionsCSV, setSelectedConditionsCSV] =
     useState<string>("");
@@ -120,12 +232,12 @@ const BusinessRulesNewController = ({
     const base = isEditing
       ? { ...selectedDecision, ...dataDecision }
       : {
-          ...decisionTemplate,
+          ...localizedTemplate,
           ...dataDecision,
           decisionId: `Decisión ${decisions.length + 1}`,
         };
 
-    const tplGroups = getConditionsByGroup(decisionTemplate);
+    const tplGroups = getConditionsByGroup(localizedTemplate);
     const dataGroups = getConditionsByGroup(dataDecision) as Record<
       string,
       any[]
@@ -141,6 +253,7 @@ const BusinessRulesNewController = ({
           );
           return {
             ...tplItem,
+            labelName: localizeLabel(tplItem, language),
             value: match?.value ?? tplItem.value,
             listOfPossibleValues:
               match?.listOfPossibleValues ?? tplItem.listOfPossibleValues,
@@ -160,13 +273,15 @@ const BusinessRulesNewController = ({
 
     const newDecision: IRuleDecision = {
       ...base,
+      labelName: localizeLabel(base, language),
       conditionsThatEstablishesTheDecision: mergedGroups,
     };
+    const decisionWithSentences = withConditionSentences(newDecision);
 
     const backendFormattedDecision = formatDecisionForBackend({
-      decision: newDecision,
-      template: decisionTemplate,
-      fallbackId: newDecision.decisionId!,
+      decision: decisionWithSentences,
+      template: localizedTemplate,
+      fallbackId: decisionWithSentences.decisionId!,
     });
     console.log("Formatted for backend:", backendFormattedDecision);
 
@@ -179,9 +294,11 @@ const BusinessRulesNewController = ({
             const sameByDecisionId =
               selectedDecision?.decisionId &&
               d.decisionId === selectedDecision.decisionId;
-            return sameByBusinessRule || sameByDecisionId ? newDecision : d;
+            return sameByBusinessRule || sameByDecisionId
+              ? decisionWithSentences
+              : d;
           })
-        : [...prev, newDecision],
+        : [...prev, decisionWithSentences],
     );
 
     handleCloseModal();
@@ -194,7 +311,9 @@ const BusinessRulesNewController = ({
   };
 
   const filteredDecisionTemplate = useMemo(() => {
-    const tpl = sortDisplayDataSampleSwitchPlaces({ decisionTemplate });
+    const tpl = sortDisplayDataSampleSwitchPlaces({
+      decisionTemplate: localizedTemplate,
+    });
     const groups = tpl.conditionsThatEstablishesTheDecision || {};
 
     const filtered = Object.fromEntries(
@@ -208,55 +327,95 @@ const BusinessRulesNewController = ({
       ]),
     );
 
-    return { ...tpl, conditionsThatEstablishesTheDecision: filtered };
-  }, [decisionTemplate, selectedIds, removedConditionNames]);
+    const withFiltered = {
+      ...tpl,
+      labelName: localizeLabel(tpl, language),
+      conditionsThatEstablishesTheDecision: filtered,
+    };
+
+    return withConditionSentences(withFiltered as any);
+  }, [localizedTemplate, language, selectedIds, removedConditionNames]);
 
   return (
     <Stack direction="column" gap="24px">
-      {/* {decisions.length === 0 && (
-        <> */}
       <Fieldset legend="Condiciones que determinan las decisiones">
         <StyledMultipleChoiceContainer>
           <Checkpicker
-            id="conditionsPicker"
-            name="conditionsPicker"
-            label=""
-            placeholder="Seleccione una o varias condiciones"
-            options={multipleChoicesOptions}
-            required={false}
-            values={selectedConditionsCSV}
-            onChange={handleMultipleChoicesChange}
-            size="wide"
             fullwidth
+            id="conditionsPicker"
+            label=""
+            name="conditionsPicker"
+            onChange={handleMultipleChoicesChange}
+            options={multipleChoicesOptions}
+            placeholder="Seleccione una o varias condiciones"
+            required={false}
+            size="wide"
+            values={selectedConditionsCSV}
           />
         </StyledMultipleChoiceContainer>
       </Fieldset>
+
       <Stack justifyContent="flex-end">
-        <Button iconBefore={<MdAdd />} onClick={() => handleOpenModal()}>
+        <Button
+          appearance="primary"
+          cursorHover
+          disabled={selectedConditionsCSV.length === 0}
+          iconBefore={<MdAdd />}
+          onClick={() => handleOpenModal()}
+        >
           Agregar plazo
         </Button>
       </Stack>
-      {/* </>
-      )} */}
 
-      <BusinessRulesNew
-        controls={controls}
-        customTitleContentAddCard={customTitleContentAddCard}
-        customMessageEmptyDecisions={customMessageEmptyDecisions}
-        decisions={sortDisplayDataSwitchPlaces({ decisions })}
-        textValues={textValues}
-        decisionTemplate={filteredDecisionTemplate as any}
-        isModalOpen={isModalOpen}
-        selectedDecision={selectedDecision}
-        loading={loading}
-        handleOpenModal={handleOpenModal}
-        handleCloseModal={handleCloseModal}
-        handleSubmitForm={handleSubmitForm}
-        handleDelete={handleDelete}
-        onRemoveCondition={handleRemoveCondition}
-        onRestoreConditions={handleRestoreConditions}
-        baseDecisionTemplate={decisionTemplate}
-      />
+      {selectedConditionsCSV.length > 0 ? (
+        <BusinessRulesNew
+          baseDecisionTemplate={localizedTemplate}
+          controls={controls}
+          customMessageEmptyDecisions={customMessageEmptyDecisions}
+          customTitleContentAddCard={customTitleContentAddCard}
+          decisionTemplate={filteredDecisionTemplate as any}
+          decisions={sortDisplayDataSwitchPlaces({ decisions })}
+          handleCloseModal={handleCloseModal}
+          handleDelete={handleDelete}
+          handleOpenModal={handleOpenModal}
+          handleSubmitForm={handleSubmitForm}
+          isModalOpen={isModalOpen}
+          loading={loading}
+          onRemoveCondition={handleRemoveCondition}
+          onRestoreConditions={handleRestoreConditions}
+          selectedDecision={selectedDecision}
+          textValues={textValues}
+        />
+      ) : (
+        <Fieldset legend="Decisiones">
+          <Stack
+            alignItems="center"
+            direction="column"
+            gap="16px"
+            justifyContent="center"
+            width="100%"
+          >
+            <Icon
+              appearance="warning"
+              icon={<MdOutlineReportProblem />}
+              size="40px"
+            />
+            <Text appearance="dark" size="medium" type="title" weight="bold">
+              Sin condiciones
+            </Text>
+            <Text as="span" appearance="gray" size="medium">
+              {customMessageEmptyDecisions ? (
+                customMessageEmptyDecisions
+              ) : (
+                <>
+                  Antes de agregar tus decisiones, selecciona las condiciones
+                  que la determinan.
+                </>
+              )}
+            </Text>
+          </Stack>
+        </Fieldset>
+      )}
     </Stack>
   );
 };

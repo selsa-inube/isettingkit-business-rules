@@ -63,6 +63,7 @@ const RulesFormUI = (props: IRulesFormUI) => {
                   variant="none"
                   appearance="gray"
                   onClick={onOpenRedefineConfirm}
+                  cursorHover
                 >
                   Redefinir la condición
                 </Button>
