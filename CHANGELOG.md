@@ -1,3 +1,16 @@
+# v2.0.5 (Wed Sep 24 2025)
+
+#### ⚠️ Pushed to `main`
+
+- Merge branch 'main' of https://github.com/selsa-inube/isettingkit-business-rules ([@cmarin001](https://github.com/cmarin001))
+- fix: add behavior that allows move the dropdownMenu with click and button ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.0.4 (Wed Sep 24 2025)
 
 #### ⚠️ Pushed to `main`
