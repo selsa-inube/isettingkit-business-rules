@@ -126,6 +126,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
                     size="small"
                     type="title"
                     weight={headerWeight}
+                    onClick={onClick}
                   >
                     {title}
                   </Text>

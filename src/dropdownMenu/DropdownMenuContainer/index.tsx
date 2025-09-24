@@ -5,33 +5,47 @@ import { TLinkItem } from "../types/TLinkItem";
 import { IDropdownMenuContainer } from "../types/IDropdownMenuContainer";
 import { StyledDropdownContainer } from "./styles";
 import { Stack } from "@inubekit/inubekit";
+import { findActiveGroupId } from "../utils/findActiveGroupId";
 
 const DropdownMenuContainer = (props: IDropdownMenuContainer) => {
   const { collapseOnNavigate = false, defaultOpenId = null, groups } = props;
 
-  const [openId, setOpenId] = React.useState<string | null>(defaultOpenId);
   const location = useLocation();
+  const [openId, setOpenId] = React.useState<string | null>(defaultOpenId);
 
-  React.useEffect(() => {
-    if (collapseOnNavigate) setOpenId(null);
-  }, [collapseOnNavigate, location.pathname]);
+  const lastPathRef = React.useRef(location.pathname);
 
   const getActiveId = React.useCallback(
-    (links: TLinkItem[]) =>
-      links.find((label) => label.path === location.pathname)?.id,
+    (links: TLinkItem[]) => links.find((l) => l.path === location.pathname)?.id,
     [location.pathname],
   );
 
   const isHeaderActive = React.useCallback(
-    (groupPath?: string) => {
-      if (!groupPath) return false;
-      return (
-        location.pathname === groupPath ||
-        location.pathname.startsWith(groupPath + "/")
-      );
-    },
+    (groupPath?: string) =>
+      !!groupPath &&
+      (location.pathname === groupPath ||
+        location.pathname.startsWith(groupPath + "/")),
     [location.pathname],
   );
+
+  React.useEffect(() => {
+    const pathChanged = lastPathRef.current !== location.pathname;
+    if (!pathChanged) return;
+
+    lastPathRef.current = location.pathname;
+
+    if (collapseOnNavigate) {
+      setOpenId(null);
+      return;
+    }
+
+    const activeGroupId = findActiveGroupId(location.pathname, groups);
+    if (activeGroupId) {
+      setOpenId(activeGroupId);
+      return;
+    }
+    if (defaultOpenId) setOpenId(defaultOpenId);
+  }, [collapseOnNavigate, defaultOpenId, groups, location.pathname]);
 
   return (
     <StyledDropdownContainer $background>

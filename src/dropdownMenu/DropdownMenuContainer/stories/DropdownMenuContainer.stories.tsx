@@ -1,7 +1,10 @@
+// stories/components/DropdownMenuContainer.stories.tsx
 import { BrowserRouter } from "react-router-dom";
 import type { Decorator, Meta, StoryObj } from "@storybook/react";
 import { DropdownMenuContainer } from "..";
-import { IDropdownMenuGroup } from "../../../dropdownMenu/types/IDropdownMenuGroup";
+
+import type { IDropdownMenuGroup } from "../../../dropdownMenu/types/IDropdownMenuGroup";
+import { DropdownMenuContainerController } from "./DropdownMenuContainer.controller";
 
 const withRouter: Decorator = (Story) => (
   <BrowserRouter>
@@ -12,12 +15,14 @@ const withRouter: Decorator = (Story) => (
 const meta: Meta<typeof DropdownMenuContainer> = {
   component: DropdownMenuContainer,
   decorators: [withRouter],
+  render: (args) => <DropdownMenuContainerController {...args} />,
   title: "components/DropdownMenuContainer",
 };
 export default meta;
 
 type Story = StoryObj<typeof DropdownMenuContainer>;
 
+/* ------- sample data (same as you shared) ------- */
 const OPTIONS = {
   lineNamesAndDescriptions: {},
   deductibleCustomerExpenses: {
@@ -115,26 +120,24 @@ const GROUPS: IDropdownMenuGroup[] = [
   },
 ];
 
-const AllContracted: Story = {
+export const AllContracted: Story = {
   args: {
-    groups: GROUPS as unknown as IDropdownMenuGroup[],
     defaultOpenId: null,
+    groups: GROUPS as unknown as IDropdownMenuGroup[],
   },
 };
 
-const DeductibleOpen: Story = {
+export const DeductibleOpen: Story = {
   args: {
-    groups: GROUPS as unknown as IDropdownMenuGroup[],
     defaultOpenId: "deductible",
+    groups: GROUPS as unknown as IDropdownMenuGroup[],
   },
 };
 
-const CollapseOnNavigate: Story = {
+export const CollapseOnNavigate: Story = {
   args: {
-    groups: GROUPS as unknown as IDropdownMenuGroup[],
-    defaultOpenId: "deductible",
     collapseOnNavigate: true,
+    defaultOpenId: "deductible",
+    groups: GROUPS as unknown as IDropdownMenuGroup[],
   },
 };
-
-export { AllContracted, DeductibleOpen, CollapseOnNavigate };
