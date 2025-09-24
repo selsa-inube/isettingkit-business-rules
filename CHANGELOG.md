@@ -1,3 +1,15 @@
+# v2.0.4 (Wed Sep 24 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: added disabled props to backAndNext button ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.0.3 (Tue Sep 23 2025)
 
 #### ⚠️ Pushed to `main`
