@@ -4,7 +4,7 @@ import { MdOutlineSend } from "react-icons/md";
 import { ElementType } from "react";
 
 import { BackAndNextButton } from "..";
-import { IBackAndNextButton } from "../../../button/types/IBackAndNextButton";
+import { IBackAndNextButton } from "../../types/IBackAndNextButton";
 
 const story = {
   title: "inputs/BackAndNextButton",
@@ -31,6 +31,8 @@ Default.args = {
   iconBefore: <MdOutlineSend />,
   loading: false,
   disabled: false,
+  disabledBack: false,
+  disabledNext: false,
   type: "SendButton",
   spacing: "wide",
   variant: "filled",

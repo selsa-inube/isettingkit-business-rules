@@ -4,7 +4,8 @@ interface IBackAndNextButton
   extends Omit<IButton, "onClick" | "path" | "children"> {
   handleBack: () => void;
   handleNext: () => void;
-  disabled: boolean;
+  disabledBack: boolean;
+  disabledNext: boolean;
   loading: boolean;
   textValues: {
     back: string;

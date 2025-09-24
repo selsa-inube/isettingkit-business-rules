@@ -8,7 +8,8 @@ import { Button, IButton } from "@inubekit/inubekit";
 import { IBackAndNextButton } from "../types/IBackAndNextButton";
 
 const BackAndNextButton = (props: IBackAndNextButton) => {
-  const { handleBack, handleNext, textValues } = props;
+  const { handleBack, handleNext, disabledBack, disabledNext, textValues } =
+    props;
   return (
     <StyledSendButton>
       <Button
@@ -17,6 +18,7 @@ const BackAndNextButton = (props: IBackAndNextButton) => {
         variant="none"
         onClick={handleBack}
         children={textValues.back}
+        disabled={disabledBack}
       />
       <Button
         {...props}
@@ -24,6 +26,7 @@ const BackAndNextButton = (props: IBackAndNextButton) => {
         variant="none"
         onClick={handleNext}
         children={textValues.next}
+        disabled={disabledNext}
       />
     </StyledSendButton>
   );
