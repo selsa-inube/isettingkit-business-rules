@@ -1,3 +1,15 @@
+# v2.0.6 (Mon Sep 29 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: adjust checkpicker layout ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.0.5 (Wed Sep 24 2025)
 
 #### ⚠️ Pushed to `main`
