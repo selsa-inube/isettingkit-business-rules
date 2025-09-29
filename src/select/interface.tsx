@@ -196,32 +196,39 @@ const SelectUI = forwardRef((props: ISelectInterface, ref) => {
           onClick={editable ? onClick : undefined}
           onKeyUp={onKeyUp}
         />
-        <Stack direction="row" gap="8px" alignItems="center">
-          {clearable &&
-            !disabled &&
-            (picker
-              ? selectedOptions.map((opt) => (
-                  <Tag
-                    key={opt.id}
-                    appearance="gray"
-                    label={opt.label}
-                    removable
-                    displayIcon={false}
-                    onClose={(e) => handleRemoveTag(e, opt.id)}
-                  />
-                ))
-              : (value ?? "") !== "" && (
-                  <Tag
-                    appearance="gray"
-                    label={getOptionLabel(options, value)}
-                    removable
-                    displayIcon={false}
-                    onClose={(e) => {
-                      e.stopPropagation();
-                      handleClear();
-                    }}
-                  />
-                ))}
+        <Stack
+          direction="row"
+          gap="8px"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Stack gap="8px" alignItems="center" wrap="wrap">
+            {clearable &&
+              !disabled &&
+              (picker
+                ? selectedOptions.map((opt) => (
+                    <Tag
+                      key={opt.id}
+                      appearance="gray"
+                      label={opt.label}
+                      removable
+                      displayIcon={false}
+                      onClose={(e) => handleRemoveTag(e, opt.id)}
+                    />
+                  ))
+                : (value ?? "") !== "" && (
+                    <Tag
+                      appearance="gray"
+                      label={getOptionLabel(options, value)}
+                      removable
+                      displayIcon={false}
+                      onClose={(e) => {
+                        e.stopPropagation();
+                        handleClear();
+                      }}
+                    />
+                  ))}
+          </Stack>
 
           {showChevron && (
             <StyledChevron $displayList={displayList}>

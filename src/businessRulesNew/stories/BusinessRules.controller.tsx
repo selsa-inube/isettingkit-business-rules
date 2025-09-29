@@ -332,7 +332,7 @@ const BusinessRulesNewController = ({
 
     return withConditionSentences(withFiltered as any);
   }, [localizedTemplate, language, selectedIds, removedConditionNames]);
-
+  console.log("filteredDecisionTemplate", filteredDecisionTemplate);
   return (
     <Stack direction="column" gap="24px">
       <Fieldset legend="Condiciones que determinan las decisiones">

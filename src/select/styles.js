@@ -19,7 +19,7 @@ const StyledContainerLabel = styled.div`
 const StyledInputContainer = styled.div`
   display: grid;
   height: ${({ $size }) => ($size === "compact" ? "40px" : "48px")};
-  padding: 0px 16px;
+  padding: 8px 16px;
   gap: 8px;
   align-items: center;
   box-sizing: border-box;
@@ -27,6 +27,7 @@ const StyledInputContainer = styled.div`
   pointer-events: ${({ $disabled }) => $disabled && "none"};
   grid-auto-flow: column;
   grid-template-columns: 1fr auto;
+  height: -webkit-fill-available;
   cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
   background-color: ${({ $disabled, theme }) =>
     $disabled
