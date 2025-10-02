@@ -1,3 +1,15 @@
+# v2.0.7 (Thu Oct 02 2025)
+
+#### ⚠️ Pushed to `main`
+
+- chore: update isettingkit dependecies ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.0.6 (Mon Sep 29 2025)
 
 #### ⚠️ Pushed to `main`
