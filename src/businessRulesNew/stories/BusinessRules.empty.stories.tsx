@@ -57,7 +57,7 @@ const decisionTemplate: any = {
         labelName: "Loan amount",
         conditionName: "LoanAmount",
         descriptionUse: "Loan amount",
-        conditionDataType: ValueDataType.CURRENCY,
+        conditionDataType: ValueDataType.MONETARY,
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
         i18n: {
@@ -193,7 +193,7 @@ const decisionTemplate: any = {
         labelName: "Loan amount",
         conditionName: "LoanAmount2",
         descriptionUse: "Loan amount",
-        conditionDataType: ValueDataType.CURRENCY,
+        conditionDataType: ValueDataType.MONETARY,
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
         i18n: {

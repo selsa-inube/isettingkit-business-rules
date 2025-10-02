@@ -38,8 +38,8 @@
   "dependencies": {
     "@formkit/drag-and-drop": "^0.5.3",
     "@inubekit/inubekit": "^6.1.0",
-    "@isettingkit/input": "^1.0.7",
-    "@isettingkit/view": "^0.1.25",
+    "@isettingkit/input": "^1.0.8",
+    "@isettingkit/view": "^0.1.26",
     "axios": "^1.9.0",
     "franc-min": "^6.2.0"
   },
