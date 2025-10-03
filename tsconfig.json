@@ -5,6 +5,27 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "paths": {
+      "@src/*": ["src/*"],
+      "@core/*": ["src/core/*"],
+      "@design/*": ["src/design/*"],
+      "@enum/*": ["src/enum/*"],
+      "@components/*": ["src/components/*"],
+      "@config/*": ["src/config/*"],
+      "@pages/*": ["src/pages/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@mocks/*": ["src/mocks/*"],
+      "@ptypes/*": ["src/types/*"],
+      "@forms/*": ["src/forms/*"],
+      "@assets/*": ["src/assets/*"],
+      "@services/*": ["src/services/*"],
+      "@context/*": ["src/context/*"],
+      "@utils/*": ["src/utils/*"],
+      "@api/*": ["src/api/*"],
+      "@validations/*": ["src/validations/*"],
+      "@routes/*": ["src/routes/*"],
+      "@events/*": ["src/events/*"]
+    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",
