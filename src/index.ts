@@ -1,6 +1,7 @@
 export { BusinessRuleCard } from "./businessRules/Cards/BusinessRuleCard";
 export { BusinessRuleView } from "./businessRules/BusinessRuleView";
 export { BusinessRules } from "./businessRules";
+export { BusinessRulesWithGroup } from "./businessRulesWithGroup";
 export { BusinessRuleCardNew } from "./businessRulesNew/Cards/BusinessRuleCard";
 export { BusinessRuleViewNew } from "./businessRulesNew/BusinessRuleView";
 export { BusinessRulesNew } from "./businessRulesNew";
