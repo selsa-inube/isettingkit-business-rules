@@ -1,3 +1,16 @@
+# v2.0.8 (Fri Oct 03 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: adjust route in the controller ([@cmarin001](https://github.com/cmarin001))
+- fix: duplicate rules handler in order to support new structure ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.0.7 (Thu Oct 02 2025)
 
 #### ⚠️ Pushed to `main`
