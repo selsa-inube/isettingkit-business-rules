@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IRuleDecision } from "@isettingkit/input";
-import { BusinessRules } from "..";
 import { IRulesFormTextValues } from "../types/Forms/IRulesFormTextValues";
+import { BusinessRulesWithGroup } from "..";
 
 interface IBusinessRulesController {
   initialDecisions: IRuleDecision[];
@@ -80,7 +80,7 @@ const BusinessRulesWithLoadingController = ({
   };
 
   return (
-    <BusinessRules
+    <BusinessRulesWithGroup
       decisions={decisions}
       textValues={textValues}
       decisionTemplate={decisionTemplate}

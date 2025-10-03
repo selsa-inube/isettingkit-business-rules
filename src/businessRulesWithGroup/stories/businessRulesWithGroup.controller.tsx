@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { IRuleDecision } from "@isettingkit/input";
-import { BusinessRules } from "..";
 import { sortDisplayDataSwitchPlaces } from "../helper/utils/sortDisplayDataSwitchPlaces";
 import { sortDisplayDataSampleSwitchPlaces } from "../helper/utils/sortDisplayDataSampleSwitchPlaces";
 import { IRulesFormTextValues } from "../types/Forms/IRulesFormTextValues";
 import { formatDecisionForBackend } from "../helper/utils/formatDecisionForBackend";
 import { parseRangeFromString } from "../helper/utils/parseRangeFromString";
+import { BusinessRulesWithGroup } from "..";
 
 interface IBusinessRulesController {
   controls?: boolean;
@@ -105,7 +105,7 @@ const BusinessRulesController = ({
   };
 
   return (
-    <BusinessRules
+    <BusinessRulesWithGroup
       controls={controls}
       customTitleContentAddCard={customTitleContentAddCard}
       customMessageEmptyDecisions={customMessageEmptyDecisions}
