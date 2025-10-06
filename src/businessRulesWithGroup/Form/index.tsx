@@ -53,8 +53,16 @@ const RulesFormWithGroup = (props: IRulesForm) => {
           false,
           false,
         );
+        const allConditionsTouched = Object.keys(formik.touched)
+          .filter(key => key.startsWith('conditionsThatEstablishesTheDecision.'))
+          .some(key => formik.touched[key] === true);
+          
+        if (!allConditionsTouched) {
+          handleToggleNoneChange(true);
+        }
       } else {
         const defaultValue = isMulti ? [] : "";
+        handleToggleNoneChange(false);
         formik.setFieldValue(
           `conditionsThatEstablishesTheDecision.${conditionName}`,
           defaultValue,
