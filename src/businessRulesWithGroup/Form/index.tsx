@@ -21,7 +21,7 @@ const RulesFormWithGroup = (props: IRulesForm) => {
   };
 
   const visibleConditions =
-    decision.conditionGroups?.conditionsThatEstablishesTheDecision?.filter(
+    decision.conditionGroups[0]?.conditionsThatEstablishesTheDecision?.filter(
       (condition: { hidden: any }) => !condition.hidden,
     ) || [];
 

@@ -1,8 +1,8 @@
 import { Text, Stack } from "@inubekit/inubekit";
 import { StyledFadeInStack } from "../../../businessRules/styles";
-import { BusinessRuleCard } from "../../../businessRules/Cards/BusinessRuleCard";
 import { IRenderCard } from "../../../businessRules/types/helper";
 import { BusinessRuleViewWithGroup } from "../../../businessRulesWithGroup/BusinessRuleView";
+import { BusinessRuleCardWithGroup } from "../../../businessRulesWithGroup/Cards/BusinessRuleCard";
 
 const renderDecisionCard = (props: IRenderCard) => {
   const { decision, controls, handleOpenModal, handleDelete, textValues } =
@@ -15,7 +15,7 @@ const renderDecisionCard = (props: IRenderCard) => {
         <Text type="title" size="medium" appearance="gray" weight="bold">
           {decision.decisionId}
         </Text>
-        <BusinessRuleCard
+        <BusinessRuleCardWithGroup
           id={decision.decisionId!}
           handleDelete={() =>
             handleDelete ? handleDelete(decision.decisionId!) : null
@@ -29,7 +29,7 @@ const renderDecisionCard = (props: IRenderCard) => {
             decision={decision}
             textValues={textValues}
           />
-        </BusinessRuleCard>
+        </BusinessRuleCardWithGroup>
       </Stack>
     </StyledFadeInStack>
   );

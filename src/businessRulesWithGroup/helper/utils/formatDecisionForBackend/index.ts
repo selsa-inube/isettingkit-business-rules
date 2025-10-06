@@ -21,6 +21,7 @@ const formatDecisionForBackend = (props: {
   };
 
   const formattedConditions: any =
+  console.log('formattedConditions: ',decision);
     decision.conditionsThatEstablishesTheDecision
       ?.map((incomingCondition, index) => {
         const val = incomingCondition?.value;

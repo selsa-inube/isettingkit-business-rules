@@ -30,12 +30,14 @@ const BusinessRulesController = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDecision, setSelectedDecision] =
     useState<IRuleDecision | null>(null);
+   
   const [decisions, setDecisions] = useState<IRuleDecision[]>(
-    initialDecisions.map((decision) => ({
+    initialDecisions.map((decision) => (
+       console.log('decision.conditionsThatEstablishesTheDecision', decision.conditionGroups),{
       ...decision,
       value: parseRangeFromString(decision.value),
       conditionsThatEstablishesTheDecision:
-        decision.conditionsThatEstablishesTheDecision?.map((condition) => ({
+        decision.conditionGroups[0].conditionsThatEstablishesTheDecision?.map((condition) => (console.log('condition.value: ',condition),{
           ...condition,
           value: parseRangeFromString(condition.value),
         })),
@@ -65,11 +67,11 @@ const BusinessRulesController = ({
           ...dataDecision,
           decisionId: `Decisión ${decisions.length + 1}`,
           conditions:
-            decisionTemplate.conditionsThatEstablishesTheDecision?.map(
+            decisionTemplate.conditionGroups.conditionsThatEstablishesTheDecision?.map(
               (conditionTemplate, index) => ({
                 ...conditionTemplate,
                 value:
-                  dataDecision.conditionsThatEstablishesTheDecision?.[index]
+                  dataDecision.conditionGroups[0].conditionsThatEstablishesTheDecision?.[index]
                     ?.value ?? conditionTemplate.value,
               }),
             ) ?? [],
