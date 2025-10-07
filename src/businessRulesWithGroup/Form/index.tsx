@@ -69,8 +69,7 @@ const RulesFormWithGroup = (props: IRulesForm) => {
         );
       }
     };
-  console.log("decision", decision, formik);
-  console.log("visibleConditions", visibleConditions);
+  
   return (
     <RulesFormUI
       formik={formik}

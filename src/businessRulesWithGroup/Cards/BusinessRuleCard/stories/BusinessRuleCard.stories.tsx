@@ -10,7 +10,7 @@ import {
 } from "@isettingkit/input";
 import { IBusinessRuleCard } from "../../../../businessRules/types/Cards/BusinessRuleCard/IBusinessRuleCard";
 import { EValueHowToSetUp } from "../../../../businessRules/enums/EValueHowToSetUp";
-import { BusinessRuleViewWithGroup } from "src/businessRulesWithGroup/BusinessRuleView";
+import { BusinessRuleViewWithGroup } from "../../../../businessRulesWithGroup/BusinessRuleView";
 import { BusinessRuleCardWithGroup } from "..";
 
 const meta: Meta<typeof BusinessRuleCardWithGroup> = {

@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
-import { IRuleDecision } from "@isettingkit/input";
+import { IRuleDecision, IValue } from "@isettingkit/input";
 import { sortDisplayDataSwitchPlaces } from "../helper/utils/sortDisplayDataSwitchPlaces";
 import { sortDisplayDataSampleSwitchPlaces } from "../helper/utils/sortDisplayDataSampleSwitchPlaces";
 import { IRulesFormTextValues } from "../types/Forms/IRulesFormTextValues";
@@ -11,9 +12,9 @@ interface IBusinessRulesController {
   controls?: boolean;
   customTitleContentAddCard?: string;
   customMessageEmptyDecisions?: string;
-  initialDecisions: IRuleDecision[];
+  initialDecisions: IRuleDecision[] | any;
   textValues: IRulesFormTextValues;
-  decisionTemplate: IRuleDecision;
+  decisionTemplate: IRuleDecision | any;
   loading?: boolean;
   terms?: boolean;
 }
@@ -32,8 +33,8 @@ const BusinessRulesController = ({
     useState<IRuleDecision | null>(null);
    
   const [decisions, setDecisions] = useState<IRuleDecision[]>(
-    initialDecisions.map((decision) => (
-       console.log('decision.conditionsThatEstablishesTheDecision', decision.conditionGroups),{
+    initialDecisions.map((decision: { value: string | number | IValue | string[] | undefined; conditionGroups: { conditionsThatEstablishesTheDecision: any[]; }[]; }) => (
+      {
       ...decision,
       value: parseRangeFromString(decision.value),
       conditionsThatEstablishesTheDecision:
@@ -54,7 +55,7 @@ const BusinessRulesController = ({
     setSelectedDecision(null);
   };
 
-  const handleSubmitForm = (dataDecision: IRuleDecision) => {
+  const handleSubmitForm = (dataDecision: IRuleDecision | any) => {
     const isEditing = selectedDecision !== null;
 
     const newDecision = isEditing
@@ -68,10 +69,12 @@ const BusinessRulesController = ({
           decisionId: `Decisión ${decisions.length + 1}`,
           conditions:
             decisionTemplate.conditionGroups.conditionsThatEstablishesTheDecision?.map(
-              (conditionTemplate, index) => ({
+              (conditionTemplate: { value: any; }, index: string | number) => (console.log('onSubmit: '),{
                 ...conditionTemplate,
+                conditionDataType: "alphabetical",
+                howToSetTheCondition: "EqualTo",
                 value:
-                  dataDecision.conditionGroups[0].conditionsThatEstablishesTheDecision?.[index]
+                  dataDecision.conditionGroups.conditionsThatEstablishesTheDecision?.[index]
                     ?.value ?? conditionTemplate.value,
               }),
             ) ?? [],

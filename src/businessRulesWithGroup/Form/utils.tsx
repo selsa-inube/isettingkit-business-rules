@@ -13,16 +13,63 @@ const hasContent = (v: any) =>
   (typeof v !== "string" || v.trim() !== "") &&
   (!Array.isArray(v) || v.length > 0);
 
+const extractConditionsFromFormik = (
+  values: any,
+  incomingConditions: Array<any>,
+) => {
+  console.log('incomingConditions: ',incomingConditions);
+  const flatPairs =
+    Object.entries(values?.conditionsThatEstablishesTheDecision ?? {})
+      .filter(([, v]) => hasContent(v))
+      .map(([conditionName, value]) => ({ conditionName, value }));
+
+  let groupedPairs: Array<{ conditionName?: string; value: any }> = [];
+  const cg = values?.conditionGroups?.conditionsThatEstablishesTheDecision;
+
+  if (Array.isArray(cg)) {
+    groupedPairs = cg
+      .filter((c) => hasContent(c?.value))
+      .map((c) => ({ conditionName: c?.conditionName, value: c?.value }));
+  } else if (cg && typeof cg === "object") {
+    groupedPairs = Object.entries(cg)
+      .filter(([, v]) => hasContent(v))
+      .map(([conditionName, value]) => ({ conditionName, value }));
+  }
+
+  const collected = flatPairs.length ? flatPairs : groupedPairs;
+
+  const byName = new Map(
+    (incomingConditions ?? []).map((c) => [c?.conditionName, c]),
+  );
+
+  return collected.map((c, idx) => {
+    const name =
+      c.conditionName ??
+      incomingConditions?.[idx]?.conditionName ??
+      undefined;
+
+    const template =
+      (name && byName.get(name)) ??
+      incomingConditions?.[idx] ??
+      {};
+
+    return {
+      ...template,
+      ...(name ? { conditionName: name } : {}),
+      value: c.value,
+    };
+  });
+};
+
 function useRulesFormUtilsWithGroup({
   decision,
   onSubmitEvent,
   textValues,
 }: IUseRulesFormUtils & { textValues: IRulesForm["textValues"] }) {
   const incomingConditions =
-    decision.conditionGroups?.conditionsThatEstablishesTheDecision ?? [];
+    decision.conditionGroups[0]?.conditionsThatEstablishesTheDecision ?? [];
 
-  // Build initial map for formik
-  const seededConditionsMap = incomingConditions.reduce((acc, c) => {
+  const seededConditionsMap = incomingConditions.reduce((acc: { [x: string]: any; }, c: { value: any; conditionName: string | number; }) => {
     if (hasContent(c.value)) acc[c.conditionName] = c.value;
     return acc;
   }, {} as Record<string, any>);
@@ -38,6 +85,10 @@ function useRulesFormUtilsWithGroup({
     validUntil: decision.validUntil || "",
     toggleNone: !seededHasAny,
     conditionsThatEstablishesTheDecision: seededConditionsMap,
+    conditionGroups: {
+      ConditionGroupId: decision.conditionGroups?.ConditionGroupId ?? "group-primary",
+      conditionsThatEstablishesTheDecision: incomingConditions,
+    },
     checkClosed: false,
     terms: true,
   };
@@ -55,15 +106,7 @@ function useRulesFormUtilsWithGroup({
         formik.values.decisionDataType,
       ).schema;
     }),
-    conditionsThatEstablishesTheDecision: lazy((_value, ctx) => {
-      const parent = ctx.parent ?? {};
-      const toggleNone =
-        parent?.toggleNone &&
-        Object.keys(parent.conditionsThatEstablishesTheDecision || {}).length > 0;
-
-      if (toggleNone) return object().shape({});
-      return object().shape({});
-    }),
+    conditionsThatEstablishesTheDecision: object().shape({}),
   };
 
   if (textValues.terms) {
@@ -96,17 +139,13 @@ function useRulesFormUtilsWithGroup({
     validationSchema,
     validateOnBlur: true,
     onSubmit: (values) => {
-      // 🔹 FIXED: Build grouped conditions directly from formik values
-      const mappedConditions = Object.entries(
-        values.conditionsThatEstablishesTheDecision,
-      )
-        .filter(([_, v]) => hasContent(v))
-        .map(([name, v]) => {
-          const tpl = incomingConditions.find(
-            (c) => c.conditionName === name,
-          ) ?? { conditionName: name };
-          return { ...tpl, value: v };
-        });
+      console.log('onSubmit: ',values, ' - ',decision.conditionGroups, ' - incoming ', incomingConditions);
+      const ConditionGroupId =
+        decision.conditionGroups?.ConditionGroupId ?? "group-primary";
+
+      const grouped = values.toggleNone
+        ? []
+        : extractConditionsFromFormik(values, incomingConditions);
 
       const updatedDecision: IRuleDecision = {
         ...decision,
@@ -117,36 +156,29 @@ function useRulesFormUtilsWithGroup({
         effectiveFrom: values.effectiveFrom,
         validUntil: values.validUntil,
         conditionGroups: {
-          ConditionGroupId:
-            decision.conditionGroups[0]?.ConditionGroupId ?? "group-primary",
-          conditionsThatEstablishesTheDecision: values.toggleNone
-            ? []
-            : mappedConditions,
+          ConditionGroupId,
+          conditionsThatEstablishesTheDecision: grouped,
         },
       };
-
-      console.log("🚀 Built grouped decision:", updatedDecision);
       onSubmitEvent!(updatedDecision);
     },
   }) as any;
 
   const handleToggleNoneChange = (isNoneSelected: boolean) => {
     formik.setFieldValue("toggleNone", isNoneSelected);
-    incomingConditions.forEach((condition) => {
+
+    incomingConditions.forEach((condition: any) => {
       if (isNoneSelected) {
         formik.setFieldValue(
           `conditionsThatEstablishesTheDecision.${condition.conditionName}`,
           undefined,
         );
       } else {
-        if (
-          formik.values.conditionsThatEstablishesTheDecision[
-            condition.conditionName
-          ] === undefined
-        ) {
+        const cur =
+          formik.values.conditionsThatEstablishesTheDecision[condition.conditionName];
+        if (cur === undefined) {
           const def =
-            condition.howToSetTheCondition ===
-            EValueHowToSetUp.LIST_OF_VALUES_MULTI
+            condition.howToSetTheCondition === EValueHowToSetUp.LIST_OF_VALUES_MULTI
               ? []
               : "";
           formik.setFieldValue(

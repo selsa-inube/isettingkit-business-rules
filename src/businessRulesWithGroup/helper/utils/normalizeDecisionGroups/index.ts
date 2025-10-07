@@ -1,28 +1,48 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IRuleDecision } from "@isettingkit/input";
 
 const normalizeDecisionGroups = (
-  decision: IRuleDecision,
+  decision: IRuleDecision | any,
   defaultGroupId = "group-primary",
+  preserveIncomingShape = true, // set false if you always want an object shape
 ): IRuleDecision => {
-  const legacy = decision.conditionsThatEstablishesTheDecision ?? [];
+  // Legacy flat array (older payloads)
+  const legacy = (decision as any).conditionsThatEstablishesTheDecision ?? [];
+
+  // Support both array/object shapes for conditionGroups
+  const incomingCg = (decision as any).conditionGroups;
+  const primaryCg = Array.isArray(incomingCg) ? incomingCg[0] : incomingCg;
 
   const groupId =
-    decision.conditionGroups?.ConditionGroupId ?? defaultGroupId;
+    primaryCg?.ConditionGroupId ?? defaultGroupId;
 
-  const grouped = decision.conditionGroups?.conditionsThatEstablishesTheDecision ?? [];
+  const grouped =
+    primaryCg?.conditionsThatEstablishesTheDecision ?? [];
 
-  const merged =
-    (grouped?.length ? grouped : legacy) ?? [];
+  // Prefer grouped if present; otherwise fallback to legacy flat
+  const merged = (grouped && grouped.length ? grouped : legacy) ?? [];
 
-  const { conditionsThatEstablishesTheDecision, ...rest } = decision as any;
-  console.log('normalizeDecisions', decision.conditionGroups )
+  // Build a clean base object without legacy keys (no unused var)
+  const rest: any = { ...(decision as any) };
+  delete rest.conditionsThatEstablishesTheDecision;
+
+  // If you want to also drop incoming conditionGroups before overwriting:
+  // delete rest.conditionGroups;
+
+  const normalizedGroup = {
+    ConditionGroupId: groupId,
+    conditionsThatEstablishesTheDecision: merged,
+  };
+
+  const nextConditionGroups =
+    preserveIncomingShape && Array.isArray(incomingCg)
+      ? [normalizedGroup]
+      : normalizedGroup;
+
   return {
     ...rest,
-    conditionGroups: {
-      ConditionGroupId: groupId,
-      conditionsThatEstablishesTheDecision: merged,
-    },
-  };
+    conditionGroups: nextConditionGroups,
+  } as IRuleDecision;
 };
 
 export { normalizeDecisionGroups };

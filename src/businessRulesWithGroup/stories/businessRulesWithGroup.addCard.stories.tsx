@@ -37,7 +37,7 @@ const sampleDecisions: any[] = [
             descriptionUse: "Line of credit.",
             conditionDataType: ValueDataType.ALPHABETICAL,
             howToSetTheCondition: EValueHowToSetUp.EQUAL,
-            value: "credito 1",
+            value: "Linea de credito numero 1",
             i18n: {
               es: "Línea de crédito",
             },
@@ -58,77 +58,78 @@ const decisionTemplate: any = {
   value: "",
   effectiveFrom: "",
   validUntil: "",
-  conditionGroups: [  {
-    ConditionGroupId: "group-primary",
-    conditionsThatEstablishesTheDecision: [
-      {
-        labelName: "Line of credit",
-        conditionName: "LineOfCredit",
-        descriptionUse: "Line of credit.",
-        conditionDataType: ValueDataType.ALPHABETICAL,
-        howToSetTheCondition: EValueHowToSetUp.EQUAL,
-        value: "",
-        i18n: {
-          es: "Línea de crédito",
+  conditionGroups: [
+    {
+      ConditionGroupId: "group-primary",
+      conditionsThatEstablishesTheDecision: [
+        {
+          labelName: "Line of credit",
+          conditionName: "LineOfCredit",
+          descriptionUse: "Line of credit.",
+          conditionDataType: ValueDataType.ALPHABETICAL,
+          howToSetTheCondition: EValueHowToSetUp.EQUAL,
+          value: "",
+          i18n: {
+            es: "Línea de crédito",
+          },
         },
-      },
-      {
-        labelName: "Money Destination",
-        conditionName: "MoneyDestination",
-        descriptionUse: "Money Destination.",
-        conditionDataType: ValueDataType.ALPHABETICAL,
-        howToSetTheCondition: EValueHowToSetUp.EQUAL,
-        value: "",
-        i18n: {
-          es: "Destino de dinero",
+        {
+          labelName: "Money Destination",
+          conditionName: "MoneyDestination",
+          descriptionUse: "Money Destination.",
+          conditionDataType: ValueDataType.ALPHABETICAL,
+          howToSetTheCondition: EValueHowToSetUp.EQUAL,
+          value: "",
+          i18n: {
+            es: "Destino de dinero",
+          },
         },
-      },
-      {
-        labelName: "Loan amount",
-        conditionName: "LoanAmount",
-        descriptionUse: "Loan amount",
-        conditionDataType: ValueDataType.MONETARY,
-        howToSetTheCondition: EValueHowToSetUp.RANGE,
-        value: "",
-        i18n: {
-          es: "Monto del préstamo",
+        {
+          labelName: "Loan amount",
+          conditionName: "LoanAmount",
+          descriptionUse: "Loan amount",
+          conditionDataType: ValueDataType.MONETARY,
+          howToSetTheCondition: EValueHowToSetUp.RANGE,
+          value: "",
+          i18n: {
+            es: "Monto del préstamo",
+          },
         },
-      },
-      {
-        labelName: "Primary Income Type.",
-        conditionName: "PrimaryIncomeType",
-        descriptionUse: "Primary income type.",
-        conditionDataType: ValueDataType.ALPHABETICAL,
-        howToSetTheCondition: EValueHowToSetUp.RANGE,
-        value: "",
-        i18n: {
-          es: "Tipo de fuente de ingreso primaria",
+        {
+          labelName: "Primary Income Type.",
+          conditionName: "PrimaryIncomeType",
+          descriptionUse: "Primary income type.",
+          conditionDataType: ValueDataType.ALPHABETICAL,
+          howToSetTheCondition: EValueHowToSetUp.RANGE,
+          value: "",
+          i18n: {
+            es: "Tipo de fuente de ingreso primaria",
+          },
         },
-      },
-      {
-        labelName: "Client Type",
-        conditionName: "ClientType",
-        descriptionUse: "Client Type.",
-        conditionDataType: ValueDataType.ALPHABETICAL,
-        howToSetTheCondition: EValueHowToSetUp.EQUAL,
-        value: "",
-        i18n: {
-          es: "Tipo de cliente",
+        {
+          labelName: "Client Type",
+          conditionName: "ClientType",
+          descriptionUse: "Client Type.",
+          conditionDataType: ValueDataType.ALPHABETICAL,
+          howToSetTheCondition: EValueHowToSetUp.EQUAL,
+          value: "",
+          i18n: {
+            es: "Tipo de cliente",
+          },
         },
-      },
-      {
-        labelName: "Loan Term",
-        conditionName: "LoanTerm",
-        descriptionUse: "Loan Term.",
-        conditionDataType: ValueDataType.NUMBER,
-        howToSetTheCondition: EValueHowToSetUp.RANGE,
-        value: "",
-        i18n: {
-          es: "Plazo del préstamo",
+        {
+          labelName: "Loan Term",
+          conditionName: "LoanTerm",
+          descriptionUse: "Loan Term.",
+          conditionDataType: ValueDataType.NUMBER,
+          howToSetTheCondition: EValueHowToSetUp.RANGE,
+          value: "",
+          i18n: {
+            es: "Plazo del préstamo",
+          },
         },
-      },
-    ],
-  },]
+      ],
+    },]
   ,
 
   i18n: {
