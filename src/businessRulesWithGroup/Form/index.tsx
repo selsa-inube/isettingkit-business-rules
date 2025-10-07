@@ -21,7 +21,7 @@ const RulesFormWithGroup = (props: IRulesForm) => {
   };
 
   const visibleConditions =
-    decision.conditionGroups?.conditionsThatEstablishesTheDecision?.filter(
+    decision.conditionGroups[0]?.conditionsThatEstablishesTheDecision?.filter(
       (condition: { hidden: any }) => !condition.hidden,
     ) || [];
 
@@ -53,16 +53,23 @@ const RulesFormWithGroup = (props: IRulesForm) => {
           false,
           false,
         );
+        const allConditionsTouched = Object.keys(formik.touched)
+          .filter(key => key.startsWith('conditionsThatEstablishesTheDecision.'))
+          .some(key => formik.touched[key] === true);
+          
+        if (!allConditionsTouched) {
+          handleToggleNoneChange(true);
+        }
       } else {
         const defaultValue = isMulti ? [] : "";
+        handleToggleNoneChange(false);
         formik.setFieldValue(
           `conditionsThatEstablishesTheDecision.${conditionName}`,
           defaultValue,
         );
       }
     };
-  console.log("decision", decision, formik);
-  console.log("visibleConditions", visibleConditions);
+  
   return (
     <RulesFormUI
       formik={formik}

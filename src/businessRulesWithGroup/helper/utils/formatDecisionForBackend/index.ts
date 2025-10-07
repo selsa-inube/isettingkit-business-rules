@@ -36,11 +36,10 @@ const formatDecisionForBackend = (props: {
         return {
           ...template.conditionsThatEstablishesTheDecision?.[index],
           ...incomingCondition,
-          value: formatValue(val),
+          value: formatValue(val)
         };
       })
       .filter(Boolean) ?? [];
-
   return {
     ...template,
     ...decision,

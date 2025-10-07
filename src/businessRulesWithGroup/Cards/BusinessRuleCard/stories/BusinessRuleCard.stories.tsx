@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { parameters, props } from "./props";
-import { BusinessRuleCard } from "..";
+
 
 import {
   IRuleDecision,
@@ -10,19 +10,20 @@ import {
 } from "@isettingkit/input";
 import { IBusinessRuleCard } from "../../../../businessRules/types/Cards/BusinessRuleCard/IBusinessRuleCard";
 import { EValueHowToSetUp } from "../../../../businessRules/enums/EValueHowToSetUp";
-import { BusinessRuleViewWithGroup } from "src/businessRulesWithGroup/BusinessRuleView";
+import { BusinessRuleViewWithGroup } from "../../../../businessRulesWithGroup/BusinessRuleView";
+import { BusinessRuleCardWithGroup } from "..";
 
-const meta: Meta<typeof BusinessRuleCard> = {
+const meta: Meta<typeof BusinessRuleCardWithGroup> = {
   title: "components/BusinessRules/BusinessRuleCardWithGroup",
-  component: BusinessRuleCard,
+  component: BusinessRuleCardWithGroup,
   parameters,
   argTypes: props,
 };
 
-type Story = StoryObj<typeof BusinessRuleCard>;
+type Story = StoryObj<typeof BusinessRuleCardWithGroup>;
 
 export const Default: Story = (args: IBusinessRuleCard) => (
-  <BusinessRuleCard {...args} />
+  <BusinessRuleCardWithGroup {...args} />
 );
 Default.args = {
   children: (
@@ -108,7 +109,7 @@ const getData = (): IRuleDecision => {
 };
 
 const Container: Story = (args: IBusinessRuleCard) => (
-  <BusinessRuleCard {...args} />
+  <BusinessRuleCardWithGroup {...args} />
 );
 Container.args = {
   children: (

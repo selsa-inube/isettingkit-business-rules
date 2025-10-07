@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Toggle, Text, Stack } from "@inubekit/inubekit";
 import { IToggleOption } from "../../../businessRules/types/Forms/IToggleOption";
 
@@ -18,10 +18,6 @@ const ToggleOption = (props: IToggleOption) => {
     handleToggleChange(e);
   };
 
-  useEffect(() => {
-    setToogleCheck(checked);
-  }, [checked]);
-
   return (
     <>
       <Stack>
@@ -33,7 +29,7 @@ const ToggleOption = (props: IToggleOption) => {
           size="small"
           value={valueToggle}
         >
-          <Text size="medium" type="label" weight="bold">
+          <Text size="medium" type="label" weight="bold" as="span">
             {labelToggle}
           </Text>
         </Toggle>

@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
-import { IRuleDecision } from "@isettingkit/input";
+import { IRuleDecision, IValue } from "@isettingkit/input";
 import { sortDisplayDataSwitchPlaces } from "../helper/utils/sortDisplayDataSwitchPlaces";
 import { sortDisplayDataSampleSwitchPlaces } from "../helper/utils/sortDisplayDataSampleSwitchPlaces";
 import { IRulesFormTextValues } from "../types/Forms/IRulesFormTextValues";
@@ -11,9 +12,9 @@ interface IBusinessRulesController {
   controls?: boolean;
   customTitleContentAddCard?: string;
   customMessageEmptyDecisions?: string;
-  initialDecisions: IRuleDecision[];
+  initialDecisions: IRuleDecision[] | any;
   textValues: IRulesFormTextValues;
-  decisionTemplate: IRuleDecision;
+  decisionTemplate: IRuleDecision | any;
   loading?: boolean;
   terms?: boolean;
 }
@@ -30,12 +31,14 @@ const BusinessRulesController = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDecision, setSelectedDecision] =
     useState<IRuleDecision | null>(null);
+   
   const [decisions, setDecisions] = useState<IRuleDecision[]>(
-    initialDecisions.map((decision) => ({
+    initialDecisions.map((decision: { value: string | number | IValue | string[] | undefined; conditionGroups: { conditionsThatEstablishesTheDecision: any[]; }[]; }) => (
+      {
       ...decision,
       value: parseRangeFromString(decision.value),
       conditionsThatEstablishesTheDecision:
-        decision.conditionsThatEstablishesTheDecision?.map((condition) => ({
+        decision.conditionGroups[0].conditionsThatEstablishesTheDecision?.map((condition) => (console.log('condition.value: ',condition),{
           ...condition,
           value: parseRangeFromString(condition.value),
         })),
@@ -52,7 +55,7 @@ const BusinessRulesController = ({
     setSelectedDecision(null);
   };
 
-  const handleSubmitForm = (dataDecision: IRuleDecision) => {
+  const handleSubmitForm = (dataDecision: IRuleDecision | any) => {
     const isEditing = selectedDecision !== null;
 
     const newDecision = isEditing
@@ -65,11 +68,13 @@ const BusinessRulesController = ({
           ...dataDecision,
           decisionId: `Decisión ${decisions.length + 1}`,
           conditions:
-            decisionTemplate.conditionsThatEstablishesTheDecision?.map(
-              (conditionTemplate, index) => ({
+            decisionTemplate.conditionGroups.conditionsThatEstablishesTheDecision?.map(
+              (conditionTemplate: { value: any; }, index: string | number) => (console.log('onSubmit: '),{
                 ...conditionTemplate,
+                conditionDataType: "alphabetical",
+                howToSetTheCondition: "EqualTo",
                 value:
-                  dataDecision.conditionsThatEstablishesTheDecision?.[index]
+                  dataDecision.conditionGroups.conditionsThatEstablishesTheDecision?.[index]
                     ?.value ?? conditionTemplate.value,
               }),
             ) ?? [],

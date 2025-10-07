@@ -3,7 +3,7 @@ import { Divider, Stack, Icon } from "@inubekit/inubekit";
 import { StyledCard } from "./styles";
 import { IBusinessRuleCard } from "../../../businessRules/types/Cards/BusinessRuleCard/IBusinessRuleCard";
 
-const BusinessRuleCard = (props: IBusinessRuleCard) => {
+const BusinessRuleCardWithGroup = (props: IBusinessRuleCard) => {
   const { children, controls = true, handleDelete, id } = props;
   return (
     <StyledCard>
@@ -30,4 +30,4 @@ const BusinessRuleCard = (props: IBusinessRuleCard) => {
   );
 };
 
-export { BusinessRuleCard };
+export { BusinessRuleCardWithGroup };

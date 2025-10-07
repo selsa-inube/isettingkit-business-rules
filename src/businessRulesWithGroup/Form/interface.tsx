@@ -70,8 +70,7 @@ const RulesFormUI = (props: IRulesFormUI) => {
                     labelToggle={condition.labelName}
                     checked={
                       !formik.values.toggleNone &&
-                      formik.values.conditionGroups[0]
-                        .conditionsThatEstablishesTheDecision[
+                      formik.values.conditionsThatEstablishesTheDecision?.[
                         condition.conditionName
                       ] !== undefined
                     }
