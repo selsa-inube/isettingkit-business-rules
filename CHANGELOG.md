@@ -1,3 +1,16 @@
+# v2.1.0 (Tue Oct 07 2025)
+
+#### 🚀 Enhancement
+
+- Normalize conditionGroups shape, merge condition values, and refactor validation to fix missing first condition & lints [#4](https://github.com/selsa-inube/isettingkit-business-rules/pull/4) ([@cmarin001](https://github.com/cmarin001) dpinilla@sistemasenlinea.com)
+
+#### Authors: 2
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+- Diego Pinilla (dpinilla@sistemasenlinea.com)
+
+---
+
 # v2.0.8 (Fri Oct 03 2025)
 
 #### ⚠️ Pushed to `main`
