@@ -18,10 +18,6 @@ const ToggleOption = (props: IToggleOption) => {
     handleToggleChange(e);
   };
 
-  useEffect(() => {
-    setToogleCheck(checked);
-  }, [checked]);
-
   return (
     <>
       <Stack>
