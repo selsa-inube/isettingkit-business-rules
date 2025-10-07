@@ -17,7 +17,6 @@ const extractConditionsFromFormik = (
   values: any,
   incomingConditions: Array<any>,
 ) => {
-  console.log('incomingConditions: ',incomingConditions);
   const flatPairs =
     Object.entries(values?.conditionsThatEstablishesTheDecision ?? {})
       .filter(([, v]) => hasContent(v))
@@ -139,7 +138,6 @@ function useRulesFormUtilsWithGroup({
     validationSchema,
     validateOnBlur: true,
     onSubmit: (values) => {
-      console.log('onSubmit: ',values, ' - ',decision.conditionGroups, ' - incoming ', incomingConditions);
       const ConditionGroupId =
         decision.conditionGroups?.ConditionGroupId ?? "group-primary";
 

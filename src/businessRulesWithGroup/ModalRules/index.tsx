@@ -17,7 +17,7 @@ const ModalRules = (props: IModalRules) => {
   const smallScreen = useMediaQuery("(max-width: 400px)");
 
   return createPortal(
-    <StyledContainer smallScreen={smallScreen}>
+    <StyledContainer $smallScreen={smallScreen}>
       <Blanket>
         <StyledModal>
           <Stack direction="column" gap="24px">
