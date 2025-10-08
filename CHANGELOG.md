@@ -1,3 +1,15 @@
+# v2.1.1 (Wed Oct 08 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: adjust controls in order to allow to remove them ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.1.0 (Tue Oct 07 2025)
 
 #### 🚀 Enhancement
