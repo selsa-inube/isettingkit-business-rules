@@ -3,6 +3,7 @@ import { IRuleDecision } from "@isettingkit/input";
 import { IBusinessRuleView } from "..";
 
 interface IBusinessRuleViewUI {
+  controls: boolean;
   conditionsAlignment: IStackJustifyContent;
   decision: IBusinessRuleView["decision"];
   decisionDateElement?: {

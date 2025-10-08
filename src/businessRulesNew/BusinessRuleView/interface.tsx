@@ -28,6 +28,7 @@ import {
 
 const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
   const {
+    controls,
     conditionsAlignment,
     decision,
     decisionMapper,
@@ -75,26 +76,28 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
               </StyledDecisionContainer>
             </Stack>
             <Stack gap="12px">
-              <Icon
-                appearance="primary"
-                icon={<MdOutlineCreate />}
-                size="24px"
-                cursorHover
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onEdit?.();
-                }}
-              />
-              <Icon
-                appearance="danger"
-                icon={<MdOutlineDelete />}
-                size="24px"
-                cursorHover
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDelete?.();
-                }}
-              />
+              {controls && (
+                <>
+                  <Icon
+                    appearance="primary"
+                    icon={<MdOutlineCreate />}
+                    size="24px"
+                    cursorHover
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEdit?.();
+                    }} />
+                  <Icon
+                    appearance="danger"
+                    icon={<MdOutlineDelete />}
+                    size="24px"
+                    cursorHover
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete?.();
+                    }} />
+                </>
+              )}
               <Icon
                 appearance="dark"
                 icon={isOpen ? <MdExpandLess /> : <MdExpandMore />}

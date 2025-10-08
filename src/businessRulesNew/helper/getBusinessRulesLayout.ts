@@ -30,7 +30,7 @@ const getBusinessRulesLayoutNew = (props: IGetBusinessRulesLayout) => {
         renderCardNew({
           type: "decision",
           decision,
-          controls: isOpenFor ? isOpenFor(index) : false,
+          controls: controls,
           customTitleContentAddCard,
           loading,
           handleOpenModal,

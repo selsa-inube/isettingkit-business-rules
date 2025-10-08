@@ -20,6 +20,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
     onToggle,
     onEdit,
     onDelete,
+    controls = true,
   } = props;
 
   const hasEffectiveFrom = Boolean(decision?.effectiveFrom);
@@ -86,6 +87,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
   return (
     <BusinessRuleViewUI
       conditionsAlignment={conditionsAlignment}
+      controls={controls}
       decision={decision}
       decisionMapper={decisionMapper}
       loading={loadingValidation}

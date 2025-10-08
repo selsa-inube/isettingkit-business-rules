@@ -29,9 +29,9 @@ const renderDecisionCard = (props: IRenderCard) => {
           handleView={() =>
             handleOpenModal ? handleOpenModal(decision) : null
           }
-          controls={controls}
         >
           <BusinessRuleViewNew
+            controls={controls}
             decision={decision}
             textValues={textValues}
             position={index}
