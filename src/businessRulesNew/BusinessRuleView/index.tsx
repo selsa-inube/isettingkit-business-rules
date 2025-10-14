@@ -25,21 +25,16 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
   const hasEffectiveFrom = Boolean(decision?.effectiveFrom);
   const hasValidUntil = Boolean(decision?.validUntil);
-
+  console.log("ascas", decision);
   const effectiveFromRenderer = hasEffectiveFrom
     ? {
         element: {
           labelName: textValues?.effectiveFrom,
-          value: String(decision!.effectiveFrom),
+          value: decision!.effectiveFrom,
           howToSetTheDecision: ValueHowToSetUp.EQUAL,
           decisionDataType: ValueDataType.DATE,
         },
-        valueData: strategyFactoryHandlerManager({
-          labelName: textValues?.effectiveFrom,
-          value: String(decision!.effectiveFrom),
-          howToSetTheDecision: ValueHowToSetUp.EQUAL,
-          decisionDataType: ValueDataType.DATE,
-        }),
+        valueData: decision!.effectiveFrom,
       }
     : null;
 
@@ -47,13 +42,19 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
     ? {
         element: {
           labelName: textValues?.validUntil,
-          value: String(decision!.validUntil),
+          value:
+            decision!.validUntil instanceof Date
+              ? decision!.validUntil.toISOString()
+              : decision!.validUntil,
           howToSetTheDecision: ValueHowToSetUp.EQUAL,
           decisionDataType: ValueDataType.DATE,
         },
         valueData: strategyFactoryHandlerManager({
           labelName: textValues?.validUntil,
-          value: String(decision!.validUntil),
+          value:
+            decision!.validUntil instanceof Date
+              ? decision!.validUntil.toISOString()
+              : decision!.validUntil,
           howToSetTheDecision: ValueHowToSetUp.EQUAL,
           decisionDataType: ValueDataType.DATE,
         }),
@@ -77,7 +78,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
   const skeleton = Array.from({ length: 5 });
   const loadingValidation = Boolean(
-    !loading && decision && textValues && decisionMapper,
+    !loading && decision && textValues && decisionMapper
   );
 
   const conditionsAlignment =
