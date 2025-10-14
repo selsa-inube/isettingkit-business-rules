@@ -1,3 +1,15 @@
+# v2.1.4 (Tue Oct 14 2025)
+
+#### 🐛 Bug Fix
+
+- fix: adjust use of floats in strategyFactory [#7](https://github.com/selsa-inube/isettingkit-business-rules/pull/7) ([@heber59](https://github.com/heber59))
+
+#### Authors: 1
+
+- Heber  Alvarez  ([@heber59](https://github.com/heber59))
+
+---
+
 # v2.1.3 (Tue Oct 14 2025)
 
 #### 🐛 Bug Fix
