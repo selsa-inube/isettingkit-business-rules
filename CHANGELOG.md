@@ -1,3 +1,15 @@
+# v2.1.2 (Tue Oct 14 2025)
+
+#### 🐛 Bug Fix
+
+- fix: adjust when strategy is string or object functionality [#5](https://github.com/selsa-inube/isettingkit-business-rules/pull/5) ([@heber59](https://github.com/heber59))
+
+#### Authors: 1
+
+- Heber  Alvarez  ([@heber59](https://github.com/heber59))
+
+---
+
 # v2.1.1 (Wed Oct 08 2025)
 
 #### ⚠️ Pushed to `main`
