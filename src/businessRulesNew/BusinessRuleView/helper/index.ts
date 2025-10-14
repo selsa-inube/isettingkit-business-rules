@@ -5,15 +5,27 @@ import { EValueHowToSetUp } from "../../../businessRules/enums/EValueHowToSetUp"
 
 const strategyFactoryHandlerManager = (element: IRuleDecision) => {
   const valueData = element?.value;
-  const isObject =
+
+  if (
+    typeof valueData === "string" &&
+    valueData.startsWith("De ") &&
+    valueData.includes(" a ")
+  ) {
+    return valueData;
+  }
+
+  if (
     typeof valueData === "object" &&
     valueData !== null &&
-    !Array.isArray(valueData);
+    !Array.isArray(valueData)
+  ) {
+    const handler =
+      handlers[element?.howToSetTheDecision as EValueHowToSetUp] ||
+      fallbackHandler;
+    return handler(valueData);
+  }
 
-  const handler =
-    handlers[element?.howToSetTheDecision as EValueHowToSetUp] ||
-    fallbackHandler;
-  return (isObject && handler(valueData)) || valueData || undefined;
+  return valueData || undefined;
 };
 
 export { strategyFactoryHandlerManager };
