@@ -11,6 +11,12 @@ const strategyFactoryHandlerManager = (element: IRuleDecision) => {
     valueData.startsWith("De ") &&
     valueData.includes(" a ")
   ) {
+    const match = valueData.match(/De\s+(\d+)\s+a\s+(\d+)/);
+    if (match) {
+      const from = match[1];
+      const to = match[2];
+      return { from, to };
+    }
     return valueData;
   }
 
