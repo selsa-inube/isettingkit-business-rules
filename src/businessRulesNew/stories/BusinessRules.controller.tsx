@@ -15,8 +15,8 @@ import { getConditionsByGroup } from "../helper/utils/getConditionsByGroup";
 import { mapByGroup } from "../helper/utils/mapByGroup";
 import { Checkpicker } from "../../checkpicker";
 
-import { EValueHowToSetUp } from "../enums/EValueHowToSetUp";
-import { buildEsConditionSentence } from "../utils/buildEsConditionSentence";
+// import { EValueHowToSetUp } from "../enums/EValueHowToSetUp";
+// import { buildEsConditionSentence } from "../utils/buildEsConditionSentence";
 
 interface IBusinessRulesNewController {
   language?: "es" | "en";
@@ -54,70 +54,70 @@ const localizeDecision = (
   return cloned;
 };
 
-const normalizeHowToSet = (raw: unknown): EValueHowToSetUp => {
-  if (typeof raw === "string") {
-    const k = raw.toLowerCase();
-    if (k.includes("equal")) return EValueHowToSetUp.EQUAL;
-    if (k.includes("greater")) return EValueHowToSetUp.GREATER_THAN;
-    if (k.includes("less")) return EValueHowToSetUp.LESS_THAN;
-    if (k.includes("range") || k.includes("between"))
-      return EValueHowToSetUp.RANGE;
-    if (k.includes("multi")) return EValueHowToSetUp.LIST_OF_VALUES_MULTI;
-    if (k.includes("list_of_values") || k.includes("among") || k.includes("in"))
-      return EValueHowToSetUp.LIST_OF_VALUES;
-  }
-  return (raw as EValueHowToSetUp) ?? EValueHowToSetUp.EQUAL;
-};
+// const normalizeHowToSet = (raw: unknown): EValueHowToSetUp => {
+//   if (typeof raw === "string") {
+//     const k = raw.toLowerCase();
+//     if (k.includes("equal")) return EValueHowToSetUp.EQUAL;
+//     if (k.includes("greater")) return EValueHowToSetUp.GREATER_THAN;
+//     if (k.includes("less")) return EValueHowToSetUp.LESS_THAN;
+//     if (k.includes("range") || k.includes("between"))
+//       return EValueHowToSetUp.RANGE;
+//     if (k.includes("multi")) return EValueHowToSetUp.LIST_OF_VALUES_MULTI;
+//     if (k.includes("list_of_values") || k.includes("among") || k.includes("in"))
+//       return EValueHowToSetUp.LIST_OF_VALUES;
+//   }
+//   return (raw as EValueHowToSetUp) ?? EValueHowToSetUp.EQUAL;
+// };
 
-const withConditionSentences = (
-  decision: IRuleDecision,
-  isPrimaryFirst = true,
-): IRuleDecision => {
-  const d: IRuleDecision = JSON.parse(JSON.stringify(decision));
-  const groups = getConditionsByGroup(d) as Record<string, any[]>;
+// const withConditionSentences = (
+//   decision: IRuleDecision,
+//   isPrimaryFirst = true,
+// ): IRuleDecision => {
+//   const d: IRuleDecision = JSON.parse(JSON.stringify(decision));
+//   const groups = getConditionsByGroup(d) as Record<string, any[]>;
 
-  const orderedKeys = [
-    ...Object.keys(groups).filter((k) => k === "group-primary"),
-    ...Object.keys(groups).filter((k) => k !== "group-primary"),
-  ];
+//   const orderedKeys = [
+//     ...Object.keys(groups).filter((k) => k === "group-primary"),
+//     ...Object.keys(groups).filter((k) => k !== "group-primary"),
+//   ];
 
-  let firstUsed = !isPrimaryFirst;
+//   let firstUsed = !isPrimaryFirst;
 
-  const decorated = Object.fromEntries(
-    orderedKeys.map((g) => {
-      const list = groups[g] ?? [];
-      const mapped = list.map((c: any, idx: number) => {
-        const isFirst = !firstUsed && g === "group-primary" && idx === 0;
-        if (isFirst) firstUsed = true;
+//   const decorated = Object.fromEntries(
+//     orderedKeys.map((g) => {
+//       const list = groups[g] ?? [];
+//       const mapped = list.map((c: any, idx: number) => {
+//         const isFirst = !firstUsed && g === "group-primary" && idx === 0;
+//         if (isFirst) firstUsed = true;
 
-        const how = normalizeHowToSet(
-          c.howToSetTheCondition ?? c.valueUse ?? EValueHowToSetUp.EQUAL,
-        );
+//         const how = normalizeHowToSet(
+//           c.howToSetTheCondition ?? c.valueUse ?? EValueHowToSetUp.EQUAL,
+//         );
 
-        const sentence = buildEsConditionSentence({
-          label: c.labelName || "",
-          howToSet: how,
-          isFirst,
-        });
-        console.log("Sentence:", {
-          label: c.labelName,
-          how,
-          isFirst,
-          sentence,
-        });
+//         const sentence = buildEsConditionSentence({
+//           label: c.labelName || "",
+//           howToSet: how,
+//           isFirst,
+//         });
+//         console.log("Sentence:", {
+//           label: c.labelName,
+//           how,
+//           isFirst,
+//           sentence,
+//         });
 
-        return {
-          ...c,
-          labelName: sentence,
-        };
-      });
-      return [g, mapped];
-    }),
-  );
+//         return {
+//           ...c,
+//           labelName: sentence,
+//         };
+//       });
+//       return [g, mapped];
+//     }),
+//   );
 
-  d.conditionsThatEstablishesTheDecision = decorated as any;
-  return d;
-};
+//   d.conditionsThatEstablishesTheDecision = decorated as any;
+//   return d;
+// };
 
 const BusinessRulesNewController = ({
   controls,
@@ -141,7 +141,8 @@ const BusinessRulesNewController = ({
   const [decisions, setDecisions] = useState<any[]>(
     initialDecisions.map((d) => {
       const loc = localizeDecision(d, language);
-      const withSentences = withConditionSentences(loc);
+      // const withSentences = withConditionSentences(loc);
+      const withSentences = loc;
       return {
         ...withSentences,
         value: parseRangeFromString(withSentences.value),
@@ -273,7 +274,8 @@ const BusinessRulesNewController = ({
       labelName: localizeLabel(base, language),
       conditionsThatEstablishesTheDecision: mergedGroups,
     };
-    const decisionWithSentences = withConditionSentences(newDecision);
+    // const decisionWithSentences = withConditionSentences(newDecision);
+    const decisionWithSentences = newDecision;
 
     const backendFormattedDecision = formatDecisionForBackend({
       decision: decisionWithSentences,
@@ -330,7 +332,8 @@ const BusinessRulesNewController = ({
       conditionsThatEstablishesTheDecision: filtered,
     };
 
-    return withConditionSentences(withFiltered as any);
+    // return withConditionSentences(withFiltered as any);
+    return withFiltered as any;
   }, [localizedTemplate, language, selectedIds, removedConditionNames]);
   console.log("filteredDecisionTemplate", filteredDecisionTemplate);
   return (

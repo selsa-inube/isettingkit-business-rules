@@ -22,7 +22,7 @@ const sampleDecisions: any[] = [
     decisionId: "Decisión 1",
     ruleName: "TasaEfectivaAnual",
     labelName: "Tasa Efectiva Anual",
-    decisionDataType: ValueDataType.PERCENTAGE,
+    decisionDataType: ValueDataType.NUMBER,
     value: { from: 4, to: 8 },
     howToSetTheDecision: EValueHowToSetUp.RANGE,
     effectiveFrom: "2024-12-31",

@@ -6,6 +6,8 @@ import { getConditionsByGroup } from "../helper/utils/getConditionsByGroup";
 import { filterByGroup } from "../helper/utils/filterByGroup";
 import React from "react";
 import { IRuleDecision } from "@isettingkit/input";
+import { buildEsConditionSentence } from "../utils/buildEsConditionSentence";
+import { normalizeHowToSet } from "../utils/normalizeHowToSet";
 
 type TTab = { id: string; label: string; isDisabled?: boolean };
 
@@ -82,8 +84,41 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
   const handleTabChange = (id: string) => setActiveTab(id);
 
   const activeGroupKey = groupByTabId[activeTab] ?? "group-primary";
-  const currentConditions = visibleConditionsByGroup[activeGroupKey] ?? [];
-  const visibleConditions = visibleConditionsByGroup["group-primary"] ?? [];
+
+  const visibleConditionsByGroupWithSentences: { [key: string]: any[] } =
+    React.useMemo(() => {
+      const ordered = [
+        ...Object.keys(visibleConditionsByGroup).filter((k) => k === "group-primary"),
+        ...Object.keys(visibleConditionsByGroup).filter((k) => k !== "group-primary"),
+      ];
+
+      let firstUsed = false;
+
+      const entries = ordered.map((g) => {
+        const list = visibleConditionsByGroup[g] ?? [];
+        const decorated = list.map((c: any, idx: number) => {
+          const isFirst = !firstUsed && g === "group-primary" && idx === 0;
+          if (isFirst) firstUsed = true;
+
+          const how = normalizeHowToSet(c.howToSetTheCondition ?? c.valueUse);
+          const sentence = buildEsConditionSentence({
+            label: c.labelName || "",
+            howToSet: how,
+            isFirst,
+          });
+
+          return { ...c, labelName: sentence };
+        });
+        return [g, decorated] as const;
+      });
+
+      return Object.fromEntries(entries);
+    }, [visibleConditionsByGroup]);
+
+  const currentConditions =
+    visibleConditionsByGroupWithSentences[activeGroupKey] ?? [];
+  const visibleConditions =
+    visibleConditionsByGroupWithSentences["group-primary"] ?? [];
 
   const normalizedDecision = {
     decisionDataType: decision.decisionDataType,
@@ -134,11 +169,7 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
   const showConditionsError = formik.submitCount > 0 && !!firstConditionError;
 
   const getDefaultValueFor = (condition: any) => {
-    if (
-      condition?.isMulti ||
-      condition?.multiple ||
-      condition?.valueUse === "Among"
-    ) {
+    if (condition?.isMulti || condition?.multiple || condition?.valueUse === "Among") {
       return [];
     }
     return "";
@@ -160,7 +191,8 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
   };
 
   const handleRedefineCurrentTab = () => {
-    currentConditions.forEach((cond: any) => {
+    const rawCurrent = (conditionsByGroupFull[activeGroupKey] ?? []) as any[];
+    rawCurrent.forEach((cond: any) => {
       const path = `conditionsThatEstablishesTheDecision.${cond.conditionName}`;
       formik.setFieldValue(path, getDefaultValueFor(cond));
       formik.setFieldTouched(path, false, false);
@@ -203,7 +235,7 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
       termStartStatus={termStartStatus}
       textValues={textValues}
       visibleConditions={visibleConditions}
-      visibleConditionsByGroup={visibleConditionsByGroup}
+      visibleConditionsByGroup={visibleConditionsByGroupWithSentences}
       handleToggleNoneChange={handleToggleNoneChange}
       portalId="redefine-confirm-portal"
       showRedefineConfirm={showRedefineConfirm}
