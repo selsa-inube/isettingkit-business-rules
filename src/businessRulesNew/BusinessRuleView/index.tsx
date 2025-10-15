@@ -25,7 +25,6 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
   const hasEffectiveFrom = Boolean(decision?.effectiveFrom);
   const hasValidUntil = Boolean(decision?.validUntil);
-
   const effectiveFromRenderer = hasEffectiveFrom
     ? {
         element: {
@@ -47,13 +46,19 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
     ? {
         element: {
           labelName: textValues?.validUntil,
-          value: String(decision!.validUntil),
+          value:
+            decision!.validUntil instanceof Date
+              ? decision!.validUntil.toISOString()
+              : decision!.validUntil,
           howToSetTheDecision: ValueHowToSetUp.EQUAL,
           decisionDataType: ValueDataType.DATE,
         },
         valueData: strategyFactoryHandlerManager({
           labelName: textValues?.validUntil,
-          value: String(decision!.validUntil),
+          value:
+            decision!.validUntil instanceof Date
+              ? decision!.validUntil.toISOString()
+              : decision!.validUntil,
           howToSetTheDecision: ValueHowToSetUp.EQUAL,
           decisionDataType: ValueDataType.DATE,
         }),
@@ -77,7 +82,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
   const skeleton = Array.from({ length: 5 });
   const loadingValidation = Boolean(
-    !loading && decision && textValues && decisionMapper,
+    !loading && decision && textValues && decisionMapper
   );
 
   const conditionsAlignment =

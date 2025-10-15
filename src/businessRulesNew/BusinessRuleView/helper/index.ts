@@ -18,16 +18,11 @@ const strategyFactoryHandlerManager = (element: IRuleDecision) => {
       if (match) {
         const from = match[1];
         const to = match[2];
-        console.log("🔍 Parseado string a objeto:", {
-          from,
-          to,
-          original: valueData,
-        });
+
         return { from, to };
       }
     }
 
-    // Si no coincide con ningún patrón, retornar original
     return valueData;
   }
 
