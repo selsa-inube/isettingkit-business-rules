@@ -1,3 +1,15 @@
+# v2.1.6 (Wed Oct 15 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: added support for sentences in form ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.1.5 (Wed Oct 15 2025)
 
 #### 🐛 Bug Fix
