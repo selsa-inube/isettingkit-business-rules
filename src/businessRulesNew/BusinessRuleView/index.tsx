@@ -25,16 +25,20 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
   const hasEffectiveFrom = Boolean(decision?.effectiveFrom);
   const hasValidUntil = Boolean(decision?.validUntil);
-  console.log("ascas", decision);
   const effectiveFromRenderer = hasEffectiveFrom
     ? {
         element: {
           labelName: textValues?.effectiveFrom,
-          value: decision!.effectiveFrom,
+          value: String(decision!.effectiveFrom),
           howToSetTheDecision: ValueHowToSetUp.EQUAL,
           decisionDataType: ValueDataType.DATE,
         },
-        valueData: decision!.effectiveFrom,
+        valueData: strategyFactoryHandlerManager({
+          labelName: textValues?.effectiveFrom,
+          value: String(decision!.effectiveFrom),
+          howToSetTheDecision: ValueHowToSetUp.EQUAL,
+          decisionDataType: ValueDataType.DATE,
+        }),
       }
     : null;
 

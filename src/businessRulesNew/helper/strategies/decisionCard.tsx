@@ -16,6 +16,7 @@ const renderDecisionCard = (props: IRenderCard) => {
     isOpen,
     onToggle: handleToggle,
   } = props;
+
   if (!decision) return null;
 
   return (
