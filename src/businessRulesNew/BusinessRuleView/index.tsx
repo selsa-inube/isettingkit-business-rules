@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import React from "react";
 import {
   IRuleDecision,
   ValueDataType,
@@ -9,6 +10,13 @@ import { BusinessRuleViewUI } from "./interface";
 import { strategyFactoryHandlerManager } from "./helper";
 import { getConditionsByGroup } from "../helper/utils/getConditionsByGroup";
 import { filterByGroup } from "../helper/utils/filterByGroup";
+
+type TTab = { id: string; label: string; isDisabled?: boolean };
+
+const labelForGroup = (groupKey: string, indexAlt: number) => {
+  if (groupKey === "group-primary") return "Condición principal";
+  return `Condición alterna N° ${String(indexAlt).padStart(2, "0")}`;
+};
 
 const BusinessRuleViewNew = (props: IBusinessRuleView) => {
   const {
@@ -25,6 +33,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
   const hasEffectiveFrom = Boolean(decision?.effectiveFrom);
   const hasValidUntil = Boolean(decision?.validUntil);
+
   const effectiveFromRenderer = hasEffectiveFrom
     ? {
         element: {
@@ -78,15 +87,50 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
   const byGroup = decision ? getConditionsByGroup(decision) : {};
   const visibleByGroup = filterByGroup(byGroup, (c: any) => !c.hidden);
-  const visibleConditions = Object.values(visibleByGroup).flat();
+
+  const groupKeys = Object.keys(visibleByGroup);
+  const orderedGroupKeys = [
+    ...groupKeys.filter((k) => k === "group-primary"),
+    ...groupKeys.filter((k) => k !== "group-primary"),
+  ];
+
+  const tabIdByGroup: Record<string, string> = {};
+  const groupByTabId: Record<string, string> = {};
+
+  let altIndex = 1;
+  const tabs: TTab[] = orderedGroupKeys.map((groupKey) => {
+    const tabId =
+      groupKey === "group-primary"
+        ? "mainCondition"
+        : `alternateCondition-${altIndex++}`;
+    tabIdByGroup[groupKey] = tabId;
+    groupByTabId[tabId] = groupKey;
+    return {
+      id: tabId,
+      label:
+        groupKey === "group-primary"
+          ? labelForGroup(groupKey, 0)
+          : labelForGroup(groupKey, Number(tabId.split("-").at(-1))),
+      isDisabled: false,
+    };
+  });
+
+  const [activeTab, setActiveTab] = React.useState<string>(
+    tabs[0]?.id ?? "mainCondition",
+  );
+  const handleTabChange = (id: string) => setActiveTab(id);
+  const activeGroupKey = groupByTabId[activeTab] ?? "group-primary";
+
+  const currentConditions = (visibleByGroup[activeGroupKey] ?? []) as any[];
+  const hasMultipleGroups = orderedGroupKeys.length > 1;
 
   const skeleton = Array.from({ length: 5 });
   const loadingValidation = Boolean(
-    !loading && decision && textValues && decisionMapper
+    !loading && decision && textValues && decisionMapper,
   );
 
   const conditionsAlignment =
-    visibleConditions.length < 2 ? "start" : "space-between";
+    currentConditions.length < 2 ? "start" : "space-between";
   const tagLabel = `N° ${String((position ?? 0) + 1).padStart(2, "0")}`;
 
   return (
@@ -98,7 +142,6 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
       loading={loadingValidation}
       skeleton={skeleton}
       textValues={textValues}
-      visibleConditions={visibleConditions}
       tagLabel={tagLabel}
       isOpen={isOpen}
       onToggle={onToggle}
@@ -108,6 +151,11 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
       validUntilRenderer={validUntilRenderer}
       onEdit={onEdit}
       onDelete={onDelete}
+      tabs={tabs}
+      selectedTab={activeTab}
+      onTabChange={handleTabChange}
+      currentConditions={currentConditions}
+      hasMultipleGroups={hasMultipleGroups}
     />
   );
 };

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Divider,
   Stack,
@@ -6,6 +7,7 @@ import {
   Tag,
   Icon,
   SkeletonIcon,
+  Tabs,
 } from "@inubekit/inubekit";
 import {
   DecisionViewConditionRendererNew,
@@ -34,7 +36,6 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
     decisionMapper,
     loading,
     textValues,
-    visibleConditions,
     tagLabel,
     isOpen,
     onToggle,
@@ -44,7 +45,13 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
     validUntilRenderer,
     onEdit,
     onDelete,
+    tabs,
+    selectedTab,
+    onTabChange,
+    currentConditions,
+    hasMultipleGroups,
   } = props;
+
   if (loading) {
     return (
       <Stack direction="column" gap="16px">
@@ -86,7 +93,8 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
                     onClick={(e) => {
                       e.stopPropagation();
                       onEdit?.();
-                    }} />
+                    }}
+                  />
                   <Icon
                     appearance="danger"
                     icon={<MdOutlineDelete />}
@@ -95,7 +103,8 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
                     onClick={(e) => {
                       e.stopPropagation();
                       onDelete?.();
-                    }} />
+                    }}
+                  />
                 </>
               )}
               <Icon
@@ -107,10 +116,13 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
             </Stack>
           </Stack>
         </StyledRecordCardContainer>
+
         {isOpen && (
           <>
             <Divider dashed />
-            <Stack direction="column" gap="12px">
+            {hasMultipleGroups ? (
+              <Tabs tabs={tabs!} selectedTab={selectedTab!} onChange={onTabChange!} />
+            ) : (
               <Text
                 type="label"
                 size="large"
@@ -121,12 +133,15 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
               >
                 {textValues!.factsThatConditionIt}
               </Text>
+            )}
+
+            <Stack direction="column" gap="20px">
               <Stack
                 direction="column"
                 gap="8px"
                 justifyContent={conditionsAlignment}
               >
-                {visibleConditions!.map((condition) => (
+                {currentConditions!.map((condition: any) => (
                   <BorderStack
                     key={condition.conditionName}
                     direction="column"
@@ -144,6 +159,7 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
                     />
                   </BorderStack>
                 ))}
+
                 {hasEffectiveFrom && effectiveFromRenderer && (
                   <BorderStack
                     direction="column"
@@ -155,7 +171,8 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
                       key="effectiveFrom"
                       element={effectiveFromRenderer.element}
                       valueData={
-                        effectiveFromRenderer.valueData as IDecisionViewConditionRenderer["valueData"]
+                        effectiveFromRenderer
+                          .valueData as IDecisionViewConditionRenderer["valueData"]
                       }
                     />
                   </BorderStack>
@@ -172,7 +189,8 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
                       key="validUntil"
                       element={validUntilRenderer.element}
                       valueData={
-                        validUntilRenderer.valueData as IDecisionViewConditionRenderer["valueData"]
+                        validUntilRenderer
+                          .valueData as IDecisionViewConditionRenderer["valueData"]
                       }
                     />
                   </BorderStack>
@@ -185,6 +203,7 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
     );
   }
 
+  // Skeleton
   return (
     <Stack justifyContent="space-between">
       <Stack alignItems="center" gap="8px">

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IStackJustifyContent } from "@inubekit/inubekit";
 import { IRuleDecision } from "@isettingkit/input";
 import { IBusinessRuleView } from "..";
@@ -15,7 +16,7 @@ interface IBusinessRuleViewUI {
   skeleton: unknown[];
   terms?: boolean;
   textValues: IBusinessRuleView["textValues"];
-  visibleConditions: NonNullable<
+  visibleConditions?: NonNullable<
     IBusinessRuleView["decision"]
   >["conditionsThatEstablishesTheDecision"];
   tagLabel: string;
@@ -35,6 +36,11 @@ interface IBusinessRuleViewUI {
   } | null;
   onEdit?: () => void;
   onDelete?: () => void;
+  tabs?: Array<{ id: string; label: string; isDisabled?: boolean }>;
+  selectedTab?: string;
+  onTabChange?: (id: string) => void;
+  currentConditions?: any[];
+  hasMultipleGroups?: boolean;
 }
 
 export type { IBusinessRuleViewUI };
