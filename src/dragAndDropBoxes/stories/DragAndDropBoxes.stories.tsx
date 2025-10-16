@@ -46,6 +46,7 @@ const Default: Story = {
     },
     onMove: (p) => console.log("Controller onMove", p),
     targetInsertMode: "append",
+    locked: false,
   },
 };
 

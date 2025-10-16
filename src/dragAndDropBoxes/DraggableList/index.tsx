@@ -17,12 +17,16 @@ const DraggableList = (props: IDraggableList) => {
     initialItems,
     highlightFirst,
     onMove,
+    locked = false,
   } = props;
 
-  const [parentRef, items] = useDragAndDrop<HTMLUListElement, IClientLabel>(
-    initialItems,
-    { group },
-  );
+  const dummyRef = React.useRef<HTMLUListElement>(null);
+  const dndTuple =
+    locked
+      ? [dummyRef, initialItems] as const
+      : useDragAndDrop<HTMLUListElement, IClientLabel>(initialItems, { group });
+
+  const [parentRef, items] = dndTuple;
 
   const [draggingLabel, setDraggingLabel] = React.useState<IClientLabel | null>(
     null,
@@ -31,6 +35,7 @@ const DraggableList = (props: IDraggableList) => {
   const prevItemsRef = React.useRef<IClientLabel[]>(initialItems);
 
   React.useEffect(() => {
+    if (locked) return;
     const listener = (draggableEvent: Event) => {
       const detail =
         (draggableEvent as CustomEvent<IClientLabel | null>).detail ?? null;
@@ -39,17 +44,19 @@ const DraggableList = (props: IDraggableList) => {
     window.addEventListener(BUS_EVENT, listener as EventListener);
     return () =>
       window.removeEventListener(BUS_EVENT, listener as EventListener);
-  }, []);
+  }, [locked]);
 
   const emitDragging = React.useCallback((label: IClientLabel | null) => {
+    if (locked) return;
     window.dispatchEvent(
       new CustomEvent<IClientLabel | null>(BUS_EVENT, { detail: label }),
     );
-  }, []);
+  }, [locked]);
 
   const handlePointerDownCapture = (
     ev: React.PointerEvent<HTMLUListElement>,
   ) => {
+    if (locked) return;
     const target = ev.target as HTMLElement | null;
     const li = target?.closest?.("li.dnd-item") as HTMLLIElement | null;
     const label = (li?.getAttribute("data-label") as IClientLabel) || null;
@@ -60,11 +67,13 @@ const DraggableList = (props: IDraggableList) => {
   };
 
   const clearDragging = React.useCallback(() => {
+    if (locked) return;
     setDraggingLabel(null);
     emitDragging(null);
-  }, [emitDragging]);
+  }, [emitDragging, locked]);
 
   React.useEffect(() => {
+    if (locked) return;
     const onClear = () => clearDragging();
     window.addEventListener("pointerup", onClear);
     window.addEventListener("blur", onClear);
@@ -72,9 +81,10 @@ const DraggableList = (props: IDraggableList) => {
       window.removeEventListener("pointerup", onClear);
       window.removeEventListener("blur", onClear);
     };
-  }, [clearDragging]);
+  }, [clearDragging, locked]);
 
   React.useEffect(() => {
+    if (locked) return;
     const prev = prevItemsRef.current;
 
     if (items.length !== prev.length) {
@@ -90,7 +100,7 @@ const DraggableList = (props: IDraggableList) => {
     }
 
     prevItemsRef.current = items;
-  }, [items, id, onMove]);
+  }, [items, id, onMove, locked]);
 
   const isEmpty = items.length === 0;
 
@@ -103,10 +113,13 @@ const DraggableList = (props: IDraggableList) => {
     >
       <StyledListContainer
         ref={parentRef}
-        onPointerDownCapture={handlePointerDownCapture}
-        onPointerUpCapture={clearDragging}
-        onPointerCancelCapture={clearDragging}
+        onPointerDownCapture={locked ? undefined : handlePointerDownCapture}
+        onPointerUpCapture={locked ? undefined : clearDragging}
+        onPointerCancelCapture={locked ? undefined : clearDragging}
         $isEmpty={isEmpty}
+        $locked={locked}
+        aria-disabled={locked}
+        data-locked={locked || undefined}
       >
         {isEmpty ? (
           <BorderStack
@@ -122,7 +135,7 @@ const DraggableList = (props: IDraggableList) => {
           </BorderStack>
         ) : (
           items.map((label, idx) => {
-            const isDragging = draggingLabel === label;
+            const isDragging = !locked && draggingLabel === label;
             const isFirst = Boolean(highlightFirst && idx === 0);
             return (
               <StyledOptionList

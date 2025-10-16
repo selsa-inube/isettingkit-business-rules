@@ -3,13 +3,14 @@ import { DraggableList } from "./DraggableList";
 import type { IDragAndDropBoxes } from "./types/IDragAndDropBoxes";
 
 const DragAndDropBoxes = (props: IDragAndDropBoxes) => {
-  const { group = "clients", left, right, onMove } = props;
+  const { group = "clients", left, right, onMove, locked = false } = props;
 
   const handleMove = (payload: {
     item: string;
     from: "left" | "right";
     to: "left" | "right";
   }) => {
+    if (locked) return;
     onMove?.(payload);
   };
 
@@ -27,6 +28,7 @@ const DragAndDropBoxes = (props: IDragAndDropBoxes) => {
         initialItems={left.items}
         legend={left.legend}
         onMove={handleMove}
+        locked={locked}
         emptyMessage={left.emptyMessage}
       />
       <DraggableList
@@ -36,6 +38,7 @@ const DragAndDropBoxes = (props: IDragAndDropBoxes) => {
         initialItems={right.items}
         legend={right.legend}
         onMove={handleMove}
+        locked={locked}
         emptyMessage={right.emptyMessage}
       />
     </Stack>

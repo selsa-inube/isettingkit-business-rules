@@ -18,6 +18,7 @@ interface IDragAndDropBoxesController {
     emptyMessage?: string;
   };
   onMove?: (payload: { item: string; from: TSide; to: TSide }) => void;
+  locked?: boolean;
   targetInsertMode?: "append" | "prepend";
 }
 
@@ -28,6 +29,7 @@ const DragAndDropBoxesController = (props: IDragAndDropBoxesController) => {
     onMove,
     right,
     targetInsertMode = "append",
+    locked = false,
   } = props;
 
   const [leftItems, setLeftItems] = React.useState<string[]>(left.items);
@@ -51,6 +53,7 @@ const DragAndDropBoxesController = (props: IDragAndDropBoxesController) => {
 
   const handleMove = React.useCallback(
     (payload: { item: string; from: TSide; to: TSide }) => {
+      if (locked) return;
       const { item, from, to } = payload;
 
       if (from === "left" && to === "right") {
@@ -64,7 +67,7 @@ const DragAndDropBoxesController = (props: IDragAndDropBoxesController) => {
       onMove?.(payload);
       console.log(`Moved "${item}" from ${from} -> ${to}`);
     },
-    [insertInto, onMove, removeFrom],
+    [insertInto, onMove, removeFrom, locked],
   );
 
   const leftProps = {
@@ -86,6 +89,7 @@ const DragAndDropBoxesController = (props: IDragAndDropBoxesController) => {
       left={leftProps}
       onMove={handleMove}
       right={rightProps}
+      locked={locked}
     />
   );
 };

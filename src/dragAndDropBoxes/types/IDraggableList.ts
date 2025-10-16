@@ -9,6 +9,7 @@ interface IDraggableList {
   initialItems: IClientLabel[];
   highlightFirst?: boolean;
   onMove?: (payload: { item: string; from: IListSide; to: IListSide }) => void;
+  locked?: boolean;
 }
 
 export type { IDraggableList };

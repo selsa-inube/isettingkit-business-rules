@@ -286,7 +286,7 @@ const decisionTemplate: any = {
         conditionName: "AntigüedadDelCliente(Días)",
         descriptionUse: "Antigüedad del cliente (Días)",
         conditionDataType: ValueDataType.NUMBER,
-        howToSetTheCondition: EValueHowToSetUp.RANGE,
+        howToSetTheCondition: EValueHowToSetUp.EQUAL,
         value: "",
       },
       {

@@ -9,6 +9,7 @@ interface IDragAndDropBoxes {
     from: "left" | "right";
     to: "left" | "right";
   }) => void;
+  locked?: boolean;
 }
 
 export type { IDragAndDropBoxes };
