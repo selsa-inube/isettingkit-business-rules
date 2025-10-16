@@ -1,3 +1,15 @@
+# v2.1.8 (Thu Oct 16 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: added support for conditions on the view ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.1.7 (Thu Oct 16 2025)
 
 #### ⚠️ Pushed to `main`
