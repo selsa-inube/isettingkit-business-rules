@@ -27,6 +27,7 @@ const sampleDecisions: any[] = [
     howToSetTheDecision: EValueHowToSetUp.RANGE,
     effectiveFrom: "2024-12-31",
     validUntil: "2024-12-31",
+    effectiveFromLabel: 'ada',
     conditionsThatEstablishesTheDecision: {
       "group-primary": [
         {
@@ -50,11 +51,11 @@ const sampleDecisions: any[] = [
           conditionName: "NivelDeMembresía",
           descriptionUse: "Nivel De Membresía",
           conditionDataType: ValueDataType.ALPHABETICAL,
-          howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
+          howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES_MULTI,
           listOfPossibleValues: {
             list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
           },
-          value: "3",
+          value: ["Muy alto", "Alto", "Medio","Bajo", "Muy bajo"],
         },
         {
           labelName: "reciprocidad de ahorro",
@@ -419,6 +420,8 @@ addCard.args = {
     factsThatConditionIt: "Condiciones que lo determinan",
     criteria: "Criterios",
     terms: "Vigencia",
+    effectiveFrom: "Vigencia desde:",
+    validUntil: "Vigencia hasta:",
   },
 };
 

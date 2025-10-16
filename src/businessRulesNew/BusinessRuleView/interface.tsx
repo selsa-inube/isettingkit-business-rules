@@ -51,7 +51,6 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
     currentConditions,
     hasMultipleGroups,
   } = props;
-
   if (loading) {
     return (
       <Stack direction="column" gap="16px">
@@ -203,7 +202,6 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
     );
   }
 
-  // Skeleton
   return (
     <Stack justifyContent="space-between">
       <Stack alignItems="center" gap="8px">
