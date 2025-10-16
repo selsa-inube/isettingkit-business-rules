@@ -1,3 +1,15 @@
+# v2.1.7 (Thu Oct 16 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: include prop that allows to lock the dragndrop component ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.1.6 (Wed Oct 15 2025)
 
 #### ⚠️ Pushed to `main`
