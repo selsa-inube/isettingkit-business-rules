@@ -1,3 +1,15 @@
+# v2.1.11 (Mon Oct 20 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: added export of new utils ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.1.10 (Mon Oct 20 2025)
 
 #### ⚠️ Pushed to `main`
