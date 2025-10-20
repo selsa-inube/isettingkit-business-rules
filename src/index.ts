@@ -27,8 +27,10 @@ export { Checkpicker } from "./checkpicker";
 export { buildEsConditionSentence } from "./businessRulesNew/utils/buildEsConditionSentence";
 export { filterByGroup } from "./businessRulesNew/helper/utils/filterByGroup";
 export { flatFromGroups } from "./businessRulesNew/helper/utils/flatFromGroups";
-export { getConditionsByGroup } from "./businessRulesNew/helper/utils/getConditionsByGroup";
-export { mapByGroup } from "./businessRulesNew/helper/utils/mapByGroup";
+export { getConditionsByGroupNew } from "./businessRulesNew/helper/utils/getConditionsByGroup";
+export { mapByGroupNew } from "./businessRulesNew/helper/utils/mapByGroup";
+export { normalizeDecisionToNewShape } from "./businessRulesNew/helper/utils/normalizeDecisionToNewShape";
+export { groupsRecordToArrayNew } from "./businessRulesNew/helper/utils/groupsRecordToArray";
 
 export { translateText } from "./translator/translateText";
 export { translateObject } from "./translator/translateObject";

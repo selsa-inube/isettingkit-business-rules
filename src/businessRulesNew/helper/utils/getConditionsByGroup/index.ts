@@ -1,7 +1,7 @@
 import { isRecordOfArrays, uniqByConditionName } from "../uniqByConditionName";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const getConditionsByGroup = (raw: any): Record<string, any[]> => {
+const getConditionsByGroupNew = (raw: any): Record<string, any[]> => {
   if (!raw) return {};
 
   if (Array.isArray(raw.conditionGroups)) {
@@ -32,4 +32,4 @@ const getConditionsByGroup = (raw: any): Record<string, any[]> => {
   return {};
 };
 
-export {getConditionsByGroup};
+export {getConditionsByGroupNew};

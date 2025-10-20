@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getConditionsByGroup } from "../getConditionsByGroup";
-import { groupsRecordToArray } from "../groupsRecordToArray";
+import { getConditionsByGroupNew } from "../getConditionsByGroup";
+import { groupsRecordToArrayNew } from "../groupsRecordToArray";
 
 const normalizeDecisionToNewShape = <T extends { [k: string]: any }>(
   decision: T,
 ): T => {
-  const groups = getConditionsByGroup(decision);
+  const groups = getConditionsByGroupNew(decision);
   const normalized = {
     ...decision,
-    conditionGroups: groupsRecordToArray(groups),
+    conditionGroups: groupsRecordToArrayNew(groups),
   } as T;
 
   delete (normalized as any).conditionsThatEstablishesTheDecision;

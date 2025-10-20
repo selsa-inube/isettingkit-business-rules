@@ -6,15 +6,15 @@ import { strategyFormFactoryHandlerManager } from "./helpers/utils";
 import { EValueHowToSetUp } from "../enums/EValueHowToSetUp";
 import { IUseRulesFormUtils } from "../types/Forms/IUseRulesFormUtils";
 import { IRulesForm } from "../types/Forms/IRulesForm";
-import { getConditionsByGroup } from "../helper/utils/getConditionsByGroup"; // << use the same helper you use elsewhere
+import { getConditionsByGroupNew } from "../helper/utils/getConditionsByGroup";
 
 function useRulesFormUtils({
   decision,
   onSubmitEvent,
   textValues,
 }: IUseRulesFormUtils & { textValues: IRulesForm["textValues"] }) {
-  // ---- helpers over grouped structure ----
-  const grouped = getConditionsByGroup(decision) || {};
+
+  const grouped = getConditionsByGroupNew(decision) || {};
   const flattenConditions = (): any[] => Object.values(grouped).flat() as any[];
 
   const initialValues = {
@@ -25,7 +25,6 @@ function useRulesFormUtils({
     effectiveFrom: decision.effectiveFrom || "",
     validUntil: decision.validUntil || "",
     toggleNone: true,
-    // form stores condition values in a flat dictionary by conditionName
     conditionsThatEstablishesTheDecision: {} as Record<string, any>,
     checkClosed: false,
     terms: true,
@@ -55,7 +54,6 @@ function useRulesFormUtils({
 
       if (toggleNone) return object().shape({});
 
-      // build schema from flattened conditions (visible or not — validation depends on user input)
       const allConds = flattenConditions();
       const conditionsSchema = allConds.reduce(
         (schema, condition) => {
@@ -122,7 +120,6 @@ function useRulesFormUtils({
     validationSchema,
     validateOnBlur: true,
     onSubmit: (values) => {
-      // rebuild grouped structure with only filled values
       const updatedGrouped = Object.fromEntries(
         Object.entries(grouped).map(([g, list]) => {
           const filtered = (list as any[]).filter((cond) => {

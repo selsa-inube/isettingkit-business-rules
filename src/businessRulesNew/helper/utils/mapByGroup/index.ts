@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getConditionsByGroup } from "../getConditionsByGroup";
+import { getConditionsByGroupNew } from "../getConditionsByGroup";
 
-const mapByGroup = (
+const mapByGroupNew = (
   raw: any,
   mapFn: (condition: any) => any,
 ): Record<string, any[]> => {
-  const groups = getConditionsByGroup(raw);
+  const groups = getConditionsByGroupNew(raw);
   return Object.fromEntries(
     Object.entries(groups).map(([g, list]) => [g, (list as any[]).map(mapFn)])
   );
 };
 
-export { mapByGroup };
+export { mapByGroupNew };

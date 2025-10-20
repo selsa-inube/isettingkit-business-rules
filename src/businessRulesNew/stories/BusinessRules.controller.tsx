@@ -12,13 +12,13 @@ import { MdAdd, MdOutlineReportProblem } from "react-icons/md";
 import type { IOption } from "@inubekit/inubekit";
 import { StyledMultipleChoiceContainer } from "./styles";
 
-import {
-  getConditionsByGroup,
-} from "../helper/utils/getConditionsByGroup";
-import { mapByGroup } from "../helper/utils/mapByGroup";
+
+import { mapByGroupNew } from "../helper/utils/mapByGroup";
 import { Checkpicker } from "../../checkpicker";
-import { groupsRecordToArray } from "../helper/utils/groupsRecordToArray";
+
 import { normalizeDecisionToNewShape } from "../helper/utils/normalizeDecisionToNewShape";
+import { groupsRecordToArrayNew } from "../helper/utils/groupsRecordToArray";
+import { getConditionsByGroupNew } from "../helper/utils/getConditionsByGroup";
 
 interface IBusinessRulesNewController {
   language?: "es" | "en";
@@ -46,7 +46,7 @@ const localizeDecision = (
   const cloned: IRuleDecision = deepClone(raw);
   cloned.labelName = localizeLabel(raw, lang);
 
-  const groups = getConditionsByGroup(cloned) as Record<string, any[]>;
+  const groups = getConditionsByGroupNew(cloned) as Record<string, any[]>;
   const localizedGroupsRecord = Object.fromEntries(
     Object.entries(groups).map(([g, list]) => [
       g,
@@ -56,7 +56,7 @@ const localizeDecision = (
 
   const normalized: IRuleDecision = {
     ...cloned,
-    conditionGroups: groupsRecordToArray(localizedGroupsRecord) as any,
+    conditionGroups: groupsRecordToArrayNew(localizedGroupsRecord) as any,
   };
   delete (normalized as any).conditionsThatEstablishesTheDecision;
 
@@ -89,7 +89,7 @@ const BusinessRulesNewController = ({
     initialDecisions.map((d) => {
       const loc = normalizeDecisionToNewShape(localizeDecision(d, language));
 
-      const mappedRecord = mapByGroup(getConditionsByGroup(loc), (condition: {
+      const mappedRecord = mapByGroupNew(getConditionsByGroupNew(loc), (condition: {
         value: string | number | IValue | string[] | undefined;
         i18n?: Record<string, string>;
         labelName?: string;
@@ -102,7 +102,7 @@ const BusinessRulesNewController = ({
       const out = {
         ...loc,
         value: parseRangeFromString(loc.value),
-        conditionGroups: groupsRecordToArray(mappedRecord),
+        conditionGroups: groupsRecordToArrayNew(mappedRecord),
       };
       delete (out as any).conditionsThatEstablishesTheDecision;
       return out;
@@ -132,7 +132,7 @@ const BusinessRulesNewController = ({
   };
 
   const multipleChoicesOptions: IOption[] = useMemo(() => {
-    const groups = getConditionsByGroup(localizedTemplate);
+    const groups = getConditionsByGroupNew(localizedTemplate);
     return Object.values(groups)
       .flat()
       .map((c: any) => ({
@@ -178,8 +178,8 @@ const BusinessRulesNewController = ({
           decisionId: `Decisión ${decisions.length + 1}`,
         };
 
-    const tplGroups = getConditionsByGroup(localizedTemplate);
-    const dataGroups = getConditionsByGroup(dataDecision) as Record<
+    const tplGroups = getConditionsByGroupNew(localizedTemplate);
+    const dataGroups = getConditionsByGroupNew(dataDecision) as Record<
       string,
       any[]
     >;
@@ -215,7 +215,7 @@ const BusinessRulesNewController = ({
     const newDecision: IRuleDecision = {
       ...base,
       labelName: localizeLabel(base, language),
-      conditionGroups: groupsRecordToArray(mergedGroupsRecord),
+      conditionGroups: groupsRecordToArrayNew(mergedGroupsRecord),
     };
     delete (newDecision as any).conditionsThatEstablishesTheDecision;
 
@@ -268,7 +268,7 @@ const BusinessRulesNewController = ({
     });
 
     const groupsRecord =
-      getConditionsByGroup(tpl) || ({} as Record<string, any[]>);
+      getConditionsByGroupNew(tpl) || ({} as Record<string, any[]>);
 
     const filteredRecord = Object.fromEntries(
       Object.entries(groupsRecord).map(([group, list]) => [
@@ -284,7 +284,7 @@ const BusinessRulesNewController = ({
     const withFiltered = {
       ...tpl,
       labelName: localizeLabel(tpl, language),
-      conditionGroups: groupsRecordToArray(filteredRecord),
+      conditionGroups: groupsRecordToArrayNew(filteredRecord),
     };
     delete (withFiltered as any).conditionsThatEstablishesTheDecision;
 

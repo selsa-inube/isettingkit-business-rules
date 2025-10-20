@@ -2,7 +2,7 @@
 import { useRulesFormUtils } from "./utils";
 import { RulesFormUI } from "./interface";
 import { IRulesForm } from "../types/Forms/IRulesForm";
-import { getConditionsByGroup } from "../helper/utils/getConditionsByGroup";
+import { getConditionsByGroupNew } from "../helper/utils/getConditionsByGroup";
 import { filterByGroup } from "../helper/utils/filterByGroup";
 import React from "react";
 import { IRuleDecision } from "@isettingkit/input";
@@ -41,9 +41,9 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
 
   const sourceForGroups = fullTemplate ?? decision;
   const conditionsByGroupFull: { [key: string]: any[] } =
-    getConditionsByGroup(sourceForGroups);
+    getConditionsByGroupNew(sourceForGroups);
 
-  const conditionsByGroupVisible = getConditionsByGroup(decision);
+  const conditionsByGroupVisible = getConditionsByGroupNew(decision);
   const visibleConditionsByGroup = filterByGroup(
     conditionsByGroupVisible,
     (condition: any) => !condition.hidden,

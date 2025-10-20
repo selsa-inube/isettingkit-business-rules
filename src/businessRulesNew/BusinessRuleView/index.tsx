@@ -8,7 +8,7 @@ import {
 import { IBusinessRuleView } from "../types/BusinessRuleView";
 import { BusinessRuleViewUI } from "./interface";
 import { strategyFactoryHandlerManager } from "./helper";
-import { getConditionsByGroup } from "../helper/utils/getConditionsByGroup";
+import { getConditionsByGroupNew } from "../helper/utils/getConditionsByGroup";
 import { filterByGroup } from "../helper/utils/filterByGroup";
 
 type TTab = { id: string; label: string; isDisabled?: boolean };
@@ -85,7 +85,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
       }
     : null;
 
-  const byGroup = decision ? getConditionsByGroup(decision) : {};
+  const byGroup = decision ? getConditionsByGroupNew(decision) : {};
   const visibleByGroup = filterByGroup(byGroup, (c: any) => !c.hidden);
 
   const groupKeys = Object.keys(visibleByGroup);
