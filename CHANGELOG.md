@@ -1,3 +1,15 @@
+# v2.1.13 (Mon Oct 20 2025)
+
+#### ⚠️ Pushed to `main`
+
+- feat: added property that allows show the title on the card ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.1.12 (Mon Oct 20 2025)
 
 #### ⚠️ Pushed to `main`
