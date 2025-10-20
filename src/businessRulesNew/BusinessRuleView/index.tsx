@@ -85,14 +85,45 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
       }
     : null;
 
-  const byGroup = decision ? getConditionsByGroupNew(decision) : {};
-  const visibleByGroup = filterByGroup(byGroup, (c: any) => !c.hidden);
+  const rawByGroup = decision ? getConditionsByGroupNew(decision) : {};
 
-  const groupKeys = Object.keys(visibleByGroup);
-  const orderedGroupKeys = [
-    ...groupKeys.filter((k) => k === "group-primary"),
-    ...groupKeys.filter((k) => k !== "group-primary"),
-  ];
+  const naturalKeys: string[] =
+    ((decision as any)?.conditionGroups as any[] | undefined)?.map(
+      (g) => g?.ConditionGroupId,
+    )?.filter(Boolean) || Object.keys(rawByGroup);
+
+  const primaryKey = naturalKeys[0] || "group-primary";
+
+  const normalizedByGroup: Record<string, any[]> = React.useMemo(() => {
+    const out: Record<string, any[]> = {};
+    const incomingPrimary = rawByGroup[primaryKey] || [];
+    const existingPrimary = rawByGroup["group-primary"] || [];
+
+    out["group-primary"] =
+      primaryKey === "group-primary"
+        ? existingPrimary
+        : [...incomingPrimary, ...existingPrimary];
+
+    for (const k of naturalKeys) {
+      if (!k || k === primaryKey) continue;
+      if (k === "group-primary") continue;
+      if (rawByGroup[k]) out[k] = rawByGroup[k];
+    }
+
+    for (const k of Object.keys(rawByGroup)) {
+      if (k === "group-primary" || k === primaryKey) continue;
+      if (!(k in out)) out[k] = rawByGroup[k];
+    }
+
+    return out;
+  }, [rawByGroup, primaryKey, naturalKeys]);
+
+  const visibleByGroup = filterByGroup(normalizedByGroup, (c: any) => !c.hidden);
+
+  const orderedGroupKeys = React.useMemo(() => {
+    const keys = ["group-primary", ...Object.keys(normalizedByGroup).filter((k) => k !== "group-primary")];
+    return Array.from(new Set(keys));
+  }, [normalizedByGroup]);
 
   const tabIdByGroup: Record<string, string> = {};
   const groupByTabId: Record<string, string> = {};

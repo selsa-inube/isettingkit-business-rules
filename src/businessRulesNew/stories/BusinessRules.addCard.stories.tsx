@@ -30,7 +30,7 @@ const sampleDecisions: any[] = [
     effectiveFromLabel: 'valida desde',
     conditionGroups: [
       {
-        ConditionGroupId: "group-primary",
+        ConditionGroupId: "6fe99f2f-2e1a-489e-a081-14d7e9381c94",
         conditionsThatEstablishesTheDecision: [
           {
             labelName: "Line of credit",
@@ -71,7 +71,7 @@ const sampleDecisions: any[] = [
         ],
       },
       {
-        ConditionGroupId: "aditional-group-1",
+        ConditionGroupId: "6fe99f2f-2e1a-489e-a081-14d7e9381c87",
         conditionsThatEstablishesTheDecision: [
           {
             labelName: "Line of credit",
@@ -87,7 +87,7 @@ const sampleDecisions: any[] = [
         ],
       },
       {
-        ConditionGroupId: "aditional-group-2",
+        ConditionGroupId: "6fe99f2f-2e1a-489e-a081-87d7e9381c87",
         conditionsThatEstablishesTheDecision: [
           {
             labelName: "Line of credit",
