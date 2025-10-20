@@ -27,120 +27,198 @@ const sampleDecisions: any[] = [
     howToSetTheDecision: EValueHowToSetUp.RANGE,
     effectiveFrom: "2024-12-31",
     validUntil: "2024-12-31",
-    effectiveFromLabel: 'ada',
-    conditionsThatEstablishesTheDecision: {
-      "group-primary": [
-        {
-          labelName: "Antigüedad del cliente (Días)",
-          conditionName: "AntigüedadDelCliente(Días)",
-          descriptionUse: "Antigüedad del cliente (Días)",
-          conditionDataType: ValueDataType.NUMBER,
-          howToSetTheCondition: EValueHowToSetUp.EQUAL,
-          value: "1",
-        },
-        {
-          labelName: "Porcentaje de riesgo",
-          conditionName: "PorcentajeDeRiesgo",
-          descriptionUse: "Porcentaje De Riesgo",
-          conditionDataType: ValueDataType.PERCENTAGE,
-          howToSetTheCondition: EValueHowToSetUp.EQUAL,
-          value: "2",
-        },
-        {
-          labelName: "Membresia del cliente",
-          conditionName: "NivelDeMembresía",
-          descriptionUse: "Nivel De Membresía",
-          conditionDataType: ValueDataType.ALPHABETICAL,
-          howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES_MULTI,
-          listOfPossibleValues: {
-            list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
+    effectiveFromLabel: 'valida desde',
+    conditionGroups: [
+      {
+        ConditionGroupId: "group-primary",
+        conditionsThatEstablishesTheDecision: [
+          {
+            labelName: "Line of credit",
+            conditionName: "LineOfCredit",
+            descriptionUse: "Line of credit.",
+            conditionDataType: ValueDataType.ALPHABETICAL,
+            howToSetTheCondition: EValueHowToSetUp.EQUAL,
+            value: "Linea de credito numero 1",
+            i18n: {
+              es: "Línea de crédito",
+            },
           },
-          value: ["Muy alto", "Alto", "Medio","Bajo", "Muy bajo"],
-        },
-        {
-          labelName: "reciprocidad de ahorro",
-          conditionName: "ReciprocidadDeAhorro",
-          descriptionUse: "Reciprocidad De Ahorro",
-          conditionDataType: ValueDataType.PERCENTAGE,
-          howToSetTheCondition: EValueHowToSetUp.EQUAL,
-          value: "4",
-        },
-      ],
-      "aditional-group-1": [
-        {
-          labelName: "Antigüedad del cliente (Días)1",
-          conditionName: "AntigüedadDelCliente(Días)1",
-          descriptionUse: "Antigüedad del cliente (Días)1",
-          conditionDataType: ValueDataType.NUMBER,
-          howToSetTheCondition: EValueHowToSetUp.EQUAL,
-          value: "22",
-        },
-        {
-          labelName: "Porcentaje de riesgo1",
-          conditionName: "PorcentajeDeRiesgo1",
-          descriptionUse: "Porcentaje De Riesgo1",
-          conditionDataType: ValueDataType.PERCENTAGE,
-          howToSetTheCondition: EValueHowToSetUp.EQUAL,
-          value: "23",
-        },
-        {
-          labelName: "Membresia del cliente1",
-          conditionName: "NivelDeMembresía1",
-          descriptionUse: "Nivel De Membresía1",
-          conditionDataType: ValueDataType.ALPHABETICAL,
-          howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
-          listOfPossibleValues: {
-            list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
+          {
+            labelName: "Line of credit1",
+            conditionName: "LineOfCredit1",
+            descriptionUse: "Line of credit.",
+            conditionDataType: ValueDataType.ALPHABETICAL,
+            howToSetTheCondition: EValueHowToSetUp.EQUAL,
+            value: "Linea de credito numero 2",
+            i18n: {
+              es: "Línea de crédito",
+            },
           },
-          value: "33",
-        },
-        {
-          labelName: "reciprocidad de ahorro1",
-          conditionName: "ReciprocidadDeAhorro1",
-          descriptionUse: "Reciprocidad De Ahorro1",
-          conditionDataType: ValueDataType.PERCENTAGE,
-          howToSetTheCondition: EValueHowToSetUp.EQUAL,
-          value: "44",
-        },
-      ],
-      "aditional-group-2": [
-        {
-          labelName: "Antigüedad del cliente (Días)2",
-          conditionName: "AntigüedadDelCliente(Días)2",
-          descriptionUse: "Antigüedad del cliente (Días)2",
-          conditionDataType: ValueDataType.NUMBER,
-          howToSetTheCondition: EValueHowToSetUp.EQUAL,
-          value: "12",
-        },
-        {
-          labelName: "Porcentaje de riesgo2",
-          conditionName: "PorcentajeDeRiesgo2",
-          descriptionUse: "Porcentaje De Riesgo2",
-          conditionDataType: ValueDataType.PERCENTAGE,
-          howToSetTheCondition: EValueHowToSetUp.EQUAL,
-          value: "21",
-        },
-        {
-          labelName: "Membresia del cliente2",
-          conditionName: "NivelDeMembresía2",
-          descriptionUse: "Nivel De Membresía2",
-          conditionDataType: ValueDataType.ALPHABETICAL,
-          howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
-          listOfPossibleValues: {
-            list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
-          },
-          value: "334",
-        },
-        {
-          labelName: "reciprocidad de ahorro2",
-          conditionName: "ReciprocidadDeAhorro2",
-          descriptionUse: "Reciprocidad De Ahorro2",
-          conditionDataType: ValueDataType.PERCENTAGE,
-          howToSetTheCondition: EValueHowToSetUp.EQUAL,
-          value: "422",
-        },
-      ],
-    },
+            {
+            labelName: "Line of credit",
+            conditionName: "LineOfCredit2",
+            descriptionUse: "Line of credit.",
+            conditionDataType: ValueDataType.ALPHABETICAL,
+            howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES_MULTI,
+            listOfPossibleValues: {
+              list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
+            },
+            value: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
+            i18n: {
+              es: "Línea de crédito",
+            },
+          }
+        ],
+      },
+      {
+        ConditionGroupId: "aditional-group-1",
+        conditionsThatEstablishesTheDecision: [
+          {
+            labelName: "Line of credit",
+            conditionName: "LineOfCredit1",
+            descriptionUse: "Line of credit.",
+            conditionDataType: ValueDataType.ALPHABETICAL,
+            howToSetTheCondition: EValueHowToSetUp.EQUAL,
+            value: "Linea de credito numero 3",
+            i18n: {
+              es: "Línea de crédito",
+            },
+          }
+        ],
+      },
+      {
+        ConditionGroupId: "aditional-group-2",
+        conditionsThatEstablishesTheDecision: [
+          {
+            labelName: "Line of credit",
+            conditionName: "LineOfCredit2",
+            descriptionUse: "Line of credit.",
+            conditionDataType: ValueDataType.ALPHABETICAL,
+            howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES_MULTI,
+            listOfPossibleValues: {
+              list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
+            },
+            value: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
+            i18n: {
+              es: "Línea de crédito",
+            },
+          }
+        ],
+      }
+    ],
+    // conditionsThatEstablishesTheDecision: {
+    //   "group-primary": [
+    //     {
+    //       labelName: "Antigüedad del cliente (Días)",
+    //       conditionName: "AntigüedadDelCliente(Días)",
+    //       descriptionUse: "Antigüedad del cliente (Días)",
+    //       conditionDataType: ValueDataType.NUMBER,
+    //       howToSetTheCondition: EValueHowToSetUp.EQUAL,
+    //       value: "1",
+    //     },
+    //     {
+    //       labelName: "Porcentaje de riesgo",
+    //       conditionName: "PorcentajeDeRiesgo",
+    //       descriptionUse: "Porcentaje De Riesgo",
+    //       conditionDataType: ValueDataType.PERCENTAGE,
+    //       howToSetTheCondition: EValueHowToSetUp.EQUAL,
+    //       value: "2",
+    //     },
+    //     {
+    //       labelName: "Membresia del cliente",
+    //       conditionName: "NivelDeMembresía",
+    //       descriptionUse: "Nivel De Membresía",
+    //       conditionDataType: ValueDataType.ALPHABETICAL,
+    //       howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES_MULTI,
+    //       listOfPossibleValues: {
+    //         list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
+    //       },
+    //       value: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
+    //     },
+    //     {
+    //       labelName: "reciprocidad de ahorro",
+    //       conditionName: "ReciprocidadDeAhorro",
+    //       descriptionUse: "Reciprocidad De Ahorro",
+    //       conditionDataType: ValueDataType.PERCENTAGE,
+    //       howToSetTheCondition: EValueHowToSetUp.EQUAL,
+    //       value: "4",
+    //     },
+    //   ],
+    //   "aditional-group-1": [
+    //     {
+    //       labelName: "Antigüedad del cliente (Días)1",
+    //       conditionName: "AntigüedadDelCliente(Días)1",
+    //       descriptionUse: "Antigüedad del cliente (Días)1",
+    //       conditionDataType: ValueDataType.NUMBER,
+    //       howToSetTheCondition: EValueHowToSetUp.EQUAL,
+    //       value: "22",
+    //     },
+    //     {
+    //       labelName: "Porcentaje de riesgo1",
+    //       conditionName: "PorcentajeDeRiesgo1",
+    //       descriptionUse: "Porcentaje De Riesgo1",
+    //       conditionDataType: ValueDataType.PERCENTAGE,
+    //       howToSetTheCondition: EValueHowToSetUp.EQUAL,
+    //       value: "23",
+    //     },
+    //     {
+    //       labelName: "Membresia del cliente1",
+    //       conditionName: "NivelDeMembresía1",
+    //       descriptionUse: "Nivel De Membresía1",
+    //       conditionDataType: ValueDataType.ALPHABETICAL,
+    //       howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
+    //       listOfPossibleValues: {
+    //         list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
+    //       },
+    //       value: "33",
+    //     },
+    //     {
+    //       labelName: "reciprocidad de ahorro1",
+    //       conditionName: "ReciprocidadDeAhorro1",
+    //       descriptionUse: "Reciprocidad De Ahorro1",
+    //       conditionDataType: ValueDataType.PERCENTAGE,
+    //       howToSetTheCondition: EValueHowToSetUp.EQUAL,
+    //       value: "44",
+    //     },
+    //   ],
+    //   "aditional-group-2": [
+    //     {
+    //       labelName: "Antigüedad del cliente (Días)2",
+    //       conditionName: "AntigüedadDelCliente(Días)2",
+    //       descriptionUse: "Antigüedad del cliente (Días)2",
+    //       conditionDataType: ValueDataType.NUMBER,
+    //       howToSetTheCondition: EValueHowToSetUp.EQUAL,
+    //       value: "12",
+    //     },
+    //     {
+    //       labelName: "Porcentaje de riesgo2",
+    //       conditionName: "PorcentajeDeRiesgo2",
+    //       descriptionUse: "Porcentaje De Riesgo2",
+    //       conditionDataType: ValueDataType.PERCENTAGE,
+    //       howToSetTheCondition: EValueHowToSetUp.EQUAL,
+    //       value: "21",
+    //     },
+    //     {
+    //       labelName: "Membresia del cliente2",
+    //       conditionName: "NivelDeMembresía2",
+    //       descriptionUse: "Nivel De Membresía2",
+    //       conditionDataType: ValueDataType.ALPHABETICAL,
+    //       howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
+    //       listOfPossibleValues: {
+    //         list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
+    //       },
+    //       value: "334",
+    //     },
+    //     {
+    //       labelName: "reciprocidad de ahorro2",
+    //       conditionName: "ReciprocidadDeAhorro2",
+    //       descriptionUse: "Reciprocidad De Ahorro2",
+    //       conditionDataType: ValueDataType.PERCENTAGE,
+    //       howToSetTheCondition: EValueHowToSetUp.EQUAL,
+    //       value: "422",
+    //     },
+    //   ],
+    // },
   },
   {
     decisionId: "Decisión 2",

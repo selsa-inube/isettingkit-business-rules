@@ -1,12 +1,14 @@
-const mapByGroup = <T, R>(
-  obj: Record<string, T[]>,
-  fn: (c: T, idx: number, arr: T[], group: string) => R
-): Record<string, R[]> =>
-  Object.fromEntries(
-    Object.entries(obj).map(([group, arr]) => [
-      group,
-      arr.map((c, i, a) => fn(c, i, a, group)),
-    ])
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { getConditionsByGroup } from "../getConditionsByGroup";
+
+const mapByGroup = (
+  raw: any,
+  mapFn: (condition: any) => any,
+): Record<string, any[]> => {
+  const groups = getConditionsByGroup(raw);
+  return Object.fromEntries(
+    Object.entries(groups).map(([g, list]) => [g, (list as any[]).map(mapFn)])
   );
+};
 
 export { mapByGroup };

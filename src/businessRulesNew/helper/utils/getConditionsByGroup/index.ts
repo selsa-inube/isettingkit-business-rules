@@ -1,9 +1,35 @@
-import { IRuleDecision } from "@isettingkit/input";
+import { isRecordOfArrays, uniqByConditionName } from "../uniqByConditionName";
 
-const getConditionsByGroup = (
-  decision: IRuleDecision
-) =>
-  decision.conditionsThatEstablishesTheDecision ?? {};
+/* eslint-disable @typescript-eslint/no-explicit-any */
+const getConditionsByGroup = (raw: any): Record<string, any[]> => {
+  if (!raw) return {};
 
+  if (Array.isArray(raw.conditionGroups)) {
+    const entries = raw.conditionGroups.map((g: any) => [
+      g.ConditionGroupId,
+      uniqByConditionName(
+        Array.isArray(g.conditionsThatEstablishesTheDecision)
+          ? g.conditionsThatEstablishesTheDecision
+          : [],
+      ),
+    ]);
+    return Object.fromEntries(entries);
+  }
 
-export { getConditionsByGroup };
+  if (isRecordOfArrays(raw.conditionsThatEstablishesTheDecision)) {
+    const rec = raw.conditionsThatEstablishesTheDecision;
+    return Object.fromEntries(
+      Object.entries(rec).map(([k, v]) => [k, uniqByConditionName(v as any[])]),
+    );
+  }
+
+  if (isRecordOfArrays(raw)) {
+    return Object.fromEntries(
+      Object.entries(raw).map(([k, v]) => [k, uniqByConditionName(v as any[])]),
+    );
+  }
+
+  return {};
+};
+
+export {getConditionsByGroup};
