@@ -18,6 +18,7 @@ import { RulesForm } from "./Form";
 
 const BusinessRulesNew = (props: IBusinessRules) => {
   const {
+    cardTitle = true,
     controls = true,
     customTitleContentAddCard,
     customMessageEmptyDecisions,
@@ -41,6 +42,7 @@ const BusinessRulesNew = (props: IBusinessRules) => {
   const mediumScreen = useMediaQuery("(max-width: 681px)");
 
   const { renderedCards, shouldRenderAddCard } = getBusinessRulesLayoutNew({
+    cardTitle,
     controls,
     customTitleContentAddCard,
     decisions,

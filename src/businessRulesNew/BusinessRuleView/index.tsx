@@ -20,6 +20,7 @@ const labelForGroup = (groupKey: string, indexAlt: number) => {
 
 const BusinessRuleViewNew = (props: IBusinessRuleView) => {
   const {
+    cardTitle = true,
     decision,
     loading = false,
     textValues,
@@ -76,7 +77,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
   const decisionMapper: Partial<IRuleDecision> | null = decision
     ? {
-        labelName: decision.labelName || "",
+        labelName: cardTitle? decision.labelName || "" : "",
         decisionDataType:
           decision.decisionDataType || ValueDataType.ALPHABETICAL,
         value: strategyFactoryHandlerManager(decision),

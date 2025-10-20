@@ -3,6 +3,7 @@ import { renderCardNew } from "./renderCard";
 
 const getBusinessRulesLayoutNew = (props: IGetBusinessRulesLayout) => {
   const {
+    cardTitle,
     controls,
     customTitleContentAddCard,
     decisions,
@@ -28,6 +29,7 @@ const getBusinessRulesLayoutNew = (props: IGetBusinessRulesLayout) => {
       )
     : decisions?.map((decision, index) =>
         renderCardNew({
+          cardTitle: cardTitle,
           type: "decision",
           decision,
           controls: controls,

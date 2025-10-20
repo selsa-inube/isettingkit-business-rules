@@ -477,6 +477,7 @@ const addCard: Story = (args: IBusinessRulesNewController) => (
   <BusinessRulesNewController {...args} />
 );
 addCard.args = {
+  cardTitle: true,
   controls: true,
   customMessageEmptyDecisions: "Aún NO tienes definidas Líneas de crédito",
   customTitleContentAddCard: "Agregar línea de crédito",

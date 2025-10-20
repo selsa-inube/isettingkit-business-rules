@@ -2,6 +2,7 @@ import { IRuleDecision } from "@isettingkit/input";
 import { IRulesFormTextValues } from "../../Forms/IRulesFormTextValues";
 
 interface IGetBusinessRulesLayout {
+  cardTitle?: boolean;
   controls: boolean;
   customTitleContentAddCard?: string;
   decisions?: IRuleDecision[];

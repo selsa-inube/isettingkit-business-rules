@@ -7,6 +7,7 @@ import { BusinessRuleViewNew } from "../../../businessRulesNew/BusinessRuleView"
 
 const renderDecisionCard = (props: IRenderCard) => {
   const {
+    cardTitle,
     decision,
     controls,
     handleOpenModal,
@@ -32,6 +33,7 @@ const renderDecisionCard = (props: IRenderCard) => {
           }
         >
           <BusinessRuleViewNew
+            cardTitle={cardTitle}
             controls={controls}
             decision={decision}
             textValues={textValues}

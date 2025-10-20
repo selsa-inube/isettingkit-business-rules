@@ -22,6 +22,7 @@ import { getConditionsByGroupNew } from "../helper/utils/getConditionsByGroup";
 
 interface IBusinessRulesNewController {
   language?: "es" | "en";
+  cardTitle?: boolean;
   controls?: boolean;
   customMessageEmptyDecisions?: string;
   customTitleContentAddCard?: string;
@@ -64,6 +65,7 @@ const localizeDecision = (
 };
 
 const BusinessRulesNewController = ({
+  cardTitle,
   controls,
   customMessageEmptyDecisions,
   customTitleContentAddCard,
@@ -327,6 +329,7 @@ const BusinessRulesNewController = ({
       {selectedConditionsCSV.length > 0 ? (
         <BusinessRulesNew
           baseDecisionTemplate={localizedTemplate}
+          cardTitle={cardTitle}
           controls={controls}
           customMessageEmptyDecisions={customMessageEmptyDecisions}
           customTitleContentAddCard={customTitleContentAddCard}
