@@ -7,7 +7,7 @@ const timeUnitHandle = (labelName: string, timeUnit: string): string => {
     case "Day":
       return `${labelName} en días`;
     default:
-      return `${labelName} en años`;
+      return `${labelName}`;
   }
 };
 export { timeUnitHandle };

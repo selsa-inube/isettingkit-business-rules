@@ -35,7 +35,6 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
   const hasEffectiveFrom = Boolean(decision?.effectiveFrom);
   const hasValidUntil = Boolean(decision?.validUntil);
-  console.log("hasValidUntil", decision);
   const effectiveFromRenderer = hasEffectiveFrom
     ? {
         element: {
@@ -189,7 +188,6 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
   const activeGroupKey = groupByTabId[activeTab] ?? "group-primary";
 
   const currentConditions = (visibleByGroup[activeGroupKey] ?? []) as any[];
-  console.log("currentConditions", currentConditions);
   const hasMultipleGroups = orderedGroupKeys.length > 1;
 
   const skeleton = Array.from({ length: 5 });
