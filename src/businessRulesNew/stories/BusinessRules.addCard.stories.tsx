@@ -27,7 +27,7 @@ const sampleDecisions: any[] = [
     howToSetTheDecision: EValueHowToSetUp.RANGE,
     effectiveFrom: "2024-12-31",
     validUntil: "2024-12-31",
-    effectiveFromLabel: 'valida desde',
+    effectiveFromLabel: "valida desde",
     conditionGroups: [
       {
         ConditionGroupId: "6fe99f2f-2e1a-489e-a081-14d7e9381c94",
@@ -59,7 +59,7 @@ const sampleDecisions: any[] = [
               es: "Línea de crédito",
             },
           },
-            {
+          {
             labelName: "Line of credit",
             conditionName: "LineOfCredit2",
             descriptionUse: "Line of credit.",
@@ -72,7 +72,7 @@ const sampleDecisions: any[] = [
             i18n: {
               es: "Línea de crédito",
             },
-          }
+          },
         ],
       },
       {
@@ -88,7 +88,7 @@ const sampleDecisions: any[] = [
             i18n: {
               es: "Línea de crédito",
             },
-          }
+          },
         ],
       },
       {
@@ -107,9 +107,9 @@ const sampleDecisions: any[] = [
             i18n: {
               es: "Línea de crédito",
             },
-          }
+          },
         ],
-      }
+      },
     ],
     // conditionsThatEstablishesTheDecision: {
     //   "group-primary": [
@@ -243,6 +243,7 @@ const sampleDecisions: any[] = [
           conditionDataType: ValueDataType.NUMBER,
           howToSetTheCondition: EValueHowToSetUp.RANGE,
           value: "",
+          TimeUnit: "Year",
         },
         {
           labelName: "Porcentaje de riesgo",

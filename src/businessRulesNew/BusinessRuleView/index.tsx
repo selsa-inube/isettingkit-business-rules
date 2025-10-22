@@ -10,6 +10,7 @@ import { BusinessRuleViewUI } from "./interface";
 import { strategyFactoryHandlerManagerNew } from "./helper";
 import { getConditionsByGroupNew } from "../helper/utils/getConditionsByGroup";
 import { filterByGroup } from "../helper/utils/filterByGroup";
+import { timeUnitHandle } from "../utils/timeUnitHandle";
 
 type TTab = { id: string; label: string; isDisabled?: boolean };
 
@@ -34,7 +35,6 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
   const hasEffectiveFrom = Boolean(decision?.effectiveFrom);
   const hasValidUntil = Boolean(decision?.validUntil);
-
   const effectiveFromRenderer = hasEffectiveFrom
     ? {
         element: {
@@ -51,7 +51,6 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
         }),
       }
     : null;
-
   const validUntilRenderer = hasValidUntil
     ? {
         element: {
@@ -77,7 +76,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
   const decisionMapper: Partial<IRuleDecision> | null = decision
     ? {
-        labelName: cardTitle? decision.labelName || "" : "",
+        labelName: cardTitle ? decision.labelName || "" : "",
         decisionDataType:
           decision.decisionDataType || ValueDataType.ALPHABETICAL,
         value: strategyFactoryHandlerManagerNew(decision),
@@ -86,12 +85,15 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
       }
     : null;
 
-  const rawByGroup = decision ? getConditionsByGroupNew(decision) : {};
+  const rawByGroup = React.useMemo(
+    () => (decision ? getConditionsByGroupNew(decision) : {}),
+    [decision]
+  );
 
   const naturalKeys: string[] =
-    ((decision as any)?.conditionGroups as any[] | undefined)?.map(
-      (g) => g?.ConditionGroupId,
-    )?.filter(Boolean) || Object.keys(rawByGroup);
+    ((decision as any)?.conditionGroups as any[] | undefined)
+      ?.map((g) => g?.ConditionGroupId)
+      ?.filter(Boolean) || Object.keys(rawByGroup);
 
   const primaryKey = naturalKeys[0] || "group-primary";
 
@@ -119,12 +121,44 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
     return out;
   }, [rawByGroup, primaryKey, naturalKeys]);
 
-  const visibleByGroup = filterByGroup(normalizedByGroup, (c: any) => !c.hidden);
-
   const orderedGroupKeys = React.useMemo(() => {
-    const keys = ["group-primary", ...Object.keys(normalizedByGroup).filter((k) => k !== "group-primary")];
+    const keys = [
+      "group-primary",
+      ...Object.keys(normalizedByGroup).filter((k) => k !== "group-primary"),
+    ];
     return Array.from(new Set(keys));
   }, [normalizedByGroup]);
+
+  const processedConditionsForDisplay = React.useMemo(() => {
+    const result: Record<string, any[]> = {};
+
+    Object.keys(normalizedByGroup).forEach((groupKey) => {
+      const groupConditions = normalizedByGroup[groupKey];
+      if (groupConditions && Array.isArray(groupConditions)) {
+        result[groupKey] = groupConditions.map((condition) => {
+          if (condition.TimeUnit && condition.labelName) {
+            return {
+              ...condition,
+              labelName: timeUnitHandle(
+                condition.labelName,
+                condition.TimeUnit
+              ),
+            };
+          }
+          return condition;
+        });
+      } else {
+        result[groupKey] = groupConditions;
+      }
+    });
+
+    return result;
+  }, [normalizedByGroup]);
+
+  const visibleByGroup = filterByGroup(
+    processedConditionsForDisplay,
+    (c: any) => !c.hidden
+  );
 
   const tabIdByGroup: Record<string, string> = {};
   const groupByTabId: Record<string, string> = {};
@@ -148,7 +182,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
   });
 
   const [activeTab, setActiveTab] = React.useState<string>(
-    tabs[0]?.id ?? "mainCondition",
+    tabs[0]?.id ?? "mainCondition"
   );
   const handleTabChange = (id: string) => setActiveTab(id);
   const activeGroupKey = groupByTabId[activeTab] ?? "group-primary";
@@ -158,7 +192,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
   const skeleton = Array.from({ length: 5 });
   const loadingValidation = Boolean(
-    !loading && decision && textValues && decisionMapper,
+    !loading && decision && textValues && decisionMapper
   );
 
   const conditionsAlignment =
