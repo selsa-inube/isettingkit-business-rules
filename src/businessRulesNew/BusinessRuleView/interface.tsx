@@ -14,7 +14,7 @@ import {
   IDecisionViewConditionRenderer,
 } from "@isettingkit/view";
 import { IBusinessRuleViewUI } from "../types/BusinessRuleView/IBusinessRuleViewUI";
-import { strategyFactoryHandlerManager } from "./helper";
+import { strategyFactoryHandlerManagerNew } from "./helper";
 import {
   MdExpandLess,
   MdExpandMore,
@@ -27,6 +27,7 @@ import {
   StyledRecordCardContainer,
   StyledTagContainer,
 } from "./styles";
+import { EValueHowToSetUp } from "../enums/EValueHowToSetUp";
 
 const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
   const {
@@ -73,7 +74,7 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
                 <DecisionViewConditionRendererNew
                   element={decisionMapper!}
                   valueData={
-                    strategyFactoryHandlerManager(
+                    strategyFactoryHandlerManagerNew(
                       decisionMapper!,
                     ) as IDecisionViewConditionRenderer["valueData"]
                   }
@@ -149,9 +150,9 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
                     background
                   >
                     <DecisionViewConditionRendererNew
-                      element={{ ...condition, value: condition.value }}
+                      element={{ ...condition, value: condition.value, howToSetTheCondition: condition.howToSetTheCondition === EValueHowToSetUp.LIST_OF_VALUES ? EValueHowToSetUp.LIST_OF_VALUES_MULTI : condition.howToSetTheCondition  }}
                       valueData={
-                        strategyFactoryHandlerManager(
+                        strategyFactoryHandlerManagerNew(
                           condition,
                         ) as IDecisionViewConditionRenderer["valueData"]
                       }

@@ -7,7 +7,7 @@ import { equalHandler } from "../../strategies/equalTo";
 import { EValueHowToSetUp } from "../../../../../businessRules/enums/EValueHowToSetUp";
 import { IValueHandler } from "../../../../../businessRules/types/BusinessRuleView/helpers/IValueHandler";
 
-const handlers: Partial<Record<EValueHowToSetUp, IValueHandler>> = {
+const handlersNew: Partial<Record<EValueHowToSetUp, IValueHandler>> = {
   [EValueHowToSetUp.LIST_OF_VALUES]: listOfValuesHandler,
   [EValueHowToSetUp.LIST_OF_VALUES_MULTI]: listOfValuesMultiHandler,
   [EValueHowToSetUp.RANGE]: rangeHandler,
@@ -16,4 +16,4 @@ const handlers: Partial<Record<EValueHowToSetUp, IValueHandler>> = {
   [EValueHowToSetUp.EQUAL]: equalHandler,
 };
 
-export { handlers };
+export { handlersNew };

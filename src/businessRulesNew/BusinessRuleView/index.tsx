@@ -7,7 +7,7 @@ import {
 } from "@isettingkit/input";
 import { IBusinessRuleView } from "../types/BusinessRuleView";
 import { BusinessRuleViewUI } from "./interface";
-import { strategyFactoryHandlerManager } from "./helper";
+import { strategyFactoryHandlerManagerNew } from "./helper";
 import { getConditionsByGroupNew } from "../helper/utils/getConditionsByGroup";
 import { filterByGroup } from "../helper/utils/filterByGroup";
 
@@ -43,7 +43,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
           howToSetTheDecision: ValueHowToSetUp.EQUAL,
           decisionDataType: ValueDataType.DATE,
         },
-        valueData: strategyFactoryHandlerManager({
+        valueData: strategyFactoryHandlerManagerNew({
           labelName: textValues?.effectiveFrom,
           value: String(decision!.effectiveFrom),
           howToSetTheDecision: ValueHowToSetUp.EQUAL,
@@ -63,7 +63,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
           howToSetTheDecision: ValueHowToSetUp.EQUAL,
           decisionDataType: ValueDataType.DATE,
         },
-        valueData: strategyFactoryHandlerManager({
+        valueData: strategyFactoryHandlerManagerNew({
           labelName: textValues?.validUntil,
           value:
             decision!.validUntil instanceof Date
@@ -80,7 +80,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
         labelName: cardTitle? decision.labelName || "" : "",
         decisionDataType:
           decision.decisionDataType || ValueDataType.ALPHABETICAL,
-        value: strategyFactoryHandlerManager(decision),
+        value: strategyFactoryHandlerManagerNew(decision),
         howToSetTheDecision:
           decision.howToSetTheDecision || ValueHowToSetUp.EQUAL,
       }

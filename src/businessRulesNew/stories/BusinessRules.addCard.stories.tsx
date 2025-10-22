@@ -37,8 +37,13 @@ const sampleDecisions: any[] = [
             conditionName: "LineOfCredit",
             descriptionUse: "Line of credit.",
             conditionDataType: ValueDataType.ALPHABETICAL,
-            howToSetTheCondition: EValueHowToSetUp.EQUAL,
-            value: "Linea de credito numero 1",
+            howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
+            value:  [
+              "H",
+              "O",
+              "L",
+              "A"
+            ],
             i18n: {
               es: "Línea de crédito",
             },
@@ -47,9 +52,9 @@ const sampleDecisions: any[] = [
             labelName: "Line of credit1",
             conditionName: "LineOfCredit1",
             descriptionUse: "Line of credit.",
-            conditionDataType: ValueDataType.ALPHABETICAL,
+            conditionDataType: ValueDataType.PERCENTAGE,
             howToSetTheCondition: EValueHowToSetUp.EQUAL,
-            value: "Linea de credito numero 2",
+            value: "2",
             i18n: {
               es: "Línea de crédito",
             },

@@ -35,9 +35,9 @@ const sampleDecisions: any[] = [
             labelName: "Line of credit",
             conditionName: "LineOfCredit",
             descriptionUse: "Line of credit.",
-            conditionDataType: ValueDataType.ALPHABETICAL,
+            conditionDataType: ValueDataType.MONETARY,
             howToSetTheCondition: EValueHowToSetUp.EQUAL,
-            value: "Linea de credito numero 1",
+            value: 2000,
             i18n: {
               es: "Línea de crédito",
             },
