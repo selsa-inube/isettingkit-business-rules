@@ -49,9 +49,9 @@ const sampleDecisions: any[] = [
             },
           },
           {
-            labelName: "Line of credit1",
-            conditionName: "LineOfCredit1",
-            descriptionUse: "Line of credit.",
+            labelName: "Line of credit11",
+            conditionName: "LineOfCredit12",
+            descriptionUse: "Line of credit12.",
             conditionDataType: ValueDataType.PERCENTAGE,
             howToSetTheCondition: EValueHowToSetUp.EQUAL,
             value: "2",
@@ -59,10 +59,32 @@ const sampleDecisions: any[] = [
               es: "Línea de crédito",
             },
           },
+                    {
+            labelName: "Line of credit13",
+            conditionName: "LineOfCredit13",
+            descriptionUse: "Line of credit13.",
+            conditionDataType: ValueDataType.PERCENTAGE,
+            howToSetTheCondition: EValueHowToSetUp.GREATER_THAN,
+            value: "2",
+            i18n: {
+              es: "Línea de crédito",
+            },
+          },
+                    {
+            labelName: "Line of credit14",
+            conditionName: "LineOfCredit14",
+            descriptionUse: "Line of credit14.",
+            conditionDataType: ValueDataType.PERCENTAGE,
+            howToSetTheCondition: EValueHowToSetUp.LESS_THAN,
+            value: "2",
+            i18n: {
+              es: "Línea de crédito",
+            },
+          },
           {
-            labelName: "Line of credit",
-            conditionName: "LineOfCredit2",
-            descriptionUse: "Line of credit.",
+            labelName: "Line of credit24",
+            conditionName: "LineOfCredit24",
+            descriptionUse: "Line of credit.24",
             conditionDataType: ValueDataType.ALPHABETICAL,
             howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES_MULTI,
             listOfPossibleValues: {
