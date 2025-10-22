@@ -1,3 +1,15 @@
+# v2.1.16 (Wed Oct 22 2025)
+
+#### 🐛 Bug Fix
+
+- feat: use the time unit for rules conditions [#9](https://github.com/selsa-inube/isettingkit-business-rules/pull/9) ([@heber59](https://github.com/heber59))
+
+#### Authors: 1
+
+- Heber  Alvarez  ([@heber59](https://github.com/heber59))
+
+---
+
 # v2.1.15 (Wed Oct 22 2025)
 
 #### ⚠️ Pushed to `main`
