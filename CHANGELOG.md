@@ -1,3 +1,15 @@
+# v2.1.17 (Wed Oct 22 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: added helper for handle types on the view ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.1.16 (Wed Oct 22 2025)
 
 #### 🐛 Bug Fix
