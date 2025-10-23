@@ -52,6 +52,7 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
     currentConditions,
     hasMultipleGroups,
   } = props;
+
   if (loading) {
     return (
       <Stack direction="column" gap="16px">
@@ -75,7 +76,7 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
                   element={decisionMapper!}
                   valueData={
                     strategyFactoryHandlerManagerNew(
-                      decisionMapper!,
+                      decisionMapper!
                     ) as IDecisionViewConditionRenderer["valueData"]
                   }
                   type="decision"
@@ -121,7 +122,11 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
           <>
             <Divider dashed />
             {hasMultipleGroups ? (
-              <Tabs tabs={tabs!} selectedTab={selectedTab!} onChange={onTabChange!} />
+              <Tabs
+                tabs={tabs!}
+                selectedTab={selectedTab!}
+                onChange={onTabChange!}
+              />
             ) : (
               <Text
                 type="label"
@@ -150,10 +155,18 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
                     background
                   >
                     <DecisionViewConditionRendererNew
-                      element={{ ...condition, value: condition.value, howToSetTheCondition: condition.howToSetTheCondition === EValueHowToSetUp.LIST_OF_VALUES ? EValueHowToSetUp.LIST_OF_VALUES_MULTI : condition.howToSetTheCondition  }}
+                      element={{
+                        ...condition,
+                        value: condition.value,
+                        howToSetTheCondition:
+                          condition.howToSetTheCondition ===
+                          EValueHowToSetUp.LIST_OF_VALUES
+                            ? EValueHowToSetUp.LIST_OF_VALUES_MULTI
+                            : condition.howToSetTheCondition,
+                      }}
                       valueData={
                         strategyFactoryHandlerManagerNew(
-                          condition,
+                          condition
                         ) as IDecisionViewConditionRenderer["valueData"]
                       }
                     />
@@ -171,8 +184,7 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
                       key="effectiveFrom"
                       element={effectiveFromRenderer.element}
                       valueData={
-                        effectiveFromRenderer
-                          .valueData as IDecisionViewConditionRenderer["valueData"]
+                        effectiveFromRenderer.valueData as IDecisionViewConditionRenderer["valueData"]
                       }
                     />
                   </BorderStack>
@@ -189,8 +201,7 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
                       key="validUntil"
                       element={validUntilRenderer.element}
                       valueData={
-                        validUntilRenderer
-                          .valueData as IDecisionViewConditionRenderer["valueData"]
+                        validUntilRenderer.valueData as IDecisionViewConditionRenderer["valueData"]
                       }
                     />
                   </BorderStack>
