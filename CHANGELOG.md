@@ -1,3 +1,15 @@
+# v2.1.18 (Thu Oct 23 2025)
+
+#### 🐛 Bug Fix
+
+- feat: display range values with % or $ for new businessRule [#10](https://github.com/selsa-inube/isettingkit-business-rules/pull/10) ([@heber59](https://github.com/heber59))
+
+#### Authors: 1
+
+- Heber  Alvarez  ([@heber59](https://github.com/heber59))
+
+---
+
 # v2.1.17 (Wed Oct 22 2025)
 
 #### ⚠️ Pushed to `main`
