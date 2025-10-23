@@ -38,52 +38,52 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
   const hasValidUntil = Boolean(decision?.validUntil);
   const effectiveFromRenderer = hasEffectiveFrom
     ? {
-      element: {
-        labelName: textValues?.effectiveFrom,
-        value: String(decision!.effectiveFrom),
-        howToSetTheDecision: ValueHowToSetUp.EQUAL,
-        decisionDataType: ValueDataType.DATE,
-      },
-      valueData: strategyFactoryHandlerManagerNew({
-        labelName: textValues?.effectiveFrom,
-        value: String(decision!.effectiveFrom),
-        howToSetTheDecision: ValueHowToSetUp.EQUAL,
-        decisionDataType: ValueDataType.DATE,
-      }),
-    }
+        element: {
+          labelName: textValues?.effectiveFrom,
+          value: String(decision!.effectiveFrom),
+          howToSetTheDecision: ValueHowToSetUp.EQUAL,
+          decisionDataType: ValueDataType.DATE,
+        },
+        valueData: strategyFactoryHandlerManagerNew({
+          labelName: textValues?.effectiveFrom,
+          value: String(decision!.effectiveFrom),
+          howToSetTheDecision: ValueHowToSetUp.EQUAL,
+          decisionDataType: ValueDataType.DATE,
+        }),
+      }
     : null;
   const validUntilRenderer = hasValidUntil
     ? {
-      element: {
-        labelName: textValues?.validUntil,
-        value:
-          decision!.validUntil instanceof Date
-            ? decision!.validUntil.toISOString()
-            : decision!.validUntil,
-        howToSetTheDecision: ValueHowToSetUp.EQUAL,
-        decisionDataType: ValueDataType.DATE,
-      },
-      valueData: strategyFactoryHandlerManagerNew({
-        labelName: textValues?.validUntil,
-        value:
-          decision!.validUntil instanceof Date
-            ? decision!.validUntil.toISOString()
-            : decision!.validUntil,
-        howToSetTheDecision: ValueHowToSetUp.EQUAL,
-        decisionDataType: ValueDataType.DATE,
-      }),
-    }
+        element: {
+          labelName: textValues?.validUntil,
+          value:
+            decision!.validUntil instanceof Date
+              ? decision!.validUntil.toISOString()
+              : decision!.validUntil,
+          howToSetTheDecision: ValueHowToSetUp.EQUAL,
+          decisionDataType: ValueDataType.DATE,
+        },
+        valueData: strategyFactoryHandlerManagerNew({
+          labelName: textValues?.validUntil,
+          value:
+            decision!.validUntil instanceof Date
+              ? decision!.validUntil.toISOString()
+              : decision!.validUntil,
+          howToSetTheDecision: ValueHowToSetUp.EQUAL,
+          decisionDataType: ValueDataType.DATE,
+        }),
+      }
     : null;
 
   const decisionMapper: Partial<IRuleDecision> | null = decision
     ? {
-      labelName: cardTitle ? decision.labelName || "" : "",
-      decisionDataType:
-        decision.decisionDataType || ValueDataType.ALPHABETICAL,
-      value: strategyFactoryHandlerManagerNew(decision),
-      howToSetTheDecision:
-        decision.howToSetTheDecision || ValueHowToSetUp.EQUAL,
-    }
+        labelName: cardTitle ? decision.labelName || "" : "",
+        decisionDataType:
+          decision.decisionDataType || ValueDataType.ALPHABETICAL,
+        value: strategyFactoryHandlerManagerNew(decision),
+        howToSetTheDecision:
+          decision.howToSetTheDecision || ValueHowToSetUp.EQUAL,
+      }
     : null;
 
   const rawByGroup = React.useMemo(
@@ -152,7 +152,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
           ) {
             newValue = howToSetHandle(
               condition.value,
-              condition.howToSetTheCondition,
+              condition.howToSetTheCondition
             );
           }
 

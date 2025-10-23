@@ -31,6 +31,9 @@ const strategyFactoryHandlerManagerNew = (element: IRuleDecision) => {
     valueData !== null &&
     !Array.isArray(valueData)
   ) {
+    if ("from" in valueData && "to" in valueData) {
+      return valueData;
+    }
     const handler =
       handlersNew[element?.howToSetTheDecision as EValueHowToSetUp] ||
       fallbackHandler;

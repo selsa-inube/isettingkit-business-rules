@@ -12,7 +12,6 @@ import { MdAdd, MdOutlineReportProblem } from "react-icons/md";
 import type { IOption } from "@inubekit/inubekit";
 import { StyledMultipleChoiceContainer } from "./styles";
 
-
 import { mapByGroupNew } from "../helper/utils/mapByGroup";
 import { Checkpicker } from "../../checkpicker";
 
@@ -37,12 +36,12 @@ const deepClone = <T,>(v: T): T => JSON.parse(JSON.stringify(v));
 
 const localizeLabel = (
   base: { labelName?: string; i18n?: Record<string, string> } | undefined,
-  lang: "es" | "en" | undefined,
+  lang: "es" | "en" | undefined
 ) => (lang && base?.i18n?.[lang]) || base?.labelName || "";
 
 const localizeDecision = (
   raw: IRuleDecision,
-  lang: "es" | "en" | undefined,
+  lang: "es" | "en" | undefined
 ): IRuleDecision => {
   const cloned: IRuleDecision = deepClone(raw);
   cloned.labelName = localizeLabel(raw, lang);
@@ -52,7 +51,7 @@ const localizeDecision = (
     Object.entries(groups).map(([g, list]) => [
       g,
       list.map((c) => ({ ...c, labelName: localizeLabel(c, lang) })),
-    ]),
+    ])
   );
 
   const normalized: IRuleDecision = {
@@ -81,25 +80,26 @@ const BusinessRulesNewController = ({
 
   const localizedTemplate = useMemo(
     () =>
-      normalizeDecisionToNewShape(
-        localizeDecision(decisionTemplate, language),
-      ),
-    [decisionTemplate, language],
+      normalizeDecisionToNewShape(localizeDecision(decisionTemplate, language)),
+    [decisionTemplate, language]
   );
 
   const [decisions, setDecisions] = useState<any[]>(
     initialDecisions.map((d) => {
       const loc = normalizeDecisionToNewShape(localizeDecision(d, language));
 
-      const mappedRecord = mapByGroupNew(getConditionsByGroupNew(loc), (condition: {
-        value: string | number | IValue | string[] | undefined;
-        i18n?: Record<string, string>;
-        labelName?: string;
-      }) => ({
-        ...condition,
-        labelName: localizeLabel(condition as any, language),
-        value: parseRangeFromString(condition.value),
-      }));
+      const mappedRecord = mapByGroupNew(
+        getConditionsByGroupNew(loc),
+        (condition: {
+          value: string | number | IValue | string[] | undefined;
+          i18n?: Record<string, string>;
+          labelName?: string;
+        }) => ({
+          ...condition,
+          labelName: localizeLabel(condition as any, language),
+          value: parseRangeFromString(condition.value),
+        })
+      );
 
       const out = {
         ...loc,
@@ -108,7 +108,7 @@ const BusinessRulesNewController = ({
       };
       delete (out as any).conditionsThatEstablishesTheDecision;
       return out;
-    }),
+    })
   );
 
   const [removedConditionNames, setRemovedConditionNames] = useState<
@@ -149,7 +149,7 @@ const BusinessRulesNewController = ({
 
   const selectedIds = useMemo(
     () => new Set(selectedConditionsCSV.split(",").filter(Boolean)),
-    [selectedConditionsCSV],
+    [selectedConditionsCSV]
   );
 
   const handleMultipleChoicesChange = (_name: string, valueCSV: string) => {
@@ -160,7 +160,9 @@ const BusinessRulesNewController = ({
   };
 
   const handleOpenModal = (decision: IRuleDecision | null = null) => {
-    setSelectedDecision(decision ? normalizeDecisionToNewShape(decision) : null);
+    setSelectedDecision(
+      decision ? normalizeDecisionToNewShape(decision) : null
+    );
     setIsModalOpen(true);
   };
 
@@ -193,7 +195,7 @@ const BusinessRulesNewController = ({
         const merged = (tplList as any)
           .map((tplItem: any) => {
             const match = dataList.find(
-              (d: any) => d.conditionName === tplItem.conditionName,
+              (d: any) => d.conditionName === tplItem.conditionName
             );
             return {
               ...tplItem,
@@ -211,7 +213,7 @@ const BusinessRulesNewController = ({
           });
 
         return [group, merged];
-      }),
+      })
     );
 
     const newDecision: IRuleDecision = {
@@ -239,9 +241,10 @@ const BusinessRulesNewController = ({
             const sameByDecisionId =
               (selectedDecision as any)?.decisionId &&
               d.decisionId === (selectedDecision as any).decisionId;
-            const out = sameByBusinessRule || sameByDecisionId
-              ? decisionWithSentences
-              : d;
+            const out =
+              sameByBusinessRule || sameByDecisionId
+                ? decisionWithSentences
+                : d;
             delete (out as any).conditionsThatEstablishesTheDecision;
             return out;
           })
@@ -252,7 +255,7 @@ const BusinessRulesNewController = ({
               delete (out as any).conditionsThatEstablishesTheDecision;
               return out;
             })(),
-          ],
+          ]
     );
 
     handleCloseModal();
@@ -278,9 +281,9 @@ const BusinessRulesNewController = ({
         (list as any[]).filter(
           (c) =>
             (selectedIds.size === 0 || selectedIds.has(c.conditionName)) &&
-            !removedConditionNames.has(c.conditionName),
+            !removedConditionNames.has(c.conditionName)
         ),
-      ]),
+      ])
     );
 
     const withFiltered = {
@@ -292,8 +295,6 @@ const BusinessRulesNewController = ({
 
     return withFiltered as any;
   }, [localizedTemplate, language, selectedIds, removedConditionNames]);
-
-  console.log("filteredDecisionTemplate", filteredDecisionTemplate);
 
   return (
     <Stack direction="column" gap="24px">

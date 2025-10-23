@@ -38,12 +38,7 @@ const sampleDecisions: any[] = [
             descriptionUse: "Line of credit.",
             conditionDataType: ValueDataType.ALPHABETICAL,
             howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
-            value:  [
-              "H",
-              "O",
-              "L",
-              "A"
-            ],
+            value: ["H", "O", "L", "A"],
             i18n: {
               es: "Línea de crédito",
             },
@@ -59,7 +54,7 @@ const sampleDecisions: any[] = [
               es: "Línea de crédito",
             },
           },
-                    {
+          {
             labelName: "Line of credit13",
             conditionName: "LineOfCredit13",
             descriptionUse: "Line of credit13.",
@@ -70,7 +65,7 @@ const sampleDecisions: any[] = [
               es: "Línea de crédito",
             },
           },
-                    {
+          {
             labelName: "Line of credit14",
             conditionName: "LineOfCredit14",
             descriptionUse: "Line of credit14.",
@@ -262,9 +257,9 @@ const sampleDecisions: any[] = [
           labelName: "Antigüedad del cliente (Días)",
           conditionName: "AntigüedadDelCliente(Días)",
           descriptionUse: "Antigüedad del cliente (Días)",
-          conditionDataType: ValueDataType.NUMBER,
-          howToSetTheCondition: EValueHowToSetUp.RANGE,
-          value: "",
+          conditionDataType: ValueDataType.PERCENTAGE,
+          howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
+          value: ["abc", "10", "20", "45"],
           TimeUnit: "Year",
         },
         {
@@ -273,26 +268,26 @@ const sampleDecisions: any[] = [
           descriptionUse: "Porcentaje De Riesgo",
           conditionDataType: ValueDataType.PERCENTAGE,
           howToSetTheCondition: EValueHowToSetUp.RANGE,
-          value: "",
+          value: { from: 5, to: 1 },
         },
         {
           labelName: "Membresia del cliente",
           conditionName: "NivelDeMembresía",
           descriptionUse: "Nivel De Membresía",
           conditionDataType: ValueDataType.ALPHABETICAL,
-          howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
+          howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES_MULTI,
           listOfPossibleValues: {
             list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
           },
-          value: "",
+          value: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
         },
         {
           labelName: "reciprocidad de ahorro",
           conditionName: "ReciprocidadDeAhorro",
           descriptionUse: "Reciprocidad De Ahorro",
-          conditionDataType: ValueDataType.PERCENTAGE,
+          conditionDataType: ValueDataType.MONETARY,
           howToSetTheCondition: EValueHowToSetUp.RANGE,
-          value: "",
+          value: { from: 10, to: 20 },
         },
       ],
       "aditional-group-1": [
@@ -300,7 +295,7 @@ const sampleDecisions: any[] = [
           labelName: "Antigüedad del cliente (Días)1",
           conditionName: "AntigüedadDelCliente(Días)1",
           descriptionUse: "Antigüedad del cliente (Días)1",
-          conditionDataType: ValueDataType.NUMBER,
+          conditionDataType: ValueDataType.MONETARY,
           howToSetTheCondition: EValueHowToSetUp.RANGE,
           value: "",
         },
