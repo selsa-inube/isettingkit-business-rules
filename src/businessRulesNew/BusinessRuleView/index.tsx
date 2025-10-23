@@ -12,6 +12,7 @@ import { getConditionsByGroupNew } from "../helper/utils/getConditionsByGroup";
 import { filterByGroup } from "../helper/utils/filterByGroup";
 import { timeUnitHandle } from "../utils/timeUnitHandle";
 import { howToSetHandle } from "../utils/howToSetHandle";
+import { formatDateEsShort } from "../utils/formatDateEsShort";
 
 type TTab = { id: string; label: string; isDisabled?: boolean };
 
@@ -40,13 +41,13 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
     ? {
         element: {
           labelName: textValues?.effectiveFrom,
-          value: String(decision!.effectiveFrom),
+          value: formatDateEsShort(decision!.effectiveFrom),
           howToSetTheDecision: ValueHowToSetUp.EQUAL,
           decisionDataType: ValueDataType.DATE,
         },
         valueData: strategyFactoryHandlerManagerNew({
           labelName: textValues?.effectiveFrom,
-          value: String(decision!.effectiveFrom),
+          value: formatDateEsShort(decision!.effectiveFrom),
           howToSetTheDecision: ValueHowToSetUp.EQUAL,
           decisionDataType: ValueDataType.DATE,
         }),
@@ -57,18 +58,14 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
         element: {
           labelName: textValues?.validUntil,
           value:
-            decision!.validUntil instanceof Date
-              ? decision!.validUntil.toISOString()
-              : decision!.validUntil,
+           formatDateEsShort(decision!.validUntil),
           howToSetTheDecision: ValueHowToSetUp.EQUAL,
           decisionDataType: ValueDataType.DATE,
         },
         valueData: strategyFactoryHandlerManagerNew({
           labelName: textValues?.validUntil,
           value:
-            decision!.validUntil instanceof Date
-              ? decision!.validUntil.toISOString()
-              : decision!.validUntil,
+            formatDateEsShort(decision!.validUntil),
           howToSetTheDecision: ValueHowToSetUp.EQUAL,
           decisionDataType: ValueDataType.DATE,
         }),

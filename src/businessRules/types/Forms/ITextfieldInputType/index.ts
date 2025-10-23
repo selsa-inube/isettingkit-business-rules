@@ -4,6 +4,7 @@ declare const inputTypes: readonly [
   "date",
   "number",
   "percentage",
+  "monetary",
 ];
 
 declare type ITextfieldInputType = (typeof inputTypes)[number];

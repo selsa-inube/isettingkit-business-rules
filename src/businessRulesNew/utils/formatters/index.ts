@@ -7,6 +7,8 @@ const formatters: Record<
 > = {
   currency: (value) =>
     typeof value === "number" ? currencyFormat(value) : value,
+  monetary: (value) =>
+    typeof value === "number" ? currencyFormat(value) : value,
   percentage: (value) =>
     typeof value === "number" ? percentageFormat(value) : value,
   number: (value) => value,

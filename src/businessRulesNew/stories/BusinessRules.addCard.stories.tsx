@@ -297,7 +297,7 @@ const sampleDecisions: any[] = [
           descriptionUse: "Antigüedad del cliente (Días)1",
           conditionDataType: ValueDataType.MONETARY,
           howToSetTheCondition: EValueHowToSetUp.RANGE,
-          value: "",
+          value: {from: 2, to: 4},
         },
         {
           labelName: "Porcentaje de riesgo1",
@@ -305,7 +305,7 @@ const sampleDecisions: any[] = [
           descriptionUse: "Porcentaje De Riesgo1",
           conditionDataType: ValueDataType.PERCENTAGE,
           howToSetTheCondition: EValueHowToSetUp.RANGE,
-          value: "",
+          value: {from: 2, to: 4},
         },
         {
           labelName: "Membresia del cliente1",
@@ -324,7 +324,7 @@ const sampleDecisions: any[] = [
           descriptionUse: "Reciprocidad De Ahorro1",
           conditionDataType: ValueDataType.PERCENTAGE,
           howToSetTheCondition: EValueHowToSetUp.RANGE,
-          value: "",
+          value: {from: 2, to: 4},
         },
       ],
       "aditional-group-2": [
@@ -334,7 +334,7 @@ const sampleDecisions: any[] = [
           descriptionUse: "Antigüedad del cliente (Días)2",
           conditionDataType: ValueDataType.NUMBER,
           howToSetTheCondition: EValueHowToSetUp.RANGE,
-          value: "",
+          value:  {from: 2, to: 4},
         },
         {
           labelName: "Porcentaje de riesgo2",
@@ -342,7 +342,7 @@ const sampleDecisions: any[] = [
           descriptionUse: "Porcentaje De Riesgo2",
           conditionDataType: ValueDataType.PERCENTAGE,
           howToSetTheCondition: EValueHowToSetUp.RANGE,
-          value: "",
+          value:  {from: 3, to: 12},
         },
         {
           labelName: "Membresia del cliente2",
@@ -353,7 +353,7 @@ const sampleDecisions: any[] = [
           listOfPossibleValues: {
             list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
           },
-          value: "",
+          value: ["Muy alto"],
         },
         {
           labelName: "reciprocidad de ahorro2",
@@ -361,7 +361,7 @@ const sampleDecisions: any[] = [
           descriptionUse: "Reciprocidad De Ahorro2",
           conditionDataType: ValueDataType.PERCENTAGE,
           howToSetTheCondition: EValueHowToSetUp.RANGE,
-          value: "",
+          value:  {from: 2, to: 1},
         },
       ],
     },
