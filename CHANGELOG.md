@@ -1,3 +1,15 @@
+# v2.1.19 (Thu Oct 23 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: added date formatter ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.1.18 (Thu Oct 23 2025)
 
 #### 🐛 Bug Fix
