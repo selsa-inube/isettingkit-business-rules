@@ -10,7 +10,7 @@ const formatDateEsShort=(input: string | Date | number | null | undefined): stri
   if (ymdMatch) {
     const [, yStr, mStr, dStr] = ymdMatch;
     const year = Number(yStr);
-    const monthIdx = Number(mStr) - 1; // 0..11
+    const monthIdx = Number(mStr) - 1;
     const day = Number(dStr);
     if (isFinite(year) && monthIdx >= 0 && monthIdx < 12 && isFinite(day)) {
       const dd = String(day).padStart(2, "0");

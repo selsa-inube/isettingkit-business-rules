@@ -260,7 +260,7 @@ const sampleDecisions: any[] = [
           conditionDataType: ValueDataType.PERCENTAGE,
           howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
           value: ["abc", "10", "20", "45"],
-          TimeUnit: "Year",
+          timeUnit: "Year",
         },
         {
           labelName: "Porcentaje de riesgo",

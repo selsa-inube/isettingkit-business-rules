@@ -136,8 +136,8 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
       if (groupConditions && Array.isArray(groupConditions)) {
         result[groupKey] = groupConditions.map((condition) => {
           let newLabel = condition.labelName;
-          if (condition.TimeUnit && condition.labelName) {
-            newLabel = timeUnitHandle(condition.labelName, condition.TimeUnit);
+          if (condition.timeUnit && condition.labelName) {
+            newLabel = timeUnitHandle(condition.labelName, condition.timeUnit);
           }
 
           let newValue = condition.value;
