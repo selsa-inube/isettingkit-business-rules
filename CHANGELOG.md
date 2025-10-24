@@ -1,3 +1,15 @@
+# v2.1.21 (Fri Oct 24 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: adjustment in order to include timeUnit to view ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.1.20 (Fri Oct 24 2025)
 
 #### ⚠️ Pushed to `main`
