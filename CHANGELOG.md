@@ -1,3 +1,16 @@
+# v2.1.20 (Fri Oct 24 2025)
+
+#### ⚠️ Pushed to `main`
+
+- Merge branch 'main' of https://github.com/selsa-inube/isettingkit-business-rules ([@cmarin001](https://github.com/cmarin001))
+- chore: update input dependency ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.1.19 (Thu Oct 23 2025)
 
 #### ⚠️ Pushed to `main`
