@@ -266,9 +266,9 @@ const sampleDecisions: any[] = [
           labelName: "Porcentaje de riesgo",
           conditionName: "PorcentajeDeRiesgo",
           descriptionUse: "Porcentaje De Riesgo",
-          conditionDataType: ValueDataType.PERCENTAGE,
-          howToSetTheCondition: EValueHowToSetUp.RANGE,
-          value: { from: 5, to: 1 },
+          conditionDataType: ValueDataType.MONETARY,
+          howToSetTheCondition: EValueHowToSetUp.LESS_THAN,
+          value: 25000000,
         },
         {
           labelName: "Membresia del cliente",
@@ -316,7 +316,7 @@ const sampleDecisions: any[] = [
           listOfPossibleValues: {
             list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
           },
-          value: "",
+          value: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
         },
         {
           labelName: "reciprocidad de ahorro1",
