@@ -1,3 +1,20 @@
+# v2.1.23 (Mon Oct 27 2025)
+
+#### 🐛 Bug Fix
+
+- fix: delete parse range for string [#11](https://github.com/selsa-inube/isettingkit-business-rules/pull/11) ([@heber59](https://github.com/heber59))
+
+#### ⚠️ Pushed to `main`
+
+- chore: update input and view dependencies ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 2
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+- Heber  Alvarez  ([@heber59](https://github.com/heber59))
+
+---
+
 # v2.1.22 (Mon Oct 27 2025)
 
 #### ⚠️ Pushed to `main`
