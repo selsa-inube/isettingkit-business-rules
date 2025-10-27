@@ -247,7 +247,7 @@ const sampleDecisions: any[] = [
     ruleName: "TasaEfectivaAnual",
     labelName: "Tasa Efectiva Anual",
     decisionDataType: ValueDataType.PERCENTAGE,
-    value: { from: 3, to: 6 },
+    value: { from: 14.2, to: 21.5 },
     howToSetTheDecision: EValueHowToSetUp.RANGE,
     effectiveFrom: "2024-12-31",
     validUntil: "2024-12-31",
@@ -297,7 +297,7 @@ const sampleDecisions: any[] = [
           descriptionUse: "Antigüedad del cliente (Días)1",
           conditionDataType: ValueDataType.MONETARY,
           howToSetTheCondition: EValueHowToSetUp.RANGE,
-          value: {from: 2, to: 4},
+          value: {from: 2.2, to: 44.2},
         },
         {
           labelName: "Porcentaje de riesgo1",
