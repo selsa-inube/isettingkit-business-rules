@@ -6,7 +6,6 @@ import { sortDisplayDataSwitchPlaces } from "../helper/utils/sortDisplayDataSwit
 import { sortDisplayDataSampleSwitchPlaces } from "../helper/utils/sortDisplayDataSampleSwitchPlaces";
 import { IRulesFormTextValues } from "../types/Forms/IRulesFormTextValues";
 import { formatDecisionForBackend } from "../helper/utils/formatDecisionForBackend";
-import { parseRangeFromString } from "../helper/utils/parseRangeFromString";
 import { Button, Fieldset, Icon, Stack, Text } from "@inubekit/inubekit";
 import { MdAdd, MdOutlineReportProblem } from "react-icons/md";
 import type { IOption } from "@inubekit/inubekit";
@@ -97,13 +96,13 @@ const BusinessRulesNewController = ({
         }) => ({
           ...condition,
           labelName: localizeLabel(condition as any, language),
-          value: parseRangeFromString(condition.value),
+          value: condition.value,
         })
       );
 
       const out = {
         ...loc,
-        value: parseRangeFromString(loc.value),
+        value: loc.value,
         conditionGroups: groupsRecordToArrayNew(mappedRecord),
       };
       delete (out as any).conditionsThatEstablishesTheDecision;
