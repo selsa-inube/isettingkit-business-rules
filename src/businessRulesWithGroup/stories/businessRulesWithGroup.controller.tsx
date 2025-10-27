@@ -5,7 +5,6 @@ import { sortDisplayDataSwitchPlaces } from "../helper/utils/sortDisplayDataSwit
 import { sortDisplayDataSampleSwitchPlaces } from "../helper/utils/sortDisplayDataSampleSwitchPlaces";
 import { IRulesFormTextValues } from "../types/Forms/IRulesFormTextValues";
 import { formatDecisionForBackend } from "../helper/utils/formatDecisionForBackend";
-import { parseRangeFromString } from "../helper/utils/parseRangeFromString";
 import { BusinessRulesWithGroup } from "..";
 
 interface IBusinessRulesController {
@@ -31,18 +30,27 @@ const BusinessRulesController = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDecision, setSelectedDecision] =
     useState<IRuleDecision | null>(null);
-   
+
   const [decisions, setDecisions] = useState<IRuleDecision[]>(
-    initialDecisions.map((decision: { value: string | number | IValue | string[] | undefined; conditionGroups: { conditionsThatEstablishesTheDecision: any[]; }[]; }) => (
-      {
-      ...decision,
-      value: parseRangeFromString(decision.value),
-      conditionsThatEstablishesTheDecision:
-        decision.conditionGroups[0].conditionsThatEstablishesTheDecision?.map((condition) => (console.log('condition.value: ',condition),{
-          ...condition,
-          value: parseRangeFromString(condition.value),
-        })),
-    })),
+    initialDecisions.map(
+      (decision: {
+        value: string | number | IValue | string[] | undefined;
+        conditionGroups: { conditionsThatEstablishesTheDecision: any[] }[];
+      }) => ({
+        ...decision,
+        value: decision.value,
+        conditionsThatEstablishesTheDecision:
+          decision.conditionGroups[0].conditionsThatEstablishesTheDecision?.map(
+            (condition) => (
+              console.log("condition.value: ", condition),
+              {
+                ...condition,
+                value: condition.value,
+              }
+            )
+          ),
+      })
+    )
   );
 
   const handleOpenModal = (decision: IRuleDecision | null = null) => {
@@ -69,14 +77,18 @@ const BusinessRulesController = ({
           decisionId: `Decisión ${decisions.length + 1}`,
           conditions:
             decisionTemplate.conditionGroups.conditionsThatEstablishesTheDecision?.map(
-              (conditionTemplate: { value: any; }, index: string | number) => (console.log('onSubmit: '),{
-                ...conditionTemplate,
-                conditionDataType: "alphabetical",
-                howToSetTheCondition: "EqualTo",
-                value:
-                  dataDecision.conditionGroups.conditionsThatEstablishesTheDecision?.[index]
-                    ?.value ?? conditionTemplate.value,
-              }),
+              (conditionTemplate: { value: any }, index: string | number) => (
+                console.log("onSubmit: "),
+                {
+                  ...conditionTemplate,
+                  conditionDataType: "alphabetical",
+                  howToSetTheCondition: "EqualTo",
+                  value:
+                    dataDecision.conditionGroups
+                      .conditionsThatEstablishesTheDecision?.[index]?.value ??
+                    conditionTemplate.value,
+                }
+              )
             ) ?? [],
         };
 
@@ -93,9 +105,9 @@ const BusinessRulesController = ({
         ? prevDecisions.map((decision) =>
             decision.businessRuleId === selectedDecision!.businessRuleId
               ? newDecision
-              : decision,
+              : decision
           )
-        : [...prevDecisions, newDecision],
+        : [...prevDecisions, newDecision]
     );
 
     handleCloseModal();
@@ -105,7 +117,7 @@ const BusinessRulesController = ({
 
   const handleDelete = (id: string) => {
     setDecisions((prevDecisions) =>
-      prevDecisions.filter((decision) => decision.decisionId !== id),
+      prevDecisions.filter((decision) => decision.decisionId !== id)
     );
   };
 
