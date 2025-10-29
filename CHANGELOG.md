@@ -1,3 +1,15 @@
+# v2.1.24 (Wed Oct 29 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: update in order to include the timeUnit property and howToSet appears properly ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.1.23 (Mon Oct 27 2025)
 
 #### 🐛 Bug Fix
