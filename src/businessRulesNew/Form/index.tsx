@@ -8,6 +8,7 @@ import React from "react";
 import { IRuleDecision } from "@isettingkit/input";
 import { buildEsConditionSentence } from "../utils/buildEsConditionSentence";
 import { normalizeHowToSet } from "../utils/normalizeHowToSet";
+import { timeUnitHandle } from "../utils/timeUnitHandle";
 
 type TTab = { id: string; label: string; isDisabled?: boolean };
 
@@ -15,6 +16,7 @@ type TRulesFormExtraProps = {
   onRemoveCondition?: (conditionName: string) => void;
   onRestoreConditions?: (conditionNames: string[]) => void;
   fullTemplate?: IRuleDecision;
+  timeUnit?: string;
 };
 
 const labelForGroup = (groupKey: string, indexAlt: number) => {
@@ -106,8 +108,9 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
             howToSet: how,
             isFirst,
           });
-
-          return { ...c, labelName: sentence };
+          const unitAfter =
+          c.timeUnit ? timeUnitHandle("", c.timeUnit, true).trim() : "";
+          return { ...c, labelName: sentence, __unitAfterInput: unitAfter, };
         });
         return [g, decorated] as const;
       });
@@ -126,6 +129,7 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
     labelName: decision.labelName,
     listOfPossibleValues: decision.listOfPossibleValues,
     ruleName: decision.ruleName,
+    timeUnit:  decision.timeUnit ? timeUnitHandle("", decision.timeUnit, true).trim() : ""
   };
 
   const startDirty = formik.submitCount > 0 || !!formik.touched.effectiveFrom;

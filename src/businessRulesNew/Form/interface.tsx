@@ -34,12 +34,17 @@ const RulesFormUI = (props: IRulesFormUI) => {
       <form onSubmit={formik.handleSubmit}>
         <Stack direction="column" gap="24px" width="100%">
           <Fieldset legend="Decisión N° 01" spacing="wide">
-            <Stack justifyContent="center" width="-webkit-fill-available">
+            <Stack justifyContent="center" width="-webkit-fill-available" alignItems="center">
               {DecisionConditionRenderNew({
                 condition: normalizedDecision,
                 formik,
                 isDecision: true,
               })}
+              {normalizedDecision.timeUnit && (
+                <Text as="span" size="medium" padding="0 0 0 16px">
+                  {normalizedDecision.timeUnit}
+                </Text>
+              )}
             </Stack>
           </Fieldset>
 
@@ -81,6 +86,11 @@ const RulesFormUI = (props: IRulesFormUI) => {
                         condition={condition}
                         formik={formik}
                       />
+                      {condition.timeUnit && (
+                        <Text as="span" size="medium" padding="0 0 0 16px">
+                          {condition.__unitAfterInput}
+                        </Text>
+                      )}
                     </StyledConditionFieldContainer>
                     <Icon
                       icon={<MdOutlineDelete />}

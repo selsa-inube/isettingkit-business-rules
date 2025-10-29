@@ -82,9 +82,11 @@ function guessGenderFromSuffix(word: string): "m" | "f" {
 function tailForHowToSet(how: EValueHowToSetUp): string {
   switch (how) {
     case EValueHowToSetUp.EQUAL:
-    case EValueHowToSetUp.GREATER_THAN:
-    case EValueHowToSetUp.LESS_THAN:
       return "sea";
+    case EValueHowToSetUp.GREATER_THAN:
+      return "sea mayor a";
+    case EValueHowToSetUp.LESS_THAN:
+      return "sea menor a";
     case EValueHowToSetUp.RANGE:
       return "esté entre";
     case EValueHowToSetUp.LIST_OF_VALUES:

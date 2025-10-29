@@ -381,6 +381,7 @@ const decisionTemplate: any = {
   value: "",
   effectiveFrom: "",
   validUntil: "",
+  timeUnit: "Day",
   conditionsThatEstablishesTheDecision: {
     "group-primary": [
       {
@@ -388,8 +389,12 @@ const decisionTemplate: any = {
         conditionName: "AntigüedadDelCliente(Días)",
         descriptionUse: "Antigüedad del cliente (Días)",
         conditionDataType: ValueDataType.NUMBER,
-        howToSetTheCondition: EValueHowToSetUp.EQUAL,
+        howToSetTheCondition: EValueHowToSetUp.GREATER_THAN,
         value: "",
+        timeUnit: "Day",
+        i18n:{
+          es: "Antigüedad del cliente (Días)"
+        }
       },
       {
         labelName: "Porcentaje de riesgo",
@@ -398,6 +403,9 @@ const decisionTemplate: any = {
         conditionDataType: ValueDataType.PERCENTAGE,
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
+        i18n: {
+          es: "Porcentaje de riesgo"
+        }
       },
       {
         labelName: "Membresia del cliente",
@@ -409,6 +417,9 @@ const decisionTemplate: any = {
           list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
         },
         value: "",
+        i18n: {
+          es: "Membresia del cliente"
+        }
       },
       {
         labelName: "reciprocidad de ahorro",
@@ -417,6 +428,9 @@ const decisionTemplate: any = {
         conditionDataType: ValueDataType.PERCENTAGE,
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
+        i18n: {
+          es: "reciprocidad de ahorro"
+        }
       },
     ],
     "aditional-group-1": [
@@ -427,6 +441,9 @@ const decisionTemplate: any = {
         conditionDataType: ValueDataType.NUMBER,
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
+        i18n: {
+          es: "Antigüedad del cliente (Días)1"
+        }
       },
       {
         labelName: "Porcentaje de riesgo1",
@@ -435,6 +452,9 @@ const decisionTemplate: any = {
         conditionDataType: ValueDataType.PERCENTAGE,
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
+        i18n: {
+          es: "Porcentaje de riesgo1"
+        }
       },
       {
         labelName: "Membresia del cliente1",
@@ -446,6 +466,9 @@ const decisionTemplate: any = {
           list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
         },
         value: "",
+        i18n: {
+          es: "Membresia del cliente1"
+        }
       },
       {
         labelName: "reciprocidad de ahorro1",
@@ -454,6 +477,9 @@ const decisionTemplate: any = {
         conditionDataType: ValueDataType.PERCENTAGE,
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
+        i18n: {
+          es: "reciprocidad de ahorro1"
+        }
       },
     ],
     "aditional-group-2": [
@@ -464,6 +490,9 @@ const decisionTemplate: any = {
         conditionDataType: ValueDataType.NUMBER,
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
+        i18n: {
+          es: "Antigüedad del cliente (Días)2"
+        }
       },
       {
         labelName: "Porcentaje de riesgo2",
@@ -472,6 +501,9 @@ const decisionTemplate: any = {
         conditionDataType: ValueDataType.PERCENTAGE,
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
+        i18n: {
+          es: "Porcentaje de riesgo2"
+        }
       },
       {
         labelName: "Membresia del cliente2",
@@ -483,6 +515,9 @@ const decisionTemplate: any = {
           list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
         },
         value: "",
+        i18n: {
+          es: "Membresia del cliente2"
+        }
       },
       {
         labelName: "reciprocidad de ahorro2",
@@ -491,6 +526,9 @@ const decisionTemplate: any = {
         conditionDataType: ValueDataType.PERCENTAGE,
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
+        i18n: {
+          es: "reciprocidad de ahorro2"
+        }
       },
     ],
   },

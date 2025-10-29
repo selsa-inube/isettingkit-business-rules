@@ -31,6 +31,7 @@ const StyledScrollContainer = styled.div`
 const StyledConditionFieldContainer = styled.div`
   display: flex;
   width: -webkit-fill-available;
+  align-items: center;
   & > div {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
