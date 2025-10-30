@@ -297,7 +297,7 @@ const sampleDecisions: any[] = [
           descriptionUse: "Antigüedad del cliente (Días)1",
           conditionDataType: ValueDataType.MONETARY,
           howToSetTheCondition: EValueHowToSetUp.RANGE,
-          value: {from: 2.2, to: 44.2},
+          value: { from: 2.2, to: 44.2 },
         },
         {
           labelName: "Porcentaje de riesgo1",
@@ -305,7 +305,7 @@ const sampleDecisions: any[] = [
           descriptionUse: "Porcentaje De Riesgo1",
           conditionDataType: ValueDataType.PERCENTAGE,
           howToSetTheCondition: EValueHowToSetUp.RANGE,
-          value: {from: 2, to: 4},
+          value: { from: 2, to: 4 },
         },
         {
           labelName: "Membresia del cliente1",
@@ -324,7 +324,7 @@ const sampleDecisions: any[] = [
           descriptionUse: "Reciprocidad De Ahorro1",
           conditionDataType: ValueDataType.PERCENTAGE,
           howToSetTheCondition: EValueHowToSetUp.RANGE,
-          value: {from: 2, to: 4},
+          value: { from: 2, to: 4 },
         },
       ],
       "aditional-group-2": [
@@ -334,7 +334,7 @@ const sampleDecisions: any[] = [
           descriptionUse: "Antigüedad del cliente (Días)2",
           conditionDataType: ValueDataType.NUMBER,
           howToSetTheCondition: EValueHowToSetUp.RANGE,
-          value:  {from: 2, to: 4},
+          value: { from: 2, to: 4 },
         },
         {
           labelName: "Porcentaje de riesgo2",
@@ -342,7 +342,7 @@ const sampleDecisions: any[] = [
           descriptionUse: "Porcentaje De Riesgo2",
           conditionDataType: ValueDataType.PERCENTAGE,
           howToSetTheCondition: EValueHowToSetUp.RANGE,
-          value:  {from: 3, to: 12},
+          value: { from: 3, to: 12 },
         },
         {
           labelName: "Membresia del cliente2",
@@ -361,7 +361,7 @@ const sampleDecisions: any[] = [
           descriptionUse: "Reciprocidad De Ahorro2",
           conditionDataType: ValueDataType.PERCENTAGE,
           howToSetTheCondition: EValueHowToSetUp.RANGE,
-          value:  {from: 2, to: 1},
+          value: { from: 2, to: 1 },
         },
       ],
     },
@@ -392,9 +392,9 @@ const decisionTemplate: any = {
         howToSetTheCondition: EValueHowToSetUp.GREATER_THAN,
         value: "",
         timeUnit: "Day",
-        i18n:{
-          es: "Antigüedad del cliente (Días)"
-        }
+        i18n: {
+          es: "Antigüedad del cliente (Días)",
+        },
       },
       {
         labelName: "Porcentaje de riesgo",
@@ -404,8 +404,8 @@ const decisionTemplate: any = {
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
         i18n: {
-          es: "Porcentaje de riesgo"
-        }
+          es: "Porcentaje de riesgo",
+        },
       },
       {
         labelName: "Membresia del cliente",
@@ -418,19 +418,19 @@ const decisionTemplate: any = {
         },
         value: "",
         i18n: {
-          es: "Membresia del cliente"
-        }
+          es: "Membresia del cliente",
+        },
       },
       {
         labelName: "reciprocidad de ahorro",
         conditionName: "ReciprocidadDeAhorro",
         descriptionUse: "Reciprocidad De Ahorro",
-        conditionDataType: ValueDataType.PERCENTAGE,
+        conditionDataType: ValueDataType.MONETARY,
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
         i18n: {
-          es: "reciprocidad de ahorro"
-        }
+          es: "reciprocidad de ahorro",
+        },
       },
     ],
     "aditional-group-1": [
@@ -442,8 +442,8 @@ const decisionTemplate: any = {
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
         i18n: {
-          es: "Antigüedad del cliente (Días)1"
-        }
+          es: "Antigüedad del cliente (Días)1",
+        },
       },
       {
         labelName: "Porcentaje de riesgo1",
@@ -453,8 +453,8 @@ const decisionTemplate: any = {
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
         i18n: {
-          es: "Porcentaje de riesgo1"
-        }
+          es: "Porcentaje de riesgo1",
+        },
       },
       {
         labelName: "Membresia del cliente1",
@@ -467,8 +467,8 @@ const decisionTemplate: any = {
         },
         value: "",
         i18n: {
-          es: "Membresia del cliente1"
-        }
+          es: "Membresia del cliente1",
+        },
       },
       {
         labelName: "reciprocidad de ahorro1",
@@ -478,8 +478,8 @@ const decisionTemplate: any = {
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
         i18n: {
-          es: "reciprocidad de ahorro1"
-        }
+          es: "reciprocidad de ahorro1",
+        },
       },
     ],
     "aditional-group-2": [
@@ -491,8 +491,8 @@ const decisionTemplate: any = {
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
         i18n: {
-          es: "Antigüedad del cliente (Días)2"
-        }
+          es: "Antigüedad del cliente (Días)2",
+        },
       },
       {
         labelName: "Porcentaje de riesgo2",
@@ -502,8 +502,8 @@ const decisionTemplate: any = {
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
         i18n: {
-          es: "Porcentaje de riesgo2"
-        }
+          es: "Porcentaje de riesgo2",
+        },
       },
       {
         labelName: "Membresia del cliente2",
@@ -516,8 +516,8 @@ const decisionTemplate: any = {
         },
         value: "",
         i18n: {
-          es: "Membresia del cliente2"
-        }
+          es: "Membresia del cliente2",
+        },
       },
       {
         labelName: "reciprocidad de ahorro2",
@@ -527,8 +527,8 @@ const decisionTemplate: any = {
         howToSetTheCondition: EValueHowToSetUp.RANGE,
         value: "",
         i18n: {
-          es: "reciprocidad de ahorro2"
-        }
+          es: "reciprocidad de ahorro2",
+        },
       },
     ],
   },

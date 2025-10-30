@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-const isRecordOfArrays = (v: unknown): v is Record<string, any[]> =>
-  !!v &&
-  typeof v === "object" &&
-  !Array.isArray(v) &&
-  Object.values(v as Record<string, unknown>).every(Array.isArray);
+const isRecordOfArrays = (v: unknown): v is Record<string, any[]> => {
+  if (!v || typeof v !== "object" || Array.isArray(v)) return false;
+
+  const values = Object.values(v as Record<string, unknown>);
+  return values.some(Array.isArray);
+};
 
 const uniqByConditionName = (list: any[]) => {
   const seen = new Set<string>();
