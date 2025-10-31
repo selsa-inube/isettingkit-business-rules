@@ -172,7 +172,7 @@ const BusinessRulesNewController = ({
 
   const handleSubmitForm = (dataDecision: any) => {
     const isEditing = selectedDecision !== null;
-   console.log('dataDecision: ',dataDecision)
+    console.log("dataDecision: ", dataDecision);
     const base = isEditing
       ? { ...selectedDecision, ...dataDecision }
       : {
@@ -191,26 +191,18 @@ const BusinessRulesNewController = ({
       Object.entries(tplGroups).map(([group, tplList]) => {
         const dataList = dataGroups[group] ?? [];
 
-        const merged = (tplList as any)
-          .map((tplItem: any) => {
-            const match = dataList.find(
-              (d: any) => d.conditionName === tplItem.conditionName
-            );
-            return {
-              ...tplItem,
-              labelName: localizeLabel(tplItem, language),
-              value: match?.value ?? tplItem.value,
-              listOfPossibleValues:
-                match?.listOfPossibleValues ?? tplItem.listOfPossibleValues,
-            };
-          })
-          .filter((m: any) => {
-            const passesSelected =
-              selectedIds.size === 0 || selectedIds.has(m.conditionName);
-            const notRemoved = !removedConditionNames.has(m.conditionName);
-            return passesSelected && notRemoved;
-          });
-
+        const merged = (tplList as any).map((tplItem: any) => {
+          const match = dataList.find(
+            (d: any) => d.conditionName === tplItem.conditionName
+          );
+          return {
+            ...tplItem,
+            labelName: localizeLabel(tplItem, language),
+            value: match?.value ?? tplItem.value,
+            listOfPossibleValues:
+              match?.listOfPossibleValues ?? tplItem.listOfPossibleValues,
+          };
+        });
         return [group, merged];
       })
     );
