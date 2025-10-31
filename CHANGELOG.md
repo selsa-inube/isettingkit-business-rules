@@ -1,3 +1,15 @@
+# v2.1.25 (Fri Oct 31 2025)
+
+#### 🐛 Bug Fix
+
+- fix: adjust array mapper and storie management [#12](https://github.com/selsa-inube/isettingkit-business-rules/pull/12) ([@heber59](https://github.com/heber59))
+
+#### Authors: 1
+
+- Heber  Alvarez  ([@heber59](https://github.com/heber59))
+
+---
+
 # v2.1.24 (Wed Oct 29 2025)
 
 #### ⚠️ Pushed to `main`
