@@ -45,7 +45,6 @@ const formatDecisionForBackend = (props: {
   const formattedConditions = incomingConds
     .map((incoming) => {
       const val = incoming?.value;
-
       const isEmpty =
         val === undefined ||
         val === null ||
@@ -63,7 +62,6 @@ const formatDecisionForBackend = (props: {
       };
     })
     .filter(Boolean);
-
   return {
     ...template,
     ...decision,

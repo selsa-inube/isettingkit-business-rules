@@ -13,9 +13,16 @@ function useRulesFormUtils({
   onSubmitEvent,
   textValues,
 }: IUseRulesFormUtils & { textValues: IRulesForm["textValues"] }) {
-
   const grouped = getConditionsByGroupNew(decision) || {};
-  const flattenConditions = (): any[] => Object.values(grouped).flat() as any[];
+
+  const iterateGrouped = () =>
+    Object.entries(grouped).flatMap(([g, list]) =>
+      (list as any[]).map((cond) => ({ group: g, cond })),
+    );
+
+  const emptyGroupedRecord = Object.fromEntries(
+    Object.keys(grouped).map((g) => [g, {} as Record<string, any>]),
+  );
 
   const initialValues = {
     ruleName: decision.ruleName || "",
@@ -25,7 +32,10 @@ function useRulesFormUtils({
     effectiveFrom: decision.effectiveFrom || "",
     validUntil: decision.validUntil || "",
     toggleNone: true,
-    conditionsThatEstablishesTheDecision: {} as Record<string, any>,
+    conditionsThatEstablishesTheDecision: emptyGroupedRecord as Record<
+      string,
+      Record<string, any>
+    >,
     checkClosed: false,
     terms: true,
   };
@@ -47,41 +57,49 @@ function useRulesFormUtils({
     }),
 
     conditionsThatEstablishesTheDecision: lazy((_value, { parent }) => {
-      const toggleNone =
-        parent?.toggleNone &&
-        Object.keys(parent.conditionsThatEstablishesTheDecision || {}).length >
-          0;
+      const haveAnyGroupKeys =
+        parent &&
+        parent.conditionsThatEstablishesTheDecision &&
+        typeof parent.conditionsThatEstablishesTheDecision === "object" &&
+        Object.keys(parent.conditionsThatEstablishesTheDecision).length > 0;
 
+      const toggleNone = parent?.toggleNone && haveAnyGroupKeys;
       if (toggleNone) return object().shape({});
 
-      const allConds = flattenConditions();
-      const conditionsSchema = allConds.reduce(
-        (schema, condition) => {
+      const perGroupSchemas: Record<string, Schema<any>> = {};
+      for (const [groupKey, conditionList] of Object.entries(grouped)) {
+        const perCond: Record<string, Schema<any>> = {};
+        (conditionList as any[]).forEach((condition) => {
           const conditionValue =
-            formik.values.conditionsThatEstablishesTheDecision?.[
+            parent?.conditionsThatEstablishesTheDecision?.[groupKey]?.[
               condition.conditionName
             ];
+
           if (conditionValue !== undefined) {
             const strat = strategyFormFactoryHandlerManager(
               condition.howToSetTheCondition as EValueHowToSetUp,
             );
-            schema[condition.conditionName] = strat(
+            perCond[condition.conditionName] = strat(
               condition.value as any,
               condition.conditionDataType,
             ).schema;
           }
-          return schema;
-        },
-        {} as Record<string, Schema<any>>,
-      );
+        });
 
-      return object(conditionsSchema).test(
+        perGroupSchemas[groupKey] = object(perCond);
+      }
+
+      return object(perGroupSchemas).test(
         "at-least-one-condition",
         "Debe existir al menos una condición para que la decisión se valide correctamente.",
         (value) => {
-          if (!value) return false;
-          return Object.values(value).some(
-            (v) => v !== undefined && v !== null && v !== "",
+          if (!value || typeof value !== "object") return false;
+          return Object.values(value as Record<string, any>).some((groupRec) =>
+            groupRec &&
+            typeof groupRec === "object" &&
+            Object.values(groupRec).some(
+              (v) => v !== undefined && v !== null && v !== "",
+            ),
           );
         },
       );
@@ -121,18 +139,24 @@ function useRulesFormUtils({
     validateOnBlur: true,
     onSubmit: (values) => {
       const updatedGrouped = Object.fromEntries(
-        Object.entries(grouped).map(([g, list]) => {
+        Object.entries(grouped).map(([groupKey, list]) => {
           const filtered = (list as any[]).filter((cond) => {
             const cv =
-              values.conditionsThatEstablishesTheDecision?.[cond.conditionName];
+              values.conditionsThatEstablishesTheDecision?.[groupKey]?.[
+                cond.conditionName
+              ];
             return cv !== undefined && cv !== null && cv !== "";
           });
+
           const mapped = filtered.map((cond) => ({
             ...cond,
             value:
-              values.conditionsThatEstablishesTheDecision?.[cond.conditionName],
+              values.conditionsThatEstablishesTheDecision?.[groupKey]?.[
+                cond.conditionName
+              ],
           }));
-          return [g, mapped];
+
+          return [groupKey, mapped];
         }),
       );
 
@@ -154,23 +178,16 @@ function useRulesFormUtils({
   const handleToggleNoneChange = (isNoneSelected: boolean) => {
     formik.setFieldValue("toggleNone", isNoneSelected);
 
-    const allConds = flattenConditions();
-    allConds.forEach((condition) => {
+    iterateGrouped().forEach(({ group, cond }) => {
+      const path = `conditionsThatEstablishesTheDecision.${group}.${cond.conditionName}`;
       if (isNoneSelected) {
-        formik.setFieldValue(
-          `conditionsThatEstablishesTheDecision.${condition.conditionName}`,
-          undefined,
-        );
+        formik.setFieldValue(path, undefined);
       } else {
         const defaultValue =
-          condition.howToSetTheCondition ===
-          EValueHowToSetUp.LIST_OF_VALUES_MULTI
+          cond.howToSetTheCondition === EValueHowToSetUp.LIST_OF_VALUES_MULTI
             ? []
             : "";
-        formik.setFieldValue(
-          `conditionsThatEstablishesTheDecision.${condition.conditionName}`,
-          defaultValue,
-        );
+        formik.setFieldValue(path, defaultValue);
       }
     });
   };

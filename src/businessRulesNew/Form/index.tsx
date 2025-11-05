@@ -5,26 +5,17 @@ import { IRulesForm } from "../types/Forms/IRulesForm";
 import { getConditionsByGroupNew } from "../helper/utils/getConditionsByGroup";
 import { filterByGroup } from "../helper/utils/filterByGroup";
 import React from "react";
-import { IRuleDecision } from "@isettingkit/input";
 import { buildEsConditionSentence } from "../utils/buildEsConditionSentence";
 import { normalizeHowToSet } from "../utils/normalizeHowToSet";
 import { timeUnitHandle } from "../utils/timeUnitHandle";
+import { ITab } from "@inubekit/inubekit";
+import { IRulesFormExtra } from "../types/Forms/IRulesFormExtra";
+import { labelForGroup } from "../utils/labelForGroup";
+import { defaultForHowToSet } from "../utils/defaultForHowToSet";
+import { readFromConditionGroups } from "../utils/readFromConditionGroups";
+import { readScopedRecord } from "../utils/readScopedRecord";
 
-type TTab = { id: string; label: string; isDisabled?: boolean };
-
-type TRulesFormExtraProps = {
-  onRemoveCondition?: (conditionName: string) => void;
-  onRestoreConditions?: (conditionNames: string[]) => void;
-  fullTemplate?: IRuleDecision;
-  timeUnit?: string;
-};
-
-const labelForGroup = (groupKey: string, indexAlt: number) => {
-  if (groupKey === "group-primary") return "Condición principal";
-  return `Condición alterna N° ${String(indexAlt).padStart(2, "0")}`;
-};
-
-const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
+const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
   const {
     decision,
     onSubmitEvent,
@@ -48,7 +39,7 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
   const conditionsByGroupVisible = getConditionsByGroupNew(decision);
   const visibleConditionsByGroup = filterByGroup(
     conditionsByGroupVisible,
-    (condition: any) => !condition.hidden,
+    (condition: any) => !condition.hidden
   );
 
   const groupKeys = Object.keys(visibleConditionsByGroup);
@@ -61,7 +52,7 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
   const groupByTabId: Record<string, string> = {};
 
   let altIndex = 1;
-  const tabs: TTab[] = orderedGroupKeys.map((groupKey) => {
+  const tabs: ITab[] = orderedGroupKeys.map((groupKey) => {
     const tabId =
       groupKey === "group-primary"
         ? "mainCondition"
@@ -81,11 +72,46 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
   });
 
   const [activeTab, setActiveTab] = React.useState<string>(
-    tabs[0]?.id ?? "mainCondition",
+    tabs[0]?.id ?? "mainCondition"
   );
   const handleTabChange = (id: string) => setActiveTab(id);
-
   const activeGroupKey = groupByTabId[activeTab] ?? "group-primary";
+
+  React.useEffect(() => {
+    const rec = (formik.values as any)?.conditionsThatEstablishesTheDecision;
+    if (!rec || typeof rec !== "object") return;
+
+    const metaByGroup: Record<string, any[]> = getConditionsByGroupNew(sourceForGroups);
+
+    const conditionGroups = Object.keys(metaByGroup).map((groupKey) => {
+      const metaList = metaByGroup[groupKey] || [];
+      const valueRecord = rec[groupKey] || {};
+      const list = metaList.map((m: any) => {
+        const how = normalizeHowToSet(m.howToSetTheCondition);
+        const fallback = m.value ?? defaultForHowToSet(how);
+        return {
+          ...m,
+          conditionName: m.conditionName,
+          value: valueRecord[m.conditionName] ?? fallback,
+        };
+      });
+      return {
+        ConditionGroupId: groupKey,
+        conditionsThatEstablishesTheDecision: list,
+      };
+    });
+
+    const prev = (formik.values as any).conditionGroups;
+    const nextJSON = JSON.stringify(conditionGroups);
+    const prevJSON = JSON.stringify(prev ?? []);
+    if (nextJSON !== prevJSON) {
+      formik.setFieldValue("conditionGroups", conditionGroups, false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    formik.values?.conditionsThatEstablishesTheDecision,
+    sourceForGroups,
+  ]);
 
   const visibleConditionsByGroupWithSentences: { [key: string]: any[] } =
     React.useMemo(() => {
@@ -102,21 +128,37 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
           const isFirst = !firstUsed && g === "group-primary" && idx === 0;
           if (isFirst) firstUsed = true;
 
-          const how = normalizeHowToSet(c.howToSetTheCondition ?? c.valueUse);
+          const how = normalizeHowToSet(c.howToSetTheCondition);
           const sentence = buildEsConditionSentence({
             label: c.labelName || "",
             howToSet: how,
             isFirst,
           });
-          const unitAfter =
-          c.timeUnit ? timeUnitHandle("", c.timeUnit, true).trim() : "";
-          return { ...c, labelName: sentence, __unitAfterInput: unitAfter, };
+          const unitAfter = c.timeUnit ? timeUnitHandle("", c.timeUnit, true).trim() : "";
+
+          const scopedName = `${g}.${c.conditionName}`;
+
+          const vFromArray = readFromConditionGroups(formik.values, g, c.conditionName);
+          const vFromRecord = readScopedRecord(formik.values, g, c.conditionName);
+          const currentVal = vFromArray !== undefined ? vFromArray : vFromRecord;
+          const ensuredVal = currentVal !== undefined ? currentVal : defaultForHowToSet(how);
+
+          return {
+            ...c,
+            __originalConditionName: c.conditionName,
+            __groupKey: g,
+            __howToSet: how,
+            conditionName: scopedName,
+            labelName: sentence,
+            __unitAfterInput: unitAfter,
+            value: ensuredVal,
+          };
         });
         return [g, decorated] as const;
       });
 
       return Object.fromEntries(entries);
-    }, [visibleConditionsByGroup]);
+    }, [visibleConditionsByGroup, formik.values]);
 
   const currentConditions =
     visibleConditionsByGroupWithSentences[activeGroupKey] ?? [];
@@ -129,7 +171,7 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
     labelName: decision.labelName,
     listOfPossibleValues: decision.listOfPossibleValues,
     ruleName: decision.ruleName,
-    timeUnit:  decision.timeUnit ? timeUnitHandle("", decision.timeUnit, true).trim() : ""
+    timeUnit: decision.timeUnit ? timeUnitHandle("", decision.timeUnit, true).trim() : "",
   };
 
   const startDirty = formik.submitCount > 0 || !!formik.touched.effectiveFrom;
@@ -173,33 +215,52 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
   const showConditionsError = formik.submitCount > 0 && !!firstConditionError;
 
   const getDefaultValueFor = (condition: any) => {
-    if (condition?.isMulti || condition?.multiple || condition?.valueUse === "Among") {
-      return [];
-    }
-    return "";
+    const how =
+      condition?.__howToSet ?? normalizeHowToSet(condition?.howToSetTheCondition);
+    return defaultForHowToSet(how);
   };
 
-  const handleClearCondition = (conditionName: string) => {
-    const all = Object.values(conditionsByGroupFull).flat() as any[];
-    const cond = all.find((c) => c.conditionName === conditionName);
-    const defaultVal = getDefaultValueFor(cond);
+  const setBothShapes = (groupKey: string, originalName: string, val: any) => {
     formik.setFieldValue(
-      `conditionsThatEstablishesTheDecision.${conditionName}`,
-      defaultVal,
+      `conditionsThatEstablishesTheDecision.${groupKey}.${originalName}`,
+      val,
+      false
     );
+    const groups: any[] = (formik.values as any)?.conditionGroups;
+    if (Array.isArray(groups)) {
+      const gi = groups.findIndex((g) => g?.ConditionGroupId === groupKey);
+      if (gi >= 0) {
+        const ci = groups[gi].conditionsThatEstablishesTheDecision?.findIndex(
+          (c: any) => c?.conditionName === originalName
+        );
+        if (ci >= 0) {
+          const clone = JSON.parse(JSON.stringify(groups));
+          clone[gi].conditionsThatEstablishesTheDecision[ci].value = val;
+          formik.setFieldValue("conditionGroups", clone, false);
+        }
+      }
+    }
+  };
+
+  const handleClearCondition = (scopedConditionName: string) => {
+    const [groupKey, ...rest] = scopedConditionName.split(".");
+    const originalName = rest.join(".");
+    const meta = Object.values(conditionsByGroupFull).flat().find((c: any) => c.conditionName === originalName);
+    const defaultVal = getDefaultValueFor(meta || {});
+    setBothShapes(groupKey, originalName, defaultVal);
     formik.setFieldTouched(
-      `conditionsThatEstablishesTheDecision.${conditionName}`,
+      `conditionsThatEstablishesTheDecision.${groupKey}.${originalName}`,
       false,
-      false,
+      false
     );
   };
 
   const handleRedefineCurrentTab = () => {
     const rawCurrent = (conditionsByGroupFull[activeGroupKey] ?? []) as any[];
     rawCurrent.forEach((cond: any) => {
-      const path = `conditionsThatEstablishesTheDecision.${cond.conditionName}`;
-      formik.setFieldValue(path, getDefaultValueFor(cond));
-      formik.setFieldTouched(path, false, false);
+      const how = normalizeHowToSet(cond?.howToSetTheCondition);
+      const val = defaultForHowToSet(how);
+      setBothShapes(activeGroupKey, cond.conditionName, val);
     });
   };
 
@@ -210,15 +271,15 @@ const RulesForm = (props: IRulesForm & TRulesFormExtraProps) => {
   const confirmRedefine = () => {
     handleRedefineCurrentTab();
     const allNamesInTab = (conditionsByGroupFull[activeGroupKey] ?? []).map(
-      (condition: any) => condition.conditionName,
+      (condition: any) => `${activeGroupKey}.${condition.conditionName}`
     );
     onRestoreConditions?.(allNamesInTab);
     setShowRedefineConfirm(false);
   };
 
-  const handleRemoveCondition = (conditionName: string) => {
-    handleClearCondition(conditionName);
-    onRemoveCondition?.(conditionName);
+  const handleRemoveCondition = (scopedConditionName: string) => {
+    handleClearCondition(scopedConditionName);
+    onRemoveCondition?.(scopedConditionName);
   };
 
   return (

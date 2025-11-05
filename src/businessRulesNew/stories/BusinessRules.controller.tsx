@@ -32,6 +32,7 @@ interface IBusinessRulesNewController {
 }
 
 const deepClone = <T,>(v: T): T => JSON.parse(JSON.stringify(v));
+const originalName = (name: string) => name?.split(".").pop() || name;
 
 const localizeLabel = (
   base: { labelName?: string; i18n?: Record<string, string> } | undefined,
@@ -95,6 +96,8 @@ const BusinessRulesNewController = ({
           labelName?: string;
         }) => ({
           ...condition,
+          // keep original (unscoped) conditionName in this layer
+          conditionName: originalName((condition as any).conditionName),
           labelName: localizeLabel(condition as any, language),
           value: condition.value,
         })
@@ -110,14 +113,14 @@ const BusinessRulesNewController = ({
     })
   );
 
-  const [removedConditionNames, setRemovedConditionNames] = useState<
-    Set<string>
-  >(new Set());
+  // store ONLY original (unscoped) names here
+  const [removedConditionNames, setRemovedConditionNames] = useState<Set<string>>(new Set());
 
   const handleRemoveCondition = (conditionName: string) => {
+    const key = originalName(conditionName);
     setRemovedConditionNames((prev) => {
       const next = new Set(prev);
-      next.add(conditionName);
+      next.add(key);
       return next;
     });
   };
@@ -127,25 +130,27 @@ const BusinessRulesNewController = ({
     setRemovedConditionNames((prev) => {
       if (prev.size === 0) return prev;
       const next = new Set(prev);
-      names.forEach((n) => next.delete(n));
+      names.map(originalName).forEach((n) => next.delete(n));
       return next;
     });
   };
 
+  // Multiple-choice over ORIGINAL (unscoped) names
   const multipleChoicesOptions: IOption[] = useMemo(() => {
     const groups = getConditionsByGroupNew(localizedTemplate);
     return Object.values(groups)
       .flat()
-      .map((c: any) => ({
-        id: c.conditionName,
-        label: localizeLabel(c, language),
-        value: c.conditionName,
-      }));
+      .map((c: any) => {
+        const oname = originalName(c.conditionName);
+        return {
+          id: oname,
+          label: localizeLabel(c, language),
+          value: oname,
+        };
+      });
   }, [localizedTemplate, language]);
 
-  const [selectedConditionsCSV, setSelectedConditionsCSV] =
-    useState<string>("");
-
+  const [selectedConditionsCSV, setSelectedConditionsCSV] = useState<string>("");
   const selectedIds = useMemo(
     () => new Set(selectedConditionsCSV.split(",").filter(Boolean)),
     [selectedConditionsCSV]
@@ -173,6 +178,7 @@ const BusinessRulesNewController = ({
   const handleSubmitForm = (dataDecision: any) => {
     const isEditing = selectedDecision !== null;
     console.log("dataDecision: ", dataDecision);
+
     const base = isEditing
       ? { ...selectedDecision, ...dataDecision }
       : {
@@ -181,28 +187,48 @@ const BusinessRulesNewController = ({
           decisionId: `Decisión ${decisions.length + 1}`,
         };
 
-    const tplGroups = getConditionsByGroupNew(localizedTemplate);
-    const dataGroups = getConditionsByGroupNew(dataDecision) as Record<
+    // Template groups (original names)
+    const tplGroups = getConditionsByGroupNew(localizedTemplate) as Record<
       string,
       any[]
     >;
 
+    // Data groups coming from the form (may carry SCOPED names); normalize per group
+    const dataGroupsRaw = getConditionsByGroupNew(dataDecision) as Record<
+      string,
+      any[]
+    >;
+
+    // Build merged record by group, matching by ORIGINAL names
     const mergedGroupsRecord = Object.fromEntries(
       Object.entries(tplGroups).map(([group, tplList]) => {
-        const dataList = dataGroups[group] ?? [];
+        const dataList = (dataGroupsRaw[group] ?? []).map((d: any) => ({
+          ...d,
+          conditionName: originalName(d.conditionName),
+        }));
 
-        const merged = (tplList as any).map((tplItem: any) => {
-          const match = dataList.find(
-            (d: any) => d.conditionName === tplItem.conditionName
-          );
-          return {
-            ...tplItem,
-            labelName: localizeLabel(tplItem, language),
-            value: match?.value ?? tplItem.value,
-            listOfPossibleValues:
-              match?.listOfPossibleValues ?? tplItem.listOfPossibleValues,
-          };
-        });
+        const merged = (tplList as any)
+          .map((tplItem: any) => {
+            const tplOrig = originalName(tplItem.conditionName);
+            const match = dataList.find(
+              (d: any) => originalName(d.conditionName) === tplOrig
+            );
+            return {
+              ...tplItem,
+              conditionName: tplOrig,
+              labelName: localizeLabel(tplItem, language),
+              value: match?.value ?? tplItem.value,
+              listOfPossibleValues:
+                match?.listOfPossibleValues ?? tplItem.listOfPossibleValues,
+            };
+          })
+          .filter((m: any) => {
+            const oname = originalName(m.conditionName);
+            const passesSelected = selectedIds.size === 0 || selectedIds.has(oname);
+            const notRemoved = !removedConditionNames.has(oname);
+            return passesSelected && notRemoved;
+          });
+
         return [group, merged];
       })
     );
@@ -215,6 +241,7 @@ const BusinessRulesNewController = ({
     delete (newDecision as any).conditionsThatEstablishesTheDecision;
 
     const decisionWithSentences = newDecision;
+    console.log("decisionWithSentences: ", decisionWithSentences);
 
     const backendFormattedDecision = formatDecisionForBackend({
       decision: decisionWithSentences,
@@ -258,6 +285,7 @@ const BusinessRulesNewController = ({
     setDecisions((prev) => prev.filter((d) => d.decisionId !== id));
   };
 
+  // Apply picker & removed filters using ORIGINAL names
   const filteredDecisionTemplate = useMemo(() => {
     const tpl = sortDisplayDataSampleSwitchPlaces({
       decisionTemplate: deepClone(localizedTemplate),
@@ -269,11 +297,12 @@ const BusinessRulesNewController = ({
     const filteredRecord = Object.fromEntries(
       Object.entries(groupsRecord).map(([group, list]) => [
         group,
-        (list as any[]).filter(
-          (c) =>
-            (selectedIds.size === 0 || selectedIds.has(c.conditionName)) &&
-            !removedConditionNames.has(c.conditionName)
-        ),
+        (list as any[]).filter((c) => {
+          const oname = originalName(c.conditionName);
+          const passesSelected = selectedIds.size === 0 || selectedIds.has(oname);
+          const notRemoved = !removedConditionNames.has(oname);
+          return passesSelected && notRemoved;
+        }),
       ])
     );
 
@@ -333,8 +362,8 @@ const BusinessRulesNewController = ({
           handleSubmitForm={handleSubmitForm}
           isModalOpen={isModalOpen}
           loading={loading}
-          onRemoveCondition={handleRemoveCondition}
-          onRestoreConditions={handleRestoreConditions}
+          onRemoveCondition={handleRemoveCondition}          // now stores original names
+          onRestoreConditions={handleRestoreConditions}      // converts to original names
           selectedDecision={selectedDecision}
           textValues={textValues}
         />
@@ -359,10 +388,7 @@ const BusinessRulesNewController = ({
               {customMessageEmptyDecisions ? (
                 customMessageEmptyDecisions
               ) : (
-                <>
-                  Antes de agregar tus decisiones, selecciona las condiciones
-                  que la determinan.
-                </>
+                <>Antes de agregar tus decisiones, selecciona las condiciones que la determinan.</>
               )}
             </Text>
           </Stack>
