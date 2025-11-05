@@ -1,3 +1,15 @@
+# v2.1.27 (Wed Nov 05 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: adjustment in order to hide the tabs without proper conditions filled ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.1.26 (Wed Nov 05 2025)
 
 #### ⚠️ Pushed to `main`
