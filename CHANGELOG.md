@@ -1,3 +1,15 @@
+# v2.1.26 (Wed Nov 05 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: adjustment on form in order to allow the aditional-conditions ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.1.25 (Fri Oct 31 2025)
 
 #### 🐛 Bug Fix
