@@ -13,13 +13,9 @@ import { filterByGroup } from "../helper/utils/filterByGroup";
 import { timeUnitHandle } from "../utils/timeUnitHandle";
 import { howToSetHandle } from "../utils/howToSetHandle";
 import { formatDateEsShort } from "../utils/formatDateEsShort";
-
-type TTab = { id: string; label: string; isDisabled?: boolean };
-
-const labelForGroup = (groupKey: string, indexAlt: number) => {
-  if (groupKey === "group-primary") return "Condición principal";
-  return `Condición alterna N° ${String(indexAlt).padStart(2, "0")}`;
-};
+import { conditionHasValue } from "../utils/conditionHasValue";
+import { ITab } from "@inubekit/inubekit";
+import { labelForGroup } from "../utils/labelForGroup";
 
 const BusinessRuleViewNew = (props: IBusinessRuleView) => {
   const {
@@ -37,6 +33,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
   const hasEffectiveFrom = Boolean(decision?.effectiveFrom);
   const hasValidUntil = Boolean(decision?.validUntil);
+
   const effectiveFromRenderer = hasEffectiveFrom
     ? {
         element: {
@@ -53,19 +50,18 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
         }),
       }
     : null;
+
   const validUntilRenderer = hasValidUntil
     ? {
         element: {
           labelName: textValues?.validUntil,
-          value:
-           formatDateEsShort(decision!.validUntil),
+          value: formatDateEsShort(decision!.validUntil),
           howToSetTheDecision: ValueHowToSetUp.EQUAL,
           decisionDataType: ValueDataType.DATE,
         },
         valueData: strategyFactoryHandlerManagerNew({
           labelName: textValues?.validUntil,
-          value:
-            formatDateEsShort(decision!.validUntil),
+          value: formatDateEsShort(decision!.validUntil),
           howToSetTheDecision: ValueHowToSetUp.EQUAL,
           decisionDataType: ValueDataType.DATE,
         }),
@@ -119,14 +115,6 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
     return out;
   }, [rawByGroup, primaryKey, naturalKeys]);
 
-  const orderedGroupKeys = React.useMemo(() => {
-    const keys = [
-      "group-primary",
-      ...Object.keys(normalizedByGroup).filter((k) => k !== "group-primary"),
-    ];
-    return Array.from(new Set(keys));
-  }, [normalizedByGroup]);
-
   const processedConditionsForDisplay = React.useMemo(() => {
     const result: Record<string, any[]> = {};
 
@@ -172,11 +160,30 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
     (c: any) => !c.hidden
   );
 
+  const nonEmptyByGroup: Record<string, any[]> = React.useMemo(() => {
+    const entries: [string, any[]][] = Object.entries(visibleByGroup).map(
+      ([g, list]) =>
+        [g, (list as any[]).filter(conditionHasValue)] as [string, any[]]
+    );
+    const pruned: Record<string, any[]> = {};
+    for (const [g, list] of entries) {
+      if (list.length > 0) pruned[g] = list;
+    }
+    return pruned;
+  }, [visibleByGroup]);
+
+  const orderedGroupKeys = React.useMemo(() => {
+    const keys = Object.keys(nonEmptyByGroup);
+    return keys.includes("group-primary")
+      ? ["group-primary", ...keys.filter((k) => k !== "group-primary")]
+      : keys;
+  }, [nonEmptyByGroup]);
+
   const tabIdByGroup: Record<string, string> = {};
   const groupByTabId: Record<string, string> = {};
 
   let altIndex = 1;
-  const tabs: TTab[] = orderedGroupKeys.map((groupKey) => {
+  const tabs: ITab[] = orderedGroupKeys.map((groupKey) => {
     const tabId =
       groupKey === "group-primary"
         ? "mainCondition"
@@ -197,9 +204,11 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
     tabs[0]?.id ?? "mainCondition"
   );
   const handleTabChange = (id: string) => setActiveTab(id);
-  const activeGroupKey = groupByTabId[activeTab] ?? "group-primary";
 
-  const currentConditions = (visibleByGroup[activeGroupKey] ?? []) as any[];
+  const activeGroupKey =
+    groupByTabId[activeTab] ?? orderedGroupKeys[0] ?? "group-primary";
+
+  const currentConditions = (nonEmptyByGroup[activeGroupKey] ?? []) as any[];
   const hasMultipleGroups = orderedGroupKeys.length > 1;
 
   const skeleton = Array.from({ length: 5 });
