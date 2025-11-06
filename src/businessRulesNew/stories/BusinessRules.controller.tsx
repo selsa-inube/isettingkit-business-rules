@@ -12,11 +12,12 @@ import type { IOption } from "@inubekit/inubekit";
 import { StyledMultipleChoiceContainer } from "./styles";
 
 import { mapByGroupNew } from "../helper/utils/mapByGroup";
-import { Checkpicker } from "../../checkpicker";
+
 
 import { normalizeDecisionToNewShape } from "../helper/utils/normalizeDecisionToNewShape";
 import { groupsRecordToArrayNew } from "../helper/utils/groupsRecordToArray";
 import { getConditionsByGroupNew } from "../helper/utils/getConditionsByGroup";
+import { Checkpicker } from "@isettingkit/input";
 
 interface IBusinessRulesNewController {
   language?: "es" | "en";
@@ -182,10 +183,10 @@ const BusinessRulesNewController = ({
     const base = isEditing
       ? { ...selectedDecision, ...dataDecision }
       : {
-          ...localizedTemplate,
-          ...dataDecision,
-          decisionId: `Decisión ${decisions.length + 1}`,
-        };
+        ...localizedTemplate,
+        ...dataDecision,
+        decisionId: `Decisión ${decisions.length + 1}`,
+      };
 
     // Template groups (original names)
     const tplGroups = getConditionsByGroupNew(localizedTemplate) as Record<
@@ -253,33 +254,33 @@ const BusinessRulesNewController = ({
     setDecisions((prev) =>
       isEditing
         ? prev.map((d) => {
-            const sameByBusinessRule =
-              (selectedDecision as any)?.businessRuleId &&
-              d.businessRuleId === (selectedDecision as any).businessRuleId;
-            const sameByDecisionId =
-              (selectedDecision as any)?.decisionId &&
-              d.decisionId === (selectedDecision as any).decisionId;
-            const out =
-              sameByBusinessRule || sameByDecisionId
-                ? decisionWithSentences
-                : d;
+          const sameByBusinessRule =
+            (selectedDecision as any)?.businessRuleId &&
+            d.businessRuleId === (selectedDecision as any).businessRuleId;
+          const sameByDecisionId =
+            (selectedDecision as any)?.decisionId &&
+            d.decisionId === (selectedDecision as any).decisionId;
+          const out =
+            sameByBusinessRule || sameByDecisionId
+              ? decisionWithSentences
+              : d;
+          delete (out as any).conditionsThatEstablishesTheDecision;
+          return out;
+        })
+        : [
+          ...prev,
+          (() => {
+            const out = decisionWithSentences;
             delete (out as any).conditionsThatEstablishesTheDecision;
             return out;
-          })
-        : [
-            ...prev,
-            (() => {
-              const out = decisionWithSentences;
-              delete (out as any).conditionsThatEstablishesTheDecision;
-              return out;
-            })(),
-          ]
+          })(),
+        ]
     );
 
     handleCloseModal();
   };
 
-  useEffect(() => {}, [decisions]);
+  useEffect(() => { }, [decisions]);
 
   const handleDelete = (id: string) => {
     setDecisions((prev) => prev.filter((d) => d.decisionId !== id));

@@ -23,7 +23,7 @@ export { DragAndDropBoxes } from "./dragAndDropBoxes";
 export { DraggableList } from "./dragAndDropBoxes/DraggableList";
 export { SendButton } from "./button";
 export { BackAndNextButton } from "./button/BackAndNext";
-export { Checkpicker } from "./checkpicker";
+
 export { buildEsConditionSentence } from "./businessRulesNew/utils/buildEsConditionSentence";
 export { filterByGroup } from "./businessRulesNew/helper/utils/filterByGroup";
 export { flatFromGroups } from "./businessRulesNew/helper/utils/flatFromGroups";
