@@ -1,3 +1,15 @@
+# v2.2.0 (Thu Nov 06 2025)
+
+#### 🚀 Enhancement
+
+- feat: move checkpicker to isetting kit input [#13](https://github.com/selsa-inube/isettingkit-business-rules/pull/13) ([@heber59](https://github.com/heber59))
+
+#### Authors: 1
+
+- Heber  Alvarez  ([@heber59](https://github.com/heber59))
+
+---
+
 # v2.1.27 (Wed Nov 05 2025)
 
 #### ⚠️ Pushed to `main`
