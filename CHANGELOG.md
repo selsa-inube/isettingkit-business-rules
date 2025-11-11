@@ -1,3 +1,15 @@
+# v2.2.1 (Tue Nov 11 2025)
+
+#### 🐛 Bug Fix
+
+- fix: moveFilterModalToView [#14](https://github.com/selsa-inube/isettingkit-business-rules/pull/14) ([@heber59](https://github.com/heber59))
+
+#### Authors: 1
+
+- Heber  Alvarez  ([@heber59](https://github.com/heber59))
+
+---
+
 # v2.2.0 (Thu Nov 06 2025)
 
 #### 🚀 Enhancement
