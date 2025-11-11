@@ -13,5 +13,4 @@ const cardRenderStrategies: Record<
   decision: renderDecisionCard,
   add: renderAddCard,
 };
-//adc
 export { cardRenderStrategies };

@@ -6,7 +6,6 @@ export { BusinessRuleCardNew } from "./businessRulesNew/Cards/BusinessRuleCard";
 export { BusinessRuleViewNew } from "./businessRulesNew/BusinessRuleView";
 export { BusinessRulesNew } from "./businessRulesNew";
 export { Filter } from "./filter";
-export { FilterModal } from "./filter/ModalFilter";
 export { FormFilter } from "./filter/FormFilter";
 export { convertRangeToString } from "./businessRules/helper/utils/convertRangeToString";
 export { formatDecisionForBackend } from "./businessRules/helper/utils/formatDecisionForBackend";
@@ -38,7 +37,6 @@ export type { IBusinessRuleCard } from "./businessRules/types/Cards/BusinessRule
 export type { IBusinessRuleView } from "./businessRules/types/BusinessRuleView";
 export type { ICheckpickerField } from "./filter/types/ICheckpickerField";
 export type { IFilter } from "./filter/types/IFilter";
-export type { IFilterModal } from "./filter/types/IFilterModal";
 export type { IFilterTag } from "./filter/types/IFilterTag";
 export type { IFormFilter } from "./filter/types/IFormFilter";
 export type { IRulesForm } from "./businessRules/types/Forms/IRulesForm";

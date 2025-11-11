@@ -9,8 +9,9 @@ import { Icon, IOption, useMediaQuery } from "@inubekit/inubekit";
 
 import { Filter } from "..";
 import { FormFilter } from "../FormFilter";
-import { FilterModal } from "../ModalFilter";
+
 import { IFilterTag } from "../types/IFilterTag";
+import { FilterModal } from "@isettingkit/view";
 
 const appLabelMap: Record<string, string> = {
   app1: "Aplicación 1",
@@ -63,7 +64,7 @@ const FilterController = () => {
       setFilters((prev) => ({ ...prev, apps: next }));
       setAppliedValues((prev) => ({ ...prev, apps: next }));
     },
-    [filters.apps],
+    [filters.apps]
   );
 
   const removeClient = useCallback(() => {
