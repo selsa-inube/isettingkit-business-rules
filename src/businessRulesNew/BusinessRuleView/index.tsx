@@ -76,6 +76,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
         value: strategyFactoryHandlerManagerNew(decision),
         howToSetTheDecision:
           decision.howToSetTheDecision || ValueHowToSetUp.EQUAL,
+        validUntil: decision.validUntil,
       }
     : null;
 
