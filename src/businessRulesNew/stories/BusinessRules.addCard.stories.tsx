@@ -250,7 +250,7 @@ const sampleDecisions: any[] = [
     value: { from: 14.2, to: 21.5 },
     howToSetTheDecision: EValueHowToSetUp.RANGE,
     effectiveFrom: "2024-12-31",
-    validUntil: "2024-12-31",
+    validUntil: "2026-12-31",
     conditionsThatEstablishesTheDecision: {
       "group-primary": [
         {
@@ -443,7 +443,6 @@ const decisionTemplate: any = {
           i18n: {
             es: "Línea de crédito",
           },
-
         },
       ],
     },
