@@ -1,3 +1,15 @@
+# v2.2.2 (Tue Nov 11 2025)
+
+#### 🐛 Bug Fix
+
+- fix: adjust mapper [#15](https://github.com/selsa-inube/isettingkit-business-rules/pull/15) ([@heber59](https://github.com/heber59))
+
+#### Authors: 1
+
+- Heber  Alvarez  ([@heber59](https://github.com/heber59))
+
+---
+
 # v2.2.1 (Tue Nov 11 2025)
 
 #### 🐛 Bug Fix
