@@ -26,7 +26,7 @@ const sampleDecisions: any[] = [
     value: { from: 4, to: 8 },
     howToSetTheDecision: EValueHowToSetUp.RANGE,
     effectiveFrom: "2024-12-31",
-    validUntil: "2024-12-31",
+    validUntil: "2025-11-11",
     effectiveFromLabel: "valida desde",
     conditionGroups: [
       {

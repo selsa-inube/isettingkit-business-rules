@@ -14,7 +14,7 @@ const buildEsConditionSentence = (opts: {
   const nounPhrase = hasArticle ? clean : `${chooseArticle(clean)} ${clean}`;
   const tail = tailForHowToSet(howToSet);
 
-  return `${connector} ${nounPhrase} ${tail}`;
+  return `${connector} ${nounPhrase.toLowerCase()} ${tail}`;
 };
 
 const ARTICLE_RE = /^(el|la|los|las)\s/i;
