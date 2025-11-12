@@ -1,3 +1,15 @@
+# v2.2.4 (Wed Nov 12 2025)
+
+#### ⚠️ Pushed to `main`
+
+- chore: update view version ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.3 (Wed Nov 12 2025)
 
 #### ⚠️ Pushed to `main`
