@@ -1,3 +1,16 @@
+# v2.2.3 (Wed Nov 12 2025)
+
+#### ⚠️ Pushed to `main`
+
+- chore: update library version ([@cmarin001](https://github.com/cmarin001))
+- fix: adjustment in order to implement the edition behavior ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.2 (Tue Nov 11 2025)
 
 #### 🐛 Bug Fix
