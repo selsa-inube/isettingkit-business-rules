@@ -8,6 +8,21 @@ import { IUseRulesFormUtils } from "../types/Forms/IUseRulesFormUtils";
 import { IRulesForm } from "../types/Forms/IRulesForm";
 import { getConditionsByGroupNew } from "../helper/utils/getConditionsByGroup";
 
+const getWrapperValue = (wrapper: any) =>
+  wrapper && typeof wrapper === "object" && "value" in wrapper
+    ? wrapper.value
+    : wrapper;
+
+const hasMeaningfulValue = (v: any): boolean => {
+  const val = getWrapperValue(v);
+  if (val === null || val === undefined) return false;
+  if (typeof val === "string") return val.trim().length > 0;
+  if (typeof val === "number") return !Number.isNaN(val);
+  if (Array.isArray(val)) return val.length > 0;
+  if (typeof val === "object") return Object.keys(val).length > 0;
+  return true;
+};
+
 function useRulesFormUtils({
   decision,
   onSubmitEvent,
@@ -20,10 +35,7 @@ function useRulesFormUtils({
       (list as any[]).map((cond) => ({ group: g, cond })),
     );
 
-  /**
-   * Build the initial record with only the VALUES
-   * conditionsThatEstablishesTheDecision[groupKey][conditionName] = value
-   */
+  // 👉 Build record: group → conditionName → FULL condition object ({...cond, value})
   const initialConditionsRecord: Record<string, Record<string, any>> =
     Object.fromEntries(
       Object.entries(grouped).map(([groupKey, list]) => {
@@ -52,18 +64,18 @@ function useRulesFormUtils({
       }),
     );
 
-  /**
-   * Build the full structure for conditionGroups so that
-   * values.conditionGroups already has all condition objects with their values.
-   */
+  // 👉 Build conditionGroups from that record (only primitives in .value)
   const initialConditionGroups = Object.entries(grouped).map(
     ([groupKey, list]) => {
       const valueRecord = initialConditionsRecord[groupKey] || {};
       const mappedList = (list as any[]).map((cond) => {
         const name = cond.conditionName as string;
+        const wrapper = valueRecord[name];
         const valueForCond =
-          valueRecord[name] !== undefined ? valueRecord[name] : cond.value;
-        console.log('cond: ',cond);
+          wrapper && typeof wrapper === "object" && "value" in wrapper
+            ? wrapper.value
+            : cond.value;
+
         return {
           ...cond,
           value: valueForCond,
@@ -76,7 +88,7 @@ function useRulesFormUtils({
       };
     },
   );
-  console.log('initialConditionsRecord: ', initialConditionsRecord);
+
   const initialValues = {
     ruleName: decision.ruleName || "",
     decisionDataType: decision.decisionDataType || ValueDataType.ALPHABETICAL,
@@ -85,12 +97,10 @@ function useRulesFormUtils({
     effectiveFrom: decision.effectiveFrom || "",
     validUntil: decision.validUntil || "",
     toggleNone: true,
-    // 👉 record: group → conditionName → value
     conditionsThatEstablishesTheDecision:
       initialConditionsRecord as Record<string, Record<string, any>>,
     checkClosed: false,
     terms: true,
-    // 👉 full condition objects, same shape you showed in the log
     conditionGroups: initialConditionGroups,
   };
 
@@ -124,17 +134,18 @@ function useRulesFormUtils({
       for (const [groupKey, conditionList] of Object.entries(grouped)) {
         const perCond: Record<string, Schema<any>> = {};
         (conditionList as any[]).forEach((condition) => {
-          const conditionValue =
+          const wrapper =
             parent?.conditionsThatEstablishesTheDecision?.[groupKey]?.[
               condition.conditionName
             ];
+          const conditionValue = getWrapperValue(wrapper);
 
           if (conditionValue !== undefined) {
             const strat = strategyFormFactoryHandlerManager(
               condition.howToSetTheCondition as EValueHowToSetUp,
             );
             perCond[condition.conditionName] = strat(
-              condition.value as any,
+              conditionValue as any,
               condition.conditionDataType,
             ).schema;
           }
@@ -148,12 +159,13 @@ function useRulesFormUtils({
         "Debe existir al menos una condición para que la decisión se valide correctamente.",
         (value) => {
           if (!value || typeof value !== "object") return false;
-          return Object.values(value as Record<string, any>).some((groupRec) =>
-            groupRec &&
-            typeof groupRec === "object" &&
-            Object.values(groupRec).some(
-              (v) => v !== undefined && v !== null && v !== "",
-            ),
+          return Object.values(value as Record<string, any>).some(
+            (groupRec) =>
+              groupRec &&
+              typeof groupRec === "object" &&
+              Object.values(groupRec).some((wrapper: any) =>
+                hasMeaningfulValue(wrapper),
+              ),
           );
         },
       );
@@ -194,21 +206,21 @@ function useRulesFormUtils({
     onSubmit: (values) => {
       const updatedGrouped = Object.fromEntries(
         Object.entries(grouped).map(([groupKey, list]) => {
-          const filtered = (list as any[]).filter((cond) => {
-            const cv =
-              values.conditionsThatEstablishesTheDecision?.[groupKey]?.[
-                cond.conditionName
-              ];
-            return cv !== undefined && cv !== null && cv !== "";
-          });
+          const groupWrappers =
+            values.conditionsThatEstablishesTheDecision?.[groupKey] || {};
 
-          const mapped = filtered.map((cond) => ({
-            ...cond,
-            value:
-              values.conditionsThatEstablishesTheDecision?.[groupKey]?.[
-                cond.conditionName
-              ],
-          }));
+          const mapped = (list as any[])
+            .map((cond) => {
+              const name = cond.conditionName;
+              const wrapper = groupWrappers[name];
+              const cv = getWrapperValue(wrapper);
+
+              return {
+                ...cond,
+                value: cv,
+              };
+            })
+            .filter((cond) => hasMeaningfulValue(cond.value));
 
           return [groupKey, mapped];
         }),
@@ -234,6 +246,7 @@ function useRulesFormUtils({
 
     iterateGrouped().forEach(({ group, cond }) => {
       const path = `conditionsThatEstablishesTheDecision.${group}.${cond.conditionName}`;
+
       if (isNoneSelected) {
         formik.setFieldValue(path, undefined);
       } else {
@@ -241,7 +254,14 @@ function useRulesFormUtils({
           cond.howToSetTheCondition === EValueHowToSetUp.LIST_OF_VALUES_MULTI
             ? []
             : "";
-        formik.setFieldValue(path, defaultValue);
+        formik.setFieldValue(
+          path,
+          {
+            ...cond,
+            value: defaultValue,
+          },
+          false,
+        );
       }
     });
   };

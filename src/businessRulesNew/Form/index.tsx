@@ -126,42 +126,48 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
   }, [decision]);
 
   // 2) Keep `conditionGroups` in sync with `conditionsThatEstablishesTheDecision`
-  React.useEffect(() => {
-    const rec = (formik.values as any)?.conditionsThatEstablishesTheDecision;
-    if (!rec || typeof rec !== "object") return;
+React.useEffect(() => {
+  const rec = (formik.values as any)?.conditionsThatEstablishesTheDecision;
+  if (!rec || typeof rec !== "object") return;
 
-    const metaByGroup: Record<string, any[]> =
-      getConditionsByGroupNew(sourceForGroups);
+  const metaByGroup: Record<string, any[]> =
+    getConditionsByGroupNew(sourceForGroups);
 
-    const conditionGroups = Object.keys(metaByGroup).map((groupKey) => {
-      const metaList = metaByGroup[groupKey] || [];
-      const valueRecord = rec[groupKey] || {};
-      const list = metaList.map((m: any) => {
-        const how = normalizeHowToSet(m.howToSetTheCondition);
-        const fallback = m.value ?? defaultForHowToSet(how);
-        return {
-          ...m,
-          conditionName: m.conditionName,
-          value: valueRecord[m.conditionName] ?? fallback,
-        };
-      });
+  const conditionGroups = Object.keys(metaByGroup).map((groupKey) => {
+    const metaList = metaByGroup[groupKey] || [];
+    const valueRecord = rec[groupKey] || {};
+
+    const list = metaList.map((m: any) => {
+      const how = normalizeHowToSet(m.howToSetTheCondition);
+      const fallback = m.value ?? defaultForHowToSet(how);
+
+      const wrapper = valueRecord[m.conditionName];
+      const valueFromWrapper =
+        wrapper && typeof wrapper === "object" && "value" in wrapper
+          ? wrapper.value
+          : undefined;
+
       return {
-        ConditionGroupId: groupKey,
-        conditionsThatEstablishesTheDecision: list,
+        ...m,
+        conditionName: m.conditionName,
+        value: valueFromWrapper !== undefined ? valueFromWrapper : fallback,
       };
     });
 
-    const prev = (formik.values as any).conditionGroups;
-    const nextJSON = JSON.stringify(conditionGroups);
-    const prevJSON = JSON.stringify(prev ?? []);
-    if (nextJSON !== prevJSON) {
-      formik.setFieldValue("conditionGroups", conditionGroups, false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    formik.values?.conditionsThatEstablishesTheDecision,
-    sourceForGroups,
-  ]);
+    return {
+      ConditionGroupId: groupKey,
+      conditionsThatEstablishesTheDecision: list,
+    };
+  });
+
+  const prev = (formik.values as any).conditionGroups;
+  const nextJSON = JSON.stringify(conditionGroups);
+  const prevJSON = JSON.stringify(prev ?? []);
+  if (nextJSON !== prevJSON) {
+    formik.setFieldValue("conditionGroups", conditionGroups, false);
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [formik.values?.conditionsThatEstablishesTheDecision, sourceForGroups]);
 
   const visibleConditionsByGroupWithSentences: { [key: string]: any[] } =
     React.useMemo(() => {
