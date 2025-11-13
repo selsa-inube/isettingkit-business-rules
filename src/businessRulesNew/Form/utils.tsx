@@ -20,10 +20,63 @@ function useRulesFormUtils({
       (list as any[]).map((cond) => ({ group: g, cond })),
     );
 
-  const emptyGroupedRecord = Object.fromEntries(
-    Object.keys(grouped).map((g) => [g, {} as Record<string, any>]),
-  );
+  /**
+   * Build the initial record with only the VALUES
+   * conditionsThatEstablishesTheDecision[groupKey][conditionName] = value
+   */
+  const initialConditionsRecord: Record<string, Record<string, any>> =
+    Object.fromEntries(
+      Object.entries(grouped).map(([groupKey, list]) => {
+        const perCondition: Record<string, any> = {};
 
+        (list as any[]).forEach((cond) => {
+          const name = cond.conditionName as string;
+
+          const hasExplicitValue =
+            cond.value !== undefined &&
+            cond.value !== null &&
+            cond.value !== "";
+
+          const defaultValue =
+            cond.howToSetTheCondition === EValueHowToSetUp.LIST_OF_VALUES_MULTI
+              ? []
+              : "";
+
+          perCondition[name] = {
+            ...cond,
+            value: hasExplicitValue ? cond.value : defaultValue,
+          };
+        });
+
+        return [groupKey, perCondition];
+      }),
+    );
+
+  /**
+   * Build the full structure for conditionGroups so that
+   * values.conditionGroups already has all condition objects with their values.
+   */
+  const initialConditionGroups = Object.entries(grouped).map(
+    ([groupKey, list]) => {
+      const valueRecord = initialConditionsRecord[groupKey] || {};
+      const mappedList = (list as any[]).map((cond) => {
+        const name = cond.conditionName as string;
+        const valueForCond =
+          valueRecord[name] !== undefined ? valueRecord[name] : cond.value;
+        console.log('cond: ',cond);
+        return {
+          ...cond,
+          value: valueForCond,
+        };
+      });
+
+      return {
+        ConditionGroupId: groupKey,
+        conditionsThatEstablishesTheDecision: mappedList,
+      };
+    },
+  );
+  console.log('initialConditionsRecord: ', initialConditionsRecord);
   const initialValues = {
     ruleName: decision.ruleName || "",
     decisionDataType: decision.decisionDataType || ValueDataType.ALPHABETICAL,
@@ -32,12 +85,13 @@ function useRulesFormUtils({
     effectiveFrom: decision.effectiveFrom || "",
     validUntil: decision.validUntil || "",
     toggleNone: true,
-    conditionsThatEstablishesTheDecision: emptyGroupedRecord as Record<
-      string,
-      Record<string, any>
-    >,
+    // 👉 record: group → conditionName → value
+    conditionsThatEstablishesTheDecision:
+      initialConditionsRecord as Record<string, Record<string, any>>,
     checkClosed: false,
     terms: true,
+    // 👉 full condition objects, same shape you showed in the log
+    conditionGroups: initialConditionGroups,
   };
 
   // eslint-disable-next-line prefer-const

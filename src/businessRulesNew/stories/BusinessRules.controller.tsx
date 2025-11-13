@@ -165,6 +165,18 @@ const BusinessRulesNewController = ({
     [selectedConditionsCSV]
   );
 
+  const csvFromDecisionConditions = (d: IRuleDecision): string => {
+  const groups = getConditionsByGroupNew(d) || {};
+  const names = Object.values(groups)
+    .flat()
+    .map((c: any) => originalName(c?.conditionName))
+    .filter(Boolean);
+  // preserve order, remove dups
+  const seen = new Set<string>();
+  const unique = names.filter(n => (seen.has(n) ? false : (seen.add(n), true)));
+  return unique.join(",");
+  };
+
   const handleMultipleChoicesChange = (_name: string, valueCSV: string) => {
     setSelectedConditionsCSV(valueCSV);
     const ids = valueCSV.split(",").filter(Boolean);
@@ -172,30 +184,47 @@ const BusinessRulesNewController = ({
     console.log("Selected conditions:", selected);
   };
 
-  const handleOpenModal = (decision: IRuleDecision | null = null) => {
-    if (decision) {
-      const today = todayInBogotaISO();
-      setDecisions((prev) =>
-        prev.map((d) =>
-          d.decisionId === decision.decisionId ? { ...d, validUntil: today } : d
-        )
-      );
-      const draft = deepClone(normalizeDecisionToNewShape(decision));
-      delete (draft as any).businessRuleId;
-      delete (draft as any).decisionId;
-      draft.effectiveFrom = "";
-      draft.validUntil = "";
+const handleOpenModal = (decision: IRuleDecision | null = null) => {
+  if (decision) {
+    const csv = csvFromDecisionConditions(decision);
+    setSelectedConditionsCSV(csv);
+    const normalized = deepClone(normalizeDecisionToNewShape(decision));
 
-      setSelectedDecision(draft);
-      setEditAsNew(true);
-      setIsModalOpen(true);
-      return;
-    }
+    const mappedRecord = mapByGroupNew(
+      getConditionsByGroupNew(normalized),
+      (condition: {
+        value: string | number | IValue | string[] | undefined;
+        i18n?: Record<string, string>;
+        labelName?: string;
+      }) => ({
+        ...condition,
+        conditionName: originalName((condition as any).conditionName),
+        labelName: localizeLabel(condition as any, language),
+        value: (condition as any).value,
+      })
+    );
 
-    setEditAsNew(false);
-    setSelectedDecision(null);
+    const draft = {
+      ...normalized,
+      conditionGroups: groupsRecordToArrayNew(mappedRecord),
+    } as IRuleDecision;
+    console.log(0, draft);
+    delete (draft as any).businessRuleId;
+    delete (draft as any).decisionId;
+    (draft as any).effectiveFrom = "";
+    (draft as any).validUntil = "";
+
+    setSelectedDecision(draft);
+    setEditAsNew(true);
     setIsModalOpen(true);
-  };
+    return;
+  }
+
+  setEditAsNew(false);
+  setSelectedDecision(null);
+  setIsModalOpen(true);
+};
+
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
