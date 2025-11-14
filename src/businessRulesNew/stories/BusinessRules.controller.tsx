@@ -149,17 +149,19 @@ const BusinessRulesNewController = ({
   };
 
   const multipleChoicesOptions: IOption[] = useMemo(() => {
-    const groups = getConditionsByGroupNew(localizedTemplate);
-    return Object.values(groups)
-      .flat()
-      .map((c: any) => {
-        const oname = originalName(c.conditionName);
-        return {
-          id: oname,
-          label: localizeLabel(c, language),
-          value: oname,
-        };
-      });
+    const groups = getConditionsByGroupNew(localizedTemplate) || {};
+    console.log(groups);
+
+    const primaryGroup = (groups["group-primary"] || []) as any[];
+
+    return primaryGroup.map((c: any) => {
+      const oname = originalName(c.conditionName);
+      return {
+        id: oname,
+        label: localizeLabel(c, language),
+        value: oname,
+      };
+    });
   }, [localizedTemplate, language]);
 
   const [selectedConditionsCSV, setSelectedConditionsCSV] =
@@ -393,7 +395,6 @@ const BusinessRulesNewController = ({
 
     return withFiltered as any;
   }, [localizedTemplate, language, selectedIds, removedConditionNames]);
-
   return (
     <Stack direction="column" gap="24px">
       <Fieldset legend="Condiciones que determinan las decisiones">
