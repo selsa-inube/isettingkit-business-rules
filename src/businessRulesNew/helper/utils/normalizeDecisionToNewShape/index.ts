@@ -2,17 +2,13 @@
 import { getConditionsByGroupNew } from "../getConditionsByGroup";
 import { groupsRecordToArrayNew } from "../groupsRecordToArray";
 
-const normalizeDecisionToNewShape = <T extends { [k: string]: any }>(
-  decision: T,
-): T => {
+const normalizeDecisionToNewShape = (decision: any) => {
   const groups = getConditionsByGroupNew(decision);
-  const normalized = {
+  return {
     ...decision,
-    conditionGroups: groupsRecordToArrayNew(groups),
-  } as T;
-
-  delete (normalized as any).conditionsThatEstablishesTheDecision;
-  return normalized;
+    conditionGroups: groupsRecordToArrayNew(groups), // UI-only
+    conditionsThatEstablishesTheDecision: groups,    // preserve full structure
+  };
 };
 
 export {normalizeDecisionToNewShape};

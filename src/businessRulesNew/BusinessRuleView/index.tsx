@@ -134,7 +134,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
             condition?.howToSetTheCondition !== undefined &&
             condition?.howToSetTheCondition !== null &&
             condition?.value !== undefined &&
-            condition?.value !== null
+            condition?.value !== null && condition?.value !== ""
           ) {
             newValue = howToSetHandle(
               condition.value,

@@ -39,7 +39,7 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
   const conditionsByGroupVisible = getConditionsByGroupNew(decision);
   const visibleConditionsByGroup = filterByGroup(
     conditionsByGroupVisible,
-    (condition: any) => !condition.hidden
+    (condition: any) => !condition.hidden,
   );
 
   const groupKeys = Object.keys(visibleConditionsByGroup);
@@ -72,7 +72,7 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
   });
 
   const [activeTab, setActiveTab] = React.useState<string>(
-    tabs[0]?.id ?? "mainCondition"
+    tabs[0]?.id ?? "mainCondition",
   );
   const handleTabChange = (id: string) => setActiveTab(id);
   const activeGroupKey = groupByTabId[activeTab] ?? "group-primary";
@@ -87,11 +87,11 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
         (group: any) =>
           group &&
           typeof group === "object" &&
-          Object.keys(group as any).length > 0
+          Object.keys(group as any).length > 0,
       );
     }
 
-    // If we already have values, don't overwrite them
+    // If we already have values (we now seed them in useRulesFormUtils), don't overwrite
     if (hasAnyValue) return;
 
     const groupedFromDecision: { [key: string]: any[] } =
@@ -111,54 +111,71 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
             const how = normalizeHowToSet(c.howToSetTheCondition);
             const fallback = c.value ?? defaultForHowToSet(how);
             return [c.conditionName, fallback];
-          })
+          }),
         );
         return [groupKey, valueByCondition];
-      })
+      }),
     );
 
     formik.setFieldValue(
       "conditionsThatEstablishesTheDecision",
       nextRec,
-      false
+      false,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [decision]);
 
-  // 2) Keep `conditionGroups` in sync with `conditionsThatEstablishesTheDecision`
+// 2) Keep `conditionGroups` in sync with `conditionsThatEstablishesTheDecision`
 React.useEffect(() => {
   const rec = (formik.values as any)?.conditionsThatEstablishesTheDecision;
   if (!rec || typeof rec !== "object") return;
 
+  // Template/meta, used only to enrich (label, i18n, types...), but
+  // the set of conditions comes from `rec` (real values).
   const metaByGroup: Record<string, any[]> =
     getConditionsByGroupNew(sourceForGroups);
 
-  const conditionGroups = Object.keys(metaByGroup).map((groupKey) => {
-    const metaList = metaByGroup[groupKey] || [];
-    const valueRecord = rec[groupKey] || {};
+  const conditionGroups = Object.entries(rec).map(
+    ([groupKey, valueRecord]) => {
+      const metaList = metaByGroup[groupKey] || [];
 
-    const list = metaList.map((m: any) => {
-      const how = normalizeHowToSet(m.howToSetTheCondition);
-      const fallback = m.value ?? defaultForHowToSet(how);
+      const list = Object.keys(valueRecord as any).map((condName) => {
+        const wrapper = (valueRecord as any)[condName];
 
-      const wrapper = valueRecord[m.conditionName];
-      const valueFromWrapper =
-        wrapper && typeof wrapper === "object" && "value" in wrapper
-          ? wrapper.value
-          : undefined;
+        // Try to find meta for this condition in the template (optional)
+        const meta =
+          metaList.find((m: any) => m.conditionName === condName) || {};
+
+        const how = normalizeHowToSet(
+          (meta as any).howToSetTheCondition ?? wrapper?.howToSetTheCondition,
+        );
+
+        const fallback = (meta as any).value ?? defaultForHowToSet(how);
+
+        const valueFromWrapper =
+          wrapper && typeof wrapper === "object" && "value" in wrapper
+            ? wrapper.value
+            : wrapper;
+
+        return {
+          // meta (labelName, descriptionUse, timeUnit, etc.)
+          ...meta,
+          // any extra fields that might live in the wrapper
+          ...(typeof wrapper === "object" && !Array.isArray(wrapper)
+            ? wrapper
+            : {}),
+          conditionName: condName,
+          value:
+            valueFromWrapper !== undefined ? valueFromWrapper : fallback,
+        };
+      });
 
       return {
-        ...m,
-        conditionName: m.conditionName,
-        value: valueFromWrapper !== undefined ? valueFromWrapper : fallback,
+        ConditionGroupId: groupKey,
+        conditionsThatEstablishesTheDecision: list,
       };
-    });
-
-    return {
-      ConditionGroupId: groupKey,
-      conditionsThatEstablishesTheDecision: list,
-    };
-  });
+    },
+  );
 
   const prev = (formik.values as any).conditionGroups;
   const nextJSON = JSON.stringify(conditionGroups);
@@ -173,10 +190,10 @@ React.useEffect(() => {
     React.useMemo(() => {
       const ordered = [
         ...Object.keys(visibleConditionsByGroup).filter(
-          (k) => k === "group-primary"
+          (k) => k === "group-primary",
         ),
         ...Object.keys(visibleConditionsByGroup).filter(
-          (k) => k !== "group-primary"
+          (k) => k !== "group-primary",
         ),
       ];
 
@@ -203,12 +220,12 @@ React.useEffect(() => {
           const vFromArray = readFromConditionGroups(
             formik.values,
             g,
-            c.conditionName
+            c.conditionName,
           );
           const vFromRecord = readScopedRecord(
             formik.values,
             g,
-            c.conditionName
+            c.conditionName,
           );
           const currentVal =
             vFromArray !== undefined ? vFromArray : vFromRecord;
@@ -222,7 +239,10 @@ React.useEffect(() => {
             __originalConditionName: c.conditionName,
             __groupKey: g,
             __howToSet: how,
-            conditionName: scopedName,
+            __scopedName: scopedName,
+            // what the renderer uses:
+            conditionName: c.conditionName,
+            groupKey: g,
             labelName: sentence,
             __unitAfterInput: unitAfter,
             value: ensuredVal,
@@ -298,18 +318,30 @@ React.useEffect(() => {
   };
 
   const setBothShapes = (groupKey: string, originalName: string, val: any) => {
-    formik.setFieldValue(
-      `conditionsThatEstablishesTheDecision.${groupKey}.${originalName}`,
-      val,
-      false
-    );
+    const basePath = `conditionsThatEstablishesTheDecision.${groupKey}.${originalName}`;
+    const currentWrapper =
+      (formik.values as any)?.conditionsThatEstablishesTheDecision?.[groupKey]?.[
+        originalName
+      ];
+
+    // keep wrapper shape if it already exists
+    if (
+      currentWrapper &&
+      typeof currentWrapper === "object" &&
+      !Array.isArray(currentWrapper)
+    ) {
+      formik.setFieldValue(`${basePath}.value`, val, false);
+    } else {
+      formik.setFieldValue(basePath, val, false);
+    }
+
     const groups: any[] = (formik.values as any)?.conditionGroups;
     if (Array.isArray(groups)) {
       const gi = groups.findIndex((g) => g?.ConditionGroupId === groupKey);
       if (gi >= 0) {
         const ci =
           groups[gi].conditionsThatEstablishesTheDecision?.findIndex(
-            (c: any) => c?.conditionName === originalName
+            (c: any) => c?.conditionName === originalName,
           );
         if (ci >= 0) {
           const clone = JSON.parse(JSON.stringify(groups));
@@ -331,7 +363,7 @@ React.useEffect(() => {
     formik.setFieldTouched(
       `conditionsThatEstablishesTheDecision.${groupKey}.${originalName}`,
       false,
-      false
+      false,
     );
   };
 
@@ -352,7 +384,7 @@ React.useEffect(() => {
   const confirmRedefine = () => {
     handleRedefineCurrentTab();
     const allNamesInTab = (conditionsByGroupFull[activeGroupKey] ?? []).map(
-      (condition: any) => `${activeGroupKey}.${condition.conditionName}`
+      (condition: any) => `${activeGroupKey}.${condition.conditionName}`,
     );
     onRestoreConditions?.(allNamesInTab);
     setShowRedefineConfirm(false);

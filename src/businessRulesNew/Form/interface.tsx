@@ -28,13 +28,19 @@ const RulesFormUI = (props: IRulesFormUI) => {
     onCloseRedefineConfirm,
     onConfirmRedefine,
   } = props;
-  console.log('formik: ',formik)
+
+  console.log("formik: ", formik);
+
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
         <Stack direction="column" gap="24px" width="100%">
           <Fieldset legend="Decisión N° 01" spacing="wide">
-            <Stack justifyContent="center" width="-webkit-fill-available" alignItems="center">
+            <Stack
+              justifyContent="center"
+              width="-webkit-fill-available"
+              alignItems="center"
+            >
               {DecisionConditionRenderNew({
                 condition: normalizedDecision,
                 formik,
@@ -75,31 +81,37 @@ const RulesFormUI = (props: IRulesFormUI) => {
               </Stack>
 
               <Stack direction="column" gap="20px">
-                {currentConditions?.map((condition: any) => (
-                  <Stack
-                    key={condition.conditionName}
-                    gap="16px"
-                    alignItems="center"
-                  >
-                    <StyledConditionFieldContainer>
-                      <DecisionConditionRenderNew
-                        condition={condition}
-                        formik={formik}
+                {currentConditions?.map((condition: any) => {
+                  const scopedName =
+                    condition.__scopedName ??
+                    `${condition.groupKey}.${condition.conditionName}`;
+
+                  return (
+                    <Stack
+                      key={scopedName}
+                      gap="16px"
+                      alignItems="center"
+                    >
+                      <StyledConditionFieldContainer>
+                        <DecisionConditionRenderNew
+                          condition={condition}
+                          formik={formik}
+                        />
+                        {condition.timeUnit && (
+                          <Text as="span" size="medium" padding="0 0 0 16px">
+                            {condition.__unitAfterInput}
+                          </Text>
+                        )}
+                      </StyledConditionFieldContainer>
+                      <Icon
+                        icon={<MdOutlineDelete />}
+                        appearance="danger"
+                        cursorHover
+                        onClick={() => onClearCondition(scopedName)}
                       />
-                      {condition.timeUnit && (
-                        <Text as="span" size="medium" padding="0 0 0 16px">
-                          {condition.__unitAfterInput}
-                        </Text>
-                      )}
-                    </StyledConditionFieldContainer>
-                    <Icon
-                      icon={<MdOutlineDelete />}
-                      appearance="danger"
-                      cursorHover
-                      onClick={() => onClearCondition(condition.conditionName)}
-                    />
-                  </Stack>
-                ))}
+                    </Stack>
+                  );
+                })}
               </Stack>
 
               {showConditionsError && (
@@ -145,6 +157,7 @@ const RulesFormUI = (props: IRulesFormUI) => {
           </Stack>
         </Stack>
       </form>
+
       {showRedefineConfirm && portalId && (
         <ModalRules
           portalId={portalId}

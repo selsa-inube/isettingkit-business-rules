@@ -254,6 +254,7 @@ function useRulesFormUtils({
           cond.howToSetTheCondition === EValueHowToSetUp.LIST_OF_VALUES_MULTI
             ? []
             : "";
+
         formik.setFieldValue(
           path,
           {
