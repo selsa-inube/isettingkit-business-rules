@@ -1,3 +1,15 @@
+# v2.2.5 (Tue Nov 18 2025)
+
+#### 🐛 Bug Fix
+
+- Cmarin/hotfix0002/adjustment condition records [#16](https://github.com/selsa-inube/isettingkit-business-rules/pull/16) ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.4 (Wed Nov 12 2025)
 
 #### ⚠️ Pushed to `main`
