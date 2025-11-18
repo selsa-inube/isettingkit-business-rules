@@ -259,6 +259,9 @@ const sampleDecisions: any[] = [
           descriptionUse: "Antigüedad del cliente (Días)",
           conditionDataType: ValueDataType.PERCENTAGE,
           howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
+          listOfPossibleValues: {
+            list: ["15", "10", "20", "45", "30"],
+          },
           value: ["abc", "10", "20", "45"],
           timeUnit: "Year",
         },
