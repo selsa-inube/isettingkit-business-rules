@@ -29,8 +29,6 @@ const RulesFormUI = (props: IRulesFormUI) => {
     onConfirmRedefine,
   } = props;
 
-  console.log("formik: ", formik);
-
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
