@@ -248,6 +248,7 @@ Empty.args = {
   initialDecisions: sampleDecisions,
   decisionTemplate,
   language: "es",
+  shouldRenderEmptyMessage: false,
   textValues: {
     selectOptions: "Seleccione las opciones",
     selectOption: "Seleccione una opción",

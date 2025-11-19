@@ -36,6 +36,7 @@ const BusinessRulesNew = (props: IBusinessRules) => {
     onRemoveCondition,
     onRestoreConditions,
     baseDecisionTemplate,
+    shouldRenderEmptyMessage = true
   } = props;
 
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -54,79 +55,82 @@ const BusinessRulesNew = (props: IBusinessRules) => {
     toggleAt: (i: number) => setOpenIndex((prev) => (prev === i ? null : i)),
   });
 
-  const shouldRenderEmptyMessage = decisions?.length === 0 && !loading;
+  const shouldRenderAddCardEmpty = decisions?.length === 0 && !loading;
 
   return (
     <>
       <StyledGridContainer>
         <StyledScrollContainer>
           <Stack direction="column" gap="16px" padding="6px">
-            {shouldRenderEmptyMessage ? (
-              <Fieldset legend="Decisiones">
-                <Stack
-                  direction="column"
-                  gap="16px"
-                  width="100%"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <Icon
-                    appearance="help"
-                    icon={<MdOutlineInfo />}
-                    size="40px"
-                  />
-                  <Text
-                    type="title"
-                    size="medium"
-                    weight="bold"
-                    appearance="dark"
+            {shouldRenderEmptyMessage && (
+              shouldRenderAddCardEmpty ? (
+                <Fieldset legend="Decisiones">
+                  <Stack
+                    direction="column"
+                    gap="16px"
+                    width="100%"
+                    justifyContent="center"
+                    alignItems="center"
                   >
-                    Sin decisiones
-                  </Text>
-                  <Text as="span" size="medium" appearance="gray">
-                    {customMessageEmptyDecisions ? (
-                      customMessageEmptyDecisions
-                    ) : (
-                      <>
-                        Aun no tienes decisiones definidas, para empezar haz
-                        clic en
-                        {customTitleContentAddCard
-                          ? customTitleContentAddCard
-                          : ` "Agregar decisión"`}
-                      </>
-                    )}
-                  </Text>
-                </Stack>
-              </Fieldset>
-            ) : (
-              <Grid
-                templateColumns="1fr"
-                autoFlow="row dense"
-                gap="16px"
-                alignItems="start"
-                justifyContent="center"
-                autoRows="auto"
-                justifyItems="center"
-                padding="6px"
-                height={mediumScreen ? "auto" : "484px"}
-              >
-                {renderedCards}
-                {shouldRenderAddCard &&
-                  renderCardNew({
-                    type: "add",
-                    index: decisions?.length,
-                    controls,
-                    customTitleContentAddCard,
-                    customMessageEmptyDecisions,
-                    loading,
-                    handleOpenModal,
-                    handleDelete,
-                    textValues,
-                    shouldRenderEmptyMessage,
-                    terms,
-                  })}
-              </Grid>
+                    <Icon
+                      appearance="help"
+                      icon={<MdOutlineInfo />}
+                      size="40px"
+                    />
+                    <Text
+                      type="title"
+                      size="medium"
+                      weight="bold"
+                      appearance="dark"
+                    >
+                      Sin decisiones
+                    </Text>
+                    <Text as="span" size="medium" appearance="gray">
+                      {customMessageEmptyDecisions ? (
+                        customMessageEmptyDecisions
+                      ) : (
+                        <>
+                          Aun no tienes decisiones definidas, para empezar haz
+                          clic en
+                          {customTitleContentAddCard
+                            ? customTitleContentAddCard
+                            : ` "Agregar decisión"`}
+                        </>
+                      )}
+                    </Text>
+                  </Stack>
+                </Fieldset>
+              ) : (
+                <Grid
+                  templateColumns="1fr"
+                  autoFlow="row dense"
+                  gap="16px"
+                  alignItems="start"
+                  justifyContent="center"
+                  autoRows="auto"
+                  justifyItems="center"
+                  padding="6px"
+                  height={mediumScreen ? "auto" : "484px"}
+                >
+                  {renderedCards}
+                  {shouldRenderAddCard &&
+                    renderCardNew({
+                      type: "add",
+                      index: decisions?.length,
+                      controls,
+                      customTitleContentAddCard,
+                      customMessageEmptyDecisions,
+                      loading,
+                      handleOpenModal,
+                      handleDelete,
+                      textValues,
+                      shouldRenderEmptyMessage,
+                      terms,
+                    })}
+                </Grid>
+              )
             )}
+
           </Stack>
         </StyledScrollContainer>
       </StyledGridContainer>
@@ -143,7 +147,7 @@ const BusinessRulesNew = (props: IBusinessRules) => {
             fullTemplate={baseDecisionTemplate ?? decisionTemplate}
             onSubmitEvent={handleSubmitForm!}
             textValues={textValues}
-            onCancel={() => (handleCloseModal ? handleCloseModal() : () => {})}
+            onCancel={() => (handleCloseModal ? handleCloseModal() : () => { })}
             onRemoveCondition={onRemoveCondition}
             onRestoreConditions={onRestoreConditions}
           />

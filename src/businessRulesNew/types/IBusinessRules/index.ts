@@ -20,6 +20,7 @@ interface IBusinessRules {
   onRemoveCondition?: (conditionName: string) => void;
   onRestoreConditions?: (conditionNames: string[]) => void;
   baseDecisionTemplate?: IRuleDecision;
+  shouldRenderEmptyMessage?: boolean;
 }
 
 export type { IBusinessRules };

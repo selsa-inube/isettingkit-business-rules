@@ -27,6 +27,7 @@ interface IBusinessRulesNewController {
   loading?: boolean;
   terms?: boolean;
   textValues: IRulesFormTextValues;
+  shouldRenderEmptyMessage?: boolean;
 }
 
 const deepClone = <T,>(v: T): T => JSON.parse(JSON.stringify(v));
@@ -81,6 +82,7 @@ const BusinessRulesNewController = ({
   language,
   loading = false,
   textValues,
+  shouldRenderEmptyMessage
 }: IBusinessRulesNewController) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editAsNew, setEditAsNew] = useState(false);
@@ -445,6 +447,7 @@ const BusinessRulesNewController = ({
           onRestoreConditions={handleRestoreConditions}
           selectedDecision={selectedDecision}
           textValues={textValues}
+          shouldRenderEmptyMessage={shouldRenderEmptyMessage}
         />
       ) : (
         <Fieldset legend="Decisiones">
