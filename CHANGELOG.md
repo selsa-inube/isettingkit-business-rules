@@ -1,3 +1,15 @@
+# v2.2.6 (Wed Nov 19 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: add a prop to control if it should show the empty message or not ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.5 (Tue Nov 18 2025)
 
 #### 🐛 Bug Fix
