@@ -1,3 +1,15 @@
+# v2.2.7 (Thu Nov 20 2025)
+
+#### ⚠️ Pushed to `main`
+
+- chore: udpate input library to latest version ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.6 (Wed Nov 19 2025)
 
 #### ⚠️ Pushed to `main`
