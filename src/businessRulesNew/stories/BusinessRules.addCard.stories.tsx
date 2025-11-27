@@ -379,7 +379,13 @@ const decisionTemplate: any = {
   // value: "",
   howToSetTheDecision: EValueHowToSetUp.LIST_OF_VALUES,
   listOfPossibleValues: {
-    list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
+    list: [
+      { id: "value-1", label: "Muy alto", value: "Muy alto" },
+      { id: "value-2", label: "Alto", value: "Alto" },
+      { id: "value-3", label: "Medio", value: "Medio" },
+      { id: "value-4", label: "Bajo", value: "Bajo" },
+      { id: "value-5", label: "Muy bajo", value: "Muy bajo" },
+    ],
   },
   value: "",
   effectiveFrom: "",
@@ -440,7 +446,13 @@ const decisionTemplate: any = {
           conditionDataType: ValueDataType.ALPHABETICAL,
           howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES_MULTI,
           listOfPossibleValues: {
-            list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
+            list: [
+              { id: "value-1", label: "Muy alto", value: "Muy alto" },
+              { id: "value-2", label: "Alto", value: "Alto" },
+              { id: "value-3", label: "Medio", value: "Medio" },
+              { id: "value-4", label: "Bajo", value: "Bajo" },
+              { id: "value-5", label: "Muy bajo", value: "Muy bajo" },
+            ],
           },
           value: "",
           i18n: {
@@ -503,7 +515,13 @@ const decisionTemplate: any = {
           conditionDataType: ValueDataType.ALPHABETICAL,
           howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES_MULTI,
           listOfPossibleValues: {
-            list: ["Muy alto", "Alto", "Medio", "Bajo", "Muy bajo"],
+            list: [
+              { id: "value-1", label: "Muy alto", value: "Muy alto" },
+              { id: "value-2", label: "Alto", value: "Alto" },
+              { id: "value-3", label: "Medio", value: "Medio" },
+              { id: "value-4", label: "Bajo", value: "Bajo" },
+              { id: "value-5", label: "Muy bajo", value: "Muy bajo" },
+            ],
           },
           value: "",
           i18n: {
