@@ -1,3 +1,15 @@
+# v2.2.8 (Tue Dec 02 2025)
+
+#### 🐛 Bug Fix
+
+- feat: adjust select input changes [#17](https://github.com/selsa-inube/isettingkit-business-rules/pull/17) ([@heber59](https://github.com/heber59))
+
+#### Authors: 1
+
+- Heber  Alvarez  ([@heber59](https://github.com/heber59))
+
+---
+
 # v2.2.7 (Thu Nov 20 2025)
 
 #### ⚠️ Pushed to `main`
