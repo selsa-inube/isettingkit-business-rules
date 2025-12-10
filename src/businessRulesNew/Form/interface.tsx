@@ -51,7 +51,7 @@ const RulesFormUI = (props: IRulesFormUI) => {
               )}
             </Stack>
           </Fieldset>
-          {currentConditions?.length && (
+          {currentConditions && currentConditions.length > 0 && (
             <Fieldset legend="Condiciones a evaluar" spacing="wide">
               <Stack direction="column" gap="20px" width="100%">
                 <Tabs
