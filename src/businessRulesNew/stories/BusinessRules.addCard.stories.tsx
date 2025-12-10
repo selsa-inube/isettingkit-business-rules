@@ -380,11 +380,11 @@ const decisionTemplate: any = {
   howToSetTheDecision: EValueHowToSetUp.LIST_OF_VALUES,
   listOfPossibleValues: {
     list: [
-      { id: "value-1", label: "Muy alto", value: "Muy alto" },
-      { id: "value-2", label: "Alto", value: "Alto" },
-      { id: "value-3", label: "Medio", value: "Medio" },
-      { id: "value-4", label: "Bajo", value: "Bajo" },
-      { id: "value-5", label: "Muy bajo", value: "Muy bajo" },
+      { id: "value-1", label: "Muy alto", value: "ass" },
+      { id: "value-2", label: "Alto", value: "cdd" },
+      { id: "value-3", label: "Medio", value: "vbfb" },
+      { id: "value-4", label: "Bajo", value: "hnh" },
+      { id: "value-5", label: "Muy bajo", value: "yyy" },
     ],
   },
   value: "",
@@ -405,6 +405,7 @@ const decisionTemplate: any = {
           i18n: {
             es: "Línea de crédito",
           },
+          listOfPossibleValues: {},
         },
         {
           labelName: "Porcentaje de riesgo",

@@ -51,75 +51,72 @@ const RulesFormUI = (props: IRulesFormUI) => {
               )}
             </Stack>
           </Fieldset>
-
-          <Fieldset legend="Condiciones a evaluar" spacing="wide">
-            <Stack direction="column" gap="20px" width="100%">
-              <Tabs
-                onChange={onTabChange!}
-                tabs={tabs!}
-                selectedTab={activeTab!}
-              />
-              <Stack justifyContent="flex-end" alignItems="center">
-                <Icon
-                  icon={<MdInfo />}
-                  appearance="help"
-                  onClick={onOpenRedefineConfirm}
-                  cursorHover
+          {currentConditions && currentConditions.length > 0 && (
+            <Fieldset legend="Condiciones a evaluar" spacing="wide">
+              <Stack direction="column" gap="20px" width="100%">
+                <Tabs
+                  onChange={onTabChange!}
+                  tabs={tabs!}
+                  selectedTab={activeTab!}
                 />
-                <Button
-                  type="button"
-                  iconBefore={<MdCached />}
-                  variant="none"
-                  appearance="gray"
-                  onClick={onOpenRedefineConfirm}
-                  cursorHover
-                >
-                  Redefinir la condición
-                </Button>
-              </Stack>
+                <Stack justifyContent="flex-end" alignItems="center">
+                  <Icon
+                    icon={<MdInfo />}
+                    appearance="help"
+                    onClick={onOpenRedefineConfirm}
+                    cursorHover
+                  />
+                  <Button
+                    type="button"
+                    iconBefore={<MdCached />}
+                    variant="none"
+                    appearance="gray"
+                    onClick={onOpenRedefineConfirm}
+                    cursorHover
+                  >
+                    Redefinir la condición
+                  </Button>
+                </Stack>
 
-              <Stack direction="column" gap="20px">
-                {currentConditions?.map((condition: any) => {
-                  const scopedName =
-                    condition.__scopedName ??
-                    `${condition.groupKey}.${condition.conditionName}`;
+                <Stack direction="column" gap="20px">
+                  {currentConditions?.map((condition: any) => {
+                    const scopedName =
+                      condition.__scopedName ??
+                      `${condition.groupKey}.${condition.conditionName}`;
 
-                  return (
-                    <Stack
-                      key={scopedName}
-                      gap="16px"
-                      alignItems="center"
-                    >
-                      <StyledConditionFieldContainer>
-                        <DecisionConditionRenderNew
-                          condition={condition}
-                          formik={formik}
+                    return (
+                      <Stack key={scopedName} gap="16px" alignItems="center">
+                        <StyledConditionFieldContainer>
+                          <DecisionConditionRenderNew
+                            condition={condition}
+                            formik={formik}
+                          />
+                          {condition.timeUnit && (
+                            <Text as="span" size="medium" padding="0 0 0 16px">
+                              {condition.__unitAfterInput}
+                            </Text>
+                          )}
+                        </StyledConditionFieldContainer>
+                        <Icon
+                          icon={<MdOutlineDelete />}
+                          appearance="danger"
+                          cursorHover
+                          onClick={() => onClearCondition(scopedName)}
                         />
-                        {condition.timeUnit && (
-                          <Text as="span" size="medium" padding="0 0 0 16px">
-                            {condition.__unitAfterInput}
-                          </Text>
-                        )}
-                      </StyledConditionFieldContainer>
-                      <Icon
-                        icon={<MdOutlineDelete />}
-                        appearance="danger"
-                        cursorHover
-                        onClick={() => onClearCondition(scopedName)}
-                      />
-                    </Stack>
-                  );
-                })}
-              </Stack>
+                      </Stack>
+                    );
+                  })}
+                </Stack>
 
-              {showConditionsError && (
-                <Text type="label" size="medium" appearance="danger">
-                  {conditionsErrorText ??
-                    "Existen errores en el formulario, por favor revísalos."}
-                </Text>
-              )}
-            </Stack>
-          </Fieldset>
+                {showConditionsError && (
+                  <Text type="label" size="medium" appearance="danger">
+                    {conditionsErrorText ??
+                      "Existen errores en el formulario, por favor revísalos."}
+                  </Text>
+                )}
+              </Stack>
+            </Fieldset>
+          )}
 
           <Fieldset legend="Vigencia" spacing="wide">
             {textValues.terms && (
