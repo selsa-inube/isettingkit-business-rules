@@ -1,3 +1,15 @@
+# v2.2.9 (Wed Dec 10 2025)
+
+#### 🐛 Bug Fix
+
+- Ha/adjust decision without conditions [#18](https://github.com/selsa-inube/isettingkit-business-rules/pull/18) ([@heber59](https://github.com/heber59))
+
+#### Authors: 1
+
+- Heber  Alvarez  ([@heber59](https://github.com/heber59))
+
+---
+
 # v2.2.8 (Tue Dec 02 2025)
 
 #### 🐛 Bug Fix
