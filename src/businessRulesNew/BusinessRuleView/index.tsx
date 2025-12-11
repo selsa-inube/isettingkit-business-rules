@@ -16,6 +16,7 @@ import { formatDateEsShort } from "../utils/formatDateEsShort";
 import { conditionHasValue } from "../utils/conditionHasValue";
 import { ITab } from "@inubekit/inubekit";
 import { labelForGroup } from "../utils/labelForGroup";
+import { buildListOfValuesValue } from "../utils/buildListOfValuesValue";
 
 const BusinessRuleViewNew = (props: IBusinessRuleView) => {
   const {
@@ -68,14 +69,24 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
       }
     : null;
 
+
+  const resolvedHowToSet =
+  decision?.howToSetTheDecision || ValueHowToSetUp.EQUAL;
+
+const mappedDecisionValue =
+  decision &&
+  (resolvedHowToSet === "ListOfValues" ||
+    resolvedHowToSet === "ListOfValuesMulti")
+    ? buildListOfValuesValue(decision as IRuleDecision).list
+    : strategyFactoryHandlerManagerNew(decision as IRuleDecision);
+
   const decisionMapper: Partial<IRuleDecision> | null = decision
     ? {
         labelName: cardTitle ? decision.labelName || "" : "",
         decisionDataType:
           decision.decisionDataType || ValueDataType.ALPHABETICAL,
-        value: strategyFactoryHandlerManagerNew(decision),
-        howToSetTheDecision:
-          decision.howToSetTheDecision || ValueHowToSetUp.EQUAL,
+        value: mappedDecisionValue,
+        howToSetTheDecision: resolvedHowToSet,
         validUntil: decision.validUntil,
       }
     : null;

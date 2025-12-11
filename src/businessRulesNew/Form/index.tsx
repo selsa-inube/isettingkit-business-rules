@@ -77,7 +77,6 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
   const handleTabChange = (id: string) => setActiveTab(id);
   const activeGroupKey = groupByTabId[activeTab] ?? "group-primary";
 
-  // 1) Seed Formik with values coming from `decision` the first time (edit mode)
   React.useEffect(() => {
     const rec = (formik.values as any)?.conditionsThatEstablishesTheDecision;
 
@@ -91,7 +90,6 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
       );
     }
 
-    // If we already have values (we now seed them in useRulesFormUtils), don't overwrite
     if (hasAnyValue) return;
 
     const groupedFromDecision: { [key: string]: any[] } =
@@ -125,7 +123,6 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [decision]);
 
-// 2) Keep `conditionGroups` in sync with `conditionsThatEstablishesTheDecision`
 React.useEffect(() => {
   const rec = (formik.values as any)?.conditionsThatEstablishesTheDecision;
   if (!rec || typeof rec !== "object") return;
@@ -240,7 +237,6 @@ React.useEffect(() => {
             __groupKey: g,
             __howToSet: how,
             __scopedName: scopedName,
-            // what the renderer uses:
             conditionName: c.conditionName,
             groupKey: g,
             labelName: sentence,
@@ -324,7 +320,6 @@ React.useEffect(() => {
         originalName
       ];
 
-    // keep wrapper shape if it already exists
     if (
       currentWrapper &&
       typeof currentWrapper === "object" &&
