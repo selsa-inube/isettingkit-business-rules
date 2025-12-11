@@ -1,3 +1,15 @@
+# v2.2.10 (Thu Dec 11 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: update view to take label instead of value ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.9 (Wed Dec 10 2025)
 
 #### 🐛 Bug Fix
