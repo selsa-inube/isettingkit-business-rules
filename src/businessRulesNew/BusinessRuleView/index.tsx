@@ -69,14 +69,13 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
       }
     : null;
 
-
   const resolvedHowToSet =
   decision?.howToSetTheDecision || ValueHowToSetUp.EQUAL;
 
 const mappedDecisionValue =
   decision &&
-  (resolvedHowToSet === "ListOfValues" ||
-    resolvedHowToSet === "ListOfValuesMulti")
+  (resolvedHowToSet === ValueHowToSetUp.LIST_OF_VALUES ||
+    resolvedHowToSet === ValueHowToSetUp.LIST_OF_VALUES_MULTI)
     ? buildListOfValuesValue(decision as IRuleDecision).list
     : strategyFactoryHandlerManagerNew(decision as IRuleDecision);
 
@@ -90,7 +89,7 @@ const mappedDecisionValue =
         validUntil: decision.validUntil,
       }
     : null;
-
+  console.log('decisionMapper from library: ', decisionMapper);
   const rawByGroup = React.useMemo(
     () => (decision ? getConditionsByGroupNew(decision) : {}),
     [decision]
