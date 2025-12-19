@@ -89,7 +89,7 @@ const mappedDecisionValue =
         validUntil: decision.validUntil,
       }
     : null;
-  console.log('decisionMapper from library: ', decisionMapper);
+
   const rawByGroup = React.useMemo(
     () => (decision ? getConditionsByGroupNew(decision) : {}),
     [decision]

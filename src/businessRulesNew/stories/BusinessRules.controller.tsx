@@ -5,8 +5,8 @@ import { BusinessRulesNew } from "..";
 import { sortDisplayDataSwitchPlaces } from "../helper/utils/sortDisplayDataSwitchPlaces";
 import { sortDisplayDataSampleSwitchPlaces } from "../helper/utils/sortDisplayDataSampleSwitchPlaces";
 import { IRulesFormTextValues } from "../types/Forms/IRulesFormTextValues";
-import { Button, Fieldset, Icon, Stack, Text } from "@inubekit/inubekit";
-import { MdAdd, MdOutlineReportProblem } from "react-icons/md";
+import { Button, Fieldset, Stack } from "@inubekit/inubekit";
+import { MdAdd } from "react-icons/md";
 import type { IOption } from "@inubekit/inubekit";
 import { StyledMultipleChoiceContainer } from "./styles";
 
@@ -367,36 +367,37 @@ const BusinessRulesNewController = ({
     setDecisions((prev) => prev.filter((d) => d.decisionId !== id));
   };
 
-  const filteredDecisionTemplate = useMemo(() => {
-    const tpl = sortDisplayDataSampleSwitchPlaces({
-      decisionTemplate: deepClone(localizedTemplate),
-    });
+const filteredDecisionTemplate = useMemo(() => {
+  const tpl = sortDisplayDataSampleSwitchPlaces({
+    decisionTemplate: deepClone(localizedTemplate),
+  });
 
-    const groupsRecord =
-      getConditionsByGroupNew(tpl) || ({} as Record<string, any[]>);
+  const groupsRecord =
+    getConditionsByGroupNew(tpl) || ({} as Record<string, any[]>);
 
-    const filteredRecord = Object.fromEntries(
-      Object.entries(groupsRecord).map(([group, list]) => [
-        group,
-        (list as any[]).filter((c) => {
-          const oname = originalName(c.conditionName);
-          const passesSelected =
-            selectedIds.size === 0 || selectedIds.has(oname);
-          const notRemoved = !removedConditionNames.has(oname);
-          return passesSelected && notRemoved;
-        }),
-      ]),
-    );
+  const filteredRecord = Object.fromEntries(
+    Object.entries(groupsRecord).map(([group, list]) => [
+      group,
+      (list as any[]).filter((c) => {
+        const oname = originalName(c.conditionName);
 
-    const withFiltered = {
-      ...tpl,
-      labelName: localizeLabel(tpl, language),
-      conditionGroups: groupsRecordToArrayNew(filteredRecord),
-    };
-    delete (withFiltered as any).conditionsThatEstablishesTheDecision;
+        const passesSelected = selectedIds.size > 0 && selectedIds.has(oname);
+        const notRemoved = !removedConditionNames.has(oname);
+        return passesSelected && notRemoved;
+      }),
+    ]),
+  );
 
-    return withFiltered as any;
-  }, [localizedTemplate, language, selectedIds, removedConditionNames]);
+  const withFiltered = {
+    ...tpl,
+    labelName: localizeLabel(tpl, language),
+    conditionGroups: groupsRecordToArrayNew(filteredRecord),
+  };
+  delete (withFiltered as any).conditionsThatEstablishesTheDecision;
+
+  return withFiltered as any;
+}, [localizedTemplate, language, selectedIds, removedConditionNames]);
+
   return (
     <Stack direction="column" gap="24px">
       <Fieldset legend="Condiciones que determinan las decisiones">
@@ -420,7 +421,7 @@ const BusinessRulesNewController = ({
         <Button
           appearance="primary"
           cursorHover
-          disabled={selectedConditionsCSV.length === 0}
+          // disabled={selectedConditionsCSV.length === 0}
           iconBefore={<MdAdd />}
           onClick={() => handleOpenModal()}
         >
@@ -428,7 +429,7 @@ const BusinessRulesNewController = ({
         </Button>
       </Stack>
 
-      {selectedConditionsCSV.length > 0 ? (
+  {/* {selectedConditionsCSV.length > 0 ? ( */}
         <BusinessRulesNew
           baseDecisionTemplate={localizedTemplate}
           cardTitle={cardTitle}
@@ -449,7 +450,7 @@ const BusinessRulesNewController = ({
           textValues={textValues}
           shouldRenderEmptyMessage={shouldRenderEmptyMessage}
         />
-      ) : (
+    {/* ) : (
         <Fieldset legend="Decisiones">
           <Stack
             alignItems="center"
@@ -475,7 +476,7 @@ const BusinessRulesNewController = ({
             </Text>
           </Stack>
         </Fieldset>
-      )}
+      )} */}
     </Stack>
   );
 };
