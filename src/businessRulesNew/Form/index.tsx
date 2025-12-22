@@ -127,8 +127,6 @@ React.useEffect(() => {
   const rec = (formik.values as any)?.conditionsThatEstablishesTheDecision;
   if (!rec || typeof rec !== "object") return;
 
-  // Template/meta, used only to enrich (label, i18n, types...), but
-  // the set of conditions comes from `rec` (real values).
   const metaByGroup: Record<string, any[]> =
     getConditionsByGroupNew(sourceForGroups);
 
@@ -138,8 +136,6 @@ React.useEffect(() => {
 
       const list = Object.keys(valueRecord as any).map((condName) => {
         const wrapper = (valueRecord as any)[condName];
-
-        // Try to find meta for this condition in the template (optional)
         const meta =
           metaList.find((m: any) => m.conditionName === condName) || {};
 
@@ -155,9 +151,7 @@ React.useEffect(() => {
             : wrapper;
 
         return {
-          // meta (labelName, descriptionUse, timeUnit, etc.)
           ...meta,
-          // any extra fields that might live in the wrapper
           ...(typeof wrapper === "object" && !Array.isArray(wrapper)
             ? wrapper
             : {}),

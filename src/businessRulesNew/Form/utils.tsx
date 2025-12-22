@@ -7,6 +7,7 @@ import { EValueHowToSetUp } from "../enums/EValueHowToSetUp";
 import { IUseRulesFormUtils } from "../types/Forms/IUseRulesFormUtils";
 import { IRulesForm } from "../types/Forms/IRulesForm";
 import { getConditionsByGroupNew } from "../helper/utils/getConditionsByGroup";
+import { hasDecisionOptions, requiredOptionSchema } from "./helpers/strategies/requiredOptionStrategy";
 
 const getWrapperValue = (wrapper: any) =>
   wrapper && typeof wrapper === "object" && "value" in wrapper
@@ -23,6 +24,7 @@ const hasMeaningfulValue = (v: any): boolean => {
   return true;
 };
 
+
 function useRulesFormUtils({
   decision,
   onSubmitEvent,
@@ -35,7 +37,6 @@ function useRulesFormUtils({
       (list as any[]).map((cond) => ({ group: g, cond })),
     );
 
-  // 👉 Build record: group → conditionName → FULL condition object ({...cond, value})
   const initialConditionsRecord: Record<string, Record<string, any>> =
     Object.fromEntries(
       Object.entries(grouped).map(([groupKey, list]) => {
@@ -64,7 +65,6 @@ function useRulesFormUtils({
       }),
     );
 
-  // 👉 Build conditionGroups from that record (only primitives in .value)
   const initialConditionGroups = Object.entries(grouped).map(
     ([groupKey, list]) => {
       const valueRecord = initialConditionsRecord[groupKey] || {};
@@ -111,6 +111,9 @@ function useRulesFormUtils({
     ruleName: string().required("El nombre de la decision es requerido"),
 
     value: lazy(() => {
+      if (hasDecisionOptions(decision)) {
+        return requiredOptionSchema;
+      }
       const strategy = strategyFormFactoryHandlerManager(
         formik.values.howToSetTheDecision as any,
       );
