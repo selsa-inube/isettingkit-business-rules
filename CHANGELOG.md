@@ -1,3 +1,15 @@
+# v2.2.13 (Mon Dec 22 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: adjusment in order to support invalid messages ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.12 (Fri Dec 19 2025)
 
 #### ⚠️ Pushed to `main`
