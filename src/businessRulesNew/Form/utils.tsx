@@ -7,7 +7,7 @@ import { EValueHowToSetUp } from "../enums/EValueHowToSetUp";
 import { IUseRulesFormUtils } from "../types/Forms/IUseRulesFormUtils";
 import { IRulesForm } from "../types/Forms/IRulesForm";
 import { getConditionsByGroupNew } from "../helper/utils/getConditionsByGroup";
-import { hasDecisionOptions, requiredOptionSchema } from "./helpers/strategies/requiredOptionStrategy";
+import { hasDecisionOptions, rangeOptionSchema, requiredOptionSchema } from "./helpers/strategies/requiredOptionStrategy";
 
 const getWrapperValue = (wrapper: any) =>
   wrapper && typeof wrapper === "object" && "value" in wrapper
@@ -111,16 +111,21 @@ function useRulesFormUtils({
     ruleName: string().required("El nombre de la decision es requerido"),
 
     value: lazy(() => {
-      if (hasDecisionOptions(decision)) {
-        return requiredOptionSchema;
-      }
-      const strategy = strategyFormFactoryHandlerManager(
-        formik.values.howToSetTheDecision as any,
-      );
-      return strategy(
-        formik.values.value as any,
-        formik.values.decisionDataType,
-      ).schema;
+  const how = formik.values.howToSetTheDecision as any;
+
+  if (how === EValueHowToSetUp.RANGE && hasDecisionOptions(decision)) {
+    return rangeOptionSchema;
+  }
+
+  if (hasDecisionOptions(decision)) {
+    return requiredOptionSchema;
+  }
+
+  const strategy = strategyFormFactoryHandlerManager(how);
+  return strategy(
+    formik.values.value as any,
+    formik.values.decisionDataType,
+  ).schema;
     }),
 
     conditionsThatEstablishesTheDecision: lazy((_value, { parent }) => {

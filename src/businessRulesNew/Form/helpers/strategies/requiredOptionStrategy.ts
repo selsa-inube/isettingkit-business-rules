@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { mixed } from "yup";
+import { mixed, object } from "yup";
 
 const hasDecisionOptions = (d: any) =>
   Array.isArray(d?.listOfPossibleValues?.list) && d.listOfPossibleValues.list.length > 0;
@@ -21,4 +21,10 @@ const requiredOptionSchema = mixed().test(
     return false;
   },
 );
- export { hasDecisionOptions, requiredOptionSchema };
+
+const rangeOptionSchema = object({
+  from: requiredOptionSchema,
+  to: requiredOptionSchema,
+});
+
+export { hasDecisionOptions, requiredOptionSchema, rangeOptionSchema };
