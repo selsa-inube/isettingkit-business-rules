@@ -1,3 +1,15 @@
+# v2.2.15 (Wed Dec 24 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: adjustment in order to navigate using guards on dropDownMenu ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.14 (Tue Dec 23 2025)
 
 #### ⚠️ Pushed to `main`
