@@ -14,10 +14,14 @@ import {
   StyledLinksColumn,
 } from "./styles";
 import { IDropdownMenu } from "./types/IDropdownMenu";
+import { useNavigate } from "react-router-dom";
+import { TLinkItem } from "./types/TLinkItem";
 
 const DropdownMenu = (props: IDropdownMenu) => {
-  const { isOpen, links, onClick, title, activeId, headerPath, headerActive } =
+  const { isOpen, links, onClick, title, activeId, headerPath, headerActive, onBeforeNavigate, } =
     props;
+
+  const navigate = useNavigate();
 
   const handleCaretKey = (eventCaret: React.KeyboardEvent<HTMLDivElement>) => {
     if (eventCaret.key === "Enter" || eventCaret.key === " ") {
@@ -46,6 +50,17 @@ const DropdownMenu = (props: IDropdownMenu) => {
     }
   };
 
+  const guardedNavigate = React.useCallback(
+    async (to: string, link?: TLinkItem) => {
+      if (onBeforeNavigate) {
+        const canProceed = await onBeforeNavigate(to, link as TLinkItem);
+        if (!canProceed) return;
+      }
+      navigate(to);
+    },
+    [navigate, onBeforeNavigate],
+  );
+
   const headerAppearance = isOpen || headerActive ? "primary" : "dark";
   const headerWeight = isOpen || headerActive ? "bold" : "normal";
   const controlsId = React.useId();
@@ -61,7 +76,15 @@ const DropdownMenu = (props: IDropdownMenu) => {
           onKeyDown={handleCaretKeyInsideLink}
         >
           {headerPath ? (
-            <StyledHeaderTitleLink to={headerPath}>
+            <StyledHeaderTitleLink to={headerPath} onClick={async (e: { preventDefault: () => void; stopPropagation: () => void; }) => {
+              e.preventDefault();
+              e.stopPropagation();
+              await guardedNavigate(headerPath, {
+                id: headerPath,
+                path: headerPath,
+                label: title,
+              } as TLinkItem);
+            }}>
               <BorderStack
                 alignItems="center"
                 borderRadius="8px"
@@ -141,7 +164,11 @@ const DropdownMenu = (props: IDropdownMenu) => {
             {links.map((item) => {
               const isActive = item.id === activeId;
               return (
-                <StyledItemLink key={item.id} to={item.path}>
+                <StyledItemLink key={item.id} to={item.path} onClick={async (e: React.MouseEvent) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  await guardedNavigate(item.path, item);
+                }}>
                   <StyledMenuItem $active={isActive}>
                     <Stack
                       alignItems="center"

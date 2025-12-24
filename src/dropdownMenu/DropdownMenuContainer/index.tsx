@@ -8,7 +8,7 @@ import { Stack } from "@inubekit/inubekit";
 import { findActiveGroupId } from "../utils/findActiveGroupId";
 
 const DropdownMenuContainer = (props: IDropdownMenuContainer) => {
-  const { collapseOnNavigate = false, defaultOpenId = null, groups } = props;
+  const { collapseOnNavigate = false, defaultOpenId = null, groups, onBeforeNavigate, } = props;
 
   const location = useLocation();
   const [openId, setOpenId] = React.useState<string | null>(defaultOpenId);
@@ -62,6 +62,7 @@ const DropdownMenuContainer = (props: IDropdownMenuContainer) => {
               setOpenId((prev) => (prev === group.id ? null : group.id))
             }
             title={group.title}
+            onBeforeNavigate={onBeforeNavigate}
           />
         ))}
       </Stack>
