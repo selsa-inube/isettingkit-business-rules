@@ -5,7 +5,8 @@ import {
   IStackJustifyContent,
   IStackWrapControl,
 } from "@inubekit/inubekit";
-import { IAppearenceBoxContainer } from "@ptypes/IAppearenceBoxContainer";
+import { IAppearenceBoxContainer } from "../IAppearenceBoxContainer";
+
 
 interface IBoxContainer {
   children: React.ReactNode;
