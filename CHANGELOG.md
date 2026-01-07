@@ -1,3 +1,16 @@
+# v2.2.16 (Wed Jan 07 2026)
+
+#### ⚠️ Pushed to `main`
+
+- fix: update in order to add the missing interfaces ([@cmarin001](https://github.com/cmarin001))
+- feat: added verification-component ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.15 (Wed Dec 24 2025)
 
 #### ⚠️ Pushed to `main`
