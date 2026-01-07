@@ -33,6 +33,9 @@ export { groupsRecordToArrayNew } from "./businessRulesNew/helper/utils/groupsRe
 
 export { translateText } from "./translator/translateText";
 export { translateObject } from "./translator/translateObject";
+
+export { Verification } from "./verification/engine";
+
 export type { IBusinessRuleCard } from "./businessRules/types/Cards/BusinessRuleCard/IBusinessRuleCard";
 export type { IBusinessRuleView } from "./businessRules/types/BusinessRuleView";
 export type { ICheckpickerField } from "./filter/types/ICheckpickerField";
@@ -50,3 +53,10 @@ export type { IClientLabel } from "./dragAndDropBoxes/types/IClientLabel";
 export type { IDragAndDropColumn } from "./dragAndDropBoxes/types/IDragAndDropColumn";
 export type { IBackAndNextButton } from "./button/types/IBackAndNextButton";
 export { EValueHowToSetUp } from "./businessRulesNew/enums/EValueHowToSetUp";
+export type { ICondition } from "./verification/engine/types/ICondition";
+export type { IPath } from "./verification/engine/types/IPath";
+export type { TSchemaNode } from "./verification/engine/types/TSchemaNode";
+export type { TRegistry } from "./verification/engine/types/TRegistry";
+export type { IRenderCtx } from "./verification/engine/types/IRenderCtx";
+export type { IStepSchema } from "./verification/engine/types/IStepSchema";
+export type { IVerificationSchema } from "./verification/engine/types/IVerificationSchema";
