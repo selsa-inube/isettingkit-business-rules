@@ -1,3 +1,15 @@
+# v2.2.17 (Thu Jan 08 2026)
+
+#### ⚠️ Pushed to `main`
+
+- fix: update verification-component in order to support objects ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.16 (Wed Jan 07 2026)
 
 #### ⚠️ Pushed to `main`
