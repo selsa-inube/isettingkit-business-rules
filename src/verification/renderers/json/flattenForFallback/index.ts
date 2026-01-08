@@ -9,6 +9,7 @@ import { joinPath } from "../../../../verification/engine/utils/joinPath";
  * - Skips wrapper keys like "values".
  * - Arrays become a single comma-separated value (no indexes).
  * - Stops recursion on circular refs.
+ * - Skips empty primitive values ("" / null / undefined) for inner fields.
  */
 function flattenForFallback(
   value: unknown,
@@ -23,68 +24,75 @@ function flattenForFallback(
   const items: IFlattenItem[] = [];
   const seen = new WeakSet<object>();
 
+  function pushLeaf(path: string, leafValue: unknown) {
+    items.push({
+      id: path || "value",
+      label: toTitle(path || "value"),
+      value: leafValue,
+    });
+  }
+
+  function isEmptyPrimitive(v: unknown) {
+    return v === "" || v === null || v === undefined;
+  }
+
   function walk(node: unknown, basePath: string, depth: number) {
     if (depth > maxDepth) {
-      items.push({
-        id: basePath || "value",
-        label: toTitle(basePath || "value"),
-        value: node,
-      });
+      pushLeaf(basePath, "[MaxDepth]");
       return;
     }
 
-    if (node === null || node === undefined) {
-      items.push({
-        id: basePath || "value",
-        label: toTitle(basePath || "value"),
-        value: node,
-      });
+    if ((node === null || node === undefined) && !basePath) {
+      pushLeaf(basePath, node);
+      return;
+    }
+
+    if (basePath && isEmptyPrimitive(node)) {
       return;
     }
 
     if (Array.isArray(node)) {
-      items.push({
-        id: basePath || "value",
-        label: toTitle(basePath || "value"),
-        value: safeArrayToText(node),
-      });
+      if (node.length === 0) return; 
+
+      const text = safeArrayToText(node);
+      if (!text) return; 
+
+      pushLeaf(basePath, text);
       return;
     }
 
     if (isRecord(node)) {
       if (seen.has(node)) {
-        items.push({
-          id: basePath || "value",
-          label: toTitle(basePath || "value"),
-          value: "[Circular]",
-        });
+        pushLeaf(basePath, "[Circular]");
         return;
       }
       seen.add(node);
 
       const entries = Object.entries(node);
 
+      if (entries.length === 0) {
+        if (!basePath) {
+          pushLeaf(basePath, "");
+        }
+        return;
+      }
+
       for (const [k, v] of entries) {
+        if (!isRecord(v) && !Array.isArray(v) && isEmptyPrimitive(v)) {
+          continue;
+        }
+
         const nextPath = skipKeys.has(k) ? basePath : joinPath(basePath, k);
 
         if (isRecord(v) || Array.isArray(v)) {
           walk(v, nextPath, depth + 1);
         } else {
-          items.push({
-            id: nextPath || k,
-            label: toTitle(nextPath || k),
-            value: v,
-          });
+          pushLeaf(nextPath || k, v);
         }
       }
       return;
     }
-
-    items.push({
-      id: basePath || "value",
-      label: toTitle(basePath || "value"),
-      value: node,
-    });
+    pushLeaf(basePath, node);
   }
 
   walk(value, "", 0);

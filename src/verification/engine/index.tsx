@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Button, Stack } from "@inubekit/inubekit";
 import { MdOutlineArrowBack } from "react-icons/md";
+
 import { createRegistry } from "./registry/createRegistry";
 import { renderNode } from "./registry/renderNode";
 import { Accordion } from "../../accordions";
@@ -18,9 +19,22 @@ function Verification<TData>(props: IVerificationEngine<TData>) {
 
   const registry = useMemo(() => createRegistry<TData>(renderNode), []);
 
+  const stepsWithContent = computedSchema.steps
+    .map((step) => {
+      const renderedNodes = step.nodes
+        .map((node) => renderNode(node, ctx, registry))
+        .filter((node) => node !== null && node !== undefined && node !== false);
+
+      return {
+        ...step,
+        renderedNodes,
+      };
+    })
+    .filter((step) => step.renderedNodes.length > 0);
+
   return (
     <Stack direction="column" width="100%" gap="24px">
-      {computedSchema.steps.map((step) => (
+      {stepsWithContent.map((step) => (
         <Accordion title={step.name} key={`${step.id}-box`}>
           <Stack
             direction="column"
@@ -29,13 +43,13 @@ function Verification<TData>(props: IVerificationEngine<TData>) {
             gap={isTablet ? "12px" : "16px"}
           >
             <Stack direction="column" width="100%" gap="8px">
-              {step.nodes.map((node) => renderNode(node, ctx, registry))}
+              {step.renderedNodes}
             </Stack>
 
             <Button
               iconBefore={<MdOutlineArrowBack />}
               onClick={() =>
-                step.onBack ? step.onBack({ stepId: step.id }) : onBackStep?.(step.id)
+                step.onBack ? step.onBack({ stepId: step.id }) : onBackStep?.(Number(step.id))
               }
               appearance={EComponentAppearance.DARK}
               variant="none"

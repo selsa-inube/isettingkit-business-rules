@@ -7,6 +7,7 @@ import { rowsAttribute } from "../../../verification/engine/utils/rowsAttribute"
 import { BoxAttribute } from "../../../boxAttributes";
 import { BoxContainer } from "../../../boxContainer";
 import { EComponentAppearance } from "../../../verification/enum/appearances";
+import { isEmptyEntryValue } from "../../../verification/engine/utils/isEmptyEntryValue";
 
 function EntriesGridRenderer<TData, TEntry>(props: IEntriesGridRenderer<TData, TEntry>) {
   const { ctx, node } = props;
@@ -27,14 +28,21 @@ function EntriesGridRenderer<TData, TEntry>(props: IEntriesGridRenderer<TData, T
       autoRows="unset"
       gap="8px 16px"
     >
-      {entries.map((entry: any) => (
-        <BoxAttribute
-          key={node.keyOf(entry)}
-          direction="column"
-          label={node.labelOf(entry)}
-          value={node.valueOf(entry)}
-        />
-      ))}
+      {entries.map((entry: any) => {
+        const value = node.valueOf(entry);
+        if (isEmptyEntryValue(value)) {
+          return null;
+        }
+
+        return (
+          <BoxAttribute
+            key={node.keyOf(entry)}
+            direction="column"
+            label={node.labelOf(entry)}
+            value={value}
+          />
+        );
+      })}
     </Grid>
   );
 

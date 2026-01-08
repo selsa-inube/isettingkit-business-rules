@@ -8,7 +8,7 @@ type Args = {
   data: any;
   isMobile: boolean;
   isTablet: boolean;
-  onBackStep?: (stepId: string) => void;
+  onBackStep?: (stepId: number) => void;
 };
 
 const meta: Meta<typeof VerificationEngine> = {

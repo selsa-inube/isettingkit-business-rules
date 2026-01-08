@@ -4,7 +4,7 @@ interface IVerificationEngine<TData> {
   data: TData;
   isMobile: boolean;
   isTablet: boolean;
-  onBackStep?: (stepId: string) => void;
+  onBackStep?: (stepId: number) => void;
   schema?: IVerificationSchema<TData>;
 }
 

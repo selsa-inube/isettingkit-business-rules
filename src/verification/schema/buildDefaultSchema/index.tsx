@@ -3,8 +3,9 @@ import { TAnyRecord } from "../../../verification/engine/types/TAnyRecord";
 import { IVerificationSchema } from "../../../verification/engine/types/IVerificationSchema";
 import { isRecord } from "../../../verification/engine/utils/isRecord";
 import { safeString } from "../../../verification/engine/utils/safeString";
-import { buildAttributesItemsFromObject } from "../../../verification/engine/utils/buildAttributesItemsFromObject";
+
 import { toTitleSchema } from "../../../verification/engine/utils/toTitleSchema";
+import { buildAttributesItemsFromObject } from "../../../verification/engine/utils/buildAttributesItemsFromObject";
 
 function buildDefaultSchema<TData>(data: TData): IVerificationSchema<TData> {
   if (!isRecord(data) && !Array.isArray(data)) {
@@ -101,6 +102,34 @@ function buildDefaultSchema<TData>(data: TData): IVerificationSchema<TData> {
     }
 
     if (Array.isArray(section)) {
+      const isArrayOfObjects = section.some((e) => isRecord(e));
+
+      if (isArrayOfObjects) {
+        return {
+          id: stepId,
+          name: toTitleSchema(sectionKey),
+          nodes: section.map((entry, idx) => {
+            const obj = entry as TAnyRecord;
+            const keys = Object.keys(obj);
+
+            return {
+              id: `${sectionKey}-item-${idx}`,
+              type: "attributesGrid",
+              layout: {
+                variant: "lightCard",
+                columns: { mobile: "1fr", desktop: "repeat(2, 1fr)" },
+              },
+              items: keys.map((key) => ({
+                id: `${sectionKey}[${idx}].${key}`,
+                label: toTitleSchema(key),
+                value: (d: any) => d?.[sectionKey]?.[idx]?.[key],
+                render: (v: unknown) => safeString(v),
+              })),
+            };
+          }),
+        };
+      }
+
       return {
         id: stepId,
         name: toTitleSchema(sectionKey),
@@ -121,9 +150,68 @@ function buildDefaultSchema<TData>(data: TData): IVerificationSchema<TData> {
     }
 
     if (isRecord(section) && "values" in section) {
-      const values = section.values;
+      const values = (section as any).values;
 
       if (Array.isArray(values)) {
+        const looksLikeLabelValueArray =
+          values.length > 0 &&
+          values.every((e: any) => isRecord(e) && "labelName" in e && "value" in e);
+
+        if (looksLikeLabelValueArray) {
+          return {
+            id: stepId,
+            name: toTitleSchema(sectionKey),
+            nodes: [
+              {
+                id: `${sectionKey}-values`,
+                type: "entriesGrid",
+                layout: { variant: "lightCard" },
+                when: (d: any) =>
+                  Array.isArray(d?.[sectionKey]?.values) &&
+                  d[sectionKey].values.length > 0,
+                entries: `${sectionKey}.values`,
+                keyOf: (e: any, i?: number) =>
+                  e?.businessRuleId ?? e?.id ?? String(i ?? Math.random()),
+                labelOf: (e: any) => e?.decisionId ?? e?.labelName ?? "",
+                valueOf: (e: any) => {
+                  if ("labelName" in (e ?? {}) && "value" in (e ?? {})) {
+                    return `${String(e.labelName)}: ${safeString(e.value)}`;
+                  }
+                  return safeString(e);
+                },
+              } as any,
+            ],
+          };
+        }
+
+        const isArrayOfObjects = values.some((e) => isRecord(e));
+
+        if (isArrayOfObjects) {
+          return {
+            id: stepId,
+            name: toTitleSchema(sectionKey),
+            nodes: values.map((entry: any, idx: number) => {
+              const obj = entry as TAnyRecord;
+              const keys = Object.keys(obj);
+
+              return {
+                id: `${sectionKey}-values-item-${idx}`,
+                type: "attributesGrid",
+                layout: {
+                  variant: "lightCard",
+                  columns: { mobile: "1fr", desktop: "repeat(2, 1fr)" },
+                },
+                items: keys.map((key) => ({
+                  id: `${sectionKey}.values[${idx}].${key}`,
+                  label: toTitleSchema(key),
+                  value: (d: any) => d?.[sectionKey]?.values?.[idx]?.[key],
+                  render: (v: unknown) => safeString(v),
+                })),
+              };
+            }),
+          };
+        }
+
         return {
           id: stepId,
           name: toTitleSchema(sectionKey),
@@ -133,17 +221,12 @@ function buildDefaultSchema<TData>(data: TData): IVerificationSchema<TData> {
               type: "entriesGrid",
               layout: { variant: "lightCard" },
               when: (d: any) =>
-                Array.isArray(d?.[sectionKey]?.values) && d[sectionKey].values.length > 0,
+                Array.isArray(d?.[sectionKey]?.values) &&
+                d[sectionKey].values.length > 0,
               entries: `${sectionKey}.values`,
-              keyOf: (e: any, i?: number) =>
-                e?.businessRuleId ?? e?.id ?? String(i ?? Math.random()),
-              labelOf: (e: any) => e?.decisionId ?? e?.labelName ?? "",
-              valueOf: (e: any) => {
-                if ("labelName" in (e ?? {}) && "value" in (e ?? {})) {
-                  return `${String(e.labelName)}: ${safeString(e.value)}`;
-                }
-                return safeString(e);
-              },
+              keyOf: (_e: any, i?: number) => String(i ?? Math.random()),
+              labelOf: (_e: any, i?: number) => `Item ${i ?? ""}`,
+              valueOf: (e: any) => safeString(e),
             } as any,
           ],
         };
@@ -162,7 +245,10 @@ function buildDefaultSchema<TData>(data: TData): IVerificationSchema<TData> {
                 variant: "none",
               },
               when: (d: any) => Boolean(d?.[sectionKey]?.values),
-              items: buildAttributesItemsFromObject(`${sectionKey}.values`, values),
+              items: buildAttributesItemsFromObject(
+                `${sectionKey}.values`,
+                values as TAnyRecord,
+              ),
             },
           ],
         };
@@ -205,23 +291,23 @@ function buildDefaultSchema<TData>(data: TData): IVerificationSchema<TData> {
             variant: "none",
           },
           when: (d: any) => Boolean(d?.[sectionKey]),
-          items: buildAttributesItemsFromObject(sectionKey, section),
+          items: buildAttributesItemsFromObject(sectionKey, section as TAnyRecord),
         },
       ],
     };
   });
 
-  steps.push({
-    id: String(steps.length + 1),
-    name: "JSON (fallback)",
-    nodes: [
-      {
-        id: "json-fallback",
-        type: "json",
-        value: () => data,
-      },
-    ],
-  });
+  // steps.push({
+  //   id: String(steps.length + 1),
+  //   name: "JSON (fallback)",
+  //   nodes: [
+  //     {
+  //       id: "json-fallback",
+  //       type: "json",
+  //       value: () => data,
+  //     },
+  //   ],
+  // });
 
   return { steps } as IVerificationSchema<TData>;
 }
