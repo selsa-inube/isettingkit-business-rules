@@ -1,3 +1,15 @@
+# v2.2.18 (Sat Jan 10 2026)
+
+#### ⚠️ Pushed to `main`
+
+- feat: extened functionality in order to support custom values and custom handle for edits ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.17 (Thu Jan 08 2026)
 
 #### ⚠️ Pushed to `main`
