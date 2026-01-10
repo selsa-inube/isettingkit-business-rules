@@ -16,6 +16,8 @@ import { groupsRecordToArrayNew } from "../helper/utils/groupsRecordToArray";
 import { getConditionsByGroupNew } from "../helper/utils/getConditionsByGroup";
 import { Checkpicker } from "@isettingkit/input";
 
+type EditionMode = "classic" | "versioned";
+
 interface IBusinessRulesNewController {
   language?: "es" | "en";
   cardTitle?: boolean;
@@ -23,6 +25,7 @@ interface IBusinessRulesNewController {
   customMessageEmptyDecisions?: string;
   customTitleContentAddCard?: string;
   decisionTemplate: IRuleDecision;
+  editionMode?: EditionMode;
   initialDecisions: IRuleDecision[];
   loading?: boolean;
   terms?: boolean;
@@ -82,7 +85,8 @@ const BusinessRulesNewController = ({
   language,
   loading = false,
   textValues,
-  shouldRenderEmptyMessage
+  shouldRenderEmptyMessage,
+  editionMode = "versioned",
 }: IBusinessRulesNewController) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editAsNew, setEditAsNew] = useState(false);
@@ -197,10 +201,12 @@ const BusinessRulesNewController = ({
     if (decision) {
       const businessRuleId = (decision as any).businessRuleId;
       const decisionId = (decision as any).decisionId;
+
       setSourceDecisionMeta({ businessRuleId, decisionId });
 
       const csv = csvFromDecisionConditions(decision);
       setSelectedConditionsCSV(csv);
+
       const normalized = deepClone(normalizeDecisionToNewShape(decision));
 
       const mappedRecord = mapByGroupNew(
@@ -222,17 +228,23 @@ const BusinessRulesNewController = ({
         conditionGroups: groupsRecordToArrayNew(mappedRecord),
       } as IRuleDecision;
 
+      if (editionMode === "versioned") {
+        delete (draft as any).businessRuleId;
+        delete (draft as any).decisionId;
+        (draft as any).effectiveFrom = "";
+        (draft as any).validUntil = "";
+        setSelectedDecision(draft);
+        setEditAsNew(true);
+      } else {
 
-      delete (draft as any).businessRuleId;
-      delete (draft as any).decisionId;
-      (draft as any).effectiveFrom = "";
-      (draft as any).validUntil = "";
+        setSelectedDecision(draft);
+        setEditAsNew(false);
+      }
 
-      setSelectedDecision(draft);
-      setEditAsNew(true);
       setIsModalOpen(true);
       return;
     }
+
 
     setEditAsNew(false);
     setSourceDecisionMeta(null);
@@ -259,7 +271,6 @@ const BusinessRulesNewController = ({
           ...dataDecision,
           decisionId: `Decisión ${decisions.length + 1}`,
         };
-
 
     const tplGroups = getConditionsByGroupNew(localizedTemplate) as Record<
       string,
@@ -312,6 +323,7 @@ const BusinessRulesNewController = ({
       value: base.value,
       conditionsThatEstablishesTheDecision: conditionsRecord as any,
       conditionGroups: groupsRecordToArrayNew(mergedGroupsRecord),
+      i18nValue: 'asd'
     };
 
     console.log("decisionWithSentences: ", decisionWithSentences);
@@ -321,7 +333,7 @@ const BusinessRulesNewController = ({
 
     setDecisions((prev) => {
       const baseList =
-        editAsNew && sourceDecisionMeta
+        editionMode === "versioned" && editAsNew && sourceDecisionMeta
           ? prev.map((d) => {
               const sameByBusinessRule =
                 sourceDecisionMeta.businessRuleId &&
@@ -355,6 +367,7 @@ const BusinessRulesNewController = ({
         });
       }
 
+
       return [...baseList, decisionWithSentences];
     });
 
@@ -367,36 +380,36 @@ const BusinessRulesNewController = ({
     setDecisions((prev) => prev.filter((d) => d.decisionId !== id));
   };
 
-const filteredDecisionTemplate = useMemo(() => {
-  const tpl = sortDisplayDataSampleSwitchPlaces({
-    decisionTemplate: deepClone(localizedTemplate),
-  });
+  const filteredDecisionTemplate = useMemo(() => {
+    const tpl = sortDisplayDataSampleSwitchPlaces({
+      decisionTemplate: deepClone(localizedTemplate),
+    });
 
-  const groupsRecord =
-    getConditionsByGroupNew(tpl) || ({} as Record<string, any[]>);
+    const groupsRecord =
+      getConditionsByGroupNew(tpl) || ({} as Record<string, any[]>);
 
-  const filteredRecord = Object.fromEntries(
-    Object.entries(groupsRecord).map(([group, list]) => [
-      group,
-      (list as any[]).filter((c) => {
-        const oname = originalName(c.conditionName);
+    const filteredRecord = Object.fromEntries(
+      Object.entries(groupsRecord).map(([group, list]) => [
+        group,
+        (list as any[]).filter((c) => {
+          const oname = originalName(c.conditionName);
 
-        const passesSelected = selectedIds.size > 0 && selectedIds.has(oname);
-        const notRemoved = !removedConditionNames.has(oname);
-        return passesSelected && notRemoved;
-      }),
-    ]),
-  );
+          const passesSelected = selectedIds.size > 0 && selectedIds.has(oname);
+          const notRemoved = !removedConditionNames.has(oname);
+          return passesSelected && notRemoved;
+        }),
+      ]),
+    );
 
-  const withFiltered = {
-    ...tpl,
-    labelName: localizeLabel(tpl, language),
-    conditionGroups: groupsRecordToArrayNew(filteredRecord),
-  };
-  delete (withFiltered as any).conditionsThatEstablishesTheDecision;
+    const withFiltered = {
+      ...tpl,
+      labelName: localizeLabel(tpl, language),
+      conditionGroups: groupsRecordToArrayNew(filteredRecord),
+    };
+    delete (withFiltered as any).conditionsThatEstablishesTheDecision;
 
-  return withFiltered as any;
-}, [localizedTemplate, language, selectedIds, removedConditionNames]);
+    return withFiltered as any;
+  }, [localizedTemplate, language, selectedIds, removedConditionNames]);
 
   return (
     <Stack direction="column" gap="24px">
@@ -429,28 +442,30 @@ const filteredDecisionTemplate = useMemo(() => {
         </Button>
       </Stack>
 
-  {/* {selectedConditionsCSV.length > 0 ? ( */}
-        <BusinessRulesNew
-          baseDecisionTemplate={localizedTemplate}
-          cardTitle={cardTitle}
-          controls={controls}
-          customMessageEmptyDecisions={customMessageEmptyDecisions}
-          customTitleContentAddCard={customTitleContentAddCard}
-          decisionTemplate={filteredDecisionTemplate as any}
-          decisions={sortDisplayDataSwitchPlaces({ decisions })}
-          handleCloseModal={handleCloseModal}
-          handleDelete={handleDelete}
-          handleOpenModal={handleOpenModal}
-          handleSubmitForm={handleSubmitForm}
-          isModalOpen={isModalOpen}
-          loading={loading}
-          onRemoveCondition={handleRemoveCondition}
-          onRestoreConditions={handleRestoreConditions}
-          selectedDecision={selectedDecision}
-          textValues={textValues}
-          shouldRenderEmptyMessage={shouldRenderEmptyMessage}
-        />
-    {/* ) : (
+      {/* {selectedConditionsCSV.length > 0 ? ( */}
+      <BusinessRulesNew
+        baseDecisionTemplate={localizedTemplate}
+        cardTitle={cardTitle}
+        controls={controls}
+        customMessageEmptyDecisions={customMessageEmptyDecisions}
+        customTitleContentAddCard={customTitleContentAddCard}
+        decisionTemplate={filteredDecisionTemplate as any}
+        decisions={sortDisplayDataSwitchPlaces({ decisions })}
+        editionMode={editionMode}
+        handleCloseModal={handleCloseModal}
+        handleDelete={handleDelete}
+        handleOpenModal={handleOpenModal}
+        handleSubmitForm={handleSubmitForm}
+        isModalOpen={isModalOpen}
+        loading={loading}
+        onRemoveCondition={handleRemoveCondition}
+        onRestoreConditions={handleRestoreConditions}
+        selectedDecision={selectedDecision}
+        textValues={textValues}
+        shouldRenderEmptyMessage={shouldRenderEmptyMessage}
+        
+      />
+      {/* ) : (
         <Fieldset legend="Decisiones">
           <Stack
             alignItems="center"

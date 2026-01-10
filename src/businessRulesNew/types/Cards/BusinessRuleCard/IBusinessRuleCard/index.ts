@@ -4,6 +4,7 @@ interface IBusinessRuleCard {
   handleDelete: (id: string) => void;
   handleView: (id: string) => void;
   id: string;
+  editionMode?: "classic" | "versioned";
 }
 
 export type { IBusinessRuleCard };

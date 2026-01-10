@@ -12,6 +12,7 @@ interface IGetBusinessRulesLayout {
   textValues: IRulesFormTextValues;
   isOpenFor?: (index: number) => boolean;
   toggleAt?: (index: number) => void;
+  editionMode?: "classic" | "versioned";
 }
 
 export type { IGetBusinessRulesLayout };

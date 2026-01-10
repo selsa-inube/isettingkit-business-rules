@@ -30,6 +30,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
     onEdit,
     onDelete,
     controls = true,
+    editionMode = "versioned",
   } = props;
 
   const hasEffectiveFrom = Boolean(decision?.effectiveFrom);
@@ -37,57 +38,62 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
   const effectiveFromRenderer = hasEffectiveFrom
     ? {
-        element: {
-          labelName: textValues?.effectiveFrom,
-          value: formatDateEsShort(decision!.effectiveFrom),
-          howToSetTheDecision: ValueHowToSetUp.EQUAL,
-          decisionDataType: ValueDataType.DATE,
-        },
-        valueData: strategyFactoryHandlerManagerNew({
-          labelName: textValues?.effectiveFrom,
-          value: formatDateEsShort(decision!.effectiveFrom),
-          howToSetTheDecision: ValueHowToSetUp.EQUAL,
-          decisionDataType: ValueDataType.DATE,
-        }),
-      }
+      element: {
+        labelName: textValues?.effectiveFrom,
+        value: formatDateEsShort(decision!.effectiveFrom),
+        howToSetTheDecision: ValueHowToSetUp.EQUAL,
+        decisionDataType: ValueDataType.DATE,
+      },
+      valueData: strategyFactoryHandlerManagerNew({
+        labelName: textValues?.effectiveFrom,
+        value: formatDateEsShort(decision!.effectiveFrom),
+        howToSetTheDecision: ValueHowToSetUp.EQUAL,
+        decisionDataType: ValueDataType.DATE,
+      }),
+    }
     : null;
 
   const validUntilRenderer = hasValidUntil
     ? {
-        element: {
-          labelName: textValues?.validUntil,
-          value: formatDateEsShort(decision!.validUntil),
-          howToSetTheDecision: ValueHowToSetUp.EQUAL,
-          decisionDataType: ValueDataType.DATE,
-        },
-        valueData: strategyFactoryHandlerManagerNew({
-          labelName: textValues?.validUntil,
-          value: formatDateEsShort(decision!.validUntil),
-          howToSetTheDecision: ValueHowToSetUp.EQUAL,
-          decisionDataType: ValueDataType.DATE,
-        }),
-      }
+      element: {
+        labelName: textValues?.validUntil,
+        value: formatDateEsShort(decision!.validUntil),
+        howToSetTheDecision: ValueHowToSetUp.EQUAL,
+        decisionDataType: ValueDataType.DATE,
+      },
+      valueData: strategyFactoryHandlerManagerNew({
+        labelName: textValues?.validUntil,
+        value: formatDateEsShort(decision!.validUntil),
+        howToSetTheDecision: ValueHowToSetUp.EQUAL,
+        decisionDataType: ValueDataType.DATE,
+      }),
+    }
     : null;
 
+
   const resolvedHowToSet =
-  decision?.howToSetTheDecision || ValueHowToSetUp.EQUAL;
+    decision?.howToSetTheDecision || ValueHowToSetUp.EQUAL;
 
-const mappedDecisionValue =
-  decision &&
-  (resolvedHowToSet === ValueHowToSetUp.LIST_OF_VALUES ||
-    resolvedHowToSet === ValueHowToSetUp.LIST_OF_VALUES_MULTI)
-    ? buildListOfValuesValue(decision as IRuleDecision).list
-    : strategyFactoryHandlerManagerNew(decision as IRuleDecision);
+  const isListOfValues =
+    resolvedHowToSet === ValueHowToSetUp.LIST_OF_VALUES ||
+    resolvedHowToSet === ValueHowToSetUp.LIST_OF_VALUES_MULTI;
 
+  const mappedDecisionValue =
+    decision &&
+    (isListOfValues
+      ? buildListOfValuesValue(decision as IRuleDecision).list
+      :
+      ((decision as any).i18nValue ??
+        strategyFactoryHandlerManagerNew(decision as IRuleDecision)));
   const decisionMapper: Partial<IRuleDecision> | null = decision
     ? {
-        labelName: cardTitle ? decision.labelName || "" : "",
-        decisionDataType:
-          decision.decisionDataType || ValueDataType.ALPHABETICAL,
-        value: mappedDecisionValue,
-        howToSetTheDecision: resolvedHowToSet,
-        validUntil: decision.validUntil,
-      }
+      labelName: cardTitle ? decision.labelName || "" : "",
+      decisionDataType:
+        decision.decisionDataType || ValueDataType.ALPHABETICAL,
+      value: mappedDecisionValue,
+      howToSetTheDecision: ((decision as any).i18nValue ? ValueHowToSetUp.EQUAL : resolvedHowToSet),
+      validUntil: decision.validUntil,
+    }
     : null;
 
   const rawByGroup = React.useMemo(
@@ -254,6 +260,7 @@ const mappedDecisionValue =
       onTabChange={handleTabChange}
       currentConditions={currentConditions}
       hasMultipleGroups={hasMultipleGroups}
+      editionMode={editionMode}
     />
   );
 };

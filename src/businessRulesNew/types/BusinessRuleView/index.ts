@@ -12,6 +12,7 @@ interface IBusinessRuleView {
   onToggle?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
+  editionMode?: "classic" | "versioned";
 }
 
 export type { IBusinessRuleView };

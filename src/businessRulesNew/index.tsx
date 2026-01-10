@@ -25,6 +25,7 @@ const BusinessRulesNew = (props: IBusinessRules) => {
     decisions,
     textValues,
     decisionTemplate,
+    editionMode,
     isModalOpen,
     selectedDecision,
     loading,
@@ -53,6 +54,7 @@ const BusinessRulesNew = (props: IBusinessRules) => {
     textValues,
     isOpenFor: (i: number) => openIndex === i,
     toggleAt: (i: number) => setOpenIndex((prev) => (prev === i ? null : i)),
+    editionMode,
   });
 
   const shouldRenderAddCardEmpty = decisions?.length === 0 && !loading;
@@ -126,6 +128,7 @@ const BusinessRulesNew = (props: IBusinessRules) => {
                       textValues,
                       shouldRenderEmptyMessage,
                       terms,
+                      editionMode
                     })}
                 </Grid>
               )

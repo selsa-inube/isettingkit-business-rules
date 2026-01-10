@@ -41,6 +41,7 @@ interface IBusinessRuleViewUI {
   onTabChange?: (id: string) => void;
   currentConditions?: any[];
   hasMultipleGroups?: boolean;
+  editionMode?: "classic" | "versioned";
 }
 
 export type { IBusinessRuleViewUI };

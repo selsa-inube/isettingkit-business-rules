@@ -7,6 +7,7 @@ interface IBusinessRules {
   customTitleContentAddCard?: string;
   customMessageEmptyDecisions?: string;
   decisions?: IRuleDecision[];
+  editionMode?: "classic" | "versioned";
   textValues: IRulesFormTextValues;
   decisionTemplate: IRuleDecision;
   isModalOpen: boolean;

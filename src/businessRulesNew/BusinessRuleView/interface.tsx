@@ -51,8 +51,9 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
     onTabChange,
     currentConditions,
     hasMultipleGroups,
+    editionMode = "versioned",
   } = props;
-
+  
   if (loading) {
     return (
       <Stack direction="column" gap="16px">
@@ -80,6 +81,7 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
                     ) as IDecisionViewConditionRenderer["valueData"]
                   }
                   type="decision"
+                  editionMode={editionMode}
                 />
               </StyledDecisionContainer>
             </Stack>
@@ -169,6 +171,7 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
                           condition
                         ) as IDecisionViewConditionRenderer["valueData"]
                       }
+                      editionMode={editionMode}
                     />
                   </BorderStack>
                 ))}
@@ -186,6 +189,7 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
                       valueData={
                         effectiveFromRenderer.valueData as IDecisionViewConditionRenderer["valueData"]
                       }
+                      editionMode={editionMode}
                     />
                   </BorderStack>
                 )}
@@ -203,6 +207,7 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
                       valueData={
                         validUntilRenderer.valueData as IDecisionViewConditionRenderer["valueData"]
                       }
+                      editionMode={editionMode}
                     />
                   </BorderStack>
                 )}

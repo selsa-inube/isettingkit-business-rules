@@ -8,6 +8,7 @@ interface IBusinessRuleView {
   position?: number;
   isOpen?: boolean;
   onToggle?: (isOpen: boolean) => void;
+  editionMode?: "classic" | "versioned";
 }
 
 export type { IBusinessRuleView };

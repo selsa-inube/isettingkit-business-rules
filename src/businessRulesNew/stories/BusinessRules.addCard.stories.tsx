@@ -24,6 +24,7 @@ const sampleDecisions: any[] = [
     labelName: "Tasa Efectiva Anual",
     decisionDataType: ValueDataType.NUMBER,
     value: { from: 4, to: 8 },
+    i18nValue: 'This is a test',
     howToSetTheDecision: EValueHowToSetUp.RANGE,
     effectiveFrom: "2024-12-31",
     validUntil: "2025-11-11",
@@ -691,6 +692,7 @@ addCard.args = {
   controls: true,
   customMessageEmptyDecisions: "Aún NO tienes definidas Líneas de crédito",
   customTitleContentAddCard: "Agregar línea de crédito",
+  editionMode: "versioned",
   initialDecisions: sampleDecisions,
   decisionTemplate,
   textValues: {
