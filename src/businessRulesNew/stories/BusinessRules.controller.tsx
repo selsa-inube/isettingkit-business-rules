@@ -135,12 +135,41 @@ const BusinessRulesNewController = ({
   const [removedConditionNames, setRemovedConditionNames] =
     useState<Set<string>>(new Set());
 
-  const handleRemoveCondition = (conditionName: string) => {
-    const key = originalName(conditionName);
+  const handleRemoveCondition = (scopedConditionName: string) => {
+    const [groupKey, ...rest] = scopedConditionName.split(".");
+    const plainName = rest.join(".");
+    const key = originalName(plainName);
+
     setRemovedConditionNames((prev) => {
       const next = new Set(prev);
       next.add(key);
       return next;
+    });
+
+    setSelectedDecision((prev) => {
+      if (!prev) return prev;
+
+      const groups = getConditionsByGroupNew(prev) || {};
+
+      const updatedGroupsRecord = Object.fromEntries(
+        Object.entries(groups).map(([g, list]) => {
+          if (g !== groupKey) return [g, list];
+
+          return [
+            g,
+            (list as any[]).filter(
+              (c) => originalName(c.conditionName) !== key,
+            ),
+          ];
+        }),
+      );
+
+      const nextDecision: IRuleDecision = {
+        ...prev,
+        conditionGroups: groupsRecordToArrayNew(updatedGroupsRecord) as any,
+      };
+
+      return nextDecision;
     });
   };
 
@@ -267,10 +296,10 @@ const BusinessRulesNewController = ({
     const base = isEditing
       ? { ...selectedDecision, ...dataDecision }
       : {
-          ...localizedTemplate,
-          ...dataDecision,
-          decisionId: `Decisión ${decisions.length + 1}`,
-        };
+        ...localizedTemplate,
+        ...dataDecision,
+        decisionId: `Decisión ${decisions.length + 1}`,
+      };
 
     const tplGroups = getConditionsByGroupNew(localizedTemplate) as Record<
       string,
@@ -323,7 +352,7 @@ const BusinessRulesNewController = ({
       value: base.value,
       conditionsThatEstablishesTheDecision: conditionsRecord as any,
       conditionGroups: groupsRecordToArrayNew(mergedGroupsRecord),
-      i18nValue: 'asd'
+      // i18nValue: 'asd'
     };
 
     console.log("decisionWithSentences: ", decisionWithSentences);
@@ -335,21 +364,21 @@ const BusinessRulesNewController = ({
       const baseList =
         editionMode === "versioned" && editAsNew && sourceDecisionMeta
           ? prev.map((d) => {
-              const sameByBusinessRule =
-                sourceDecisionMeta.businessRuleId &&
-                d.businessRuleId === sourceDecisionMeta.businessRuleId;
-              const sameByDecisionId =
-                sourceDecisionMeta.decisionId &&
-                d.decisionId === sourceDecisionMeta.decisionId;
+            const sameByBusinessRule =
+              sourceDecisionMeta.businessRuleId &&
+              d.businessRuleId === sourceDecisionMeta.businessRuleId;
+            const sameByDecisionId =
+              sourceDecisionMeta.decisionId &&
+              d.decisionId === sourceDecisionMeta.decisionId;
 
-              if (sameByBusinessRule || sameByDecisionId) {
-                return {
-                  ...d,
-                  validUntil: today,
-                };
-              }
-              return d;
-            })
+            if (sameByBusinessRule || sameByDecisionId) {
+              return {
+                ...d,
+                validUntil: today,
+              };
+            }
+            return d;
+          })
           : prev;
 
       if (isEditing) {
@@ -374,7 +403,7 @@ const BusinessRulesNewController = ({
     handleCloseModal();
   };
 
-  useEffect(() => {}, [decisions]);
+  useEffect(() => { }, [decisions]);
 
   const handleDelete = (id: string) => {
     setDecisions((prev) => prev.filter((d) => d.decisionId !== id));
@@ -463,7 +492,7 @@ const BusinessRulesNewController = ({
         selectedDecision={selectedDecision}
         textValues={textValues}
         shouldRenderEmptyMessage={shouldRenderEmptyMessage}
-        
+
       />
       {/* ) : (
         <Fieldset legend="Decisiones">

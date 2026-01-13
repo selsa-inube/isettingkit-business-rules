@@ -111,24 +111,31 @@ function useRulesFormUtils({
     ruleName: string().required("El nombre de la decision es requerido"),
 
     value: lazy(() => {
-  const how = formik.values.howToSetTheDecision as any;
+      const how = formik.values.howToSetTheDecision as any;
 
-  if (how === EValueHowToSetUp.RANGE && hasDecisionOptions(decision)) {
-    return rangeOptionSchema;
-  }
+      if (how === EValueHowToSetUp.RANGE && hasDecisionOptions(decision)) {
+        return rangeOptionSchema;
+      }
 
-  if (hasDecisionOptions(decision)) {
-    return requiredOptionSchema;
-  }
+      if (hasDecisionOptions(decision)) {
+        return requiredOptionSchema;
+      }
 
-  const strategy = strategyFormFactoryHandlerManager(how);
-  return strategy(
-    formik.values.value as any,
-    formik.values.decisionDataType,
-  ).schema;
+      const strategy = strategyFormFactoryHandlerManager(how);
+
+      return strategy(
+        formik.values.value as any,
+        formik.values.decisionDataType,
+      ).schema;
     }),
 
     conditionsThatEstablishesTheDecision: lazy((_value, { parent }) => {
+      const grouped = getConditionsByGroupNew(decision) || {};
+      const hasAnyConditionGroups = Object.keys(grouped).length > 0;
+      if (!hasAnyConditionGroups) {
+        return object().shape({});
+      }
+
       const haveAnyGroupKeys =
         parent &&
         parent.conditionsThatEstablishesTheDecision &&
@@ -144,7 +151,7 @@ function useRulesFormUtils({
         (conditionList as any[]).forEach((condition) => {
           const wrapper =
             parent?.conditionsThatEstablishesTheDecision?.[groupKey]?.[
-              condition.conditionName
+            condition.conditionName
             ];
           const conditionValue = getWrapperValue(wrapper);
 
@@ -178,6 +185,7 @@ function useRulesFormUtils({
         },
       );
     }),
+
   };
 
   if (textValues.terms) {
@@ -190,16 +198,16 @@ function useRulesFormUtils({
         const checkClosed = parent?.checkClosed;
         return checkClosed
           ? schema
-              .required("Se requiere la fecha de vigencia hasta")
-              .test(
-                "is-after-startDate",
-                "La fecha válida para la vigencia hasta debe ser mayor o igual a la fecha de inicio",
-                function (validUntil) {
-                  const effectiveFrom = this.parent.effectiveFrom;
-                  if (!effectiveFrom || !validUntil) return true;
-                  return new Date(validUntil) >= new Date(effectiveFrom);
-                },
-              )
+            .required("Se requiere la fecha de vigencia hasta")
+            .test(
+              "is-after-startDate",
+              "La fecha válida para la vigencia hasta debe ser mayor o igual a la fecha de inicio",
+              function (validUntil) {
+                const effectiveFrom = this.parent.effectiveFrom;
+                if (!effectiveFrom || !validUntil) return true;
+                return new Date(validUntil) >= new Date(effectiveFrom);
+              },
+            )
           : schema.notRequired();
       },
     );
