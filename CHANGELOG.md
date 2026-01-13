@@ -1,3 +1,15 @@
+# v2.2.19 (Tue Jan 13 2026)
+
+#### ⚠️ Pushed to `main`
+
+- fix: adjustment in order to avoid broken form when be no conditions ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.18 (Sat Jan 10 2026)
 
 #### ⚠️ Pushed to `main`
