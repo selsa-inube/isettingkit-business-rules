@@ -24,8 +24,9 @@ const getBusinessRulesLayoutWithGroup = (props: IGetBusinessRulesLayout) => {
           textValues,
         }),
       )
-    : decisions?.map((decision) =>
+    : decisions?.map((decision, index) =>
         renderCardwithGroup({
+          index,
           type: "decision",
           decision,
           controls,

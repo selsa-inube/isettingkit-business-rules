@@ -5,15 +5,19 @@ import { BusinessRuleViewWithGroup } from "../../../businessRulesWithGroup/Busin
 import { BusinessRuleCardWithGroup } from "../../../businessRulesWithGroup/Cards/BusinessRuleCard";
 
 const renderDecisionCard = (props: IRenderCard) => {
-  const { decision, controls, handleOpenModal, handleDelete, textValues } =
+  const { decision, controls, handleOpenModal, handleDelete, textValues, index } =
     props;
   if (!decision) return null;
-
+  const titleDecision =
+    typeof index === "number"
+    ? `Decision ${index + 1}`
+    : decision.decisionId
+  
   return (
     <StyledFadeInStack key={decision.decisionId}>
       <Stack direction="column" gap="4px" width="100%" padding="0 0 12px 0">
         <Text type="title" size="medium" appearance="gray" weight="bold">
-          {decision.decisionId}
+          {titleDecision}
         </Text>
         <BusinessRuleCardWithGroup
           id={decision.decisionId!}
