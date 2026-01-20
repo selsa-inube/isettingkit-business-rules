@@ -1,3 +1,15 @@
+# v2.2.20 (Tue Jan 20 2026)
+
+#### ⚠️ Pushed to `main`
+
+- fix: added fixed id for cards UI only ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.19 (Tue Jan 13 2026)
 
 #### ⚠️ Pushed to `main`
