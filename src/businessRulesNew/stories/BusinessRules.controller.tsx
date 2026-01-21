@@ -136,6 +136,8 @@ const BusinessRulesNewController = ({
     useState<Set<string>>(new Set());
 
   const handleRemoveCondition = (scopedConditionName: string) => {
+    console.log("scopedConditionName: ", scopedConditionName);
+
     const [groupKey, ...rest] = scopedConditionName.split(".");
     const plainName = rest.join(".");
     const key = originalName(plainName);
@@ -149,9 +151,11 @@ const BusinessRulesNewController = ({
     setSelectedDecision((prev) => {
       if (!prev) return prev;
 
+      console.log("setSelectedDecision (before): ", prev);
+
       const groups = getConditionsByGroupNew(prev) || {};
 
-      const updatedGroupsRecord = Object.fromEntries(
+      const updatedGroupedRecord = Object.fromEntries(
         Object.entries(groups).map(([g, list]) => {
           if (g !== groupKey) return [g, list];
 
@@ -166,12 +170,20 @@ const BusinessRulesNewController = ({
 
       const nextDecision: IRuleDecision = {
         ...prev,
-        conditionGroups: groupsRecordToArrayNew(updatedGroupsRecord) as any,
+        conditionGroups: groupsRecordToArrayNew(updatedGroupedRecord) as any,
+        conditionsThatEstablishesTheDecision: updatedGroupedRecord as any,
       };
+
+      console.log(
+        "groupsRecordToArrayNew(updatedGroupsRecord): ",
+        groupsRecordToArrayNew(updatedGroupedRecord),
+      );
+      console.log("setSelectedDecision (after): ", nextDecision);
 
       return nextDecision;
     });
   };
+
 
   const handleRestoreConditions = (names: string[]) => {
     if (!names?.length) return;
@@ -439,7 +451,7 @@ const BusinessRulesNewController = ({
 
     return withFiltered as any;
   }, [localizedTemplate, language, selectedIds, removedConditionNames]);
-
+  console.log('sortDisplayDataSwitchPlaces({ decisions }): ', sortDisplayDataSwitchPlaces({ decisions }));
   return (
     <Stack direction="column" gap="24px">
       <Fieldset legend="Condiciones que determinan las decisiones">

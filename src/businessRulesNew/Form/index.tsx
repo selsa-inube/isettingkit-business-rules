@@ -188,19 +188,17 @@ React.useEffect(() => {
         ),
       ];
 
-      let firstUsed = false;
-
       const entries = ordered.map((g) => {
         const list = visibleConditionsByGroup[g] ?? [];
+
         const decorated = list.map((c: any, idx: number) => {
-          const isFirst = !firstUsed && g === "group-primary" && idx === 0;
-          if (isFirst) firstUsed = true;
+          const isFirstInGroup = idx === 0;
 
           const how = normalizeHowToSet(c.howToSetTheCondition);
           const sentence = buildEsConditionSentence({
             label: c.labelName || "",
             howToSet: how,
-            isFirst,
+            isFirst: isFirstInGroup,
           });
           const unitAfter = c.timeUnit
             ? timeUnitHandle("", c.timeUnit, true).trim()
@@ -238,6 +236,7 @@ React.useEffect(() => {
             value: ensuredVal,
           };
         });
+
         return [g, decorated] as const;
       });
 
