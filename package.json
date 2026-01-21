@@ -10,7 +10,7 @@
   ],
   "description": "",
   "private": false,
-  "version": "2.2.20",
+  "version": "2.2.21",
   "type": "module",
   "exports": {
     ".": {
