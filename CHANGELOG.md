@@ -1,3 +1,15 @@
+# v2.2.21 (Wed Jan 21 2026)
+
+#### ⚠️ Pushed to `main`
+
+- fix: prevent duplicated conditions when mapping/merging condition groups ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.20 (Tue Jan 20 2026)
 
 #### ⚠️ Pushed to `main`
