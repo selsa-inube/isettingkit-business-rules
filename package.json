@@ -38,7 +38,7 @@
   "dependencies": {
     "@formkit/drag-and-drop": "^0.5.3",
     "@inubekit/inubekit": "^6.4.0",
-    "@isettingkit/input": "^1.1.13",
+    "@isettingkit/input": "^1.1.14",
     "@isettingkit/view": "^0.1.39",
     "axios": "^1.9.0",
     "franc-min": "^6.2.0"

@@ -10,7 +10,7 @@ const renderDecisionCard = (props: IRenderCard) => {
   if (!decision) return null;
   const titleDecision =
     typeof index === "number"
-    ? `Decision ${index + 1}`
+    ? `Decisión ${index + 1}`
     : decision.decisionId
   
   return (
