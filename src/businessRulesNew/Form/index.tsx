@@ -74,7 +74,7 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
     return {
       id: tabId,
       label: isPrimary
-        ? "Condición principal" // ✅ always this for the primary group
+        ? "Condición principal"
         : labelForGroup(groupKey, Number(tabId.split("-").at(-1))),
       isDisabled: false,
     };
