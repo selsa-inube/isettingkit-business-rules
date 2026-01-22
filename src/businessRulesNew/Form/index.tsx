@@ -43,39 +43,53 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
   );
 
   const groupKeys = Object.keys(visibleConditionsByGroup);
-  const orderedGroupKeys = [
-    ...groupKeys.filter((key) => key === "group-primary"),
-    ...groupKeys.filter((key) => key !== "group-primary"),
-  ];
+
+  const primaryGroupKey =
+    groupKeys.includes("group-primary") && groupKeys.length > 0
+      ? "group-primary"
+      : groupKeys[0];
+
+  const orderedGroupKeys =
+    primaryGroupKey != null
+      ? [
+          ...groupKeys.filter((key) => key === primaryGroupKey),
+          ...groupKeys.filter((key) => key !== primaryGroupKey),
+        ]
+      : [];
 
   const tabIdByGroup: Record<string, string> = {};
   const groupByTabId: Record<string, string> = {};
 
   let altIndex = 1;
   const tabs: ITab[] = orderedGroupKeys.map((groupKey) => {
-    const tabId =
-      groupKey === "group-primary"
-        ? "mainCondition"
-        : `alternateCondition-${altIndex++}`;
+    const isPrimary = groupKey === primaryGroupKey;
+
+    const tabId = isPrimary
+      ? "mainCondition"
+      : `alternateCondition-${altIndex++}`;
 
     tabIdByGroup[groupKey] = tabId;
     groupByTabId[tabId] = groupKey;
 
     return {
       id: tabId,
-      label:
-        groupKey === "group-primary"
-          ? labelForGroup(groupKey, 0)
-          : labelForGroup(groupKey, Number(tabId.split("-").at(-1))),
+      label: isPrimary
+        ? "Condición principal" // ✅ always this for the primary group
+        : labelForGroup(groupKey, Number(tabId.split("-").at(-1))),
       isDisabled: false,
     };
   });
+
 
   const [activeTab, setActiveTab] = React.useState<string>(
     tabs[0]?.id ?? "mainCondition",
   );
   const handleTabChange = (id: string) => setActiveTab(id);
-  const activeGroupKey = groupByTabId[activeTab] ?? "group-primary";
+
+  const activeGroupKey =
+    groupByTabId[activeTab] ??
+    primaryGroupKey ??
+    "group-primary";
 
   React.useEffect(() => {
     const rec = (formik.values as any)?.conditionsThatEstablishesTheDecision;
@@ -123,70 +137,71 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [decision]);
 
-React.useEffect(() => {
-  const rec = (formik.values as any)?.conditionsThatEstablishesTheDecision;
-  if (!rec || typeof rec !== "object") return;
+  React.useEffect(() => {
+    const rec = (formik.values as any)?.conditionsThatEstablishesTheDecision;
+    if (!rec || typeof rec !== "object") return;
 
-  const metaByGroup: Record<string, any[]> =
-    getConditionsByGroupNew(sourceForGroups);
+    const metaByGroup: Record<string, any[]> =
+      getConditionsByGroupNew(sourceForGroups);
 
-  const conditionGroups = Object.entries(rec).map(
-    ([groupKey, valueRecord]) => {
-      const metaList = metaByGroup[groupKey] || [];
+    const conditionGroups = Object.entries(rec).map(
+      ([groupKey, valueRecord]) => {
+        const metaList = metaByGroup[groupKey] || [];
 
-      const list = Object.keys(valueRecord as any).map((condName) => {
-        const wrapper = (valueRecord as any)[condName];
-        const meta =
-          metaList.find((m: any) => m.conditionName === condName) || {};
+        const list = Object.keys(valueRecord as any).map((condName) => {
+          const wrapper = (valueRecord as any)[condName];
+          const meta =
+            metaList.find((m: any) => m.conditionName === condName) || {};
 
-        const how = normalizeHowToSet(
-          (meta as any).howToSetTheCondition ?? wrapper?.howToSetTheCondition,
-        );
+          const how = normalizeHowToSet(
+            (meta as any).howToSetTheCondition ?? wrapper?.howToSetTheCondition,
+          );
 
-        const fallback = (meta as any).value ?? defaultForHowToSet(how);
+          const fallback = (meta as any).value ?? defaultForHowToSet(how);
 
-        const valueFromWrapper =
-          wrapper && typeof wrapper === "object" && "value" in wrapper
-            ? wrapper.value
-            : wrapper;
+          const valueFromWrapper =
+            wrapper && typeof wrapper === "object" && "value" in wrapper
+              ? wrapper.value
+              : wrapper;
+
+          return {
+            ...meta,
+            ...(typeof wrapper === "object" && !Array.isArray(wrapper)
+              ? wrapper
+              : {}),
+            conditionName: condName,
+            value:
+              valueFromWrapper !== undefined ? valueFromWrapper : fallback,
+          };
+        });
 
         return {
-          ...meta,
-          ...(typeof wrapper === "object" && !Array.isArray(wrapper)
-            ? wrapper
-            : {}),
-          conditionName: condName,
-          value:
-            valueFromWrapper !== undefined ? valueFromWrapper : fallback,
+          ConditionGroupId: groupKey,
+          conditionsThatEstablishesTheDecision: list,
         };
-      });
+      },
+    );
 
-      return {
-        ConditionGroupId: groupKey,
-        conditionsThatEstablishesTheDecision: list,
-      };
-    },
-  );
-
-  const prev = (formik.values as any).conditionGroups;
-  const nextJSON = JSON.stringify(conditionGroups);
-  const prevJSON = JSON.stringify(prev ?? []);
-  if (nextJSON !== prevJSON) {
-    formik.setFieldValue("conditionGroups", conditionGroups, false);
-  }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [formik.values?.conditionsThatEstablishesTheDecision, sourceForGroups]);
+    const prev = (formik.values as any).conditionGroups;
+    const nextJSON = JSON.stringify(conditionGroups);
+    const prevJSON = JSON.stringify(prev ?? []);
+    if (nextJSON !== prevJSON) {
+      formik.setFieldValue("conditionGroups", conditionGroups, false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formik.values?.conditionsThatEstablishesTheDecision, sourceForGroups]);
 
   const visibleConditionsByGroupWithSentences: { [key: string]: any[] } =
     React.useMemo(() => {
-      const ordered = [
-        ...Object.keys(visibleConditionsByGroup).filter(
-          (k) => k === "group-primary",
-        ),
-        ...Object.keys(visibleConditionsByGroup).filter(
-          (k) => k !== "group-primary",
-        ),
-      ];
+      const keys = Object.keys(visibleConditionsByGroup);
+
+      const ordered =
+        primaryGroupKey != null
+          ? [
+              ...keys.filter((k) => k === primaryGroupKey),
+              ...keys.filter((k) => k !== primaryGroupKey),
+            ]
+          : keys;
 
       const entries = ordered.map((g) => {
         const list = visibleConditionsByGroup[g] ?? [];
@@ -241,12 +256,14 @@ React.useEffect(() => {
       });
 
       return Object.fromEntries(entries);
-    }, [visibleConditionsByGroup, formik.values]);
+    }, [visibleConditionsByGroup, formik.values, primaryGroupKey]);
 
   const currentConditions =
     visibleConditionsByGroupWithSentences[activeGroupKey] ?? [];
+
   const visibleConditions =
-    visibleConditionsByGroupWithSentences["group-primary"] ?? [];
+    visibleConditionsByGroupWithSentences[primaryGroupKey ?? "group-primary"] ??
+    [];
 
   const normalizedDecision = {
     decisionDataType: decision.decisionDataType,

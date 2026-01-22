@@ -152,16 +152,24 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
             condition?.value !== undefined &&
             condition?.value !== null && condition?.value !== ""
           ) {
-            newValue = howToSetHandle(
-              condition.value,
-              condition.howToSetTheCondition
-            );
+            if (condition.i18nValue) {
+              newValue = howToSetHandle(
+                condition.i18nValue,
+               condition.i18nValue ? ValueHowToSetUp.EQUAL : condition.howToSetTheCondition
+              );
+            } else {
+              newValue = howToSetHandle(
+                condition.value,
+                condition.howToSetTheCondition
+              );
+            }
           }
 
           return {
             ...condition,
             labelName: newLabel,
             value: newValue,
+            howToSetTheCondition: condition.i18nValue ? ValueHowToSetUp.EQUAL : condition.howToSetTheCondition
           };
         });
       } else {
