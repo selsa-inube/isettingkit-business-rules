@@ -1,3 +1,16 @@
+# v2.2.22 (Thu Jan 22 2026)
+
+#### ⚠️ Pushed to `main`
+
+- fix: remove unnecessary logs ([@cmarin001](https://github.com/cmarin001))
+- fix: ensure first condition group is treated as primary ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.21 (Wed Jan 21 2026)
 
 #### ⚠️ Pushed to `main`
