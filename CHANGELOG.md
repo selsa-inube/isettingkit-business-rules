@@ -1,3 +1,15 @@
+# v2.2.23 (Thu Jan 22 2026)
+
+#### ⚠️ Pushed to `main`
+
+- chore: update input dependencies ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.22 (Thu Jan 22 2026)
 
 #### ⚠️ Pushed to `main`
