@@ -177,7 +177,7 @@ const decisionTemplate: any = {
   decisionDataType: ValueDataType.PERCENTAGE,
   // howToSetTheDecision: EValueHowToSetUp.RANGE,
   // value: "",
-  howToSetTheDecision: EValueHowToSetUp.RANGE,
+  howToSetTheDecision: EValueHowToSetUp.EQUAL,
   // listOfPossibleValues: {
   //   list: [
   //     { id: "value-1", label: "Muy alto", value: "ass" },

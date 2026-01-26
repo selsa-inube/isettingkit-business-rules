@@ -74,6 +74,16 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
   const resolvedHowToSet =
     decision?.howToSetTheDecision || ValueHowToSetUp.EQUAL;
 
+  const isRangeWithSameEnds =
+    resolvedHowToSet === ValueHowToSetUp.RANGE &&
+    decision &&
+    decision.value &&
+    typeof decision.value === "object" &&
+    "from" in (decision.value as any) &&
+    "to" in (decision.value as any) &&
+    (decision.value as any).from === (decision.value as any).to;
+
+
   const isListOfValues =
     resolvedHowToSet === ValueHowToSetUp.LIST_OF_VALUES ||
     resolvedHowToSet === ValueHowToSetUp.LIST_OF_VALUES_MULTI;
@@ -82,16 +92,37 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
     decision &&
     (isListOfValues
       ? buildListOfValuesValue(decision as IRuleDecision).list
-      :
-      ((decision as any).i18nValue ??
-        strategyFactoryHandlerManagerNew(decision as IRuleDecision)));
+      : (() => {
+          const i18nValue = (decision as any).i18nValue as
+            | string
+            | undefined;
+
+          if (isRangeWithSameEnds) {
+            const { from } = decision.value as { from: any; to: any };
+
+            const formattedSingleValue = strategyFactoryHandlerManagerNew({
+              ...(decision as IRuleDecision),
+              howToSetTheDecision: ValueHowToSetUp.EQUAL,
+              value: from,
+            } as IRuleDecision);
+
+            return `Del ${formattedSingleValue}`.trim();
+          }
+
+          return i18nValue ??
+            strategyFactoryHandlerManagerNew(decision as IRuleDecision);
+        })());
+
   const decisionMapper: Partial<IRuleDecision> | null = decision
     ? {
       labelName: cardTitle ? decision.labelName || "" : "",
       decisionDataType:
         decision.decisionDataType || ValueDataType.ALPHABETICAL,
       value: mappedDecisionValue,
-      howToSetTheDecision: ((decision as any).i18nValue ? ValueHowToSetUp.EQUAL : resolvedHowToSet),
+      howToSetTheDecision:
+          (decision as any).i18nValue || isRangeWithSameEnds
+            ? ValueHowToSetUp.EQUAL
+            : resolvedHowToSet,
       validUntil: decision.validUntil,
     }
     : null;
@@ -155,7 +186,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
             if (condition.i18nValue) {
               newValue = howToSetHandle(
                 condition.i18nValue,
-               condition.i18nValue ? ValueHowToSetUp.EQUAL : condition.howToSetTheCondition
+                condition.i18nValue ? ValueHowToSetUp.EQUAL : condition.howToSetTheCondition
               );
             } else {
               newValue = howToSetHandle(
