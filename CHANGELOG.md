@@ -1,3 +1,15 @@
+# v2.2.25 (Mon Jan 26 2026)
+
+#### ⚠️ Pushed to `main`
+
+- fix: allow decimals on percentages ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.24 (Mon Jan 26 2026)
 
 #### ⚠️ Pushed to `main`
