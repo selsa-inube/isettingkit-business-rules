@@ -1,3 +1,15 @@
+# v2.2.24 (Mon Jan 26 2026)
+
+#### ⚠️ Pushed to `main`
+
+- fix: allow same values on range strategy ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.23 (Thu Jan 22 2026)
 
 #### ⚠️ Pushed to `main`
