@@ -1,3 +1,15 @@
+# v2.2.28 (Tue Jan 27 2026)
+
+#### ⚠️ Pushed to `main`
+
+- fix: block form submission when active conditions are not properly filled ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.27 (Tue Jan 27 2026)
 
 #### ⚠️ Pushed to `main`
