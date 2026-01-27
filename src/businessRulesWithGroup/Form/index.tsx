@@ -41,34 +41,38 @@ const RulesFormWithGroup = (props: IRulesForm) => {
       : "valid"
     : undefined;
 
-  const handleConditionToggleChange =
-    (conditionName: string, isMulti: boolean) => (checked: boolean) => {
-      if (!checked) {
-        formik.setFieldValue(
-          `conditionsThatEstablishesTheDecision.${conditionName}`,
-          undefined,
-        );
-        formik.setFieldTouched(
-          `conditionsThatEstablishesTheDecision.${conditionName}`,
-          false,
-          false,
-        );
-        const allConditionsTouched = Object.keys(formik.touched)
-          .filter(key => key.startsWith('conditionsThatEstablishesTheDecision.'))
-          .some(key => formik.touched[key] === true);
-          
-        if (!allConditionsTouched) {
-          handleToggleNoneChange(true);
-        }
-      } else {
-        const defaultValue = isMulti ? [] : "";
-        handleToggleNoneChange(false);
-        formik.setFieldValue(
-          `conditionsThatEstablishesTheDecision.${conditionName}`,
-          defaultValue,
-        );
+const handleConditionToggleChange =
+  (conditionName: string, isMulti: boolean) => (checked: boolean) => {
+    if (!checked) {
+      formik.setFieldValue(
+        `conditionsThatEstablishesTheDecision.${conditionName}`,
+        undefined,
+      );
+      formik.setFieldTouched(
+        `conditionsThatEstablishesTheDecision.${conditionName}`,
+        false,
+        false,
+      );
+
+      const conditions =
+        formik.values.conditionsThatEstablishesTheDecision || {};
+      const hasAnyActive = Object.values(conditions).some(
+        (v) => v !== undefined,
+      );
+
+      if (!hasAnyActive) {
+        handleToggleNoneChange(true);
       }
-    };
+    } else {
+      const defaultValue = isMulti ? [] : "";
+      handleToggleNoneChange(false);
+      formik.setFieldValue(
+        `conditionsThatEstablishesTheDecision.${conditionName}`,
+        defaultValue,
+      );
+    }
+  };
+
   
   return (
     <RulesFormUI

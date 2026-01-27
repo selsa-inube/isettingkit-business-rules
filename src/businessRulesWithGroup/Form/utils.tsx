@@ -3,7 +3,6 @@ import { useFormik } from "formik";
 import { string, date, object, lazy, Schema } from "yup";
 import { IRuleDecision, ValueDataType } from "@isettingkit/input";
 import { strategyFormFactoryHandlerManager } from "./helpers/utils";
-import { EValueHowToSetUp } from "../enums/EValueHowToSetUp";
 import { IUseRulesFormUtils } from "../types/Forms/IUseRulesFormUtils";
 import { IRulesForm } from "../types/Forms/IRulesForm";
 
@@ -94,19 +93,19 @@ function useRulesFormUtilsWithGroup({
 
   let formik: ReturnType<typeof useFormik>;
 
-  const baseSchema: Record<string, any> = {
-    ruleName: string().required("El nombre de la regla es requerido"),
-    value: lazy(() => {
-      const strategy = strategyFormFactoryHandlerManager(
-        formik.values.howToSetTheDecision as any,
-      );
-      return strategy(
-        formik.values.value as any,
-        formik.values.decisionDataType,
-      ).schema;
-    }),
-    conditionsThatEstablishesTheDecision: object().shape({}),
-  };
+const baseSchema: Record<string, any> = {
+  ruleName: string().required("El nombre de la regla es requerido"),
+  value: lazy(() => {
+    const strategy = strategyFormFactoryHandlerManager(
+      formik.values.howToSetTheDecision as any,
+    );
+    return strategy(
+      formik.values.value as any,
+      formik.values.decisionDataType,
+    ).schema;
+  }),
+  conditionsThatEstablishesTheDecision: object().shape({}),
+};
 
   if (textValues.terms) {
     baseSchema.effectiveFrom = date().required("La fecha de inicio es requerida");
@@ -116,16 +115,16 @@ function useRulesFormUtilsWithGroup({
         const checkClosed = parent?.checkClosed;
         return checkClosed
           ? schema
-              .required("La fecha de finalización es requerida")
-              .test(
-                "is-after-startDate",
-                "La fecha de finalización debe ser mayor o igual a la fecha de inicio",
-                function (validUntil) {
-                  const effectiveFrom = this.parent.effectiveFrom;
-                  if (!effectiveFrom || !validUntil) return true;
-                  return new Date(validUntil) >= new Date(effectiveFrom);
-                },
-              )
+            .required("La fecha de finalización es requerida")
+            .test(
+              "is-after-startDate",
+              "La fecha de finalización debe ser mayor o igual a la fecha de inicio",
+              function (validUntil) {
+                const effectiveFrom = this.parent.effectiveFrom;
+                if (!effectiveFrom || !validUntil) return true;
+                return new Date(validUntil) >= new Date(effectiveFrom);
+              },
+            )
           : schema.notRequired();
       },
     );
@@ -133,59 +132,81 @@ function useRulesFormUtilsWithGroup({
 
   const validationSchema: Schema<any> = object(baseSchema);
 
-  formik = useFormik({
-    initialValues,
-    validationSchema,
-    validateOnBlur: true,
-    onSubmit: (values) => {
-      const ConditionGroupId =
-        decision.conditionGroups?.ConditionGroupId ?? "group-primary";
+formik = useFormik({
+  initialValues,
+  validationSchema,
+  validate: (values) => {
+    const errors: any = {};
 
-      const grouped = values.toggleNone
-        ? []
-        : extractConditionsFromFormik(values, incomingConditions);
+    if (!values.toggleNone) {
+      const toggles = values.conditionsThatEstablishesTheDecision || {};
 
-      const updatedDecision: IRuleDecision = {
-        ...decision,
-        ruleName: values.ruleName,
-        decisionDataType: values.decisionDataType,
-        howToSetTheDecision: values.howToSetTheDecision as any,
-        value: values.value,
-        effectiveFrom: values.effectiveFrom,
-        validUntil: values.validUntil,
-        conditionGroups: {
-          ConditionGroupId,
-          conditionsThatEstablishesTheDecision: grouped,
-        },
-      };
-      onSubmitEvent!(updatedDecision);
-    },
-  }) as any;
+      const activeConditionNames = Object.keys(toggles).filter(
+        (name) => toggles[name] !== undefined,
+      );
+
+      if (activeConditionNames.length > 0) {
+        const extracted = extractConditionsFromFormik(
+          values,
+          incomingConditions,
+        );
+
+        const extractedNames = new Set(
+          extracted
+            .map((c: any) => c.conditionName)
+            .filter((name: any) => !!name),
+        );
+
+        const someActiveWithoutValue = activeConditionNames.some(
+          (name) => !extractedNames.has(name),
+        );
+
+        if (someActiveWithoutValue) {
+          errors.conditionsThatEstablishesTheDecision =
+            "Debes diligenciar los campos de las condiciones activas o desactivar el toggle.";
+        }
+      }
+    }
+
+    return errors;
+  },
+  validateOnBlur: true,
+  onSubmit: (values) => {
+    const ConditionGroupId =
+      decision.conditionGroups?.ConditionGroupId ?? "group-primary";
+
+    const grouped = values.toggleNone
+      ? []
+      : extractConditionsFromFormik(values, incomingConditions);
+
+    const updatedDecision: IRuleDecision = {
+      ...decision,
+      ruleName: values.ruleName,
+      decisionDataType: values.decisionDataType,
+      howToSetTheDecision: values.howToSetTheDecision as any,
+      value: values.value,
+      effectiveFrom: values.effectiveFrom,
+      validUntil: values.validUntil,
+      conditionGroups: {
+        ConditionGroupId,
+        conditionsThatEstablishesTheDecision: grouped,
+      },
+    };
+    onSubmitEvent!(updatedDecision);
+  },
+}) as any;
 
   const handleToggleNoneChange = (isNoneSelected: boolean) => {
     formik.setFieldValue("toggleNone", isNoneSelected);
 
-    incomingConditions.forEach((condition: any) => {
-      if (isNoneSelected) {
+    if (isNoneSelected) {
+      incomingConditions.forEach((condition: any) => {
         formik.setFieldValue(
           `conditionsThatEstablishesTheDecision.${condition.conditionName}`,
           undefined,
         );
-      } else {
-        const cur =
-          formik.values.conditionsThatEstablishesTheDecision[condition.conditionName];
-        if (cur === undefined) {
-          const def =
-            condition.howToSetTheCondition === EValueHowToSetUp.LIST_OF_VALUES_MULTI
-              ? []
-              : "";
-          formik.setFieldValue(
-            `conditionsThatEstablishesTheDecision.${condition.conditionName}`,
-            def,
-          );
-        }
-      }
-    });
+      });
+    }
   };
 
   return { formik, handleToggleNoneChange };

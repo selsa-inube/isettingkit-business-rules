@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Toggle, Text, Stack } from "@inubekit/inubekit";
 import { IToggleOption } from "../../../businessRules/types/Forms/IToggleOption";
 
@@ -13,11 +13,15 @@ const ToggleOption = (props: IToggleOption) => {
     valueToggle = "",
   } = props;
   const [toogleCheck, setToogleCheck] = useState(checked);
+
+  useEffect(() => {
+    setToogleCheck(checked);
+  }, [checked]);
+
   const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setToogleCheck(e.target.checked);
     handleToggleChange(e);
   };
-
   return (
     <>
       <Stack>
