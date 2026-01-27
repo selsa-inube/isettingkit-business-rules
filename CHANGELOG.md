@@ -1,3 +1,16 @@
+# v2.2.30 (Tue Jan 27 2026)
+
+#### ⚠️ Pushed to `main`
+
+- Merge branch 'main' of https://github.com/selsa-inube/isettingkit-business-rules ([@cmarin001](https://github.com/cmarin001))
+- fix: allow 0 as valid for percentage ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.29 (Tue Jan 27 2026)
 
 #### ⚠️ Pushed to `main`
