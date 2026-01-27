@@ -40,7 +40,8 @@ const strategyFactoryHandlerManagerNew = (element: IRuleDecision) => {
     return handler(valueData);
   }
 
-  return valueData || undefined;
+  return valueData ?? undefined;
+
 };
 
 export { strategyFactoryHandlerManagerNew };
