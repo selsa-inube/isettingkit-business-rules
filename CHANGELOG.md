@@ -1,3 +1,15 @@
+# v2.2.29 (Tue Jan 27 2026)
+
+#### ⚠️ Pushed to `main`
+
+- chore: updte input version to avoid double-0 bug ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.28 (Tue Jan 27 2026)
 
 #### ⚠️ Pushed to `main`
