@@ -174,7 +174,7 @@ const sampleDecisions: any[] = [
 const decisionTemplate: any = {
   ruleName: "TasaEfectivaAnual",
   labelName: "Tasa Efectiva Anual",
-  decisionDataType: ValueDataType.PERCENTAGE,
+  decisionDataType: ValueDataType.MONETARY,
   howToSetTheDecision: EValueHowToSetUp.RANGE,
   // value: "",
   //howToSetTheDecision: EValueHowToSetUp.LESS_THAN,

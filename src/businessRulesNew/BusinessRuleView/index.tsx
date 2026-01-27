@@ -69,36 +69,36 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
   const effectiveFromRenderer = hasEffectiveFrom
     ? {
-        element: {
-          labelName: textValues?.effectiveFrom,
-          value: formatDateEsShort(decisionToUse!.effectiveFrom),
-          howToSetTheDecision: ValueHowToSetUp.EQUAL,
-          decisionDataType: ValueDataType.DATE,
-        },
-        valueData: strategyFactoryHandlerManagerNew({
-          labelName: textValues?.effectiveFrom,
-          value: formatDateEsShort(decisionToUse!.effectiveFrom),
-          howToSetTheDecision: ValueHowToSetUp.EQUAL,
-          decisionDataType: ValueDataType.DATE,
-        }),
-      }
+      element: {
+        labelName: textValues?.effectiveFrom,
+        value: formatDateEsShort(decisionToUse!.effectiveFrom),
+        howToSetTheDecision: ValueHowToSetUp.EQUAL,
+        decisionDataType: ValueDataType.DATE,
+      },
+      valueData: strategyFactoryHandlerManagerNew({
+        labelName: textValues?.effectiveFrom,
+        value: formatDateEsShort(decisionToUse!.effectiveFrom),
+        howToSetTheDecision: ValueHowToSetUp.EQUAL,
+        decisionDataType: ValueDataType.DATE,
+      }),
+    }
     : null;
 
   const validUntilRenderer = hasValidUntil
     ? {
-        element: {
-          labelName: textValues?.validUntil,
-          value: formatDateEsShort(decisionToUse!.validUntil),
-          howToSetTheDecision: ValueHowToSetUp.EQUAL,
-          decisionDataType: ValueDataType.DATE,
-        },
-        valueData: strategyFactoryHandlerManagerNew({
-          labelName: textValues?.validUntil,
-          value: formatDateEsShort(decisionToUse!.validUntil),
-          howToSetTheDecision: ValueHowToSetUp.EQUAL,
-          decisionDataType: ValueDataType.DATE,
-        }),
-      }
+      element: {
+        labelName: textValues?.validUntil,
+        value: formatDateEsShort(decisionToUse!.validUntil),
+        howToSetTheDecision: ValueHowToSetUp.EQUAL,
+        decisionDataType: ValueDataType.DATE,
+      },
+      valueData: strategyFactoryHandlerManagerNew({
+        labelName: textValues?.validUntil,
+        value: formatDateEsShort(decisionToUse!.validUntil),
+        howToSetTheDecision: ValueHowToSetUp.EQUAL,
+        decisionDataType: ValueDataType.DATE,
+      }),
+    }
     : null;
 
   const resolvedHowToSet =
@@ -122,41 +122,62 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
     (isListOfValues
       ? buildListOfValuesValue(decisionToUse as IRuleDecision).list
       : (() => {
-          const i18nValue = (decisionToUse as any).i18nValue as
-            | string
-            | undefined;
+        const i18nValue = (decisionToUse as any).i18nValue as
+          | string
+          | undefined;
 
-          if (isRangeWithSameEnds) {
-            const { from } = decisionToUse.value as { from: any; to: any };
+        if (isRangeWithSameEnds) {
+          const { from } = decisionToUse.value as { from: any; to: any };
 
-            const formattedSingleValue = strategyFactoryHandlerManagerNew({
-              ...(decisionToUse as IRuleDecision),
-              howToSetTheDecision: ValueHowToSetUp.EQUAL,
-              value: from,
-            } as IRuleDecision);
+          const formattedSingleValue = strategyFactoryHandlerManagerNew({
+            ...(decisionToUse as IRuleDecision),
+            howToSetTheDecision: ValueHowToSetUp.EQUAL,
+            value: from,
+          } as IRuleDecision);
 
-            return `Del ${formattedSingleValue}%`.trim();
-          }
+          const suffix =
+            decisionToUse.decisionDataType === ValueDataType.PERCENTAGE
+              ? "%"
+              : "";
 
-          const rawValue = strategyFactoryHandlerManagerNew(
-            decisionToUse as IRuleDecision
-          );
+          return `Del ${formattedSingleValue}${suffix}`.trim();
+        }
 
-          return i18nValue ?? rawValue;
-        })());
+        const rawValue = strategyFactoryHandlerManagerNew(
+          decisionToUse as IRuleDecision
+        );
+
+        let baseValue = i18nValue ?? rawValue;
+
+        if (
+          decisionToUse?.decisionDataType === ValueDataType.PERCENTAGE &&
+          typeof baseValue === "string" &&
+          !baseValue.includes("%")
+        ) {
+          baseValue = `${baseValue}%`;
+        }
+
+        if (
+          decisionToUse?.decisionDataType === ValueDataType.PERCENTAGE &&
+          typeof baseValue === "number" 
+        ) {
+          baseValue = `${baseValue}%`;
+        }
+        return baseValue;
+      })());
 
   const decisionMapper: Partial<IRuleDecision> | null = decisionToUse
     ? {
-        labelName: cardTitle ? decisionToUse.labelName || "" : "",
-        decisionDataType:
-          decisionToUse.decisionDataType || ValueDataType.ALPHABETICAL,
-        value: mappedDecisionValue,
-        howToSetTheDecision:
-          (decisionToUse as any).i18nValue || isRangeWithSameEnds
-            ? ValueHowToSetUp.EQUAL
-            : resolvedHowToSet,
-        validUntil: decisionToUse.validUntil,
-      }
+      labelName: cardTitle ? decisionToUse.labelName || "" : "",
+      decisionDataType:
+        decisionToUse.decisionDataType || ValueDataType.ALPHABETICAL,
+      value: mappedDecisionValue,
+      howToSetTheDecision:
+        (decisionToUse as any).i18nValue || isRangeWithSameEnds
+          ? ValueHowToSetUp.EQUAL
+          : resolvedHowToSet,
+      validUntil: decisionToUse.validUntil,
+    }
     : null;
 
   const rawByGroup = React.useMemo(
@@ -240,7 +261,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
           const isPercentageGreaterThanCondition =
             condition?.howToSetTheCondition ===
-              ValueHowToSetUp.GREATER_THAN &&
+            ValueHowToSetUp.GREATER_THAN &&
             condition?.conditionDataType === ValueDataType.PERCENTAGE &&
             condition?.value !== undefined &&
             condition?.value !== null &&
@@ -303,6 +324,14 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
             }
           }
 
+          if (
+            condition?.conditionDataType === ValueDataType.PERCENTAGE &&
+            typeof newValue === "string" &&
+            !newValue.includes("%")
+          ) {
+            newValue = `${newValue}%`;
+          }
+
           return {
             ...condition,
             labelName: newLabel,
@@ -319,7 +348,6 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
     return result;
   }, [normalizedByGroup]);
-
 
   const visibleByGroup = filterByGroup(
     processedConditionsForDisplay,
