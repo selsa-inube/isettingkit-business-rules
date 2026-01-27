@@ -1,7 +1,7 @@
 import { number, object } from "yup";
 
 const REQUIRED_MSG = "Por favor escribe un valor";
-const GT_ZERO_MSG = "Por favor escribe un valor mayor que 0";
+const GE_ZERO_MSG = "Por favor escribe un valor mayor o igual que 0";
 const FROM_LE_TO_MSG = "El valor desde no puede ser mayor que el valor hasta";
 const TO_GE_FROM_MSG =
   "El valor hasta debe ser mayor o igual que el valor desde";
@@ -21,7 +21,7 @@ const rangeStrategy = (value: { from?: number; to?: number }) => {
         .transform(toUndefinedIfEmpty)
         .typeError(REQUIRED_MSG)
         .required(REQUIRED_MSG)
-        .moreThan(0, GT_ZERO_MSG)
+        .min(0, GE_ZERO_MSG)
         .test("from<=to", FROM_LE_TO_MSG, function (from) {
           const { to } = this.parent as { to?: number };
           if (from === undefined || to === undefined) return true;
@@ -32,7 +32,7 @@ const rangeStrategy = (value: { from?: number; to?: number }) => {
         .transform(toUndefinedIfEmpty)
         .typeError(REQUIRED_MSG)
         .required(REQUIRED_MSG)
-        .moreThan(0, GT_ZERO_MSG)
+        .min(0, GE_ZERO_MSG)
         .test("to>=from", TO_GE_FROM_MSG, function (to) {
           const { from } = this.parent as { from?: number };
           if (from === undefined || to === undefined) return true;
