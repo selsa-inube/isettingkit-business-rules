@@ -175,9 +175,9 @@ const decisionTemplate: any = {
   ruleName: "TasaEfectivaAnual",
   labelName: "Tasa Efectiva Anual",
   decisionDataType: ValueDataType.PERCENTAGE,
-  // howToSetTheDecision: EValueHowToSetUp.RANGE,
+  howToSetTheDecision: EValueHowToSetUp.RANGE,
   // value: "",
-  howToSetTheDecision: EValueHowToSetUp.LESS_THAN,
+  //howToSetTheDecision: EValueHowToSetUp.LESS_THAN,
   // listOfPossibleValues: {
   //   list: [
   //     { id: "value-1", label: "Muy alto", value: "ass" },
@@ -191,6 +191,7 @@ const decisionTemplate: any = {
   effectiveFrom: "",
   validUntil: "",
   timeUnit: "Day",
+  placeholderValue: "Seleccione una opción",
   conditionGroups: [
     {
       ConditionGroupId: "group-primary",
@@ -199,7 +200,7 @@ const decisionTemplate: any = {
           labelName: "Line of credit",
           conditionName: "LineOfCredit",
           descriptionUse: "Line of credit.",
-          conditionDataType: ValueDataType.ALPHABETICAL,
+          conditionDataType: ValueDataType.PERCENTAGE,
           howToSetTheCondition: EValueHowToSetUp.EQUAL,
           value: "",
           i18n: {

@@ -33,107 +33,139 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
     editionMode = "versioned",
   } = props;
 
-  const hasEffectiveFrom = Boolean(decision?.effectiveFrom);
-  const hasValidUntil = Boolean(decision?.validUntil);
+  const enhancedDecision = React.useMemo(() => {
+    if (!decision) return null;
+
+    const { howToSetTheDecision, decisionDataType, value } = decision;
+
+    const isPercentageRangeDecision =
+      howToSetTheDecision === ValueHowToSetUp.RANGE &&
+      decisionDataType === ValueDataType.PERCENTAGE &&
+      value &&
+      typeof value === "object" &&
+      !Array.isArray(value) &&
+      "from" in value &&
+      "to" in value;
+
+    if (!isPercentageRangeDecision) {
+      return decision;
+    }
+
+    const { from, to } = value as { from: number | string; to: number | string };
+
+    const fromStr = String(from).trim();
+    const toStr = String(to).trim();
+
+    return {
+      ...decision,
+      i18nValue: `De ${fromStr}% a ${toStr}%`,
+    } as IRuleDecision & { i18nValue: string };
+  }, [decision]);
+
+  const decisionToUse = enhancedDecision ?? decision;
+
+  const hasEffectiveFrom = Boolean(decisionToUse?.effectiveFrom);
+  const hasValidUntil = Boolean(decisionToUse?.validUntil);
 
   const effectiveFromRenderer = hasEffectiveFrom
     ? {
-      element: {
-        labelName: textValues?.effectiveFrom,
-        value: formatDateEsShort(decision!.effectiveFrom),
-        howToSetTheDecision: ValueHowToSetUp.EQUAL,
-        decisionDataType: ValueDataType.DATE,
-      },
-      valueData: strategyFactoryHandlerManagerNew({
-        labelName: textValues?.effectiveFrom,
-        value: formatDateEsShort(decision!.effectiveFrom),
-        howToSetTheDecision: ValueHowToSetUp.EQUAL,
-        decisionDataType: ValueDataType.DATE,
-      }),
-    }
+        element: {
+          labelName: textValues?.effectiveFrom,
+          value: formatDateEsShort(decisionToUse!.effectiveFrom),
+          howToSetTheDecision: ValueHowToSetUp.EQUAL,
+          decisionDataType: ValueDataType.DATE,
+        },
+        valueData: strategyFactoryHandlerManagerNew({
+          labelName: textValues?.effectiveFrom,
+          value: formatDateEsShort(decisionToUse!.effectiveFrom),
+          howToSetTheDecision: ValueHowToSetUp.EQUAL,
+          decisionDataType: ValueDataType.DATE,
+        }),
+      }
     : null;
 
   const validUntilRenderer = hasValidUntil
     ? {
-      element: {
-        labelName: textValues?.validUntil,
-        value: formatDateEsShort(decision!.validUntil),
-        howToSetTheDecision: ValueHowToSetUp.EQUAL,
-        decisionDataType: ValueDataType.DATE,
-      },
-      valueData: strategyFactoryHandlerManagerNew({
-        labelName: textValues?.validUntil,
-        value: formatDateEsShort(decision!.validUntil),
-        howToSetTheDecision: ValueHowToSetUp.EQUAL,
-        decisionDataType: ValueDataType.DATE,
-      }),
-    }
+        element: {
+          labelName: textValues?.validUntil,
+          value: formatDateEsShort(decisionToUse!.validUntil),
+          howToSetTheDecision: ValueHowToSetUp.EQUAL,
+          decisionDataType: ValueDataType.DATE,
+        },
+        valueData: strategyFactoryHandlerManagerNew({
+          labelName: textValues?.validUntil,
+          value: formatDateEsShort(decisionToUse!.validUntil),
+          howToSetTheDecision: ValueHowToSetUp.EQUAL,
+          decisionDataType: ValueDataType.DATE,
+        }),
+      }
     : null;
 
-
   const resolvedHowToSet =
-    decision?.howToSetTheDecision || ValueHowToSetUp.EQUAL;
+    decisionToUse?.howToSetTheDecision || ValueHowToSetUp.EQUAL;
 
   const isRangeWithSameEnds =
     resolvedHowToSet === ValueHowToSetUp.RANGE &&
-    decision &&
-    decision.value &&
-    typeof decision.value === "object" &&
-    "from" in (decision.value as any) &&
-    "to" in (decision.value as any) &&
-    (decision.value as any).from === (decision.value as any).to;
-
+    decisionToUse &&
+    decisionToUse.value &&
+    typeof decisionToUse.value === "object" &&
+    "from" in (decisionToUse.value as any) &&
+    "to" in (decisionToUse.value as any) &&
+    (decisionToUse.value as any).from === (decisionToUse.value as any).to;
 
   const isListOfValues =
     resolvedHowToSet === ValueHowToSetUp.LIST_OF_VALUES ||
     resolvedHowToSet === ValueHowToSetUp.LIST_OF_VALUES_MULTI;
 
   const mappedDecisionValue =
-    decision &&
+    decisionToUse &&
     (isListOfValues
-      ? buildListOfValuesValue(decision as IRuleDecision).list
+      ? buildListOfValuesValue(decisionToUse as IRuleDecision).list
       : (() => {
-          const i18nValue = (decision as any).i18nValue as
+          const i18nValue = (decisionToUse as any).i18nValue as
             | string
             | undefined;
 
           if (isRangeWithSameEnds) {
-            const { from } = decision.value as { from: any; to: any };
+            const { from } = decisionToUse.value as { from: any; to: any };
 
             const formattedSingleValue = strategyFactoryHandlerManagerNew({
-              ...(decision as IRuleDecision),
+              ...(decisionToUse as IRuleDecision),
               howToSetTheDecision: ValueHowToSetUp.EQUAL,
               value: from,
             } as IRuleDecision);
 
-            return `Del ${formattedSingleValue}`.trim();
+            return `Del ${formattedSingleValue}%`.trim();
           }
 
-          return i18nValue ??
-            strategyFactoryHandlerManagerNew(decision as IRuleDecision);
+          const rawValue = strategyFactoryHandlerManagerNew(
+            decisionToUse as IRuleDecision
+          );
+
+          return i18nValue ?? rawValue;
         })());
 
-  const decisionMapper: Partial<IRuleDecision> | null = decision
+  const decisionMapper: Partial<IRuleDecision> | null = decisionToUse
     ? {
-      labelName: cardTitle ? decision.labelName || "" : "",
-      decisionDataType:
-        decision.decisionDataType || ValueDataType.ALPHABETICAL,
-      value: mappedDecisionValue,
-      howToSetTheDecision:
-          (decision as any).i18nValue || isRangeWithSameEnds
+        labelName: cardTitle ? decisionToUse.labelName || "" : "",
+        decisionDataType:
+          decisionToUse.decisionDataType || ValueDataType.ALPHABETICAL,
+        value: mappedDecisionValue,
+        howToSetTheDecision:
+          (decisionToUse as any).i18nValue || isRangeWithSameEnds
             ? ValueHowToSetUp.EQUAL
             : resolvedHowToSet,
-      validUntil: decision.validUntil,
-    }
+        validUntil: decisionToUse.validUntil,
+      }
     : null;
 
   const rawByGroup = React.useMemo(
-    () => (decision ? getConditionsByGroupNew(decision) : {}),
-    [decision]
+    () => (decisionToUse ? getConditionsByGroupNew(decisionToUse) : {}),
+    [decisionToUse]
   );
 
   const naturalKeys: string[] =
-    ((decision as any)?.conditionGroups as any[] | undefined)
+    ((decisionToUse as any)?.conditionGroups as any[] | undefined)
       ?.map((g) => g?.ConditionGroupId)
       ?.filter(Boolean) || Object.keys(rawByGroup);
 
@@ -177,16 +209,91 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
           }
 
           let newValue = condition.value;
+
+          const isPercentageRangeCondition =
+            condition?.howToSetTheCondition === ValueHowToSetUp.RANGE &&
+            condition?.conditionDataType === ValueDataType.PERCENTAGE &&
+            condition?.value &&
+            typeof condition.value === "object" &&
+            !Array.isArray(condition.value) &&
+            "from" in condition.value &&
+            "to" in condition.value;
+
+          if (isPercentageRangeCondition) {
+            const { from, to } = condition.value as {
+              from: number | string;
+              to: number | string;
+            };
+
+            const fromStr = String(from).trim();
+            const toStr = String(to).trim();
+
+            newValue = `De ${fromStr}% a ${toStr}%`;
+
+            return {
+              ...condition,
+              labelName: newLabel,
+              value: newValue,
+              howToSetTheCondition: ValueHowToSetUp.EQUAL,
+            };
+          }
+
+          const isPercentageGreaterThanCondition =
+            condition?.howToSetTheCondition ===
+              ValueHowToSetUp.GREATER_THAN &&
+            condition?.conditionDataType === ValueDataType.PERCENTAGE &&
+            condition?.value !== undefined &&
+            condition?.value !== null &&
+            condition?.value !== "";
+
+          if (isPercentageGreaterThanCondition) {
+            const raw = condition.value as number | string;
+            const valueStr = String(raw).trim();
+
+            newValue = `Mayor a ${valueStr}%`;
+
+            return {
+              ...condition,
+              labelName: newLabel,
+              value: newValue,
+              howToSetTheCondition: ValueHowToSetUp.EQUAL,
+            };
+          }
+
+          const isPercentageLessThanCondition =
+            condition?.howToSetTheCondition === ValueHowToSetUp.LESS_THAN &&
+            condition?.conditionDataType === ValueDataType.PERCENTAGE &&
+            condition?.value !== undefined &&
+            condition?.value !== null &&
+            condition?.value !== "";
+
+          if (isPercentageLessThanCondition) {
+            const raw = condition.value as number | string;
+            const valueStr = String(raw).trim();
+
+            newValue = `Menor a ${valueStr}%`;
+
+            return {
+              ...condition,
+              labelName: newLabel,
+              value: newValue,
+              howToSetTheCondition: ValueHowToSetUp.EQUAL,
+            };
+          }
+
           if (
             condition?.howToSetTheCondition !== undefined &&
             condition?.howToSetTheCondition !== null &&
             condition?.value !== undefined &&
-            condition?.value !== null && condition?.value !== ""
+            condition?.value !== null &&
+            condition?.value !== ""
           ) {
             if (condition.i18nValue) {
               newValue = howToSetHandle(
                 condition.i18nValue,
-                condition.i18nValue ? ValueHowToSetUp.EQUAL : condition.howToSetTheCondition
+                condition.i18nValue
+                  ? ValueHowToSetUp.EQUAL
+                  : condition.howToSetTheCondition
               );
             } else {
               newValue = howToSetHandle(
@@ -200,7 +307,9 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
             ...condition,
             labelName: newLabel,
             value: newValue,
-            howToSetTheCondition: condition.i18nValue ? ValueHowToSetUp.EQUAL : condition.howToSetTheCondition
+            howToSetTheCondition: condition.i18nValue
+              ? ValueHowToSetUp.EQUAL
+              : condition.howToSetTheCondition,
           };
         });
       } else {
@@ -210,6 +319,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
     return result;
   }, [normalizedByGroup]);
+
 
   const visibleByGroup = filterByGroup(
     processedConditionsForDisplay,
@@ -269,7 +379,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
   const skeleton = Array.from({ length: 5 });
   const loadingValidation = Boolean(
-    !loading && decision && textValues && decisionMapper
+    !loading && decisionToUse && textValues && decisionMapper
   );
 
   const conditionsAlignment =
@@ -280,7 +390,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
     <BusinessRuleViewUI
       conditionsAlignment={conditionsAlignment}
       controls={controls}
-      decision={decision}
+      decision={decisionToUse}
       decisionMapper={decisionMapper}
       loading={loadingValidation}
       skeleton={skeleton}
