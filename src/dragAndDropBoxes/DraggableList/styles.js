@@ -13,6 +13,7 @@ const StyledListContainer = styled.ul`
 `;
 
 const StyledOptionList = styled.li`
+  z-index: 2;
   & > div {
     border: 1px solid
       ${({ theme, $active }) =>
