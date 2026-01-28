@@ -1,3 +1,15 @@
+# v2.2.31 (Wed Jan 28 2026)
+
+#### ⚠️ Pushed to `main`
+
+- fix: add support for placeholder ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.30 (Tue Jan 27 2026)
 
 #### ⚠️ Pushed to `main`
