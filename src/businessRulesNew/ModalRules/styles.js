@@ -7,6 +7,7 @@ const StyledContainer = styled.div`
     padding: 24px 16px;
     place-items: unset;
   }
+  z-index: 3;
 `;
 
 const StyledModal = styled.div`
