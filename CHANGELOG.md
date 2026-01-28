@@ -1,3 +1,16 @@
+# v2.2.35 (Wed Jan 28 2026)
+
+#### ⚠️ Pushed to `main`
+
+- fix: add z-index to ModalRules styles ([@cmarin001](https://github.com/cmarin001))
+- Add z-index to ModalRules styles ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.34 (Wed Jan 28 2026)
 
 #### ⚠️ Pushed to `main`
