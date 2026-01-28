@@ -1,3 +1,15 @@
+# v2.2.34 (Wed Jan 28 2026)
+
+#### ⚠️ Pushed to `main`
+
+- fix: add cursor to li in drag and drop ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.33 (Wed Jan 28 2026)
 
 #### ⚠️ Pushed to `main`
