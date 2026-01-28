@@ -14,6 +14,7 @@ const StyledListContainer = styled.ul`
 
 const StyledOptionList = styled.li`
   z-index: 2 !important;
+  cursor: grab;
   & > div {
     border: 1px solid
       ${({ theme, $active }) =>
