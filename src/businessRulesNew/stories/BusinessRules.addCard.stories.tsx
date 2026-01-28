@@ -175,23 +175,23 @@ const decisionTemplate: any = {
   ruleName: "TasaEfectivaAnual",
   labelName: "Tasa Efectiva Anual",
   decisionDataType: ValueDataType.PERCENTAGE,
-  howToSetTheDecision: EValueHowToSetUp.RANGE,
+  howToSetTheDecision: EValueHowToSetUp.EQUAL,
   // value: "",
   //howToSetTheDecision: EValueHowToSetUp.LESS_THAN,
-  // listOfPossibleValues: {
-  //   list: [
-  //     { id: "value-1", label: "Muy alto", value: "ass" },
-  //     { id: "value-2", label: "Alto", value: "cdd" },
-  //     { id: "value-3", label: "Medio", value: "vbfb" },
-  //     { id: "value-4", label: "Bajo", value: "hnh" },
-  //     { id: "value-5", label: "Muy bajo", value: "yyy" },
-  //   ],
-  // },
+  listOfPossibleValues: {
+    list: [
+      { id: "value-1", label: "Muy alto", value: "ass" },
+      { id: "value-2", label: "Alto", value: "cdd" },
+      { id: "value-3", label: "Medio", value: "vbfb" },
+      { id: "value-4", label: "Bajo", value: "hnh" },
+      { id: "value-5", label: "Muy bajo", value: "yyy" },
+    ],
+  },
   value: "",
   effectiveFrom: "",
   validUntil: "",
   timeUnit: "Day",
-  placeholderValue: "Seleccione una opción",
+  placeholder: "Seleccione un valor",
   conditionGroups: [
     {
       ConditionGroupId: "group-primary",
@@ -203,6 +203,7 @@ const decisionTemplate: any = {
           conditionDataType: ValueDataType.PERCENTAGE,
           howToSetTheCondition: EValueHowToSetUp.EQUAL,
           value: "",
+          placeholder: "0.0%",
           i18n: {
             es: "Línea de crédito",
           },
@@ -214,6 +215,8 @@ const decisionTemplate: any = {
           descriptionUse: "Porcentaje de riesgo",
           conditionDataType: ValueDataType.PERCENTAGE,
           howToSetTheCondition: EValueHowToSetUp.RANGE,
+          placeholderFrom: "0.0%",
+          placeholderTo: "100.0%",
           value: "",
           i18n: {
             es: "Porcentaje de riesgo",

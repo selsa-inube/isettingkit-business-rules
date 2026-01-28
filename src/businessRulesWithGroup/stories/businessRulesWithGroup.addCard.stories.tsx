@@ -66,8 +66,9 @@ const decisionTemplate: any = {
           labelName: "Line of credit",
           conditionName: "LineOfCredit",
           descriptionUse: "Line of credit.",
-          conditionDataType: ValueDataType.MONETARY,
-          howToSetTheCondition: EValueHowToSetUp.EQUAL,
+          conditionDataType: ValueDataType.ALPHABETICAL,
+          howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
+          placeholder: "Select line of credit",
           value: "",
           i18n: {
             es: "Línea de crédito",

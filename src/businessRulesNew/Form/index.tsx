@@ -269,6 +269,7 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
     decisionDataType: decision.decisionDataType,
     howToSetTheCondition: decision.howToSetTheDecision,
     labelName: decision.labelName,
+    placeholder: decision.placeholder,
     listOfPossibleValues: decision.listOfPossibleValues,
     ruleName: decision.ruleName,
     timeUnit: decision.timeUnit
