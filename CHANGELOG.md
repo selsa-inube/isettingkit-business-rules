@@ -1,3 +1,15 @@
+# v2.2.32 (Wed Jan 28 2026)
+
+#### ⚠️ Pushed to `main`
+
+- fix: add a z-index to li in order to avoid wrong overlayer ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.31 (Wed Jan 28 2026)
 
 #### ⚠️ Pushed to `main`
