@@ -20,11 +20,26 @@ const hasMeaningfulValue = (v: any): boolean => {
   if (typeof val === "string") return val.trim().length > 0;
   if (typeof val === "number") return !Number.isNaN(val);
   if (Array.isArray(val)) return val.length > 0;
-  if (typeof val === "object") return Object.keys(val).length > 0;
-  return true;
+
+  if (typeof val === "object") {
+    if ("from" in (val as any) && "to" in (val as any)) {
+      const from = (val as any).from;
+      const to = (val as any).to;
+      const fromOk = from !== "" && from != null;
+      const toOk = to !== "" && to != null;
+      return fromOk || toOk;
+    }
+    return Object.keys(val).length > 0;
+  }
+
+  return false;
 };
 
 
+const schemaForWrapperValue = (inner: Schema<any>) =>
+  object({
+    value: inner.required(),
+  });
 function useRulesFormUtils({
   decision,
   onSubmitEvent,
@@ -130,61 +145,56 @@ function useRulesFormUtils({
     }),
 
     conditionsThatEstablishesTheDecision: lazy((_value, { parent }) => {
-      const grouped = getConditionsByGroupNew(decision) || {};
-      const hasAnyConditionGroups = Object.keys(grouped).length > 0;
-      if (!hasAnyConditionGroups) {
-        return object().shape({});
+      const groupedMeta = getConditionsByGroupNew(decision) || {};
+      if (Object.keys(groupedMeta).length === 0) return object().shape({});
+
+      const rec = parent?.conditionsThatEstablishesTheDecision;
+
+      const toggleNone = !!parent?.toggleNone;
+
+      let hasAnyMeaningful = false;
+      if (rec && typeof rec === "object") {
+        hasAnyMeaningful = Object.values(rec as Record<string, any>).some(
+          (groupRec) =>
+            groupRec &&
+            typeof groupRec === "object" &&
+            Object.values(groupRec).some((wrapper: any) => hasMeaningfulValue(wrapper)),
+        );
       }
 
-      const haveAnyGroupKeys =
-        parent &&
-        parent.conditionsThatEstablishesTheDecision &&
-        typeof parent.conditionsThatEstablishesTheDecision === "object" &&
-        Object.keys(parent.conditionsThatEstablishesTheDecision).length > 0;
-
-      const toggleNone = parent?.toggleNone && haveAnyGroupKeys;
-      if (toggleNone) return object().shape({});
+      if (toggleNone && !hasAnyMeaningful) return object().shape({});
+      if (!hasAnyMeaningful) return object().shape({});
 
       const perGroupSchemas: Record<string, Schema<any>> = {};
-      for (const [groupKey, conditionList] of Object.entries(grouped)) {
+
+      for (const [groupKey, conditionList] of Object.entries(groupedMeta)) {
+        const groupRec = rec?.[groupKey];
         const perCond: Record<string, Schema<any>> = {};
+
         (conditionList as any[]).forEach((condition) => {
-          const wrapper =
-            parent?.conditionsThatEstablishesTheDecision?.[groupKey]?.[
-            condition.conditionName
-            ];
+          const wrapper = groupRec?.[condition.conditionName];
+          if (!hasMeaningfulValue(wrapper)) return;
+
           const conditionValue = getWrapperValue(wrapper);
 
-          if (conditionValue !== undefined) {
-            const strat = strategyFormFactoryHandlerManager(
-              condition.howToSetTheCondition as EValueHowToSetUp,
-            );
-            perCond[condition.conditionName] = strat(
-              conditionValue as any,
-              condition.conditionDataType,
-            ).schema;
-          }
+          const strat = strategyFormFactoryHandlerManager(
+            condition.howToSetTheCondition as EValueHowToSetUp,
+          );
+
+          const innerSchema = strat(
+            conditionValue as any,
+            condition.conditionDataType,
+          ).schema;
+
+          perCond[condition.conditionName] = schemaForWrapperValue(innerSchema);
         });
 
         perGroupSchemas[groupKey] = object(perCond);
       }
 
-      return object(perGroupSchemas).test(
-        "at-least-one-condition",
-        "Debe existir al menos una condición para que la decisión se valide correctamente.",
-        (value) => {
-          if (!value || typeof value !== "object") return false;
-          return Object.values(value as Record<string, any>).some(
-            (groupRec) =>
-              groupRec &&
-              typeof groupRec === "object" &&
-              Object.values(groupRec).some((wrapper: any) =>
-                hasMeaningfulValue(wrapper),
-              ),
-          );
-        },
-      );
+      return object(perGroupSchemas);
     }),
+
 
   };
 

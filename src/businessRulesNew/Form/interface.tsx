@@ -10,7 +10,7 @@ import { ModalRules } from "../../businessRules/ModalRules";
 const RulesFormUI = (props: IRulesFormUI) => {
   const {
     activeTab,
-    conditionsErrorText,
+    // conditionsErrorText,
     currentConditions,
     formik,
     normalizedDecision,
@@ -110,8 +110,7 @@ const RulesFormUI = (props: IRulesFormUI) => {
 
                 {showConditionsError && (
                   <Text type="label" size="medium" appearance="danger">
-                    {conditionsErrorText ??
-                      "Existen errores en el formulario, por favor revísalos."}
+                    Existen errores en el formulario, por favor revísalos.
                   </Text>
                 )}
               </Stack>

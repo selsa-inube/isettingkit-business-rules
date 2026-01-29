@@ -175,23 +175,24 @@ const decisionTemplate: any = {
   ruleName: "TasaEfectivaAnual",
   labelName: "Tasa Efectiva Anual",
   decisionDataType: ValueDataType.PERCENTAGE,
-  howToSetTheDecision: EValueHowToSetUp.EQUAL,
+  howToSetTheDecision: EValueHowToSetUp.RANGE,
   // value: "",
   //howToSetTheDecision: EValueHowToSetUp.LESS_THAN,
-  listOfPossibleValues: {
-    list: [
-      { id: "value-1", label: "Muy alto", value: "ass" },
-      { id: "value-2", label: "Alto", value: "cdd" },
-      { id: "value-3", label: "Medio", value: "vbfb" },
-      { id: "value-4", label: "Bajo", value: "hnh" },
-      { id: "value-5", label: "Muy bajo", value: "yyy" },
-    ],
-  },
+  // listOfPossibleValues: {
+  //   list: [
+  //     { id: "value-1", label: "Muy alto", value: "ass" },
+  //     { id: "value-2", label: "Alto", value: "cdd" },
+  //     { id: "value-3", label: "Medio", value: "vbfb" },
+  //     { id: "value-4", label: "Bajo", value: "hnh" },
+  //     { id: "value-5", label: "Muy bajo", value: "yyy" },
+  //   ],
+  // },
   value: "",
   effectiveFrom: "",
   validUntil: "",
   timeUnit: "Day",
-  placeholder: "Seleccione un valor",
+  placeholderFrom: "0.0%",
+  placeholderTo: "100.0%",
   conditionGroups: [
     {
       ConditionGroupId: "group-primary",
@@ -249,7 +250,7 @@ const decisionTemplate: any = {
           conditionName: "LineOfCredit24",
           descriptionUse: "Line of credit.24",
           conditionDataType: ValueDataType.ALPHABETICAL,
-          howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES_MULTI,
+          howToSetTheCondition: EValueHowToSetUp.LIST_OF_VALUES,
           listOfPossibleValues: {
             list: [
               { id: "value-1", label: "Muy alto", value: "Muy alto" },

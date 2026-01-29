@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { string, number, object, mixed } from "yup";
 import { ValueDataType } from "@isettingkit/input";
+import { buildRangeNumberSchema } from "../utils/buildRangeNumberSchema";
 
 const isOptionObject = (v: any) =>
   v &&
@@ -22,26 +23,12 @@ const comparisonStrategy = (value: unknown, dataType: string) => {
     };
   }
 
-  if (
-    value &&
-    typeof value === "object" &&
-    "from" in value &&
-    "to" in value
-  ) {
-    const rangeValue = value as { from: string | number; to: string | number };
+  if (value && typeof value === "object" && "from" in value && "to" in value) {
+    const rangeValue = value as { from?: unknown; to?: unknown };
 
     if (dataType === ValueDataType.PERCENTAGE) {
       return {
-        schema: object({
-          from: number()
-            .required("El campo desde es requerido")
-            .min(0, "El porcentaje no puede ser menor a 0")
-            .max(100, "El porcentaje no puede ser mayor a 100"),
-          to: number()
-            .required("El campo hasta es requerido")
-            .min(0, "El porcentaje no puede ser menor a 0")
-            .max(100, "El porcentaje no puede ser mayor a 100"),
-        }),
+        schema: buildRangeNumberSchema({ min: 0, max: 100 }),
         value: rangeValue,
       };
     }
