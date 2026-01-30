@@ -1,7 +1,6 @@
 import {
   Grid,
   Text,
-  useMediaQuery,
   Stack,
   Fieldset,
   Icon,
@@ -41,7 +40,6 @@ const BusinessRulesNew = (props: IBusinessRules) => {
   } = props;
 
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const mediumScreen = useMediaQuery("(max-width: 681px)");
 
   const { renderedCards, shouldRenderAddCard } = getBusinessRulesLayoutNew({
     cardTitle,
@@ -112,7 +110,6 @@ const BusinessRulesNew = (props: IBusinessRules) => {
                   autoRows="auto"
                   justifyItems="center"
                   padding="6px"
-                  height={mediumScreen ? "auto" : "484px"}
                 >
                   {renderedCards}
                   {shouldRenderAddCard &&

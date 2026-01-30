@@ -5,7 +5,8 @@ import { StyledConditionFieldContainer } from "./styles";
 import { Term } from "./Term";
 import { IRulesFormUI } from "../types/Forms/IRulesFormUI";
 import { MdCached, MdInfo, MdOutlineDelete } from "react-icons/md";
-import { ModalRules } from "../../businessRules/ModalRules";
+import { ModalRulesNew } from "../ModalRules";
+
 
 const RulesFormUI = (props: IRulesFormUI) => {
   const {
@@ -153,35 +154,36 @@ const RulesFormUI = (props: IRulesFormUI) => {
       </form>
 
       {showRedefineConfirm && portalId && (
-        <ModalRules
-          portalId={portalId}
-          title="Redefinir la condición"
-          onCloseModal={onCloseRedefineConfirm!}
-        >
-          <Stack direction="column" gap="16px">
-            <Text type="body" size="large" appearance="gray">
-              ¿Estás seguro? Se perderá todo lo que tienes actualmente definido
-              y deberás reescribir completamente la condición, de esta manera
-              podrás usar las últimas variables condicionales que están
-              definidas en la actualidad para esta decisión .
-            </Text>
+          <ModalRulesNew
+            portalId={portalId}
+            title="Redefinir la condición"
+            onCloseModal={onCloseRedefineConfirm!}
+            size="600px"
+          >
+            <Stack direction="column" gap="16px">
+              <Text type="body" size="large" appearance="gray">
+                ¿Estás seguro? Se perderá todo lo que tienes actualmente definido
+                y deberás reescribir completamente la condición, de esta manera
+                podrás usar las últimas variables condicionales que están
+                definidas en la actualidad para esta decisión .
+              </Text>
 
-            <Stack justifyContent="end" gap="12px">
-              <Button
-                type="button"
-                appearance="gray"
-                variant="outlined"
-                onClick={onCloseRedefineConfirm}
-                cursorHover
-              >
-                Cancelar
-              </Button>
-              <Button type="button" onClick={onConfirmRedefine} cursorHover>
-                Confirmar
-              </Button>
+              <Stack justifyContent="end" gap="12px">
+                <Button
+                  type="button"
+                  appearance="gray"
+                  variant="outlined"
+                  onClick={onCloseRedefineConfirm}
+                  cursorHover
+                >
+                  Cancelar
+                </Button>
+                <Button type="button" onClick={onConfirmRedefine} cursorHover>
+                  Confirmar
+                </Button>
+              </Stack>
             </Stack>
-          </Stack>
-        </ModalRules>
+          </ModalRulesNew>
       )}
     </>
   );
