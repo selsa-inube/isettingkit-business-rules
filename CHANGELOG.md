@@ -1,3 +1,15 @@
+# v2.2.37 (Fri Jan 30 2026)
+
+#### ⚠️ Pushed to `main`
+
+- fix: avoid overlayer on the conditions ([@cmarin001](https://github.com/cmarin001))
+
+#### Authors: 1
+
+- Cesar Marin Alfonso ([@cmarin001](https://github.com/cmarin001))
+
+---
+
 # v2.2.36 (Thu Jan 29 2026)
 
 #### ⚠️ Pushed to `main`
