@@ -1,3 +1,19 @@
+# v3.0.0 (Fri Feb 06 2026)
+
+#### 💥 Breaking Change
+
+- feat: new owner [#19](https://github.com/selsa-inube/isettingkit-business-rules/pull/19) ([@heber59](https://github.com/heber59))
+
+#### 🐛 Bug Fix
+
+- fix: adjust docs [#20](https://github.com/selsa-inube/isettingkit-business-rules/pull/20) ([@heber59](https://github.com/heber59))
+
+#### Authors: 1
+
+- Heber  Alvarez  ([@heber59](https://github.com/heber59))
+
+---
+
 # v2.2.37 (Fri Jan 30 2026)
 
 #### ⚠️ Pushed to `main`
