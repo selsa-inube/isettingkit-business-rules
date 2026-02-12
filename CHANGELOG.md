@@ -1,3 +1,15 @@
+# v3.0.2 (Thu Feb 12 2026)
+
+#### 🐛 Bug Fix
+
+- fix: adjust terms validation when dont need it [#22](https://github.com/selsa-inube/isettingkit-business-rules/pull/22) ([@heber59](https://github.com/heber59))
+
+#### Authors: 1
+
+- Heber  Alvarez  ([@heber59](https://github.com/heber59))
+
+---
+
 # v3.0.1 (Thu Feb 12 2026)
 
 #### 🐛 Bug Fix
