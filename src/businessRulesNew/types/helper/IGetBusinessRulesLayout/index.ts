@@ -13,6 +13,7 @@ interface IGetBusinessRulesLayout {
   isOpenFor?: (index: number) => boolean;
   toggleAt?: (index: number) => void;
   editionMode?: "classic" | "versioned";
+  withEditOption?: boolean;
 }
 
 export type { IGetBusinessRulesLayout };

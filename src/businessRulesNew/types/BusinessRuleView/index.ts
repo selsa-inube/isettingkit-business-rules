@@ -13,6 +13,7 @@ interface IBusinessRuleView {
   onEdit?: () => void;
   onDelete?: () => void;
   editionMode?: "classic" | "versioned";
+  withEditOption?: boolean;
 }
 
 export type { IBusinessRuleView };

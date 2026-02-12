@@ -14,8 +14,9 @@ const getBusinessRulesLayoutNew = (props: IGetBusinessRulesLayout) => {
     isOpenFor,
     toggleAt,
     editionMode,
+    withEditOption,
   } = props;
-  
+
   const renderedCards = loading
     ? Array.from({ length: 3 }).map((_, index) =>
         renderCardNew({
@@ -27,7 +28,8 @@ const getBusinessRulesLayoutNew = (props: IGetBusinessRulesLayout) => {
           handleOpenModal,
           handleDelete,
           textValues,
-           editionMode: editionMode,
+          editionMode: editionMode,
+          withEditOption,
         }),
       )
     : decisions?.map((decision, index) =>
@@ -45,6 +47,7 @@ const getBusinessRulesLayoutNew = (props: IGetBusinessRulesLayout) => {
           isOpen: isOpenFor ? isOpenFor(index) : false,
           onToggle: toggleAt ? () => toggleAt(index) : undefined,
           editionMode: editionMode,
+          withEditOption,
         }),
       );
 

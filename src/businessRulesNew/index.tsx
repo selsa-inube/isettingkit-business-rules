@@ -1,10 +1,4 @@
-import {
-  Grid,
-  Text,
-  Stack,
-  Fieldset,
-  Icon,
-} from "@inubekit/inubekit";
+import { Grid, Text, Stack, Fieldset, Icon } from "@inubekit/inubekit";
 
 import { StyledGridContainer, StyledScrollContainer } from "./styles";
 import { getBusinessRulesLayoutNew } from "./helper/getBusinessRulesLayout";
@@ -36,7 +30,9 @@ const BusinessRulesNew = (props: IBusinessRules) => {
     onRemoveCondition,
     onRestoreConditions,
     baseDecisionTemplate,
-    shouldRenderEmptyMessage = true
+    shouldRenderEmptyMessage = true,
+    withEditOption,
+    withTerm,
   } = props;
 
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -53,6 +49,7 @@ const BusinessRulesNew = (props: IBusinessRules) => {
     isOpenFor: (i: number) => openIndex === i,
     toggleAt: (i: number) => setOpenIndex((prev) => (prev === i ? null : i)),
     editionMode,
+    withEditOption,
   });
 
   const shouldRenderAddCardEmpty = decisions?.length === 0 && !loading;
@@ -62,8 +59,8 @@ const BusinessRulesNew = (props: IBusinessRules) => {
       <StyledGridContainer>
         <StyledScrollContainer>
           <Stack direction="column" gap="16px" padding="6px">
-            {shouldRenderEmptyMessage && (
-              shouldRenderAddCardEmpty ? (
+            {shouldRenderEmptyMessage &&
+              (shouldRenderAddCardEmpty ? (
                 <Fieldset legend="Decisiones">
                   <Stack
                     direction="column"
@@ -125,12 +122,10 @@ const BusinessRulesNew = (props: IBusinessRules) => {
                       textValues,
                       shouldRenderEmptyMessage,
                       terms,
-                      editionMode
+                      editionMode,
                     })}
                 </Grid>
-              )
-            )}
-
+              ))}
           </Stack>
         </StyledScrollContainer>
       </StyledGridContainer>
@@ -147,9 +142,10 @@ const BusinessRulesNew = (props: IBusinessRules) => {
             fullTemplate={baseDecisionTemplate ?? decisionTemplate}
             onSubmitEvent={handleSubmitForm!}
             textValues={textValues}
-            onCancel={() => (handleCloseModal ? handleCloseModal() : () => { })}
+            onCancel={() => (handleCloseModal ? handleCloseModal() : () => {})}
             onRemoveCondition={onRemoveCondition}
             onRestoreConditions={onRestoreConditions}
+            withTerm={withTerm}
           />
         </ModalRulesNew>
       )}

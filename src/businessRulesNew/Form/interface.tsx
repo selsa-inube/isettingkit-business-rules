@@ -7,7 +7,6 @@ import { IRulesFormUI } from "../types/Forms/IRulesFormUI";
 import { MdCached, MdInfo, MdOutlineDelete } from "react-icons/md";
 import { ModalRulesNew } from "../ModalRules";
 
-
 const RulesFormUI = (props: IRulesFormUI) => {
   const {
     activeTab,
@@ -28,6 +27,7 @@ const RulesFormUI = (props: IRulesFormUI) => {
     onOpenRedefineConfirm,
     onCloseRedefineConfirm,
     onConfirmRedefine,
+    withTerm,
   } = props;
 
   return (
@@ -117,32 +117,33 @@ const RulesFormUI = (props: IRulesFormUI) => {
               </Stack>
             </Fieldset>
           )}
-
-          <Fieldset legend="Vigencia" spacing="wide">
-            {textValues.terms && (
-              <Term
-                labelStart={textValues.termStart}
-                labelEnd={textValues.termEnd}
-                valueStart={formik.values.effectiveFrom}
-                valueEnd={formik.values.validUntil}
-                messageStart={formik.errors.effectiveFrom}
-                messageEnd={formik.errors.validUntil}
-                statusStart={termStartStatus}
-                statusEnd={termEndStatus}
-                onHandleStartChange={(e) =>
-                  formik.setFieldValue("effectiveFrom", e.target.value)
-                }
-                onHandleEndChange={(e) =>
-                  formik.setFieldValue("validUntil", e.target.value)
-                }
-                onCheckClosedChange={(isClosed) => {
-                  formik.setFieldValue("checkClosed", isClosed);
-                  if (isClosed) formik.setFieldValue("validUntil", "");
-                }}
-                checkedClosed={formik.values.checkClosed}
-              />
-            )}
-          </Fieldset>
+          {withTerm && (
+            <Fieldset legend="Vigencia" spacing="wide">
+              {textValues.terms && (
+                <Term
+                  labelStart={textValues.termStart}
+                  labelEnd={textValues.termEnd}
+                  valueStart={formik.values.effectiveFrom}
+                  valueEnd={formik.values.validUntil}
+                  messageStart={formik.errors.effectiveFrom}
+                  messageEnd={formik.errors.validUntil}
+                  statusStart={termStartStatus}
+                  statusEnd={termEndStatus}
+                  onHandleStartChange={(e) =>
+                    formik.setFieldValue("effectiveFrom", e.target.value)
+                  }
+                  onHandleEndChange={(e) =>
+                    formik.setFieldValue("validUntil", e.target.value)
+                  }
+                  onCheckClosedChange={(isClosed) => {
+                    formik.setFieldValue("checkClosed", isClosed);
+                    if (isClosed) formik.setFieldValue("validUntil", "");
+                  }}
+                  checkedClosed={formik.values.checkClosed}
+                />
+              )}
+            </Fieldset>
+          )}
 
           <Stack direction="row" justifyContent="end" gap="16px">
             <Button appearance="gray" onClick={onCancel} variant="outlined">
@@ -154,36 +155,36 @@ const RulesFormUI = (props: IRulesFormUI) => {
       </form>
 
       {showRedefineConfirm && portalId && (
-          <ModalRulesNew
-            portalId={portalId}
-            title="Redefinir la condición"
-            onCloseModal={onCloseRedefineConfirm!}
-            size="600px"
-          >
-            <Stack direction="column" gap="16px">
-              <Text type="body" size="large" appearance="gray">
-                ¿Estás seguro? Se perderá todo lo que tienes actualmente definido
-                y deberás reescribir completamente la condición, de esta manera
-                podrás usar las últimas variables condicionales que están
-                definidas en la actualidad para esta decisión .
-              </Text>
+        <ModalRulesNew
+          portalId={portalId}
+          title="Redefinir la condición"
+          onCloseModal={onCloseRedefineConfirm!}
+          size="600px"
+        >
+          <Stack direction="column" gap="16px">
+            <Text type="body" size="large" appearance="gray">
+              ¿Estás seguro? Se perderá todo lo que tienes actualmente definido
+              y deberás reescribir completamente la condición, de esta manera
+              podrás usar las últimas variables condicionales que están
+              definidas en la actualidad para esta decisión .
+            </Text>
 
-              <Stack justifyContent="end" gap="12px">
-                <Button
-                  type="button"
-                  appearance="gray"
-                  variant="outlined"
-                  onClick={onCloseRedefineConfirm}
-                  cursorHover
-                >
-                  Cancelar
-                </Button>
-                <Button type="button" onClick={onConfirmRedefine} cursorHover>
-                  Confirmar
-                </Button>
-              </Stack>
+            <Stack justifyContent="end" gap="12px">
+              <Button
+                type="button"
+                appearance="gray"
+                variant="outlined"
+                onClick={onCloseRedefineConfirm}
+                cursorHover
+              >
+                Cancelar
+              </Button>
+              <Button type="button" onClick={onConfirmRedefine} cursorHover>
+                Confirmar
+              </Button>
             </Stack>
-          </ModalRulesNew>
+          </Stack>
+        </ModalRulesNew>
       )}
     </>
   );

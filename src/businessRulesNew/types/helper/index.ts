@@ -18,6 +18,7 @@ interface IRenderCard {
   isOpen?: boolean;
   onToggle?: () => void;
   editionMode?: "classic" | "versioned";
+  withEditOption?: boolean;
 }
 
 export type { IRenderCard };
