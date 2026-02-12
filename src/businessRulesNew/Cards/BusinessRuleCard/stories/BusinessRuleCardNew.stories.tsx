@@ -47,7 +47,7 @@ const getData = (): IRuleDecision => {
     validUntil: "2024-12-31",
     conditionGroups: [
       {
-        ConditionGroupId: crypto.randomUUID(),
+        // ConditionGroupId: crypto.randomUUID(),
         conditionsThatEstablishesTheDecision: [
           {
             labelName: "Antigüedad del cliente (Días)",
@@ -106,6 +106,10 @@ const getData = (): IRuleDecision => {
             howToSetTheCondition: EValueHowToSetUp.EQUAL,
           },
         ],
+        conditionDataType: "number",
+        conditionName: "",
+        howToSetTheCondition: "Range",
+        labelName: "",
       },
     ],
   };
