@@ -119,29 +119,27 @@ const RulesFormUI = (props: IRulesFormUI) => {
           )}
           {withTerm && (
             <Fieldset legend="Vigencia" spacing="wide">
-              {textValues.terms && (
-                <Term
-                  labelStart={textValues.termStart}
-                  labelEnd={textValues.termEnd}
-                  valueStart={formik.values.effectiveFrom}
-                  valueEnd={formik.values.validUntil}
-                  messageStart={formik.errors.effectiveFrom}
-                  messageEnd={formik.errors.validUntil}
-                  statusStart={termStartStatus}
-                  statusEnd={termEndStatus}
-                  onHandleStartChange={(e) =>
-                    formik.setFieldValue("effectiveFrom", e.target.value)
-                  }
-                  onHandleEndChange={(e) =>
-                    formik.setFieldValue("validUntil", e.target.value)
-                  }
-                  onCheckClosedChange={(isClosed) => {
-                    formik.setFieldValue("checkClosed", isClosed);
-                    if (isClosed) formik.setFieldValue("validUntil", "");
-                  }}
-                  checkedClosed={formik.values.checkClosed}
-                />
-              )}
+              <Term
+                labelStart={textValues.termStart}
+                labelEnd={textValues.termEnd}
+                valueStart={formik.values.effectiveFrom}
+                valueEnd={formik.values.validUntil}
+                messageStart={formik.errors.effectiveFrom}
+                messageEnd={formik.errors.validUntil}
+                statusStart={termStartStatus}
+                statusEnd={termEndStatus}
+                onHandleStartChange={(e) =>
+                  formik.setFieldValue("effectiveFrom", e.target.value)
+                }
+                onHandleEndChange={(e) =>
+                  formik.setFieldValue("validUntil", e.target.value)
+                }
+                onCheckClosedChange={(isClosed) => {
+                  formik.setFieldValue("checkClosed", isClosed);
+                  if (isClosed) formik.setFieldValue("validUntil", "");
+                }}
+                checkedClosed={formik.values.checkClosed}
+              />
             </Fieldset>
           )}
 
