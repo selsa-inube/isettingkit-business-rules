@@ -5,9 +5,12 @@ import { IRuleDecision, ValueDataType } from "@isettingkit/input";
 import { strategyFormFactoryHandlerManager } from "./helpers/utils";
 import { EValueHowToSetUp } from "../enums/EValueHowToSetUp";
 import { IUseRulesFormUtils } from "../types/Forms/IUseRulesFormUtils";
-import { IRulesForm } from "../types/Forms/IRulesForm";
 import { getConditionsByGroupNew } from "../helper/utils/getConditionsByGroup";
-import { hasDecisionOptions, rangeOptionSchema, requiredOptionSchema } from "./helpers/strategies/requiredOptionStrategy";
+import {
+  hasDecisionOptions,
+  rangeOptionSchema,
+  requiredOptionSchema,
+} from "./helpers/strategies/requiredOptionStrategy";
 
 const getWrapperValue = (wrapper: any) =>
   wrapper && typeof wrapper === "object" && "value" in wrapper
@@ -35,7 +38,6 @@ const hasMeaningfulValue = (v: any): boolean => {
   return false;
 };
 
-
 const schemaForWrapperValue = (inner: Schema<any>) =>
   object({
     value: inner.required(),
@@ -43,8 +45,11 @@ const schemaForWrapperValue = (inner: Schema<any>) =>
 function useRulesFormUtils({
   decision,
   onSubmitEvent,
-  textValues,
-}: IUseRulesFormUtils & { textValues: IRulesForm["textValues"] }) {
+
+  withTerm,
+}: IUseRulesFormUtils & {
+  withTerm: boolean;
+}) {
   const grouped = getConditionsByGroupNew(decision) || {};
 
   const iterateGrouped = () =>
@@ -52,33 +57,33 @@ function useRulesFormUtils({
       (list as any[]).map((cond) => ({ group: g, cond })),
     );
 
-  const initialConditionsRecord: Record<string, Record<string, any>> =
-    Object.fromEntries(
-      Object.entries(grouped).map(([groupKey, list]) => {
-        const perCondition: Record<string, any> = {};
+  const initialConditionsRecord: Record<
+    string,
+    Record<string, any>
+  > = Object.fromEntries(
+    Object.entries(grouped).map(([groupKey, list]) => {
+      const perCondition: Record<string, any> = {};
 
-        (list as any[]).forEach((cond) => {
-          const name = cond.conditionName as string;
+      (list as any[]).forEach((cond) => {
+        const name = cond.conditionName as string;
 
-          const hasExplicitValue =
-            cond.value !== undefined &&
-            cond.value !== null &&
-            cond.value !== "";
+        const hasExplicitValue =
+          cond.value !== undefined && cond.value !== null && cond.value !== "";
 
-          const defaultValue =
-            cond.howToSetTheCondition === EValueHowToSetUp.LIST_OF_VALUES_MULTI
-              ? []
-              : "";
+        const defaultValue =
+          cond.howToSetTheCondition === EValueHowToSetUp.LIST_OF_VALUES_MULTI
+            ? []
+            : "";
 
-          perCondition[name] = {
-            ...cond,
-            value: hasExplicitValue ? cond.value : defaultValue,
-          };
-        });
+        perCondition[name] = {
+          ...cond,
+          value: hasExplicitValue ? cond.value : defaultValue,
+        };
+      });
 
-        return [groupKey, perCondition];
-      }),
-    );
+      return [groupKey, perCondition];
+    }),
+  );
 
   const initialConditionGroups = Object.entries(grouped).map(
     ([groupKey, list]) => {
@@ -112,8 +117,10 @@ function useRulesFormUtils({
     effectiveFrom: decision.effectiveFrom || "",
     validUntil: decision.validUntil || "",
     toggleNone: true,
-    conditionsThatEstablishesTheDecision:
-      initialConditionsRecord as Record<string, Record<string, any>>,
+    conditionsThatEstablishesTheDecision: initialConditionsRecord as Record<
+      string,
+      Record<string, any>
+    >,
     checkClosed: false,
     terms: true,
     conditionGroups: initialConditionGroups,
@@ -158,7 +165,9 @@ function useRulesFormUtils({
           (groupRec) =>
             groupRec &&
             typeof groupRec === "object" &&
-            Object.values(groupRec).some((wrapper: any) => hasMeaningfulValue(wrapper)),
+            Object.values(groupRec).some((wrapper: any) =>
+              hasMeaningfulValue(wrapper),
+            ),
         );
       }
 
@@ -194,11 +203,9 @@ function useRulesFormUtils({
 
       return object(perGroupSchemas);
     }),
-
-
   };
 
-  if (textValues.terms) {
+  if (withTerm) {
     baseSchema.effectiveFrom = date().required(
       "Se requiere la fecha de vigencia desde",
     );
@@ -208,16 +215,16 @@ function useRulesFormUtils({
         const checkClosed = parent?.checkClosed;
         return checkClosed
           ? schema
-            .required("Se requiere la fecha de vigencia hasta")
-            .test(
-              "is-after-startDate",
-              "La fecha válida para la vigencia hasta debe ser mayor o igual a la fecha de inicio",
-              function (validUntil) {
-                const effectiveFrom = this.parent.effectiveFrom;
-                if (!effectiveFrom || !validUntil) return true;
-                return new Date(validUntil) >= new Date(effectiveFrom);
-              },
-            )
+              .required("Se requiere la fecha de vigencia hasta")
+              .test(
+                "is-after-startDate",
+                "La fecha válida para la vigencia hasta debe ser mayor o igual a la fecha de inicio",
+                function (validUntil) {
+                  const effectiveFrom = this.parent.effectiveFrom;
+                  if (!effectiveFrom || !validUntil) return true;
+                  return new Date(validUntil) >= new Date(effectiveFrom);
+                },
+              )
           : schema.notRequired();
       },
     );

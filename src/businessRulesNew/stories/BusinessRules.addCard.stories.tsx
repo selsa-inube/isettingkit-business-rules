@@ -518,6 +518,7 @@ addCard.args = {
     validUntil: "Vigencia hasta:",
   },
   withEditOption: false,
+  withTerm: false,
 };
 
 export { addCard };

@@ -32,6 +32,7 @@ interface IBusinessRulesNewController {
   textValues: IRulesFormTextValues;
   shouldRenderEmptyMessage?: boolean;
   withEditOption?: boolean;
+  withTerm?: boolean;
 }
 
 const deepClone = <T,>(v: T): T => JSON.parse(JSON.stringify(v));
@@ -89,6 +90,7 @@ const BusinessRulesNewController = ({
   shouldRenderEmptyMessage,
   editionMode = "versioned",
   withEditOption,
+  withTerm,
 }: IBusinessRulesNewController) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editAsNew, setEditAsNew] = useState(false);
@@ -508,6 +510,7 @@ const BusinessRulesNewController = ({
         textValues={textValues}
         shouldRenderEmptyMessage={shouldRenderEmptyMessage}
         withEditOption={withEditOption}
+        withTerm={withTerm}
       />
       {/* ) : (
         <Fieldset legend="Decisiones">

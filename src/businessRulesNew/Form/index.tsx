@@ -30,7 +30,7 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
   const { formik, handleToggleNoneChange } = useRulesFormUtils({
     decision,
     onSubmitEvent,
-    textValues,
+    withTerm,
   });
 
   const sourceForGroups = fullTemplate ?? decision;
