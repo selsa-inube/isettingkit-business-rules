@@ -1,3 +1,15 @@
+# v3.0.1 (Thu Feb 12 2026)
+
+#### 🐛 Bug Fix
+
+- feat: create boolean for term of decision and edit option [#21](https://github.com/selsa-inube/isettingkit-business-rules/pull/21) ([@heber59](https://github.com/heber59))
+
+#### Authors: 1
+
+- Heber  Alvarez  ([@heber59](https://github.com/heber59))
+
+---
+
 # v3.0.0 (Fri Feb 06 2026)
 
 #### 💥 Breaking Change
