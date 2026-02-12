@@ -31,6 +31,7 @@ interface IBusinessRulesNewController {
   terms?: boolean;
   textValues: IRulesFormTextValues;
   shouldRenderEmptyMessage?: boolean;
+  withEditOption?: boolean;
 }
 
 const deepClone = <T,>(v: T): T => JSON.parse(JSON.stringify(v));
@@ -87,6 +88,7 @@ const BusinessRulesNewController = ({
   textValues,
   shouldRenderEmptyMessage,
   editionMode = "versioned",
+  withEditOption,
 }: IBusinessRulesNewController) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editAsNew, setEditAsNew] = useState(false);
@@ -132,8 +134,9 @@ const BusinessRulesNewController = ({
     }),
   );
 
-  const [removedConditionNames, setRemovedConditionNames] =
-    useState<Set<string>>(new Set());
+  const [removedConditionNames, setRemovedConditionNames] = useState<
+    Set<string>
+  >(new Set());
 
   const handleRemoveCondition = (scopedConditionName: string) => {
     console.log("scopedConditionName: ", scopedConditionName);
@@ -183,7 +186,6 @@ const BusinessRulesNewController = ({
       return nextDecision;
     });
   };
-
 
   const handleRestoreConditions = (names: string[]) => {
     if (!names?.length) return;
@@ -277,7 +279,6 @@ const BusinessRulesNewController = ({
         setSelectedDecision(draft);
         setEditAsNew(true);
       } else {
-
         setSelectedDecision(draft);
         setEditAsNew(false);
       }
@@ -285,7 +286,6 @@ const BusinessRulesNewController = ({
       setIsModalOpen(true);
       return;
     }
-
 
     setEditAsNew(false);
     setSourceDecisionMeta(null);
@@ -308,19 +308,20 @@ const BusinessRulesNewController = ({
     const base = isEditing
       ? { ...selectedDecision, ...dataDecision }
       : {
-        ...localizedTemplate,
-        ...dataDecision,
-        decisionId: `Decisión ${decisions.length + 1}`,
-      };
+          ...localizedTemplate,
+          ...dataDecision,
+          decisionId: `Decisión ${decisions.length + 1}`,
+        };
 
     const tplGroups = getConditionsByGroupNew(localizedTemplate) as Record<
       string,
       any[]
     >;
 
-    const dataGroupsRaw = getConditionsByGroupNew(
-      dataDecision,
-    ) as Record<string, any[]>;
+    const dataGroupsRaw = getConditionsByGroupNew(dataDecision) as Record<
+      string,
+      any[]
+    >;
 
     const mergedGroupsRecord = Object.fromEntries(
       Object.entries(tplGroups).map(([group, tplList]) => {
@@ -376,21 +377,21 @@ const BusinessRulesNewController = ({
       const baseList =
         editionMode === "versioned" && editAsNew && sourceDecisionMeta
           ? prev.map((d) => {
-            const sameByBusinessRule =
-              sourceDecisionMeta.businessRuleId &&
-              d.businessRuleId === sourceDecisionMeta.businessRuleId;
-            const sameByDecisionId =
-              sourceDecisionMeta.decisionId &&
-              d.decisionId === sourceDecisionMeta.decisionId;
+              const sameByBusinessRule =
+                sourceDecisionMeta.businessRuleId &&
+                d.businessRuleId === sourceDecisionMeta.businessRuleId;
+              const sameByDecisionId =
+                sourceDecisionMeta.decisionId &&
+                d.decisionId === sourceDecisionMeta.decisionId;
 
-            if (sameByBusinessRule || sameByDecisionId) {
-              return {
-                ...d,
-                validUntil: today,
-              };
-            }
-            return d;
-          })
+              if (sameByBusinessRule || sameByDecisionId) {
+                return {
+                  ...d,
+                  validUntil: today,
+                };
+              }
+              return d;
+            })
           : prev;
 
       if (isEditing) {
@@ -408,14 +409,13 @@ const BusinessRulesNewController = ({
         });
       }
 
-
       return [...baseList, decisionWithSentences];
     });
 
     handleCloseModal();
   };
 
-  useEffect(() => { }, [decisions]);
+  useEffect(() => {}, [decisions]);
 
   const handleDelete = (id: string) => {
     setDecisions((prev) => prev.filter((d) => d.decisionId !== id));
@@ -451,7 +451,10 @@ const BusinessRulesNewController = ({
 
     return withFiltered as any;
   }, [localizedTemplate, language, selectedIds, removedConditionNames]);
-  console.log('sortDisplayDataSwitchPlaces({ decisions }): ', sortDisplayDataSwitchPlaces({ decisions }));
+  console.log(
+    "sortDisplayDataSwitchPlaces({ decisions }): ",
+    sortDisplayDataSwitchPlaces({ decisions }),
+  );
   return (
     <Stack direction="column" gap="24px">
       <Fieldset legend="Condiciones que determinan las decisiones">
@@ -504,7 +507,7 @@ const BusinessRulesNewController = ({
         selectedDecision={selectedDecision}
         textValues={textValues}
         shouldRenderEmptyMessage={shouldRenderEmptyMessage}
-
+        withEditOption={withEditOption}
       />
       {/* ) : (
         <Fieldset legend="Decisiones">

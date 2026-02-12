@@ -170,7 +170,6 @@ const sampleDecisions: any[] = [
   },
 ];
 
-
 const decisionTemplate: any = {
   ruleName: "TasaEfectivaAnual",
   labelName: "Tasa Efectiva Anual",
@@ -518,6 +517,7 @@ addCard.args = {
     effectiveFrom: "Vigencia desde:",
     validUntil: "Vigencia hasta:",
   },
+  withEditOption: false,
 };
 
 export { addCard };

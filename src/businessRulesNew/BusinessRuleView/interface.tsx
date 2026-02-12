@@ -52,8 +52,8 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
     currentConditions,
     hasMultipleGroups,
     editionMode = "versioned",
+    withEditOption = "false",
   } = props;
-  
   if (loading) {
     return (
       <Stack direction="column" gap="16px">
@@ -72,12 +72,13 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
                   displayIcon={false}
                 />
               </StyledTagContainer>
+
               <StyledDecisionContainer>
                 <DecisionViewConditionRendererNew
                   element={decisionMapper!}
                   valueData={
                     strategyFactoryHandlerManagerNew(
-                      decisionMapper!
+                      decisionMapper!,
                     ) as IDecisionViewConditionRenderer["valueData"]
                   }
                   type="decision"
@@ -88,16 +89,19 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
             <Stack gap="12px">
               {controls && (
                 <>
-                  <Icon
-                    appearance="primary"
-                    icon={<MdOutlineCreate />}
-                    size="24px"
-                    cursorHover
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onEdit?.();
-                    }}
-                  />
+                  {withEditOption && (
+                    <Icon
+                      appearance="primary"
+                      icon={<MdOutlineCreate />}
+                      size="24px"
+                      cursorHover
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEdit?.();
+                      }}
+                    />
+                  )}
+
                   <Icon
                     appearance="danger"
                     icon={<MdOutlineDelete />}
@@ -168,7 +172,7 @@ const BusinessRuleViewUI = (props: IBusinessRuleViewUI) => {
                       }}
                       valueData={
                         strategyFactoryHandlerManagerNew(
-                          condition
+                          condition,
                         ) as IDecisionViewConditionRenderer["valueData"]
                       }
                       editionMode={editionMode}

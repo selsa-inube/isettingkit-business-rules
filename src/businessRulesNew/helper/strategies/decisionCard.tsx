@@ -17,9 +17,10 @@ const renderDecisionCard = (props: IRenderCard) => {
     isOpen,
     onToggle: handleToggle,
     editionMode,
+    withEditOption,
   } = props;
-
   if (!decision) return null;
+
   return (
     <StyledFadeInStack key={decision.decisionId}>
       <Stack direction="column" gap="4px" width="100%">
@@ -42,7 +43,8 @@ const renderDecisionCard = (props: IRenderCard) => {
             onToggle={() => handleToggle?.(!isOpen)}
             onEdit={() => handleOpenModal?.(decision)}
             onDelete={() => handleDelete?.(decision.decisionId!)}
-            editionMode={editionMode} 
+            editionMode={editionMode}
+            withEditOption={withEditOption}
           />
         </BusinessRuleCardNew>
       </Stack>

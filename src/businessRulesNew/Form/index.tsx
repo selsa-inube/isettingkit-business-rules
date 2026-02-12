@@ -24,6 +24,7 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
     onRemoveCondition,
     onRestoreConditions,
     fullTemplate,
+    withTerm = true,
   } = props;
 
   const { formik, handleToggleNoneChange } = useRulesFormUtils({
@@ -80,16 +81,13 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
     };
   });
 
-
   const [activeTab, setActiveTab] = React.useState<string>(
     tabs[0]?.id ?? "mainCondition",
   );
   const handleTabChange = (id: string) => setActiveTab(id);
 
   const activeGroupKey =
-    groupByTabId[activeTab] ??
-    primaryGroupKey ??
-    "group-primary";
+    groupByTabId[activeTab] ?? primaryGroupKey ?? "group-primary";
 
   React.useEffect(() => {
     const rec = (formik.values as any)?.conditionsThatEstablishesTheDecision;
@@ -109,10 +107,7 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
     const groupedFromDecision: { [key: string]: any[] } =
       getConditionsByGroupNew(decision);
 
-    if (
-      !groupedFromDecision ||
-      Object.keys(groupedFromDecision).length === 0
-    ) {
+    if (!groupedFromDecision || Object.keys(groupedFromDecision).length === 0) {
       return;
     }
 
@@ -170,8 +165,7 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
               ? wrapper
               : {}),
             conditionName: condName,
-            value:
-              valueFromWrapper !== undefined ? valueFromWrapper : fallback,
+            value: valueFromWrapper !== undefined ? valueFromWrapper : fallback,
           };
         });
 
@@ -234,9 +228,7 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
           const currentVal =
             vFromArray !== undefined ? vFromArray : vFromRecord;
           const ensuredVal =
-            currentVal !== undefined
-              ? currentVal
-              : defaultForHowToSet(how);
+            currentVal !== undefined ? currentVal : defaultForHowToSet(how);
 
           return {
             ...c,
@@ -326,10 +318,8 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
 
   const setBothShapes = (groupKey: string, originalName: string, val: any) => {
     const basePath = `conditionsThatEstablishesTheDecision.${groupKey}.${originalName}`;
-    const currentWrapper =
-      (formik.values as any)?.conditionsThatEstablishesTheDecision?.[groupKey]?.[
-        originalName
-      ];
+    const currentWrapper = (formik.values as any)
+      ?.conditionsThatEstablishesTheDecision?.[groupKey]?.[originalName];
 
     if (
       currentWrapper &&
@@ -345,10 +335,9 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
     if (Array.isArray(groups)) {
       const gi = groups.findIndex((g) => g?.ConditionGroupId === groupKey);
       if (gi >= 0) {
-        const ci =
-          groups[gi].conditionsThatEstablishesTheDecision?.findIndex(
-            (c: any) => c?.conditionName === originalName,
-          );
+        const ci = groups[gi].conditionsThatEstablishesTheDecision?.findIndex(
+          (c: any) => c?.conditionName === originalName,
+        );
         if (ci >= 0) {
           const clone = JSON.parse(JSON.stringify(groups));
           clone[gi].conditionsThatEstablishesTheDecision[ci].value = val;
@@ -382,8 +371,7 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
     });
   };
 
-  const [showRedefineConfirm, setShowRedefineConfirm] =
-    React.useState(false);
+  const [showRedefineConfirm, setShowRedefineConfirm] = React.useState(false);
   const openRedefineConfirm = () => setShowRedefineConfirm(true);
   const closeRedefineConfirm = () => setShowRedefineConfirm(false);
 
@@ -426,6 +414,7 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
       onOpenRedefineConfirm={openRedefineConfirm}
       onCloseRedefineConfirm={closeRedefineConfirm}
       onConfirmRedefine={confirmRedefine}
+      withTerm={withTerm}
     />
   );
 };

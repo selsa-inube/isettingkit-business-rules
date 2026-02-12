@@ -22,6 +22,8 @@ interface IBusinessRules {
   onRestoreConditions?: (conditionNames: string[]) => void;
   baseDecisionTemplate?: IRuleDecision;
   shouldRenderEmptyMessage?: boolean;
+  withEditOption?: boolean;
+  withTerm?: boolean;
 }
 
 export type { IBusinessRules };

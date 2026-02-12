@@ -31,6 +31,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
     onDelete,
     controls = true,
     editionMode = "versioned",
+    withEditOption = true,
   } = props;
 
   const enhancedDecision = React.useMemo(() => {
@@ -51,7 +52,10 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
       return decision;
     }
 
-    const { from, to } = value as { from: number | string; to: number | string };
+    const { from, to } = value as {
+      from: number | string;
+      to: number | string;
+    };
 
     const fromStr = String(from).trim();
     const toStr = String(to).trim();
@@ -69,36 +73,36 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
   const effectiveFromRenderer = hasEffectiveFrom
     ? {
-      element: {
-        labelName: textValues?.effectiveFrom,
-        value: formatDateEsShort(decisionToUse!.effectiveFrom),
-        howToSetTheDecision: ValueHowToSetUp.EQUAL,
-        decisionDataType: ValueDataType.DATE,
-      },
-      valueData: strategyFactoryHandlerManagerNew({
-        labelName: textValues?.effectiveFrom,
-        value: formatDateEsShort(decisionToUse!.effectiveFrom),
-        howToSetTheDecision: ValueHowToSetUp.EQUAL,
-        decisionDataType: ValueDataType.DATE,
-      }),
-    }
+        element: {
+          labelName: textValues?.effectiveFrom,
+          value: formatDateEsShort(decisionToUse!.effectiveFrom),
+          howToSetTheDecision: ValueHowToSetUp.EQUAL,
+          decisionDataType: ValueDataType.DATE,
+        },
+        valueData: strategyFactoryHandlerManagerNew({
+          labelName: textValues?.effectiveFrom,
+          value: formatDateEsShort(decisionToUse!.effectiveFrom),
+          howToSetTheDecision: ValueHowToSetUp.EQUAL,
+          decisionDataType: ValueDataType.DATE,
+        }),
+      }
     : null;
 
   const validUntilRenderer = hasValidUntil
     ? {
-      element: {
-        labelName: textValues?.validUntil,
-        value: formatDateEsShort(decisionToUse!.validUntil),
-        howToSetTheDecision: ValueHowToSetUp.EQUAL,
-        decisionDataType: ValueDataType.DATE,
-      },
-      valueData: strategyFactoryHandlerManagerNew({
-        labelName: textValues?.validUntil,
-        value: formatDateEsShort(decisionToUse!.validUntil),
-        howToSetTheDecision: ValueHowToSetUp.EQUAL,
-        decisionDataType: ValueDataType.DATE,
-      }),
-    }
+        element: {
+          labelName: textValues?.validUntil,
+          value: formatDateEsShort(decisionToUse!.validUntil),
+          howToSetTheDecision: ValueHowToSetUp.EQUAL,
+          decisionDataType: ValueDataType.DATE,
+        },
+        valueData: strategyFactoryHandlerManagerNew({
+          labelName: textValues?.validUntil,
+          value: formatDateEsShort(decisionToUse!.validUntil),
+          howToSetTheDecision: ValueHowToSetUp.EQUAL,
+          decisionDataType: ValueDataType.DATE,
+        }),
+      }
     : null;
 
   const resolvedHowToSet =
@@ -122,67 +126,67 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
     (isListOfValues
       ? buildListOfValuesValue(decisionToUse as IRuleDecision).list
       : (() => {
-        const i18nValue = (decisionToUse as any).i18nValue as
-          | string
-          | undefined;
+          const i18nValue = (decisionToUse as any).i18nValue as
+            | string
+            | undefined;
 
-        if (isRangeWithSameEnds) {
-          const { from } = decisionToUse.value as { from: any; to: any };
+          if (isRangeWithSameEnds) {
+            const { from } = decisionToUse.value as { from: any; to: any };
 
-          const formattedSingleValue = strategyFactoryHandlerManagerNew({
-            ...(decisionToUse as IRuleDecision),
-            howToSetTheDecision: ValueHowToSetUp.EQUAL,
-            value: from,
-          } as IRuleDecision);
+            const formattedSingleValue = strategyFactoryHandlerManagerNew({
+              ...(decisionToUse as IRuleDecision),
+              howToSetTheDecision: ValueHowToSetUp.EQUAL,
+              value: from,
+            } as IRuleDecision);
 
-          const suffix =
-            decisionToUse.decisionDataType === ValueDataType.PERCENTAGE
-              ? "%"
-              : "";
+            const suffix =
+              decisionToUse.decisionDataType === ValueDataType.PERCENTAGE
+                ? "%"
+                : "";
 
-          return `Del ${formattedSingleValue}${suffix}`.trim();
-        }
+            return `Del ${formattedSingleValue}${suffix}`.trim();
+          }
 
-        const rawValue = strategyFactoryHandlerManagerNew(
-          decisionToUse as IRuleDecision
-        );
+          const rawValue = strategyFactoryHandlerManagerNew(
+            decisionToUse as IRuleDecision,
+          );
 
-        let baseValue = i18nValue ?? rawValue;
+          let baseValue = i18nValue ?? rawValue;
 
-        if (
-          decisionToUse?.decisionDataType === ValueDataType.PERCENTAGE &&
-          typeof baseValue === "string" &&
-          !baseValue.includes("%")
-        ) {
-          baseValue = `${baseValue}%`;
-        }
+          if (
+            decisionToUse?.decisionDataType === ValueDataType.PERCENTAGE &&
+            typeof baseValue === "string" &&
+            !baseValue.includes("%")
+          ) {
+            baseValue = `${baseValue}%`;
+          }
 
-        if (
-          decisionToUse?.decisionDataType === ValueDataType.PERCENTAGE &&
-          typeof baseValue === "number" 
-        ) {
-          baseValue = `${baseValue}%`;
-        }
-        return baseValue;
-      })());
+          if (
+            decisionToUse?.decisionDataType === ValueDataType.PERCENTAGE &&
+            typeof baseValue === "number"
+          ) {
+            baseValue = `${baseValue}%`;
+          }
+          return baseValue;
+        })());
 
   const decisionMapper: Partial<IRuleDecision> | null = decisionToUse
     ? {
-      labelName: cardTitle ? decisionToUse.labelName || "" : "",
-      decisionDataType:
-        decisionToUse.decisionDataType || ValueDataType.ALPHABETICAL,
-      value: mappedDecisionValue,
-      howToSetTheDecision:
-        (decisionToUse as any).i18nValue || isRangeWithSameEnds
-          ? ValueHowToSetUp.EQUAL
-          : resolvedHowToSet,
-      validUntil: decisionToUse.validUntil,
-    }
+        labelName: cardTitle ? decisionToUse.labelName || "" : "",
+        decisionDataType:
+          decisionToUse.decisionDataType || ValueDataType.ALPHABETICAL,
+        value: mappedDecisionValue,
+        howToSetTheDecision:
+          (decisionToUse as any).i18nValue || isRangeWithSameEnds
+            ? ValueHowToSetUp.EQUAL
+            : resolvedHowToSet,
+        validUntil: decisionToUse.validUntil,
+      }
     : null;
 
   const rawByGroup = React.useMemo(
     () => (decisionToUse ? getConditionsByGroupNew(decisionToUse) : {}),
-    [decisionToUse]
+    [decisionToUse],
   );
 
   const naturalKeys: string[] =
@@ -260,8 +264,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
           }
 
           const isPercentageGreaterThanCondition =
-            condition?.howToSetTheCondition ===
-            ValueHowToSetUp.GREATER_THAN &&
+            condition?.howToSetTheCondition === ValueHowToSetUp.GREATER_THAN &&
             condition?.conditionDataType === ValueDataType.PERCENTAGE &&
             condition?.value !== undefined &&
             condition?.value !== null &&
@@ -314,12 +317,12 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
                 condition.i18nValue,
                 condition.i18nValue
                   ? ValueHowToSetUp.EQUAL
-                  : condition.howToSetTheCondition
+                  : condition.howToSetTheCondition,
               );
             } else {
               newValue = howToSetHandle(
                 condition.value,
-                condition.howToSetTheCondition
+                condition.howToSetTheCondition,
               );
             }
           }
@@ -351,13 +354,13 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
   const visibleByGroup = filterByGroup(
     processedConditionsForDisplay,
-    (c: any) => !c.hidden
+    (c: any) => !c.hidden,
   );
 
   const nonEmptyByGroup: Record<string, any[]> = React.useMemo(() => {
     const entries: [string, any[]][] = Object.entries(visibleByGroup).map(
       ([g, list]) =>
-        [g, (list as any[]).filter(conditionHasValue)] as [string, any[]]
+        [g, (list as any[]).filter(conditionHasValue)] as [string, any[]],
     );
     const pruned: Record<string, any[]> = {};
     for (const [g, list] of entries) {
@@ -395,7 +398,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
   });
 
   const [activeTab, setActiveTab] = React.useState<string>(
-    tabs[0]?.id ?? "mainCondition"
+    tabs[0]?.id ?? "mainCondition",
   );
   const handleTabChange = (id: string) => setActiveTab(id);
 
@@ -407,7 +410,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
 
   const skeleton = Array.from({ length: 5 });
   const loadingValidation = Boolean(
-    !loading && decisionToUse && textValues && decisionMapper
+    !loading && decisionToUse && textValues && decisionMapper,
   );
 
   const conditionsAlignment =
@@ -438,6 +441,7 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
       currentConditions={currentConditions}
       hasMultipleGroups={hasMultipleGroups}
       editionMode={editionMode}
+      withEditOption={withEditOption}
     />
   );
 };

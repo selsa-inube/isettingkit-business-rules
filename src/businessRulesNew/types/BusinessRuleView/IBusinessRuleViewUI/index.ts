@@ -42,6 +42,7 @@ interface IBusinessRuleViewUI {
   currentConditions?: any[];
   hasMultipleGroups?: boolean;
   editionMode?: "classic" | "versioned";
+  withEditOption: boolean;
 }
 
 export type { IBusinessRuleViewUI };
