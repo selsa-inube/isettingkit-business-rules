@@ -192,6 +192,9 @@ const decisionTemplate: any = {
   timeUnit: "Day",
   placeholderFrom: "0.0%",
   placeholderTo: "100.0%",
+  listOfPossibleValues: {
+    list: [],
+  },
   conditionGroups: [
     {
       ConditionGroupId: "group-primary",

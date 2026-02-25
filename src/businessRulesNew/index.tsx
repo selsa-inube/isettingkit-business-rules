@@ -51,7 +51,7 @@ const BusinessRulesNew = (props: IBusinessRules) => {
     editionMode,
     withEditOption,
   });
-
+  const decisionNumber = (decisions?.length || 0) + 1;
   const shouldRenderAddCardEmpty = decisions?.length === 0 && !loading;
 
   return (
@@ -146,6 +146,7 @@ const BusinessRulesNew = (props: IBusinessRules) => {
             onRemoveCondition={onRemoveCondition}
             onRestoreConditions={onRestoreConditions}
             withTerm={withTerm}
+            decisionNumber={decisionNumber}
           />
         </ModalRulesNew>
       )}

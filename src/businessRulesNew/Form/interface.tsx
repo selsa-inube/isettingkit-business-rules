@@ -28,13 +28,13 @@ const RulesFormUI = (props: IRulesFormUI) => {
     onCloseRedefineConfirm,
     onConfirmRedefine,
     withTerm,
+    decisionNumber,
   } = props;
-
   return (
     <>
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={formik.handleSubmit} autoComplete="off">
         <Stack direction="column" gap="24px" width="100%">
-          <Fieldset legend="Decisión N° 01" spacing="wide">
+          <Fieldset legend={`Decisión N° ${decisionNumber}`} spacing="wide">
             <Stack
               justifyContent="center"
               width="-webkit-fill-available"

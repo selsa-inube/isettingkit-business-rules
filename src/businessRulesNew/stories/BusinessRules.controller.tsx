@@ -456,6 +456,7 @@ const BusinessRulesNewController = ({
   console.log(
     "sortDisplayDataSwitchPlaces({ decisions }): ",
     sortDisplayDataSwitchPlaces({ decisions }),
+    selectedDecision,
   );
   return (
     <Stack direction="column" gap="24px">

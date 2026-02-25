@@ -32,6 +32,7 @@ interface IRulesFormUI extends IRulesForm {
   onCloseRedefineConfirm?: () => void;
   onConfirmRedefine?: () => void;
   withTerm: boolean;
+  decisionNumber: number;
 }
 
 export type { IRulesFormUI };
