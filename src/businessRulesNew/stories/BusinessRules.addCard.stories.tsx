@@ -22,7 +22,7 @@ const sampleDecisions: any[] = [
     decisionId: "a7233c84-4fd5-4064-951f-81b6f2f7ae6c",
     ruleName: "TasaEfectivaAnual",
     labelName: "Tasa Efectiva Anual",
-    decisionDataType: ValueDataType.PERCENTAGE,
+    decisionDataType: ValueDataType.ALPHABETICAL,
     value: { from: 4, to: 8 },
     // i18nValue: 'This is a test',
     howToSetTheDecision: EValueHowToSetUp.RANGE,
@@ -173,7 +173,7 @@ const sampleDecisions: any[] = [
 const decisionTemplate: any = {
   ruleName: "TasaEfectivaAnual",
   labelName: "Tasa Efectiva Anual",
-  decisionDataType: ValueDataType.PERCENTAGE,
+  decisionDataType: ValueDataType.ALPHABETICAL,
   howToSetTheDecision: EValueHowToSetUp.RANGE,
   // value: "",
   //howToSetTheDecision: EValueHowToSetUp.LESS_THAN,
@@ -520,7 +520,7 @@ addCard.args = {
     effectiveFrom: "Vigencia desde:",
     validUntil: "Vigencia hasta:",
   },
-  withEditOption: false,
+  withEditOption: true,
   withTerm: false,
 };
 

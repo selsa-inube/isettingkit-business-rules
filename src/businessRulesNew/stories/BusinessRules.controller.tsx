@@ -305,8 +305,6 @@ const BusinessRulesNewController = ({
   const handleSubmitForm = (dataDecision: any) => {
     const isEditing = selectedDecision !== null && !editAsNew;
 
-    console.log("dataDecision: ", dataDecision);
-
     const base = isEditing
       ? { ...selectedDecision, ...dataDecision }
       : {

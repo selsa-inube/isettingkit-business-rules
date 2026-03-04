@@ -6,7 +6,7 @@ interface IRulesFormExtra {
   fullTemplate?: IRuleDecision;
   timeUnit?: string;
   withTerm?: boolean;
-  decisionNumber?: number;
+  decisionNumber: number;
 }
 
 export type { IRulesFormExtra };
