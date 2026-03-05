@@ -25,6 +25,7 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
     onRestoreConditions,
     fullTemplate,
     withTerm = true,
+    decisionNumber,
   } = props;
 
   const { formik, handleToggleNoneChange } = useRulesFormUtils({
@@ -415,6 +416,7 @@ const RulesForm = (props: IRulesForm & IRulesFormExtra) => {
       onCloseRedefineConfirm={closeRedefineConfirm}
       onConfirmRedefine={confirmRedefine}
       withTerm={withTerm}
+      decisionNumber={decisionNumber}
     />
   );
 };

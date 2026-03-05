@@ -305,8 +305,6 @@ const BusinessRulesNewController = ({
   const handleSubmitForm = (dataDecision: any) => {
     const isEditing = selectedDecision !== null && !editAsNew;
 
-    console.log("dataDecision: ", dataDecision);
-
     const base = isEditing
       ? { ...selectedDecision, ...dataDecision }
       : {
@@ -456,6 +454,7 @@ const BusinessRulesNewController = ({
   console.log(
     "sortDisplayDataSwitchPlaces({ decisions }): ",
     sortDisplayDataSwitchPlaces({ decisions }),
+    selectedDecision,
   );
   return (
     <Stack direction="column" gap="24px">
