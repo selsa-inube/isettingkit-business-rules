@@ -1,3 +1,15 @@
+# v3.0.3 (Thu Mar 05 2026)
+
+#### 🐛 Bug Fix
+
+- Ha/870/adjustb business rules [#23](https://github.com/selsa-inube/isettingkit-business-rules/pull/23) ([@heber59](https://github.com/heber59))
+
+#### Authors: 1
+
+- Heber  Alvarez  ([@heber59](https://github.com/heber59))
+
+---
+
 # v3.0.2 (Thu Feb 12 2026)
 
 #### 🐛 Bug Fix
