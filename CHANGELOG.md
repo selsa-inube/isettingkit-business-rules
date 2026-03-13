@@ -1,3 +1,15 @@
+# v3.1.0 (Fri Mar 13 2026)
+
+#### 🚀 Enhancement
+
+- feat: refactor to new layou [#24](https://github.com/selsa-inube/isettingkit-business-rules/pull/24) ([@heber59](https://github.com/heber59))
+
+#### Authors: 1
+
+- Heber  Alvarez  ([@heber59](https://github.com/heber59))
+
+---
+
 # v3.0.3 (Thu Mar 05 2026)
 
 #### 🐛 Bug Fix
