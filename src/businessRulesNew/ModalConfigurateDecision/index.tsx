@@ -14,7 +14,7 @@ import { Text } from "@inubekit/inubekit";
 
 import { StyledContainer } from "../ModalRules/styles";
 import { StyledConditionsContainer, StyledMain, StyledModal } from "./styles";
-import { useState } from "react";
+import { useConfigurateDecisionModal } from "../helper/utils/useConfigurateDecisionModal";
 
 interface IModalConfigurateDecision {
   options: IOption[];
@@ -30,29 +30,15 @@ const ModalConfigurateDecision = (props: IModalConfigurateDecision) => {
       "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly.",
     );
   }
-  const [checkedItems, setCheckedItems] = useState<IOption[]>([]);
 
-  const handleCheckboxChange = (id: string) => {
-    setCheckedItems((prevChecked) => {
-      const isAlreadyChecked = prevChecked.some((item) => item.id === id);
-
-      if (isAlreadyChecked) {
-        return prevChecked.filter((item) => item.id !== id);
-      }
-
-      const optionToAdd = options.find((opt) => opt.id === id);
-      return optionToAdd ? [...prevChecked, optionToAdd] : prevChecked;
-    });
-  };
-
-  const onToggleAnyCondition = () => {
-    setCheckedItems([]);
-  };
-  const onToggleAllConditions = () => {
-    setCheckedItems(options);
-  };
-  const isAnyConditionChecked = checkedItems.length === 0;
-  const isAllConditionsChecked = checkedItems.length === options.length;
+  const {
+    onToggleAnyCondition,
+    onToggleAllConditions,
+    isAllConditionsChecked,
+    isAnyConditionChecked,
+    checkedItems,
+    handleCheckboxChange,
+  } = useConfigurateDecisionModal({ options });
 
   return createPortal(
     <StyledContainer>
