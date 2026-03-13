@@ -91,6 +91,7 @@ const BusinessRulesNewWithLoadingController = ({
       handleCloseModal={handleCloseModal}
       handleSubmitForm={handleSubmitForm}
       handleDelete={handleDelete}
+      configureDecisionModal={false}
     />
   );
 };

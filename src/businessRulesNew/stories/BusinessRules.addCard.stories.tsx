@@ -490,6 +490,34 @@ const decisionTemplate: any = {
   // },
 };
 
+const taskFilterOptions = [
+  {
+    id: "LineOfCredit",
+    label: "Line of credit",
+    value: "LineOfCredit",
+  },
+  {
+    id: "PorcentajeDeRiesgo",
+    label: "Porcentaje de riesgo",
+    value: "PorcentajeDeRiesgo",
+  },
+  {
+    id: "NivelDeMembresía",
+    label: "Membresia del cliente",
+    value: "NivelDeMembresía",
+  },
+  {
+    id: "ReciprocidadDeAhorro",
+    label: "reciprocidad de ahorro",
+    value: "ReciprocidadDeAhorro",
+  },
+  {
+    id: "LineOfCredit24",
+    label: "Line of credit24",
+    value: "LineOfCredit24",
+  },
+];
+
 const addCard: Story = (args: IBusinessRulesNewController) => (
   <BusinessRulesNewController {...args} />
 );
@@ -522,6 +550,7 @@ addCard.args = {
   },
   withEditOption: true,
   withTerm: false,
+  configurateDecisionOptions: taskFilterOptions,
 };
 
 export { addCard };

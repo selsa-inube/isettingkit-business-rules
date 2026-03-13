@@ -1,13 +1,14 @@
-import { Grid, Text, Stack, Fieldset, Icon } from "@inubekit/inubekit";
+import { Grid, Text, Stack, Fieldset, Icon, Button } from "@inubekit/inubekit";
 
 import { StyledGridContainer, StyledScrollContainer } from "./styles";
 import { getBusinessRulesLayoutNew } from "./helper/getBusinessRulesLayout";
 import { renderCardNew } from "./helper/renderCard";
 import { IBusinessRules } from "./types/IBusinessRules";
-import { MdOutlineInfo } from "react-icons/md";
+import { MdAdd, MdOutlineInfo } from "react-icons/md";
 import { useState } from "react";
 import { ModalRulesNew } from "./ModalRules";
 import { RulesForm } from "./Form";
+import { ModalConfigurateDecision } from "./ModalConfigurateDecision";
 
 const BusinessRulesNew = (props: IBusinessRules) => {
   const {
@@ -22,17 +23,22 @@ const BusinessRulesNew = (props: IBusinessRules) => {
     isModalOpen,
     selectedDecision,
     loading,
-    handleOpenModal,
+    handleOpenModal = () => void 0,
     handleCloseModal,
+
     handleSubmitForm,
     handleDelete,
     terms = true,
     onRemoveCondition,
     onRestoreConditions,
+    handleOpenRulesModal = () => void 0,
     baseDecisionTemplate,
     shouldRenderEmptyMessage = true,
     withEditOption,
     withTerm,
+    configurateDecisionOptions = [],
+    configureDecisionModal,
+    handleCloseConfigurationModal = () => void 0,
   } = props;
 
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -56,6 +62,19 @@ const BusinessRulesNew = (props: IBusinessRules) => {
 
   return (
     <>
+      <Stack justifyContent="space-between" padding="6px">
+        <Text type="title" weight="bold" size="medium" appearance="gray">
+          Consulta de las decisiones definidas
+        </Text>
+        <Button
+          appearance="primary"
+          cursorHover
+          iconBefore={<MdAdd />}
+          onClick={() => handleOpenModal()}
+        >
+          Agregar plazo
+        </Button>
+      </Stack>
       <StyledGridContainer>
         <StyledScrollContainer>
           <Stack direction="column" gap="16px" padding="6px">
@@ -98,37 +117,47 @@ const BusinessRulesNew = (props: IBusinessRules) => {
                   </Stack>
                 </Fieldset>
               ) : (
-                <Grid
-                  templateColumns="1fr"
-                  autoFlow="row dense"
-                  gap="16px"
-                  alignItems="start"
-                  justifyContent="center"
-                  autoRows="auto"
-                  justifyItems="center"
-                  padding="6px"
-                >
-                  {renderedCards}
-                  {shouldRenderAddCard &&
-                    renderCardNew({
-                      type: "add",
-                      index: decisions?.length,
-                      controls,
-                      customTitleContentAddCard,
-                      customMessageEmptyDecisions,
-                      loading,
-                      handleOpenModal,
-                      handleDelete,
-                      textValues,
-                      shouldRenderEmptyMessage,
-                      terms,
-                      editionMode,
-                    })}
-                </Grid>
+                <Fieldset legend={"Decisiones"} spacing="compact">
+                  <Grid
+                    templateColumns="1fr"
+                    autoFlow="row dense"
+                    gap="16px"
+                    alignItems="start"
+                    justifyContent="center"
+                    autoRows="auto"
+                    justifyItems="center"
+                    width="100%"
+                  >
+                    {renderedCards}
+                    {shouldRenderAddCard &&
+                      renderCardNew({
+                        type: "add",
+                        index: decisions?.length,
+                        controls,
+                        customTitleContentAddCard,
+                        customMessageEmptyDecisions,
+                        loading,
+                        handleOpenModal,
+                        handleDelete,
+                        textValues,
+                        shouldRenderEmptyMessage,
+                        terms,
+                        editionMode,
+                      })}
+                  </Grid>
+                </Fieldset>
               ))}
           </Stack>
         </StyledScrollContainer>
       </StyledGridContainer>
+      {configureDecisionModal && (
+        <ModalConfigurateDecision
+          options={configurateDecisionOptions}
+          onCloseModal={handleCloseConfigurationModal!}
+          portalId={"modal-portal"}
+          onOpenRulesModal={handleOpenRulesModal}
+        ></ModalConfigurateDecision>
+      )}
 
       {isModalOpen && (
         <ModalRulesNew
