@@ -15,10 +15,10 @@ interface IBusinessRules {
   selectedDecision: IRuleDecision | null;
   loading: boolean;
   configureDecisionModal: boolean;
-  handleOpenModal: () => void;
+  handleOpenModal?: () => void;
   handleCloseModal?: () => void;
   handleSubmitForm?: (dataDecision: IRuleDecision) => void;
-  handleOpenRulesModal: (checkedItems: IOption[]) => void;
+  handleOpenRulesModal?: (checkedItems: IOption[]) => void;
   handleDelete?: (id: string) => void;
   terms?: boolean;
   onRemoveCondition?: (conditionName: string) => void;
@@ -26,9 +26,9 @@ interface IBusinessRules {
   baseDecisionTemplate?: IRuleDecision;
   shouldRenderEmptyMessage?: boolean;
   withEditOption?: boolean;
-  configurateDecisionOptions: IOption[];
+  configurateDecisionOptions?: IOption[];
   withTerm?: boolean;
-  handleCloseConfigurationModal: () => void;
+  handleCloseConfigurationModal?: () => void;
 }
 
 export type { IBusinessRules };

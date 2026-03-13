@@ -23,7 +23,7 @@ const BusinessRulesNew = (props: IBusinessRules) => {
     isModalOpen,
     selectedDecision,
     loading,
-    handleOpenModal,
+    handleOpenModal = () => void 0,
     handleCloseModal,
 
     handleSubmitForm,
@@ -31,14 +31,14 @@ const BusinessRulesNew = (props: IBusinessRules) => {
     terms = true,
     onRemoveCondition,
     onRestoreConditions,
-    handleOpenRulesModal,
+    handleOpenRulesModal = () => void 0,
     baseDecisionTemplate,
     shouldRenderEmptyMessage = true,
     withEditOption,
     withTerm,
-    configurateDecisionOptions,
+    configurateDecisionOptions = [],
     configureDecisionModal,
-    handleCloseConfigurationModal,
+    handleCloseConfigurationModal = () => void 0,
   } = props;
 
   const [openIndex, setOpenIndex] = useState<number | null>(null);
