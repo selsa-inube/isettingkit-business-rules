@@ -13,9 +13,9 @@ const StyledContainer = styled.div`
 const StyledModal = styled.div`
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
-  max-height: 90vh;
-  width:  ${({ $size }) => ($size ? $size : "100%")};
-  max-width: 50rem;
+  max-height: 94vh;
+  width: ${({ $size }) => ($size ? $size : "100%")};
+  max-width: 60rem;
   overflow-y: ${({ smallScreen }) => (smallScreen ? "hidden" : "auto")};
   border-radius: 8px;
   transition: overflow-y 0.3s ease-in-out;

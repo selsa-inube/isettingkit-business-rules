@@ -1,5 +1,6 @@
 import { IRuleDecision } from "@isettingkit/input";
 import { IRulesFormTextValues } from "../Forms/IRulesFormTextValues";
+import { IOption } from "@inubekit/inubekit";
 
 interface IBusinessRules {
   cardTitle?: boolean;
@@ -13,9 +14,11 @@ interface IBusinessRules {
   isModalOpen: boolean;
   selectedDecision: IRuleDecision | null;
   loading: boolean;
-  handleOpenModal?: (decision?: IRuleDecision | null) => void;
+  configureDecisionModal: boolean;
+  handleOpenModal: () => void;
   handleCloseModal?: () => void;
   handleSubmitForm?: (dataDecision: IRuleDecision) => void;
+  handleOpenRulesModal: (checkedItems: IOption[]) => void;
   handleDelete?: (id: string) => void;
   terms?: boolean;
   onRemoveCondition?: (conditionName: string) => void;
@@ -23,7 +26,9 @@ interface IBusinessRules {
   baseDecisionTemplate?: IRuleDecision;
   shouldRenderEmptyMessage?: boolean;
   withEditOption?: boolean;
+  configurateDecisionOptions: IOption[];
   withTerm?: boolean;
+  handleCloseConfigurationModal: () => void;
 }
 
 export type { IBusinessRules };

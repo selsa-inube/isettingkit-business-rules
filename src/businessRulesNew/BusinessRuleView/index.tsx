@@ -169,7 +169,6 @@ const BusinessRuleViewNew = (props: IBusinessRuleView) => {
           }
           return baseValue;
         })());
-
   const decisionMapper: Partial<IRuleDecision> | null = decisionToUse
     ? {
         labelName: cardTitle ? decisionToUse.labelName || "" : "",

@@ -5,16 +5,14 @@ import { BusinessRulesNew } from "..";
 import { sortDisplayDataSwitchPlaces } from "../helper/utils/sortDisplayDataSwitchPlaces";
 import { sortDisplayDataSampleSwitchPlaces } from "../helper/utils/sortDisplayDataSampleSwitchPlaces";
 import { IRulesFormTextValues } from "../types/Forms/IRulesFormTextValues";
-import { Button, Fieldset, Stack } from "@inubekit/inubekit";
-import { MdAdd } from "react-icons/md";
+import { Stack } from "@inubekit/inubekit";
+
 import type { IOption } from "@inubekit/inubekit";
-import { StyledMultipleChoiceContainer } from "./styles";
 
 import { mapByGroupNew } from "../helper/utils/mapByGroup";
 import { normalizeDecisionToNewShape } from "../helper/utils/normalizeDecisionToNewShape";
 import { groupsRecordToArrayNew } from "../helper/utils/groupsRecordToArray";
 import { getConditionsByGroupNew } from "../helper/utils/getConditionsByGroup";
-import { Checkpicker } from "@isettingkit/input";
 
 type EditionMode = "classic" | "versioned";
 
@@ -33,6 +31,7 @@ interface IBusinessRulesNewController {
   shouldRenderEmptyMessage?: boolean;
   withEditOption?: boolean;
   withTerm?: boolean;
+  configurateDecisionOptions: IOption[];
 }
 
 const deepClone = <T,>(v: T): T => JSON.parse(JSON.stringify(v));
@@ -91,12 +90,14 @@ const BusinessRulesNewController = ({
   editionMode = "versioned",
   withEditOption,
   withTerm,
+  configurateDecisionOptions,
 }: IBusinessRulesNewController) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editAsNew, setEditAsNew] = useState(false);
   const [selectedDecision, setSelectedDecision] =
     useState<IRuleDecision | null>(null);
-
+  const [configureDecisionModal, setConfigureDecisionModal] =
+    useState<boolean>(false);
   const [sourceDecisionMeta, setSourceDecisionMeta] = useState<{
     businessRuleId?: string;
     decisionId?: string;
@@ -199,22 +200,6 @@ const BusinessRulesNewController = ({
     });
   };
 
-  const multipleChoicesOptions: IOption[] = useMemo(() => {
-    const groups = getConditionsByGroupNew(localizedTemplate) || {};
-    console.log(groups);
-
-    const primaryGroup = (groups["group-primary"] || []) as any[];
-
-    return primaryGroup.map((c: any) => {
-      const oname = originalName(c.conditionName);
-      return {
-        id: oname,
-        label: localizeLabel(c, language),
-        value: oname,
-      };
-    });
-  }, [localizedTemplate, language]);
-
   const [selectedConditionsCSV, setSelectedConditionsCSV] =
     useState<string>("");
   const selectedIds = useMemo(
@@ -235,71 +220,45 @@ const BusinessRulesNewController = ({
     return unique.join(",");
   };
 
-  const handleMultipleChoicesChange = (_name: string, valueCSV: string) => {
-    setSelectedConditionsCSV(valueCSV);
-    const ids = valueCSV.split(",").filter(Boolean);
-    const selected = multipleChoicesOptions.filter((o) => ids.includes(o.id));
-    console.log("Selected conditions:", selected);
+  const handleOpenModal = () => {
+    setConfigureDecisionModal(true);
   };
 
-  const handleOpenModal = (decision: IRuleDecision | null = null) => {
+  const handleOpenRulesModal = (
+    checkedItems: IOption[] = [],
+    decision: IRuleDecision | null = null,
+  ) => {
     if (decision) {
-      const businessRuleId = (decision as any).businessRuleId;
-      const decisionId = (decision as any).decisionId;
-
-      setSourceDecisionMeta({ businessRuleId, decisionId });
-
+      // edición — usa todas las condiciones de la decisión, ignora checkedItems
       const csv = csvFromDecisionConditions(decision);
       setSelectedConditionsCSV(csv);
 
-      const normalized = deepClone(normalizeDecisionToNewShape(decision));
+      const businessRuleId = (decision as any).businessRuleId;
+      const decisionId = (decision as any).decisionId;
+      setSourceDecisionMeta({ businessRuleId, decisionId });
+      setSelectedDecision(decision);
+      setEditAsNew(editionMode === "versioned");
+    } else {
+      // nueva — filtra template por checkedItems
+      const csv = checkedItems.map((item) => item.id).join(",");
+      setSelectedConditionsCSV(csv);
 
-      const mappedRecord = mapByGroupNew(
-        getConditionsByGroupNew(normalized),
-        (condition: {
-          value: string | number | IValue | string[] | undefined;
-          i18n?: Record<string, string>;
-          labelName?: string;
-        }) => ({
-          ...condition,
-          conditionName: originalName((condition as any).conditionName),
-          labelName: localizeLabel(condition as any, language),
-          value: (condition as any).value,
-        }),
-      );
-
-      const draft = {
-        ...normalized,
-        conditionGroups: groupsRecordToArrayNew(mappedRecord),
-      } as IRuleDecision;
-
-      if (editionMode === "versioned") {
-        delete (draft as any).businessRuleId;
-        delete (draft as any).decisionId;
-        (draft as any).effectiveFrom = "";
-        (draft as any).validUntil = "";
-        setSelectedDecision(draft);
-        setEditAsNew(true);
-      } else {
-        setSelectedDecision(draft);
-        setEditAsNew(false);
-      }
-
-      setIsModalOpen(true);
-      return;
+      setEditAsNew(false);
+      setSourceDecisionMeta(null);
+      setSelectedDecision(null);
     }
 
-    setEditAsNew(false);
-    setSourceDecisionMeta(null);
-    setSelectedDecision(null);
     setIsModalOpen(true);
+    setConfigureDecisionModal(false);
   };
-
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedDecision(null);
     setEditAsNew(false);
     setSourceDecisionMeta(null);
+  };
+  const handleCloseConfigurationModal = () => {
+    setConfigureDecisionModal(false);
   };
 
   const handleSubmitForm = (dataDecision: any) => {
@@ -451,42 +410,8 @@ const BusinessRulesNewController = ({
 
     return withFiltered as any;
   }, [localizedTemplate, language, selectedIds, removedConditionNames]);
-  console.log(
-    "sortDisplayDataSwitchPlaces({ decisions }): ",
-    sortDisplayDataSwitchPlaces({ decisions }),
-    selectedDecision,
-  );
   return (
     <Stack direction="column" gap="24px">
-      <Fieldset legend="Condiciones que determinan las decisiones">
-        <StyledMultipleChoiceContainer>
-          <Checkpicker
-            fullwidth
-            id="conditionsPicker"
-            label=""
-            name="conditionsPicker"
-            onChange={handleMultipleChoicesChange}
-            options={multipleChoicesOptions}
-            placeholder="Seleccione una o varias condiciones"
-            required={false}
-            size="wide"
-            values={selectedConditionsCSV}
-          />
-        </StyledMultipleChoiceContainer>
-      </Fieldset>
-
-      <Stack justifyContent="flex-end">
-        <Button
-          appearance="primary"
-          cursorHover
-          // disabled={selectedConditionsCSV.length === 0}
-          iconBefore={<MdAdd />}
-          onClick={() => handleOpenModal()}
-        >
-          Agregar plazo
-        </Button>
-      </Stack>
-
       {/* {selectedConditionsCSV.length > 0 ? ( */}
       <BusinessRulesNew
         baseDecisionTemplate={localizedTemplate}
@@ -510,6 +435,10 @@ const BusinessRulesNewController = ({
         shouldRenderEmptyMessage={shouldRenderEmptyMessage}
         withEditOption={withEditOption}
         withTerm={withTerm}
+        configureDecisionModal={configureDecisionModal}
+        handleOpenRulesModal={handleOpenRulesModal}
+        configurateDecisionOptions={configurateDecisionOptions}
+        handleCloseConfigurationModal={handleCloseConfigurationModal}
       />
       {/* ) : (
         <Fieldset legend="Decisiones">
